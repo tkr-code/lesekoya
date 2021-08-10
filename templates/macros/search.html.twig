@@ -1,0 +1,27 @@
+{% macro search(form) %}
+<div class="jumbotron">
+    <div class="container">
+        {{ form_start(form,{action:'produits'}) }}
+        <div class="form-row align-items-end">
+            <div class="col-8">
+            {{ form_row(form.mots)}}
+            </div>
+            <div class="col-4">
+            {{ form_row(form.category)}}
+            </div>
+            <div class="col-4">
+            {{ form_row(form.minPrice)}}
+            </div>
+            <div class="col-4">
+            {{ form_row(form.maxPrice)}}
+            </div>
+            <div class="col">
+            <div class="form-group">
+                <button class="btn btn-primary">Rechercher</button>
+            </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+</div>
+{% endmacro %}
