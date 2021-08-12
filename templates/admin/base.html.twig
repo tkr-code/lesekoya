@@ -175,14 +175,10 @@
     <!-- Sidebar user panel (optional) -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
       <div class="image">
-      {% if app.user.personne.avatar %}
         <img src="{{ asset('adminlte/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
-      {% else %}
-        <img src="{{ asset('/img/user-vide.png') }}" class="img-circle elevation-2" alt="User Image">
-      {% endif %}
       </div>
       <div class="info">
-        <a href="{{ path('profile_index') }}" class="d-block">{{ app.user.personne.prenom ~ ' ' ~ app.user.personne.nom}}</a>
+        {# <a href="{{ path('profile_index') }}" class="d-block">Malick Tounkara</a> #}
       </div>
     </div>
 
@@ -217,19 +213,19 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="{{ path('tableau-de-board')}}" class="nav-link tableau-de-board">
+              <a href="{{ path('admin')}}" class="nav-link tableau-de-board">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Tableau de board 1</p>
               </a>
             </li>
           </ul>
         </li>
-        <li class="nav-item">
+        {# <li class="nav-item">
           <a href="{{ path('profile_index')}}" class="mon-profile nav-link">
             <i class="nav-icon fa fa-user-circle"></i>
             <p>Mon profile</p>
           </a>
-        </li>
+        </li> #}
         <li id="pages" class="nav-item">
           <a href="#" class="pages nav-link">
             {# <i class="nav-icon fa fa-cogs"></i> #}
@@ -264,6 +260,12 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
+              <a href="{{ path('category_index') }}" class="nav-link gestion-category">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Category</p>
+              </a>
+            </li>
+            {# <li class="nav-item">
               <a href="{{ path('user_index') }}" class="nav-link gestion-user">
                 <i class="fas fa-users nav-icon"></i>
                 <p>Utulisateurs</p>
@@ -273,12 +275,6 @@
               <a href="{{ path('admin_produit_index') }}" class="nav-link gestion-produit">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Produit</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="{{ path('category_index') }}" class="nav-link gestion-category">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Categorie</p>
               </a>
             </li>
             <li class="nav-item">
@@ -304,7 +300,7 @@
                 <i class="far fa-circle nav-icon"></i>
                 <p>Commande</p>
               </a>
-            </li>
+            </li> #}
           </ul>
         </li>
         <li class="nav-item">
@@ -324,12 +320,12 @@
             </li>
           </ul>
         </li>
-        <li class="nav-item">
+        {# <li class="nav-item">
           <a href="{{ path('app_logout')}}" class="mon-profile nav-link">
             <i class="nav-icon fas fa-power-off"></i>
             <p>Log out</p>
           </a>
-        </li>
+        </li> #}
       </ul>
     </nav>
     <!-- /.sidebar-menu -->

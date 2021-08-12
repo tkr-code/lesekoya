@@ -13,8 +13,20 @@ class MainController extends AbstractController
      */
     public function home(): Response
     {
-        return $this->render('main/index.html.twig', [
-            'controller_name' => 'MainController',
+        $pages =[
+            [
+                'path'=>'home',
+                'name'=>'Home'
+            ],
+            [
+                'path'=>'article_index',
+                'name'=>'Liste des articles'
+            ]
+        ];
+
+      return  $this->render("main/index.html.twig", [
+            'pages'=>$pages,
+
         ]);
     }
 }

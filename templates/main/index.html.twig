@@ -1,20 +1,20 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Hello MainController!{% endblock %}
+{% extends "base.html.twig" %}
+{% import "macros/search.html.twig" as search %}
+{% block title %}Malick{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/TOUNKARA/Desktop/TKR-CODE/symfony/e-commerce/store_2/src/Controller/MainController.php'|file_link(0) }}">src/Controller/MainController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/TOUNKARA/Desktop/TKR-CODE/symfony/e-commerce/store_2/templates/main/index.html.twig'|file_link(0) }}">templates/main/index.html.twig</a></code></li>
-    </ul>
-</div>
+    <h1> {% trans %}Home page{% endtrans %} </h1>
+    {# {{ search.search(searchForm) }} #}
+    <div>
+        <ul>
+        {% for page in pages %}
+            <li><a href="{{ path(page.path)}}">{{page.name}}</a></li>
+        {% endfor %}
+        </ul>
+    </div>
+    <div class="row">
+        {# {% for item in lastProduit %}
+            {{ include('pages/produit/_produit.html.twig') }}
+        {% endfor %} #}
+    </div>
 {% endblock %}

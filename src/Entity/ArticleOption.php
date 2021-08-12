@@ -37,6 +37,12 @@ class ArticleOption
      */
     private $updated_at;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Article::class, inversedBy="options")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $article;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +92,18 @@ class ArticleOption
     public function setUpdatedAt(?\DateTimeInterface $updated_at): self
     {
         $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    public function getArticle(): ?Article
+    {
+        return $this->article;
+    }
+
+    public function setArticle(?Article $article): self
+    {
+        $this->article = $article;
 
         return $this;
     }

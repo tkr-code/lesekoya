@@ -1,0 +1,35 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Edit Category{% endblock %}
+
+{% import "macros/breadcrumb.html.twig" as utils %}
+{% block breadcrumb %}
+    {{ utils.breadcrumb('Modifier produit',breadcrumb)}}
+{% endblock %}
+{# {% block body %}
+    <h1>Edit Category</h1>
+
+    {{ include('admin/category/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('category_index') }}">back to list</a>
+
+    {{ include('admin/category/_delete_form.html.twig') }}
+{% endblock %} #}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-sm-6">    
+            <div class="card card-success card-outline">
+                <div class="card-header">
+                    <p class="card-title">Modifier</p>
+                </div>
+                <div class="card-body">
+                    {# {{ include('admin/category/_form.html.twig', {'button_label': 'Update'}) }} #}
+                    {{ include ('admin/category/_form.html.twig',{'button_label':'Update','btn_color':'success'}) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

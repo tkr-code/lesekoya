@@ -13,6 +13,17 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class AdminController extends AbstractController
 {
+    
+    public function __construct()
+    {
+        $this->gestions = [
+            [
+                'name'=>'Category',
+                'path'=>'category_index',
+                'icon'=>'far fa-circle nav-icon'
+            ]
+        ];
+    }
     private $nameApp = 'Framework Tounkara';
 
     /**

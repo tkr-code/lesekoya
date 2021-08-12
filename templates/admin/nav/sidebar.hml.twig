@@ -1,0 +1,97 @@
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <!-- Add icons to the links using the .nav-icon class
+            with font-awesome or any other icon font library -->
+        <li class="nav-item">
+          <a href="#" class="nav-link tableau-de-board">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>
+              Tableau de board
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{{ path('admin')}}" class="nav-link tableau-de-board">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Tableau de board 1</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+        {# <li class="nav-item">
+          <a href="{{ path('profile_index')}}" class="mon-profile nav-link">
+            <i class="nav-icon fa fa-user-circle"></i>
+            <p>Mon profile</p>
+          </a>
+        </li> #}
+        <li id="pages" class="nav-item">
+          <a href="#" class="pages nav-link">
+            {# <i class="nav-icon fa fa-cogs"></i> #}
+            <i class="fa fa-list-alt nav-icon" aria-hidden="true"></i>
+            <p>
+              Pages
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{{ path('home') }}" class="nav-link pages-home">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Accueil</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ path('home') }}" class="nav-link pages-home">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Produit</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li id="gestions" class="nav-item">
+          <a href="#" class="gestions nav-link">
+            <i class="nav-icon fa fa-cogs"></i>
+            <p>
+              Gestions
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            {% for item in gestions %}
+            <li class="nav-item">
+              <a href="{{ path(path) }}" class="nav-link gestion-{{ name}}">
+                <i class="{{ icon }}"></i>
+                <p>{{ name }}</p>
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link ">
+            <i class="nav-icon fa fa-cog"></i>
+            <p>
+              Paramettre
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Admin</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+        {# <li class="nav-item">
+          <a href="{{ path('app_logout')}}" class="mon-profile nav-link">
+            <i class="nav-icon fas fa-power-off"></i>
+            <p>Log out</p>
+          </a>
+        </li> #}
+      </ul>
+    </nav>
+    <!-- /.sidebar-menu -->
