@@ -18,6 +18,26 @@ class ArticleRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Article::class);
     }
+    
+    public function findAllOff()
+    {
+        return $this->findQueryBuilder()
+            ->where("p.enabled = false ")
+            ->getQuery()
+            ->getResult();
+    }
+    public function findAllOn()
+    {
+        return $this->findQueryBuilder()
+            ->where("p.enabled = true ")
+            ->getQuery()
+            ->getResult();
+    }
+    
+    public function findQueryBuilder()
+    {
+        return $this->createQueryBuilder('p');
+    }
 
     // /**
     //  * @return Article[] Returns an array of Article objects

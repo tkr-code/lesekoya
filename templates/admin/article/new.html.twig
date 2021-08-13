@@ -1,11 +1,131 @@
+{% import "macros/table.html.twig" as table %}
+{% import "macros/head.html.twig" as head %}
+{% import "macros/foot.html.twig" as foot %}
+{% import "macros/breadcrumb.html.twig" as utils %}
+{% import "macros/alertes.html.twig" as alerte %}
+{% import "macros/button.html.twig" as btn %}
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}New Article{% endblock %}
+{% block title %}New Article | {{ app_name}} {% endblock %}
+
+{% block stylesheets %}
+  {{ head.dataTable() }}
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ utils.breadcrumb(action_text,[
+        {
+            path:'article_index',
+            name:'Manage Articles'
+        }
+    ])}}
+{% endblock %}
 
 {% block body %}
-    <h1>Create new Article</h1>
+<a class="btn btn-dark m-2" href="{{ path('article_index') }}">back to list <i class="fa fa-arrow-circle-left" aria-hidden="true"></i> </a>
 
-    {{ include('admin/article/_form.html.twig') }}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card card-outline card-primary">
+            <div class="card-header">
+                <h4>{{ action_text }}</h4>
+            </div>
+            <div class="card-body">
+                {{ include('admin/article/_form.html.twig',{button_label:action}) }}
+                <a class="btn btn-light mt-2" href="{{ path('article_index') }}">back to list <i class="fa fa-arrow-circle-left" aria-hidden="true"></i> </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-outline card-dark">
+                    <div class="card-header">
+                        <h4>Manage Image</h4>
+                    </div>
+                    <div class="card-body">
+                    {# verifier si la route est edit #}
+                    {% if app.request.attributes.get('_route') == 'article_edit' %}
+                        <div class="row">
+                    {% for image in article.images %}
+                            <div class="col-md-4 col-12">
+                                <div class="card">
+                                    <img src="{{ asset('/img/article/' ~ image.name)}}" class="card-img-top" alt="image" width="100" >
+                                        <a class="btn" href="{{ path('article_delete_image', {id: image.id}) }}"
+                                            data-delete  data-token="{{ csrf_token('delete' ~ image.id) }}"
+                                        > <i class="fas fa-trash-alt  text-danger "></i> </a>
+                                </div>
+                            </div>
+                    {% else %}
+                        <p>Le article ne possede pas d'image</p>
+                    {% endfor %}
+                        </div>
+                    
+                    {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="card card-outline card-dark">
+                    <div class="card-header">
+                        <h4>Article option</h4>
+                    </div>
+                    <div class="card-body">
+                        <table id="datatable_1" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Content</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for item in article.options %}
+                                <tr>
+                                    <td>{{ item.title }}</td>
+                                    <td>{{ item.content }}</td>
+                                    <td>
+                                        <a class="btn btn-success " href="{{ path('article_option_edit', {'id': item.id,idArticle: article.id }) }}"><i class="fas fa-pencil-alt"></i></a>
+                                        <form method="post" class="d-inline-block" action="{{ path('article_option_delete', {'id': item.id, idArticle: article.id }) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ item.id) }}">
+                                            <button class="btn btn-danger"><i class="fas fa-trash-alt    "></i></button>
+                                            
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <h3>L'article n'as pas d'option</h3>
+                            {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Content</th>
+                                    <th>Action</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        {{ include ('/admin/article_option/_form.html.twig') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+</div>
+{% endblock %}
+{% block foot %}
+    <script src="{{ asset('js/image.js') }}"></script>
+    {{ foot.dataTable()}}
+{% endblock %}
 
-    <a href="{{ path('article_index') }}">back to list</a>
+{% block javascripts %}
+    {{ table.jsDataTable('datatable_1') }} 
+
+  <script>
+   $(document).ready(function(){
+     $('#gestions').addClass(' menu-is-opening menu-open')
+     $('.gestions').addClass('active')
+     $('.gestion-article').addClass('active')
+   })
+  </script>
 {% endblock %}

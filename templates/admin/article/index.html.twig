@@ -1,45 +1,87 @@
-{% extends 'base.html.twig' %}
+{% extends "admin/base.html.twig" %}
+{% import "macros/table.html.twig" as table %}
+{% import "macros/head.html.twig" as head %}
+{% import "macros/foot.html.twig" as foot %}
+{% import "macros/breadcrumb.html.twig" as utils %}
+{% import "macros/alertes.html.twig" as alerte %}
 
-{% block title %}Article index{% endblock %}
+
+{% block title %}Manage articles | {{ app_name }} {% endblock %}
+
+{% block stylesheets %}
+  {{ head.dataTable() }}
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ utils.breadcrumb('Manage articles')}}
+{% endblock %}
 
 {% block body %}
-    <h1>Article index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Price</th>
-                <th>Description</th>
-                <th>Created_at</th>
-                <th>Updated_at</th>
-                <th>Enabled</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for article in articles %}
-            <tr>
-                <td>{{ article.id }}</td>
-                <td>{{ article.title }}</td>
-                <td>{{ article.price }}</td>
-                <td>{{ article.description }}</td>
-                <td>{{ article.createdAt ? article.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ article.updatedAt ? article.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ article.enabled ? 'Yes' : 'No' }}</td>
-                <td>
-                    <a href="{{ path('article_show', {'id': article.id}) }}">show</a>
-                    <a href="{{ path('article_edit', {'id': article.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+{% for item in app.flashes('success') %}
+  {{ alerte.alert(item,'success')}}
+{% endfor %}
 
-    <a href="{{ path('article_new') }}">Create new</a>
+ <div class="row">
+    <div class="col-12 col-sm-3">
+        <div class="card card-primary card-outline card-tabs">
+          <a href="{{ path('article_new') }}" class="btn btn-lg btn-outline-primary btn-block">Ajouter un article <i class="fa fa-plus" aria-hidden="true"></i> </a>
+        </div>
+    </div>
+    <div class="col-12 col-sm-12">
+        <div class="card card-primary card-outline card-tabs">
+            <div class="card-header p-0 pt-1 border-bottom-0">
+                <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-three-home-tab"
+                            data-toggle="pill" href="#custom-tabs-three-home" role="tab"
+                            aria-controls="custom-tabs-three-home" aria-selected="true">Activer |<span class="font-weight-bold"> 
+                            {{ articlesOn| length }}
+                            </span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill"
+                            href="#custom-tabs-three-profile" role="tab"
+                            aria-controls="custom-tabs-three-profile"
+                            aria-selected="false">Desactiver |<span class="font-weight-bold"> 
+                            {{ articlesOff| length }}
+                            </span></a>
+                    </li>
+                   
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content" id="custom-tabs-three-tabContent">
+                    <div class="tab-pane fade show active" id="custom-tabs-three-home"
+                        role="tabpanel" aria-labelledby="custom-tabs-three-home-tab">
+                            {{ include ("admin/article/_datatable.html.twig",{id:'1',articles: articlesOn}) }}
+                    </div>
+                    <div class="tab-pane fade" id="custom-tabs-three-profile" role="tabpanel"
+                        aria-labelledby="custom-tabs-three-profile-tab">
+                            {{ include ("admin/article/_datatable.html.twig",{id:'2',articles: articlesOff}) }}
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.card -->
+    </div>
+  </div>
+{% endblock %}
+
+{% block foot %}
+{{ foot.dataTable()}}
+{% endblock %}
+
+
+{% block javascripts %}
+{{ table.jsDataTable('datatable_1') }} 
+{{table.jsDataTable('datatable_2')  }}
+  <script>
+   $(document).ready(function(){
+     //nivagation 
+     $('#gestions').addClass(' menu-is-opening menu-open')
+     $('.gestions').addClass('active')
+     $('.gestion-article').addClass('active')
+   })
+  </script>
 {% endblock %}

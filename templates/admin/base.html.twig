@@ -260,6 +260,12 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
+              <a href="{{ path('article_index') }}" class="nav-link gestion-article">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Article</p>
+              </a>
+            </li>
+            <li class="nav-item">
               <a href="{{ path('category_index') }}" class="nav-link gestion-category">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Category</p>
@@ -269,12 +275,6 @@
               <a href="{{ path('user_index') }}" class="nav-link gestion-user">
                 <i class="fas fa-users nav-icon"></i>
                 <p>Utulisateurs</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="{{ path('admin_produit_index') }}" class="nav-link gestion-produit">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Produit</p>
               </a>
             </li>
             <li class="nav-item">
@@ -376,7 +376,7 @@
 <!-- AdminLTE App -->
 <script src="{{ asset('adminlte/dist/js/adminlte.min.js') }}"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="{{ asset('adminlte//dist/js/tkr.js') }}"></script>
+<script src="{{ asset('adminlte/dist/js/tkr.js') }}"></script>
 {% block foot %}{% endblock %}
 <script>
   $(document).ready(function(){
@@ -384,8 +384,6 @@
     $('.select2').select2()
   })
 </script>
-  {% block javascripts %}
-           
-  {% endblock %}
-    </body>
+{% block javascripts %}{% endblock %}
+</body>
 </html>

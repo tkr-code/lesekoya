@@ -10,6 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ArticleOption
 {
+    public function __consrtuct()
+    {
+        $this->created_at = new \DateTime();
+    }
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -28,7 +32,7 @@ class ArticleOption
     private $content;
 
     /**
-     * @ORM\Column(type="datetime_immutable")
+     * @ORM\Column(type="datetime")
      */
     private $created_at;
 
@@ -55,7 +59,7 @@ class ArticleOption
 
     public function setTitle(string $title): self
     {
-        $this->title = $title;
+        $this->title = ucfirst($title);
 
         return $this;
     }
@@ -67,17 +71,17 @@ class ArticleOption
 
     public function setContent(string $content): self
     {
-        $this->content = $content;
+        $this->content = ucfirst($content);
 
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?\DateTime
     {
         return $this->created_at;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $created_at): self
+    public function setCreatedAt(\DateTime $created_at): self
     {
         $this->created_at = $created_at;
 

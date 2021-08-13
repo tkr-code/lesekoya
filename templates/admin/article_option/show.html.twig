@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ArticleOption{% endblock %}
+
+{% block body %}
+    <h1>ArticleOption</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ article_option.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ article_option.title }}</td>
+            </tr>
+            <tr>
+                <th>Content</th>
+                <td>{{ article_option.content }}</td>
+            </tr>
+            <tr>
+                <th>Created_at</th>
+                <td>{{ article_option.createdAt ? article_option.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Updated_at</th>
+                <td>{{ article_option.updatedAt ? article_option.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('article_option_index') }}">back to list</a>
+
+    <a href="{{ path('article_option_edit', {'id': article_option.id}) }}">edit</a>
+
+    {{ include('article_option/_delete_form.html.twig') }}
+{% endblock %}

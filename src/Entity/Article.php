@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ArticleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -23,6 +24,7 @@ class Article
      * @ORM\Column(type="string", length=255)
      */
     private $title;
+    
 
     /**
      * @ORM\Column(type="float")
@@ -56,7 +58,7 @@ class Article
     private $category;
 
     /**
-     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="produit", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="produit", orphanRemoval=true, cascade={"persist"})
      */
     private $images;
 
@@ -64,6 +66,16 @@ class Article
      * @ORM\OneToMany(targetEntity=ArticleOption::class, mappedBy="article", orphanRemoval=true)
      */
     private $options;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $quantity;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $buyingPrice;
 
     public function __construct()
     {
@@ -75,7 +87,10 @@ class Article
     {
         return $this->id;
     }
-
+    public function getSlug()
+    {
+        return (new Slugify())->slugify($this->nom);
+    }
     public function getTitle(): ?string
     {
         return $this->title;
@@ -83,7 +98,7 @@ class Article
 
     public function setTitle(string $title): self
     {
-        $this->title = $title;
+        $this->title =ucfirst($title);
 
         return $this;
     }
@@ -91,6 +106,14 @@ class Article
     public function getPrice(): ?float
     {
         return $this->price;
+    }
+    public function formatterBuying()
+    {
+        return number_format($this->buyingPrice,0,'', ' ');
+    }
+    public function formatterPrice()
+    {
+        return number_format($this->price,0,'', ' ');
     }
 
     public function setPrice(float $price): self
@@ -107,12 +130,12 @@ class Article
 
     public function setDescription(string $description): self
     {
-        $this->description = $description;
+        $this->description = ucfirst($description);
 
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?\DateTime
     {
         return $this->created_at;
     }
@@ -216,6 +239,30 @@ class Article
                 $option->setArticle(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): self
+    {
+        $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    public function getBuyingPrice(): ?float
+    {
+        return $this->buyingPrice;
+    }
+
+    public function setBuyingPrice(float $buyingPrice): self
+    {
+        $this->buyingPrice = $buyingPrice;
 
         return $this;
     }

@@ -15,9 +15,11 @@
 {% endblock %}
 
 {% block body %}
+
 {% for item in app.flashes('success') %}
-{{ alert.alert(item,'success')}}
+  {{ alert.alert(item,'success')}}
 {% endfor %}
+
 <div class="row">
   <div class="col-md-6">
     <div class="card card-primary card-outline">

@@ -1,3 +1,7 @@
-{% macro btnEdit(title) %}
-    <button class="btn btn-success"><i class="fas fa-pencil-alt"></i> {{ title }}</button>
+{% macro edit(title) %}
+    <button type="submit" class="btn btn-success"><i class="fas fa-pencil-alt"></i></button>
+{% endmacro %}
+
+{% macro delete() %}
+        <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
 {% endmacro %}

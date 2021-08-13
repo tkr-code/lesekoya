@@ -1,0 +1,59 @@
+<table id="datatable_{{id}}" class="table table-bordered table-striped">
+    <thead>
+    <tr>
+        <th>Nom</th>
+        <th>Prix d'achat</th>
+        <th>Prix</th>
+        <th>Quantité</th>
+        <th>Description</th>
+        <th>Crée </th>
+        <th>Edité  </th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in articles %}
+    <tr>
+        <td>{{ item.title}}</td>
+        <td>{{ item.formatterBuying}}</td>
+        <td>{{ item.formatterPrice}}</td>
+        <td>{{ item.quantity}}</td>
+        <td>{{ item.description}}</td>
+        <td>{{ item.createdAt|date('d/m/Y à H:m') }}</td>
+        <td>
+        {% if item.updatedAt %} 
+        {{ item.updatedAt|date('d/m/Y à H:m') }}
+        {% else %}
+        Not modify
+        {% endif %}
+        </td>
+        <td>
+        
+        <a href="{{ path('article_show',{id: item.id} ) }}" class="btn">
+            <i class="fa fa-eye text-dark" aria-hidden="true"></i>
+        </a>
+        <a href="{{ path('article_edit',{id: item.id} ) }}" class="btn">
+            <i class="fas fa-edit text-success"></i>
+        </a>
+        <form class="d-inline-block" method="post" action="{{ path('article_delete', {'id': item.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ item.id) }}">
+            <button class="btn"><i class="fas fa-trash-alt  text-danger  "></i></button>
+        </form>
+        
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+        <tfoot>
+        <tr>
+            <th>Nom</th>
+            <th>Prix d'achat</th>
+            <th>Prix</th>
+            <th>Quantité</th>
+            <th>Description</th>
+            <th>Crée </th>
+            <th>Edité  </th>
+            <th>Action</th>
+        </tr>
+        </tfoot>
+</table>
