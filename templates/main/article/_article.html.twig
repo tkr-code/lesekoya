@@ -1,0 +1,48 @@
+{# <div class="card mb-4">
+    {% for item in item.images|slice(0,1) %}
+        <img src="{{ asset('uploads/' ~ item.name )}}" alt="card-img-top" style="width:100%; heigh:auto">
+    {% endfor %}
+    <div class="card-body">
+        <div class="card-title">
+            <h5>
+                <a href="{{ path('produits_show', { slug: item.slug, id: item.id}) }}">
+                    {{ item.title}}
+                </a>
+            </h5>
+            <p class="card-text"> {{item.description}}  </p>
+            <div class="text-primary font-weight-bold" style="font-size: 2rem;">
+                {{ item.formatterPrix }} F
+            </div>
+        </div>
+    </div>
+</div> #}
+<div class="card">
+    <div class="card-body">
+        <div class="card-img-actions">
+            {% for item in item.images|slice(0,1) %}
+            <img src="{{ asset('img/article/' ~ item.name )}}" class="card-img img-fluid" width="96" height="350" alt=""> 
+            {% else %}
+            <img src="{{ asset('img/vide.png')}}" alt="">
+            {% endfor %}
+        </div>
+    </div>
+    <div class="card-body bg-light text-center">
+        <div class="mb-2">
+            <h6 class="font-weight-semibold mb-2"> 
+                <a href="{{ path('articles_show', { category: item.category.title, slug: item.slug, id: item.id}) }}" class="text-default mb-2" data-abc="true">
+                    {{item.title}} 
+                </a> 
+            </h6> 
+            <a href="#" class="text-muted" data-abc="true">
+                {{item.description}} 
+            </a>
+        </div>
+        <h3 class="mb-0 font-weight-semibold">{{ item.formatterPrice }} F</h3>
+        <div> <i class="fa fa-star star"></i> <i class="fa fa-star star"></i> <i class="fa fa-star star"></i> <i class="fa fa-star star"></i> </div>
+        <div class="text-muted mb-3">34 reviews</div> 
+        <a href="{{ path('card_add',{ id: item.id }) }}" type="button" class="btn bg-cart">
+            <i class="fa fa-cart-plus mr-2"></i>
+            {% trans %}Add to cart{% endtrans %}
+        </a>
+    </div>
+</div>

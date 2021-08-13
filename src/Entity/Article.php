@@ -2,14 +2,16 @@
 
 namespace App\Entity;
 
-use App\Repository\ArticleRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ArticleRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
+ * @ORM\Table(name="article", indexes={@ORM\Index(columns={"title","description"}, flags={"fulltext"})})
+
  */
 class Article
 {
@@ -89,7 +91,7 @@ class Article
     }
     public function getSlug()
     {
-        return (new Slugify())->slugify($this->nom);
+        return (new Slugify())->slugify($this->title);
     }
     public function getTitle(): ?string
     {

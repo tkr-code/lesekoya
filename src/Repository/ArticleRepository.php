@@ -3,8 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Article;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Entity\ArticleSearch;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method Article|null find($id, $lockMode = null, $lockVersion = null)
@@ -18,7 +19,61 @@ class ArticleRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Article::class);
     }
-    
+
+        /**
+     * Recheche les articles en fonctions du formulaire
+     *
+     * @param  mixed $var
+     * @return void
+     */
+    public function search($mots=null, $category=null, $min=null, $max= null)
+    {
+        $query = $this->findQueryBuilder()
+        ->AndWhere('p.enabled = true');
+        if($mots != null){
+            $query->andWhere('MATCH_AGAINST(p.title, p.description) AGAINST(:mots boolean) > 0')
+            ->setParameter('mots',$mots);
+        }
+        if($min != null){
+            $query
+            ->andWhere("p.price >= :minprix ")
+            ->setParameter("minprix",$min);
+            }
+        if($max != null){
+            $query
+                ->andWhere("p.price <= :maxprix ")
+                ->setParameter("maxprix",$max);
+        }
+        if($category != null){
+            $query->leftJoin('p.category', 'c');
+            $query->andWhere('c.id = :id')
+            ->setParameter('id',$category);
+        } 
+        return $query->getQuery();
+    }
+
+    /**
+     * @return Query[]
+     */
+    public function findAllOnQuery(ArticleSearch $Search){
+        // $Search->setMaxPrice(10000);
+        $query =  $this->findQueryBuilder()
+            ->andwhere("p.enabled = true");
+            // ->setParameter('activer',true);
+
+            if($Search->getMaxPrice()){
+                $query
+                ->andWhere("p.price <= :maxprice ")
+                ->setParameter("maxprix",$Search->getMaxPrice());
+            }
+            if($Search->getMinPrice()){
+                $query
+                ->andWhere("p.price >= :minprice ")
+                ->setParameter("minprix",$Search->getMinPrice());
+            }
+            
+           return $query->getQuery();
+    }
     public function findAllOff()
     {
         return $this->findQueryBuilder()

@@ -2,9 +2,10 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\ArticleRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MainController extends AbstractController
 {
@@ -19,8 +20,12 @@ class MainController extends AbstractController
                 'name'=>'Home'
             ],
             [
+                'path'=>'articles',
+                'name'=>'Tous nos articles'
+            ],
+            [
                 'path'=>'article_index',
-                'name'=>'Liste des articles'
+                'name'=>'Liste des articles | admin '
             ]
         ];
 
