@@ -1,0 +1,58 @@
+{% import "macros/breadcrumb.html.twig" as utils %}
+
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Edit User | {{ app_name}} {% endblock %}
+
+{% block breadcrumb %}
+    {{ utils.breadcrumb('Edit Profile',[
+        {
+            path:'profile_index',
+            name:'Profile'
+        }
+    ])}}
+{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h4>
+                    Edit User
+                </h4>
+            </div>
+            <div class="card-body">
+                {{ include('admin/profile/_form.html.twig', {'button_label': 'Update'}) }}
+                <a href="{{ path('profile_index') }}">back to list <i class="fas fa-arrow-alt-circle-left    "></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-outline-warning card-outline">
+            <div class="card-header">
+                <h4>Edit email</h4>
+            </div>
+            <div class="card-body">
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-danger card-outline">
+            <div class="card-header">
+                <h4>
+                    Reset Password
+                </h4>
+            </div>
+            <div class="card-body">
+                {{ form_start(resetForm) }}
+                {{ form_row(resetForm.plainPassword) }}
+                    <button class="btn btn-primary">Reset password</button>
+                {{ form_end(resetForm) }}
+                <a href="{{ path('profile_index') }}">back to list <i class="fas fa-arrow-alt-circle-left    "></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

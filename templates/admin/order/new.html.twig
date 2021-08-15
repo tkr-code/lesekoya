@@ -1,0 +1,34 @@
+{% import "macros/breadcrumb.html.twig" as utils %}
+
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}New Order | {{ app_name }} {% endblock %}
+
+{% block breadcrumb %}
+    {{ utils.breadcrumb('Add Order',[
+        {
+            path:'order_index',
+            name:'Manage orders'
+        },
+        {
+            path:'order_new',
+            name:'Add order'
+        }
+    ])}}
+{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h1>Create new Order</h1>
+            </div>
+            <div class="card-body">
+                {{ include('admin/order/_form.html.twig') }}
+                <a class="btn btn-dark" href="{{ path('order_index') }}">back to list <i class="fas fa-arrow-alt-circle-left    "></i> </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

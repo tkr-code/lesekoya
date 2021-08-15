@@ -1,6 +1,18 @@
-{% extends "admin/base.html.twig" %}
+{% import "macros/breadcrumb.html.twig" as utils %}
 {% import "/macros/image.html.twig" as image %}
+
+{% extends "admin/base.html.twig" %}
+
 {% block title %}Profile utilisateur{% endblock %}
+
+{% block breadcrumb %}
+    {{ utils.breadcrumb('Profile',[
+        {
+            path:'article_index',
+            name:'Manage Articles'
+        }
+    ])}}
+{% endblock %}
 
 {% block body %}
   <div class="row">
@@ -11,28 +23,30 @@
           <div class="text-center">
             {% if app.user.personne.avatar %}
               <img class="profile-user-img img-fluid img-circle"
-                  src="{{ asset('adminlte/dist/img/user4-128x128.jpg') }}"
-                  alt="{{ app.user.personne.prenom ~ ' ' ~ app.user.personne.nom  }}">
+                  src="{{ asset('img/user/' ~ app.user.personne.avatar ) }}"
+                  alt="{{ app.user.personne.firstName ~ ' ' ~ app.user.personne.lastName  }}">
               {% else %}
               <img class="profile-user-img img-fluid img-circle"
                   src="{{ asset('img/user-vide.png') }}"
                   alt="">
             {% endif %}
           </div>
-          <h3 class="profile-username text-center">{{app.user.personne.nom | title}} {{app.user.personne.prenom | title }}</h3>
+          <h3 class="profile-username text-center">{{app.user.personne.lastName | title}} {{app.user.personne.firstname | title }}</h3>
 
-          <p class="text-muted text-center">{{ app.user.personne.poste| title }}</p>
+          {# <p class="text-muted text-center">{{ app.user.personne.poste| title }}</p> #}
 
           <ul class="list-group list-group-unbordered mb-3">
             <li class="list-group-item">
-              <b>Commentaires</b> <a class="float-right">{{ app.user.comments | length }}</a>
+              <b>Commentaires</b> <a class="float-right">
+              {# {{ app.user.comments | length }} #}
+              </a>
             </li>
             <li class="list-group-item">
               <b>Produit enreistré</b> <a class="float-right">0</a>
             </li>
           </ul>
 
-          <a href="{{ path('profile_edit', {id: app.user.id }) }}" class="btn btn-success btn-block"><b>Modifier </b></a>
+          <a href="{{ path('profile_edit', {id: app.user.id }) }}" class="btn btn-success btn-block"><b>Modifier <i class="fas fa-pencil-alt"></i> </b></a>
         </div>
         <!-- /.card-body -->
       </div>

@@ -81,6 +81,10 @@ class ArticleRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    public function findCountOnline()
+    {
+        return count($this->findAllOn());
+    }
     public function findAllOn()
     {
         return $this->findQueryBuilder()

@@ -4,6 +4,7 @@
 {% import "macros/breadcrumb.html.twig" as utils %}
 {% import "macros/alertes.html.twig" as alerte %}
 {% import "macros/button.html.twig" as btn %}
+
 {% extends 'admin/base.html.twig' %}
 
 {% block title %}New Article | {{ app_name}} {% endblock %}
@@ -65,6 +66,7 @@
                     </div>
                 </div>
             </div>
+            {% if app.request.attributes.get('_route') == 'article_edit' %}
             <div class="col-md-12">
                 <div class="card card-outline card-dark">
                     <div class="card-header">
@@ -109,6 +111,7 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
         </div>
       </div>
 </div>

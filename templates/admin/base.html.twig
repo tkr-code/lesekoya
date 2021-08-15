@@ -10,7 +10,7 @@
     <!-- Select2 -->
   <link rel="stylesheet" href="{{ asset('adminlte/plugins/select2/css/select2.min.css') }}">
   <link rel="stylesheet" href="{{ asset('adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}Welcome! | {{ app_name }} {% endblock %}</title>
         {# Run `composer require symfony/webpack-encore-bundle`
            and uncomment the following Encore helpers to start using Symfony UX #}
         {% block stylesheets %}
@@ -175,10 +175,10 @@
     <!-- Sidebar user panel (optional) -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
       <div class="image">
-        <img src="{{ asset('adminlte/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
+        <img src="{{ asset('/img/user/' ~ app.user.personne.avatar ) }}" class="img-circle elevation-2" alt="User Image">
       </div>
       <div class="info">
-        {# <a href="{{ path('profile_index') }}" class="d-block">Malick Tounkara</a> #}
+        <a href="{{ path('profile_index') }}" class="d-block">{{ app.user.personne.firstname ~ ' ' ~ app.user.personne.lastname  }}</a>
       </div>
     </div>
 
@@ -243,7 +243,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ path('home') }}" class="nav-link pages-home">
+              <a href="{{ path('articles') }}" class="nav-link pages-home">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Produit</p>
               </a>
@@ -271,13 +271,19 @@
                 <p>Category</p>
               </a>
             </li>
+            <li class="nav-item">
+              <a href="{{ path('order_index') }}" class="nav-link gestion-order ">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Commande</p>
+              </a>
+            </li>
             {# <li class="nav-item">
               <a href="{{ path('user_index') }}" class="nav-link gestion-user">
                 <i class="fas fa-users nav-icon"></i>
                 <p>Utulisateurs</p>
               </a>
-            </li>
-            <li class="nav-item">
+            </li> #}
+            {# <li class="nav-item">
               <a href="{{ path('comment_index') }}" class="nav-link gestion-comment">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Commentaire</p>
@@ -289,18 +295,7 @@
                 <p>Critère</p>
               </a>
             </li>
-            <li class="nav-item">
-              <a href="{{ path('characteristic_index') }}" class="nav-link gestion-critere">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Caractéristique</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Commande</p>
-              </a>
-            </li> #}
+             #}
           </ul>
         </li>
         <li class="nav-item">
@@ -320,12 +315,12 @@
             </li>
           </ul>
         </li>
-        {# <li class="nav-item">
-          <a href="{{ path('app_logout')}}" class="mon-profile nav-link">
-            <i class="nav-icon fas fa-power-off"></i>
+        <li class="nav-item">
+          <a href="{{ path('app_logout')}}" class="nav-link">
+            <i class="nav-icon fas fa-power-off text-danger"></i>
             <p>Log out</p>
           </a>
-        </li> #}
+        </li>
       </ul>
     </nav>
     <!-- /.sidebar-menu -->

@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Adress index{% endblock %}
+
+{% block body %}
+    <h1>Adress index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>First_name</th>
+                <th>Last_name</th>
+                <th>Phone_number</th>
+                <th>Street</th>
+                <th>Company</th>
+                <th>City</th>
+                <th>Postal_code</th>
+                <th>Created_at</th>
+                <th>Updated_at</th>
+                <th>Country_ocde</th>
+                <th>Province_code</th>
+                <th>Province_name</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for adress in adresses %}
+            <tr>
+                <td>{{ adress.id }}</td>
+                <td>{{ adress.firstName }}</td>
+                <td>{{ adress.lastName }}</td>
+                <td>{{ adress.phoneNumber }}</td>
+                <td>{{ adress.street }}</td>
+                <td>{{ adress.company }}</td>
+                <td>{{ adress.city }}</td>
+                <td>{{ adress.postalCode }}</td>
+                <td>{{ adress.createdAt ? adress.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ adress.updatedAt ? adress.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ adress.countryOcde }}</td>
+                <td>{{ adress.provinceCode }}</td>
+                <td>{{ adress.provinceName }}</td>
+                <td>
+                    <a href="{{ path('adress_show', {'id': adress.id}) }}">show</a>
+                    <a href="{{ path('adress_edit', {'id': adress.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="14">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('adress_new') }}">Create new</a>
+{% endblock %}

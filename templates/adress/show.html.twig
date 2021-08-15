@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Adress{% endblock %}
+
+{% block body %}
+    <h1>Adress</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ adress.id }}</td>
+            </tr>
+            <tr>
+                <th>First_name</th>
+                <td>{{ adress.firstName }}</td>
+            </tr>
+            <tr>
+                <th>Last_name</th>
+                <td>{{ adress.lastName }}</td>
+            </tr>
+            <tr>
+                <th>Phone_number</th>
+                <td>{{ adress.phoneNumber }}</td>
+            </tr>
+            <tr>
+                <th>Street</th>
+                <td>{{ adress.street }}</td>
+            </tr>
+            <tr>
+                <th>Company</th>
+                <td>{{ adress.company }}</td>
+            </tr>
+            <tr>
+                <th>City</th>
+                <td>{{ adress.city }}</td>
+            </tr>
+            <tr>
+                <th>Postal_code</th>
+                <td>{{ adress.postalCode }}</td>
+            </tr>
+            <tr>
+                <th>Created_at</th>
+                <td>{{ adress.createdAt ? adress.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Updated_at</th>
+                <td>{{ adress.updatedAt ? adress.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Country_ocde</th>
+                <td>{{ adress.countryOcde }}</td>
+            </tr>
+            <tr>
+                <th>Province_code</th>
+                <td>{{ adress.provinceCode }}</td>
+            </tr>
+            <tr>
+                <th>Province_name</th>
+                <td>{{ adress.provinceName }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('adress_index') }}">back to list</a>
+
+    <a href="{{ path('adress_edit', {'id': adress.id}) }}">edit</a>
+
+    {{ include('adress/_delete_form.html.twig') }}
+{% endblock %}

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\ArticleRepository;
 use App\Repository\ProduitRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,32 +30,27 @@ class AdminController extends AbstractController
     /**
      * @Route("/", name="admin")
      */
-    public function index()
+    public function index(ArticleRepository $articleRepository)
     {
         return $this->render('admin/index.html.twig',[
-            'title'=>'titre de la page'
+            'title'=>'titre de la page',
+            'productOnline'=>$articleRepository->findCountOnline()
+
         ]);
     }
         
     // /**
-    //  * @Route("/produit", name="admin_produit_index", methods={"GET"})
+    //  * @Route("/profile/{id<\d+>?0}", name="profile_index", methods={"GET","POST"},
+    //  * host="localhost", schemes={"http", "https"} )
     //  */
-    // public function produit(ProduitRepository $produitRepository): Response
+    // public function profileEdit(Request $request)
     // {
-
-    //     $produitsOn =$produitRepository->findAllOn();
-    //     $countOn =  count($produitsOn);
-
-    //     $produitsOff = $produitRepository->findAllOff();
-    //     $countOff = count($produitsOff);
-    //     return $this->render('admin/produit/index.html.twig', [
-    //         'produits' => $produitRepository->findAll(),
-    //         'produitsOn'=>$produitsOn,
-    //         'countOn'=>$countOn,
-    //         'produitsOff'=>$produitsOff,
-    //         'countOff'=>$countOff,
+    //     // $user = $this->getUser();
+    //     return $this->render("admin/profile.html.twig",[
+            
     //     ]);
     // }
+        
     /**
      * @Route("/profile/{id<\d+>?0}", name="profile_index", methods={"GET","POST"},
      * host="localhost", schemes={"http", "https"} )

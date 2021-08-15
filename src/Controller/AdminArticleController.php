@@ -70,14 +70,15 @@ class AdminArticleController extends AbstractController
             $action = 'Save';
             $action_text = 'Create new ';
             $article = new Article();
+            $formOption = null;
         }else{
-            $articleOption = new ArticleOption();
-            $formOption = $this->createForm(ArticleOptionType::class, $articleOption);
-            $formOption->handleRequest($request);
-            if(!$articleOption->getId()){
-                $articleOption->setArticle($article);
-                $articleOption->setCreatedAt(new \DateTime());
-            }
+                $articleOption = new ArticleOption();
+                $formOption = $this->createForm(ArticleOptionType::class, $articleOption);
+                $formOption->handleRequest($request);
+                if(!$articleOption->getId()){
+                    $articleOption->setArticle($article);
+                    $articleOption->setCreatedAt(new \DateTime());
+                }
         if ($formOption->isSubmitted() && $formOption->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($articleOption);
