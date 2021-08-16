@@ -25,6 +25,7 @@ class OrderController extends AbstractController
             'nbrOrders'=>count($orderRepository->findAll()),
             'orders'=>$orderRepository->findAll(),
             'ordersCompleted'=>$orderRepository->findState('completed'),
+            'ordersInProgress'=>$orderRepository->findState('in progress'),
             'ordersWaiting'=>$orderRepository->findState('waiting')
         ]);
     }
@@ -42,7 +43,7 @@ class OrderController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($order);
             $entityManager->flush();
-
+            $this->addFlash('success','Order created');
             return $this->redirectToRoute('order_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -88,7 +89,7 @@ class OrderController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
+            $this->addFlash('success','Order modified');
             return $this->redirectToRoute('order_index', [], Response::HTTP_SEE_OTHER);
         }
 

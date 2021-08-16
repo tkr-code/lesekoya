@@ -17,7 +17,7 @@
 <div class="wrapper">
   <!-- Main content -->
   <section class="invoice">
-    {{ ribbon.ribbon(order.paymentState)}}
+    {{ ribbon.ribbon(order.state)}}
     {% include ('admin/order/_order.html.twig') %}
     <!-- /.row -->
   </section>

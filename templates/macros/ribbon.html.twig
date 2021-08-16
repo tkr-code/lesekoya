@@ -1,9 +1,23 @@
 {% macro ribbon(text) %}
-{% if text == 'paid' %}
-    {% set type = 'success' %}
-{% endif %}
+    {% if text == 'completed' %}
+        {% set type = 'success' %}
+    {% endif %}
+
+    {% if text == 'canceled' %}
+        {% set type = 'danger' %}
+    {% endif %}
+
+    {% if text == 'waiting' %}
+        {% set  type = 'default' %}
+    {% endif %}
+
+    {% if text == 'in progress' %}
+        {% set  type = 'info' %}
+    {% endif %}
+
 <div class="ribbon-wrapper ribbon-xl">
     <div class="ribbon bg-{{type |default('danger') }}  text-xl">
+    
     {{ text|default('NOT PAID')}}
     {# <img src="{{ asset('adminlte/dist/img/credit/mastercard.png') }}" alt="Mastercard"> #}
     </div>
