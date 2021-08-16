@@ -21,7 +21,7 @@ class AdressType extends AbstractType
             ->add('postal_code')
             // ->add('created_at')
             // ->add('updated_at')
-            ->add('country_ocde')
+            ->add('country_code')
             ->add('province_code')
             ->add('province_name')
         ;

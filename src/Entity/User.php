@@ -60,6 +60,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $orders;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Adress::class, inversedBy="user", cascade={"persist", "remove"})
+     */
+    private $adress;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -235,6 +240,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $order->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAdress(): ?Adress
+    {
+        return $this->adress;
+    }
+
+    public function setAdress(?Adress $adress): self
+    {
+        $this->adress = $adress;
 
         return $this;
     }

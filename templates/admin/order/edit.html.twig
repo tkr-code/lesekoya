@@ -1,13 +1,57 @@
-{% extends 'base.html.twig' %}
+{% import "macros/breadcrumb.html.twig" as utils %}
 
-{% block title %}Edit Order{% endblock %}
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Order - {{ order.user.personne.firstname ~ ' ' ~ order.user.personne.lastname  }} - {{ app_name }} {% endblock %}
+
+{% block breadcrumb %}
+    {{ utils.breadcrumb('Edit Order',[
+        {
+            path:'order_index',
+            name:'Manage orders'
+        }
+    ])}}
+{% endblock %}
 
 {% block body %}
-    <h1>Edit Order</h1>
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4>Edit Order</h4>
+            </div>
+            <div class="card-body">
+             {{ include('admin/order/_form.html.twig', {'button_label': 'Update'}) }}
+                 <a href="{{ path('order_index') }}">back to list</a>
 
-    {{ include('order/_form.html.twig', {'button_label': 'Update'}) }}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-outline card-success">
+            <div class="card-header">
+                <h4>Order Detail</h4>
+            </div>
+            <div class="card-body">
+                <h4>Order n° {{ order.id }} </h4>
+                <p>Payement par : {{ order.payment.paymentMethod.name}} </p>
+                <h3>Order Facturation :</h3>
+                <p>Nom complet : {{ order.user.personne.firstname ~ ' ' ~ order.user.personne.lastname }} <br/> domicile: Liberte 4</p>
+                <p>11000 {{ order.id }} </p>
+                <p>Email adress:  email@email.com </p>
+                <p>Phone number:  78 127 82 88 </p>
+                <h3>Shipping Adress:</h3>
+                <p>Adress:  {{ order.shippingAdress.postalCode ~ ' ' ~ order.shippingAdress.city }} </p>
+                <p>Phone number:  78 127 82 88 </p>
+                <p>Street: </p>
+                <p>Company name :</p>
+                <p>Postal code: </p>
+                <p>Country code: </p>
+                <p>Province code: </p>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <a href="{{ path('order_index') }}">back to list</a>
-
-    {{ include('order/_delete_form.html.twig') }}
+    {# {{ include('admin/order/_delete_form.html.twig') }} #}
 {% endblock %}

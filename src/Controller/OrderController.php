@@ -20,11 +20,12 @@ class OrderController extends AbstractController
      */
     public function index(OrderRepository $orderRepository): Response
     {
+        dump($orderRepository->find(2));
         return $this->render('admin/order/index.html.twig', [
             'nbrOrders'=>count($orderRepository->findAll()),
-            'orders'=>$orderRepository->findOrders(),
-            'ordersPaid'=>$orderRepository->findOrderPaid(),
-            'ordersExpired'=>$orderRepository->findExpired()
+            'orders'=>$orderRepository->findAll(),
+            'ordersCompleted'=>$orderRepository->findState('completed'),
+            'ordersWaiting'=>$orderRepository->findState('waiting')
         ]);
     }
 

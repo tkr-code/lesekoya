@@ -19,10 +19,11 @@ class OrderRepository extends ServiceEntityRepository
         parent::__construct($registry, Order::class);
     }
 
-    public function findOrderPaid()
+    public function findState(string $state)
     {
         return $this->findQuery()
-        ->where("o.state = 'paid' ")
+        ->where("o.state = :state ")
+        ->setParameter('state',$state)
         ->getQuery()
         ->getResult();
     }

@@ -84,6 +84,11 @@ class Adress
      */
     private $orders;
 
+    /**
+     * @ORM\OneToOne(targetEntity=User::class, mappedBy="adress", cascade={"persist", "remove"})
+     */
+    private $user;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
@@ -264,6 +269,28 @@ class Adress
                 $order->setShippingAdress(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($user === null && $this->user !== null) {
+            $this->user->setAdress(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($user !== null && $user->getAdress() !== $this) {
+            $user->setAdress($this);
+        }
+
+        $this->user = $user;
 
         return $this;
     }
