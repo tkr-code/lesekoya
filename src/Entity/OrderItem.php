@@ -4,17 +4,13 @@ namespace App\Entity;
 
 use App\Repository\OrderItemRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
 /**
  * @ORM\Entity(repositoryClass=OrderItemRepository::class)
- * @ORM\Table(name="`order_item`")
- * @UniqueEntity(
- *  fields="produit_name",
- *  message="Cette categorie existe "
- * )
+ * @UniqueEntity(fields={"produit_name"}, message="There is already an account with this email")
  */
 class OrderItem
 {
@@ -26,8 +22,9 @@ class OrderItem
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
-     * @Assert\Range(min="0")
+     * @Assert\NotBlank()
+     * @Assert\Range(min=1)
+     * @ORM\Column(type="integer", options={"default":"1"})
      */
     private $quantity;
 
@@ -42,7 +39,7 @@ class OrderItem
     private $units_total;
 
     /**
-     * @ORM\Column(type="integer", nullable="true", options={"default":"0"} )
+     * @ORM\Column(type="integer", nullable="true", options={"default":"1"} )
      */
     private $adjustments_total;
 
@@ -53,7 +50,7 @@ class OrderItem
 
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $produit_name;
 

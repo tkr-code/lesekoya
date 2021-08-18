@@ -72,7 +72,7 @@
                     </div>
                     <div class="tab-pane fade {% if app.request.query.get('tab') == 'articles' %}show active{% endif %}" id="order-articles" role="tabpanel"
                         aria-labelledby="custom-tabs-three-profile-tab">
-                        <table id="datatable_1" class="table">
+                        <table class="table">
                             <thead>
                                 <th>Quantity</th>
                                 <th>Name</th>
@@ -98,6 +98,44 @@
                             {% endfor %}
                             </tbody>
                         </table>
+                        <div class="row">
+                            <!-- accepted payments column -->
+                            <div class="col-6">
+                                <p class="lead">Payment Methods:</p>
+                                {{ order.payment.paymentMethod.name }}
+                                
+                                <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
+                                {{ order.payment.paymentMethod.description }}
+                                </p>
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-6">
+                                <p class="lead">Amount Due {{ order.paymentDue| date('d/m/Y') }}</p>
+
+                                <div class="table-responsive">
+                                <table class="table">
+                                    <tr>
+                                    <th style="width:50%">Subtotal:</th>
+                                    <td>{{ order.itemsTotal | number_format(2,'.',' ') }} XOF</td>
+                                    </tr>
+                                    {# <tr>
+                                    <th>Tax (9.3%)</th>
+                                    <td>$10.34</td>
+                                    </tr> #}
+                                    <tr>
+                                    <th>Shipping:</th>
+                                    <td>{{ order.shipping| number_format(2,'.',' ') }} XOF </td>
+                                    </tr>
+                                    <tr>
+                                    <th>Total:</th>
+                                    <td>{{ order.total| number_format(2,'.',' ') }} XOF </td>
+                                    </tr>
+                                </table>
+                                </div>
+                            </div>
+                            <!-- /.col -->
+                            </div>
+                            <!-- /.row -->
                         {{ form_start(formItem,{
                             'attr':{
                                 'novalidate':'novalidate',

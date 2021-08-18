@@ -8,6 +8,7 @@ use App\Entity\OrderItem;
 use App\Form\OrderNewType;
 use App\Form\OrderItemType;
 use App\Repository\OrderRepository;
+use App\Service\Order\OrderService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -84,8 +85,9 @@ class OrderController extends AbstractController
     /**
      * @Route("/{id}/edit", name="order_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Order $order): Response
+    public function edit(Request $request, Order $order, OrderService $orderService): Response
     {
+        // dd($order->getOrderItem());
        //Debut new orderItem 
         $orderItem = new OrderItem();
         $formItem = $this->createForm(OrderItemType::class, $orderItem);
@@ -94,14 +96,12 @@ class OrderController extends AbstractController
         if ($formItem->isSubmitted() && $formItem->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
 
-            $article = $orderItem->getArticle();
-            $orderItem->setCommande($order);
-            $orderItem->setProduitName($article->getTitle());
-            $price = ($orderItem->getUnitPrice() == 0 )? $article->getPrice(): $orderItem->getUnitPrice();
-            $orderItem->setUnitPrice($price);
-            $orderItem->setUnitsTotal($orderItem->getQuantity() * $orderItem->getUnitPrice());
-            $orderItem->setTotal($orderItem->getAdjustmentsTotal() + $orderItem->getAdjustmentsTotal());
-            $entityManager->persist($orderItem);
+            //add order item 
+            $orderItem = $orderService->orderItemAdd($orderItem, $order);
+            
+            $order->setItemsTotal($orderService->subTotal($order));
+            
+            $entityManager->persist($orderItem,$order);
             $entityManager->flush();
             $this->addFlash('success',"Ordert item add");
 
@@ -117,7 +117,8 @@ class OrderController extends AbstractController
             $this->addFlash('success','Order modified');
             return $this->redirectToRoute('order_index', [], Response::HTTP_SEE_OTHER);
         }
-        // dd($order->getOrderItem());
+        dump($orderService->total($order));
+
         return $this->renderForm('admin/order/edit.html.twig', [
             'order' => $order,
             'form' => $form,

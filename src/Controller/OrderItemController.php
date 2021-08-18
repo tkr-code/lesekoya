@@ -3,15 +3,17 @@
 namespace App\Controller;
 
 use App\Entity\OrderItem;
-use App\Form\OrderItem1Type;
+use App\Form\OrderItemType;
 use App\Repository\OrderItemRepository;
+use App\Repository\OrderRepository;
+use App\Service\Order\OrderService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/admin/order/item")
+ * @Route("/admin/order-item")
  */
 class OrderItemController extends AbstractController
 {
@@ -20,7 +22,7 @@ class OrderItemController extends AbstractController
      */
     public function index(OrderItemRepository $orderItemRepository): Response
     {
-        return $this->render('order_item/index.html.twig', [
+        return $this->render('admin/order_item/index.html.twig', [
             'order_items' => $orderItemRepository->findAll(),
         ]);
     }
@@ -28,21 +30,24 @@ class OrderItemController extends AbstractController
     /**
      * @Route("/new", name="order_item_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, OrderService $orderService, OrderRepository $orderRepository ): Response
     {
         $orderItem = new OrderItem();
-        $form = $this->createForm(OrderItem1Type::class, $orderItem);
+        $form = $this->createForm(OrderItemType::class, $orderItem);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            
+            $order = $orderItem->getCommande();
+            $orderService->orderItemAdd($orderItem,$order);
             $entityManager->persist($orderItem);
             $entityManager->flush();
 
             return $this->redirectToRoute('order_item_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('order_item/new.html.twig', [
+        return $this->renderForm('admin/order_item/new.html.twig', [
             'order_item' => $orderItem,
             'form' => $form,
         ]);
@@ -53,7 +58,7 @@ class OrderItemController extends AbstractController
      */
     public function show(OrderItem $orderItem): Response
     {
-        return $this->render('order_item/show.html.twig', [
+        return $this->render('admin/order_item/show.html.twig', [
             'order_item' => $orderItem,
         ]);
     }
@@ -63,7 +68,7 @@ class OrderItemController extends AbstractController
      */
     public function edit(Request $request, OrderItem $orderItem): Response
     {
-        $form = $this->createForm(OrderItem1Type::class, $orderItem);
+        $form = $this->createForm(OrderItemType::class, $orderItem);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -72,7 +77,7 @@ class OrderItemController extends AbstractController
             return $this->redirectToRoute('order_item_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('order_item/edit.html.twig', [
+        return $this->renderForm('admin/order_item/edit.html.twig', [
             'order_item' => $orderItem,
             'form' => $form,
         ]);
@@ -87,8 +92,10 @@ class OrderItemController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($orderItem);
             $entityManager->flush();
+            $this->addFlash('success','Order item deleted');
         }
-
-        return $this->redirectToRoute('order_item_index', [], Response::HTTP_SEE_OTHER);
+        $order = $orderItem->getCommande();
+        return $this->redirectToRoute('order_edit', ['id'=>$order->getId(),'tab'=>'articles'], Response::HTTP_SEE_OTHER);
+        // return $this->redirectToRoute('order_item_index', [], Response::HTTP_SEE_OTHER);
     }
 }

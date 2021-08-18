@@ -4,18 +4,28 @@ namespace App\Form;
 
 use App\Entity\Article;
 use App\Entity\OrderItem;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Repository\ArticleRepository;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
-class OrderItemType_1 extends AbstractType
+
+class OrderItemType extends AbstractType
 {
+    private $repository;
+    public function __construct(ArticleRepository $repository)
+    {
+        $this->repository = $repository;
+    }
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('article',EntityType::class,[
+                    'class'=>$this->articleNotOrderItem(),
+                    'choice_label'=>'title'
+                ])
             ->add('quantity',IntegerType::class,[
                 'attr'=>[
                     'value'=>1
@@ -31,14 +41,16 @@ class OrderItemType_1 extends AbstractType
             // ->add('units_total')
             // ->add('adjustments_total')
             // ->add('total')
-            // ->add('is_immutable')
+            // ->add('produit_name')
             // ->add('variant_name')
             // ->add('commande')
-            ->add('article',EntityType::class,[
-                'class'=>Article::class,
-                'choice_label'=>'title'
-            ])
         ;
+    }
+    public function articleNotOrderItem()
+    {
+        
+        
+        return $this->repository->findAll();
     }
 
     public function configureOptions(OptionsResolver $resolver)

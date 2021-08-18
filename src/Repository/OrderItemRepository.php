@@ -19,6 +19,14 @@ class OrderItemRepository extends ServiceEntityRepository
         parent::__construct($registry, OrderItem::class);
     }
 
+    public function orderItemExist(OrderItem $orderItem):bool
+    {
+        $order = $orderItem->getCommande();
+        // if()
+
+        return true;
+    }
+
     // /**
     //  * @return OrderItem[] Returns an array of OrderItem objects
     //  */
