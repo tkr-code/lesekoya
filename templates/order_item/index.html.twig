@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}OrderItem index{% endblock %}
+
+{% block body %}
+    <h1>OrderItem index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Quantity</th>
+                <th>Unit_price</th>
+                <th>Units_total</th>
+                <th>Adjustments_total</th>
+                <th>Total</th>
+                <th>Produit_name</th>
+                <th>Variant_name</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for order_item in order_items %}
+            <tr>
+                <td>{{ order_item.id }}</td>
+                <td>{{ order_item.quantity }}</td>
+                <td>{{ order_item.unitPrice }}</td>
+                <td>{{ order_item.unitsTotal }}</td>
+                <td>{{ order_item.adjustmentsTotal }}</td>
+                <td>{{ order_item.total }}</td>
+                <td>{{ order_item.produitName }}</td>
+                <td>{{ order_item.variantName }}</td>
+                <td>
+                    <a href="{{ path('order_item_show', {'id': order_item.id}) }}">show</a>
+                    <a href="{{ path('order_item_edit', {'id': order_item.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('order_item_new') }}">Create new</a>
+{% endblock %}

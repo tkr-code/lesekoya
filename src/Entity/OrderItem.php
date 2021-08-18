@@ -4,9 +4,17 @@ namespace App\Entity;
 
 use App\Repository\OrderItemRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=OrderItemRepository::class)
+ * @ORM\Table(name="`order_item`")
+ * @UniqueEntity(
+ *  fields="produit_name",
+ *  message="Cette categorie existe "
+ * )
  */
 class OrderItem
 {
@@ -19,6 +27,7 @@ class OrderItem
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Range(min="0")
      */
     private $quantity;
 
@@ -33,7 +42,7 @@ class OrderItem
     private $units_total;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable="true", options={"default":"0"} )
      */
     private $adjustments_total;
 
@@ -42,10 +51,6 @@ class OrderItem
      */
     private $total;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $is_immutable;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -130,18 +135,6 @@ class OrderItem
     public function setTotal(int $total): self
     {
         $this->total = $total;
-
-        return $this;
-    }
-
-    public function getIsImmutable(): ?bool
-    {
-        return $this->is_immutable;
-    }
-
-    public function setIsImmutable(bool $is_immutable): self
-    {
-        $this->is_immutable = $is_immutable;
 
         return $this;
     }

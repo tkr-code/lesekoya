@@ -65,9 +65,9 @@ class OrderType extends AbstractType
                     'shipped'=>'shippedd'
                 ]
             ])
-            ->add('shipping_adress',AdressType::class,[
-                'label'=>false
-            ])
+            // ->add('shipping_adress',AdressType::class,[
+            //     'label'=>false
+            // ])
             
         ;
     }

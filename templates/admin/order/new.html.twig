@@ -22,10 +22,17 @@
     <div class="col-md-6">
         <div class="card card-primary card-outline">
             <div class="card-header">
-                <h1>Create new Order</h1>
+                <h4>Create new Order</h4>
             </div>
             <div class="card-body">
-                {{ include('admin/order/_form.html.twig') }}
+               {{ form_start(form,{
+    'attr':{
+        'novalidate':'novalidate'
+    }
+}) }}
+    {{ form_widget(form) }}
+    <button class="btn btn-primary btn-lg">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
                 <a class="btn btn-dark" href="{{ path('order_index') }}">back to list <i class="fas fa-arrow-alt-circle-left    "></i> </a>
             </div>
         </div>

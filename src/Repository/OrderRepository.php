@@ -27,6 +27,7 @@ class OrderRepository extends ServiceEntityRepository
         ->getQuery()
         ->getResult();
     }
+
     public function findExpired()
     {
         return $this->findQuery()
@@ -34,6 +35,7 @@ class OrderRepository extends ServiceEntityRepository
         ->getQuery()
         ->getResult();
     }
+    
     public function findOrders()
     {
         return $this->findQuery()
@@ -42,10 +44,19 @@ class OrderRepository extends ServiceEntityRepository
         ->getResult();
     }
 
-
     public function findQuery()
     {
         return $this->createQueryBuilder('o');
+    }
+    
+    public function findLast()
+    {
+       return $this->findQuery()
+        ->orderBy('o.id','desc')
+        ->setMaxResults(1)
+        ->getQuery()
+        ->getResult()
+        ;   
     }
 
     /*
