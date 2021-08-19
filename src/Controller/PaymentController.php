@@ -68,8 +68,9 @@ class PaymentController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('payment_index', [], Response::HTTP_SEE_OTHER);
+            $this->addFlash('success','Payment updated');
+            return $this->redirectToRoute('order_edit', ['id'=>$payment->getOrderPayment()->getId(),'tab'=>'facturation'], Response::HTTP_SEE_OTHER);
+            // return $this->redirectToRoute('payment_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('admin/payment/edit.html.twig', [

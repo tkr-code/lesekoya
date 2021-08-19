@@ -90,5 +90,9 @@ class OrderService{
         $this->total($order);
         
         $this->em->flush($order);
+
+        // $payment = $order->getPayment();
+        // $payment->setAmount($order->getTotal());
+        // $this->em->flush($payment);
     }
 }

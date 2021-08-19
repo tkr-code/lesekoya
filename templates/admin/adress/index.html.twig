@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/base.html.twig' %}
 
 {% block title %}Adress index{% endblock %}
 
@@ -37,7 +37,7 @@
                 <td>{{ adress.postalCode }}</td>
                 <td>{{ adress.createdAt ? adress.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ adress.updatedAt ? adress.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ adress.countryOcde }}</td>
+                <td>{{ adress.countryCode }}</td>
                 <td>{{ adress.provinceCode }}</td>
                 <td>{{ adress.provinceName }}</td>
                 <td>

@@ -45,7 +45,7 @@
                             aria-controls="custom-tabs-three-home" aria-selected="true">Details Order</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " id="custom-tabs-three-profile-tab" data-toggle="pill"
+                        <a class="nav-link {% if app.request.query.get('tab') == 'facturation' %}active{% endif %} " id="custom-tabs-three-profile-tab" data-toggle="pill"
                             href="#order-facturation" role="tab"
                             aria-controls="custom-tabs-three-profile"
                             aria-selected="false">Facturation</a>
@@ -56,13 +56,6 @@
                             aria-controls="custom-tabs-three-profile"
                             aria-selected="false">Details articles</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill"
-                            href="#order-shipping" role="tab"
-                            aria-controls="custom-tabs-three-profile"
-                            aria-selected="false">Details Shipping</a>
-                    </li>
-                    
                 </ul>
             </div>
             <div class="card-body">
@@ -71,9 +64,13 @@
                         role="tabpanel" aria-labelledby="custom-tabs-three-home-tab">
                          {{ include('admin/order/_form.html.twig', {'button_label': 'Update'}) }}
                     </div>
-                    <div class="tab-pane fade" id="order-facturation" role="tabpanel"
+                    <div class="tab-pane fade {% if app.request.query.get('tab') == 'facturation' %}show active{% endif %}" id="order-facturation" role="tabpanel"
                         aria-labelledby="custom-tabs-three-profile-tab">
-                        Facturation
+                        <h4>Amount : {{ order.total| number_format(2,'.',' ') }} XOF </h4>
+                        {{ form_start(formFacturation,{action: path('payment_edit',{id: order.payment.id }) }) }}
+                            {{ form_widget(formFacturation) }}
+                            <button class="btn btn-primary">{{ button_label|default('Save') }} <i class="fas fa-save    "></i> </button>
+                        {{ form_end(formFacturation) }}
                     </div>
                     <div class="tab-pane fade {% if app.request.query.get('tab') == 'articles' %}show active{% endif %}" id="order-articles" role="tabpanel"
                         aria-labelledby="custom-tabs-three-profile-tab">
@@ -190,19 +187,63 @@
         </div>
     </div> #}
     <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas fa-text-width"></i>
+                Order detail
+            </h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-4">Order </dt>
+                <dd class="col-sm-8">n° #{{ order.id }}</dd>
+                <dt class="col-sm-4">State Order</dt>
+                <dd class="col-sm-8">{{ order.state }}</dd>
+               
+            </dl>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <div class="card">
+            <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas fa-text-width"></i>
+                Order Facturation
+            </h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-4">Amount </dt>
+                <dd class="col-sm-8">{{ order.total| number_format(2,'.',' ') }} XOF</dd>
+                <dt class="col-sm-4">Payment method</dt>
+                <dd class="col-sm-8">{{ order.payment.paymentMethod.name }}</dd>
+               
+            </dl>
+            </div>
+            <!-- /.card-body -->
+        </div>
         <div class="card card-outline card-success">
             <div class="card-header">
                 <h4>Order Detail</h4>
             </div>
             <div class="card-body">
                 <h4>Order n° {{ order.id }} </h4>
-                <p>Payement par : {{ order.payment.paymentMethod.name}} </p>
+                <p>
+                    State payment : {{ order.payment.state }}
+                    <br/>
+                    Payement par : {{ order.payment.paymentMethod.name}}
+                 </p>
                 <h3>Order Facturation :</h3>
                 <p>Nom complet : {{ order.user.personne.firstname ~ ' ' ~ order.user.personne.lastname }} <br/> domicile: Liberte 4</p>
                 <p>11000 {{ order.id }} </p>
                 <p>Email adress:  email@email.com </p>
                 <p>Phone number:  78 127 82 88 </p>
                 <h3>Shipping Adress:</h3>
+                <a href="{{ path('order_adress_edit',{ order_id: order.id , id: order.shippingAdress.id }) }}">Modifier mon adresse de livraison <i class="fa fa-user"></i> </a> <br/>
+                <a href="#">Changer l'adresse de livration <i class="fas fa-pencil-alt    "></i></a>
                 <p>Adress:  {{ order.shippingAdress.postalCode ~ ' ' ~ order.shippingAdress.city }} </p>
                 <p>Phone number:  78 127 82 88 </p>
                 <p>Street: </p>

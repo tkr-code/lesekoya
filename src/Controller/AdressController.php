@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/adress")
+ * @Route("/admin/adress")
  */
 class AdressController extends AbstractController
 {
@@ -20,7 +20,7 @@ class AdressController extends AbstractController
      */
     public function index(AdressRepository $adressRepository): Response
     {
-        return $this->render('adress/index.html.twig', [
+        return $this->render('admin/adress/index.html.twig', [
             'adresses' => $adressRepository->findAll(),
         ]);
     }
@@ -42,7 +42,7 @@ class AdressController extends AbstractController
             return $this->redirectToRoute('adress_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('adress/new.html.twig', [
+        return $this->renderForm('admin/adress/new.html.twig', [
             'adress' => $adress,
             'form' => $form,
         ]);
@@ -53,11 +53,31 @@ class AdressController extends AbstractController
      */
     public function show(Adress $adress): Response
     {
-        return $this->render('adress/show.html.twig', [
+        return $this->render('admin/adress/show.html.twig', [
             'adress' => $adress,
         ]);
     }
 
+    /**
+     * @Route("-order-{order_id}/{id}/edit", name="order_adress_edit", methods={"GET","POST"})
+     */
+    public function editOrder(Request $request, Adress $adress): Response
+    {
+        // dd($request);
+        $form = $this->createForm(AdressType::class, $adress);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('order_edit', ['id'=>$request->attributes->get('order_id')], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('admin/order/adress.html.twig', [
+            'adress' => $adress,
+            'form' => $form,
+        ]);
+    }
     /**
      * @Route("/{id}/edit", name="adress_edit", methods={"GET","POST"})
      */
@@ -72,7 +92,7 @@ class AdressController extends AbstractController
             return $this->redirectToRoute('adress_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('adress/edit.html.twig', [
+        return $this->renderForm('admin/adress/edit.html.twig', [
             'adress' => $adress,
             'form' => $form,
         ]);

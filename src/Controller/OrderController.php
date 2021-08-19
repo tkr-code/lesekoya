@@ -5,11 +5,14 @@ namespace App\Controller;
 use App\Entity\Order;
 use App\Form\OrderType;
 use App\Entity\OrderItem;
+use App\Entity\Payment;
+use App\Form\PaymentType;
 use App\Form\OrderNewType;
 use App\Form\OrderItemType;
 use App\Repository\OrderItemRepository;
 use App\Repository\OrderRepository;
 use App\Service\Order\OrderService;
+use App\Service\Payment\PaymentService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -87,10 +90,14 @@ class OrderController extends AbstractController
     /**
      * @Route("/{id}/edit", name="order_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Order $order, OrderItemRepository $orderItemRepository,  OrderService $orderService): Response
+    public function edit(Request $request, Order $order, OrderItemRepository $orderItemRepository,  OrderService $orderService, PaymentService $paymentService): Response
     {
         $message = '';
-        // dd($order->getOrderItem());
+        // debut payment
+        $payment = $order->getPayment();
+        $formPayment = $this->createForm(PaymentType::class, $payment);
+        $formPayment->handleRequest($request);
+        //en payment
        //Debut new orderItem 
         $orderItem = new OrderItem();
         $formItem = $this->createForm(OrderItemType::class, $orderItem);
@@ -131,12 +138,21 @@ class OrderController extends AbstractController
             return $this->redirectToRoute('order_index', [], Response::HTTP_SEE_OTHER);
             $this->addFlash('success','Order modified');
         }
-        $orderService->calculOrder($order);
         
+        $orderService->calculOrder($order);
+
+        $payment = $order->getPayment();
+        $payment->setAmount($order->getTotal());
+
+        $paymentService->calculPayment($payment);
+        $order->setPayment($payment);
+        
+        dump($order);
         return $this->renderForm('admin/order/edit.html.twig', [
             'order' => $order,
             'form' => $form,
             'formItem' => $formItem,
+            'formFacturation'=>$formPayment
         ]);
     }
 

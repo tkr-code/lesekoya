@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PaymentMethod index{% endblock %}
+
+{% block body %}
+    <h1>PaymentMethod index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Instructions</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for payment_method in payment_methods %}
+            <tr>
+                <td>{{ payment_method.id }}</td>
+                <td>{{ payment_method.name }}</td>
+                <td>{{ payment_method.description }}</td>
+                <td>{{ payment_method.instructions }}</td>
+                <td>
+                    <a href="{{ path('payment_method_show', {'id': payment_method.id}) }}">show</a>
+                    <a href="{{ path('payment_method_edit', {'id': payment_method.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('payment_method_new') }}">Create new</a>
+{% endblock %}

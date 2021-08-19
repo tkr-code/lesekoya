@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Payment;
+use App\Entity\PaymentMethod;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -15,7 +17,7 @@ class PaymentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('amount',IntegerType::class)
+            // ->add('amount',IntegerType::class)
             ->add('state',ChoiceType::class,[
                 'choices'=>[
                     'Canceled'=>'canceled',
@@ -23,11 +25,16 @@ class PaymentType extends AbstractType
                     'in progress'=>'in progress'
                 ]
             ])
-            ->add('details',TextareaType::class)
-            // ->add('created_at')
-            // ->add('updated_at')
-            // ->add('order_payment')
-            // ->add('paymentMethod')
+            ->add('details',TextareaType::class,[
+                'attr'=>[
+                ],
+                'required'=>false
+            ])
+
+            ->add('paymentMethod',EntityType::class,[
+                'class'=>PaymentMethod::class,
+                'choice_label'=>'name'
+            ])
         ;
     }
 
