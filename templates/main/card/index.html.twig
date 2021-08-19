@@ -43,8 +43,21 @@
                       </div>
                     </div>
                   </th>
-                  <td class="border-0 align-middle"><strong>{{ item.article.formatterPrice }}</strong></td>
-                  <td class="border-0 align-middle"> <a href="{{ path('card_add',{id:item.article.id}) }}" class="btn btn-success"><i class="fas fa-plus-square"></i> </a> <span class="ml-3 mr-3"> <strong>{{ item.quantite }} </span><a class="btn btn-danger" href="{{ path('card_remove', {id: item.article.id }) }}">-</a> </strong></td>
+                  <td class="border-0 align-middle">
+                    <strong>{{ item.article.formatterPrice }}</strong>
+                  </td>
+                  <td class="border-0 align-middle"> 
+                    <a 
+                      href="{{ path('card_add',{id:item.article.id}) }}" 
+                      class="btn btn-success">
+                        <i class="fas fa-plus-square"></i> 
+                    </a> 
+                    <span class="ml-3 mr-3">
+                      <strong>{{ item.quantite }} 
+                    </span>
+                    <a 
+                      class="btn btn-danger" 
+                      href="{{ path('card_remove', {id: item.article.id }) }}">-</a> </strong></td>
                   <td class="border-0 align-middle"><a href="{{ path('card_delete', {id: item.article.id }) }}" class="text-dark"><i class="fa fa-trash"></i></a></td>
                 </tr>
                 {% endfor %}

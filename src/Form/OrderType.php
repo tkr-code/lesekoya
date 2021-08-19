@@ -31,7 +31,6 @@ class OrderType extends AbstractType
             
             ->add('state',ChoiceType::class,[
                 'choices'=>[
-                    'Completed'=>'completed',
                     'Canceled'=>'canceled',
                     'Waiting'=>'waiting',
                     'in progress'=>'in progress'

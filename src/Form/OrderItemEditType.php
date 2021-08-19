@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 
-class OrderItemType extends AbstractType
+class OrderItemEditType extends AbstractType
 {
     private $repository;
     public function __construct(ArticleRepository $repository)
@@ -24,7 +24,11 @@ class OrderItemType extends AbstractType
         $builder
             ->add('article',EntityType::class,[
                     'class'=>Article::class,
-                    'choice_label'=>'title'
+                    'choice_label'=>'title',
+                    'attr'=>[
+                        'disabled'=>true
+                    ]
+                    
                 ])
             ->add('quantity',IntegerType::class,[
                 'attr'=>[
@@ -32,12 +36,12 @@ class OrderItemType extends AbstractType
                 ]
             ])
             // ->add('produit_name')
-            ->add('unit_price',IntegerType::class,[
-                'attr'=>[
-                    'value'=>0
-                ],
-                'help'=>"Si le prix est egal a zero (0), le prix de l'article selectionner sera enregistré "
-            ])
+            // ->add('unit_price',IntegerType::class,[
+            //     'attr'=>[
+            //         'value'=>0
+            //     ],
+            //     'help'=>"Si le prix est egal a zero (0), le prix de l'article selectionner sera enregistré "
+            // ])
             // ->add('units_total')
             // ->add('adjustments_total')
             // ->add('total')

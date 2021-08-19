@@ -10,7 +10,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=OrderItemRepository::class)
- * @UniqueEntity(fields={"produit_name"}, message="There is already an account with this email")
  */
 class OrderItem
 {

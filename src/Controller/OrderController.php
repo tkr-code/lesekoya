@@ -7,6 +7,7 @@ use App\Form\OrderType;
 use App\Entity\OrderItem;
 use App\Form\OrderNewType;
 use App\Form\OrderItemType;
+use App\Repository\OrderItemRepository;
 use App\Repository\OrderRepository;
 use App\Service\Order\OrderService;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,6 +20,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class OrderController extends AbstractController
 {
+
     /**
      * @Route("/", name="order_index", methods={"GET"})
      */
@@ -85,40 +87,52 @@ class OrderController extends AbstractController
     /**
      * @Route("/{id}/edit", name="order_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Order $order, OrderService $orderService): Response
+    public function edit(Request $request, Order $order, OrderItemRepository $orderItemRepository,  OrderService $orderService): Response
     {
+        $message = '';
         // dd($order->getOrderItem());
        //Debut new orderItem 
         $orderItem = new OrderItem();
         $formItem = $this->createForm(OrderItemType::class, $orderItem);
         $formItem->handleRequest($request);
-
+        // dump($order->getOrderItem()->getValues());
         if ($formItem->isSubmitted() && $formItem->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
 
             //add order item 
-            $orderItem = $orderService->orderItemAdd($orderItem, $order);
+            $orderService->orderItemAdd($orderItem, $order);
             
             $order->setItemsTotal($orderService->subTotal($order));
             
-            $entityManager->persist($orderItem,$order);
-            $entityManager->flush();
-            $this->addFlash('success',"Ordert item add");
 
-            return $this->redirectToRoute('order_edit', ['id'=>$order->getId(),'tab'=>'articles'], Response::HTTP_SEE_OTHER);
+            $orderItemPost =  $orderItemRepository->findOneBy([
+                        'produit_name'=>$orderItem->getArticle()->getTitle(),
+                        'commande'=>$order->getId()
+            ]);
+
+            if(!$orderItemPost){
+                $entityManager->persist($orderItem,$order);
+                $message = 'Order item  add';
+                $entityManager->flush();
+                $this->addFlash('success',$message);
+                return $this->redirectToRoute('order_edit', ['id'=>$order->getId(),'tab'=>'articles'], Response::HTTP_SEE_OTHER);       
+            }
+            $message = "Article existe dans la commande ";
+            $this->addFlash('warning',$message);
+            
         }
         //end new orderItem
         
         $form = $this->createForm(OrderType::class, $order);
         $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
+        
+        if ($form->isSubmitted() && $form->isValid()) {            
             $this->getDoctrine()->getManager()->flush();
-            $this->addFlash('success','Order modified');
             return $this->redirectToRoute('order_index', [], Response::HTTP_SEE_OTHER);
+            $this->addFlash('success','Order modified');
         }
-        dump($orderService->total($order));
-
+        $orderService->calculOrder($order);
+        
         return $this->renderForm('admin/order/edit.html.twig', [
             'order' => $order,
             'form' => $form,

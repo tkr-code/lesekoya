@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\OrderItem;
 use App\Form\OrderItemType;
+use App\Form\OrderItemEditType;
 use App\Repository\OrderItemRepository;
 use App\Repository\OrderRepository;
 use App\Service\Order\OrderService;
@@ -64,19 +65,20 @@ class OrderItemController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="order_item_edit", methods={"GET","POST"})
+     * @Route("/article-{article_id}/{id}/edit", name="order_item_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, OrderItem $orderItem): Response
+    public function edit(Request $request, OrderItem $orderItem, OrderService $orderService): Response
     {
-        $form = $this->createForm(OrderItemType::class, $orderItem);
+        $form = $this->createForm(OrderItemEditType::class, $orderItem);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+
             $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('order_item_index', [], Response::HTTP_SEE_OTHER);
+            $this->addFlash('success','Quantity modify');
+            return $this->redirectToRoute('order_edit', ['id'=>$orderItem->getCommande()->getId(),'tab'=>'articles'], Response::HTTP_SEE_OTHER);
         }
-
         return $this->renderForm('admin/order_item/edit.html.twig', [
             'order_item' => $orderItem,
             'form' => $form,
