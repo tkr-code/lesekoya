@@ -2,16 +2,31 @@
 namespace App\Service\Order;
 use App\Entity\Order;
 use App\Entity\OrderItem;
+use App\Entity\Payment;
+use App\Entity\PaymentMethod;
 use App\Repository\OrderItemRepository;
+use App\Repository\OrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class OrderService{
     private $em;
     private $repository;
-    public function __construct(EntityManagerInterface $manager, OrderItemRepository $repository)
+    private $orderRepository;
+    public function __construct(EntityManagerInterface $manager, OrderItemRepository $repository, OrderRepository $orderRepository)
     {
         $this->em = $manager;
         $this->repository = $repository;
+        $this->orderRepository = $orderRepository;
+    }
+    public function voiceNumber()
+    {
+        $invoice= 1;
+        $orders = $this->orderRepository->findLast();
+        foreach($orders as $order)
+        {
+           $invoice += $order->getNumber();
+        }
+        return   sprintf("%06s", $invoice);
     }
     public function addQuantity(int $id, $qty)
     {
@@ -82,7 +97,32 @@ class OrderService{
 
         return $order;
     }
+    public function calculPersist(Order $order){
+        $payment = $order->getPayment();
+        $payment->setAmount(0);
+        $order->setPaymentState('in progress');
+        $order->setShippingState('in progress');
+        $order->setPaymentDue(new \DateTime());
+        $order->setItemsTotal(0);
+        $order->setState('in progress');
+        $order->setAdjustmentsTotal(0);
+        $order->setShippingAdress($order->getUser()->getAdress());
+        $order->setNumber($this->voiceNumber());
+        $order->setCheckoutState('in progress');
+        $order->setTotal(0);
 
+        $orderItem = $order->getOrderItem();
+        // foreach($orderItem as $o){
+        //     $orderItem = new OrderItem();
+        //     $orderItem->getProduitName($o->getTitle())
+        //     ->getUnitPrice($o->getPrix());
+        //     // ->get
+        // }
+
+
+        // $this->total($order);
+        return $order;
+    }
     public function calculOrder(Order $order)
     {
         $order->setItemsTotal($this->subTotal($order));

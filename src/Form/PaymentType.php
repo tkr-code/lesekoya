@@ -23,12 +23,18 @@ class PaymentType extends AbstractType
                     'In progress'=>'in progress',
                     'Canceled'=>'canceled',
                     'Waiting'=>'waiting'
+                ],
+                'attr'=>[
+                    'value'=>'In progress'
                 ]
             ])
             
             ->add('paymentMethod',EntityType::class,[
                 'class'=>PaymentMethod::class,
-                'choice_label'=>'name'
+                'choice_label'=>'name',
+                'attr'=>[
+                    'required'=>true
+                ]
             ])
             ->add('details',TextareaType::class,[
                 'attr'=>[

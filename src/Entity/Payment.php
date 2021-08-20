@@ -4,12 +4,18 @@ namespace App\Entity;
 
 use App\Repository\PaymentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=PaymentRepository::class)
  */
 class Payment
 {
+    public function __construct()
+    {
+        $this->created_at = new \DateTime();
+    }
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -18,7 +24,7 @@ class Payment
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"default"="0"} )
      */
     private $amount;
 
@@ -33,7 +39,7 @@ class Payment
     private $details;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", options={"default"="CURRENT_TIMESTAMP"})
      */
     private $created_at;
 
@@ -65,7 +71,7 @@ class Payment
         return $this->amount;
     }
 
-    public function setAmount(int $amount): self
+    public function setAmount(int $amount = 0): self
     {
         $this->amount = $amount;
 
@@ -77,7 +83,7 @@ class Payment
         return $this->state;
     }
 
-    public function setState(string $state): self
+    public function setState(string $state ='in progress' ): self
     {
         $this->state = $state;
 

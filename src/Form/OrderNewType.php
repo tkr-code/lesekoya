@@ -33,28 +33,28 @@ class OrderNewType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('number',TextType::class,[
-                'attr'=>[
-                    'disabled'=>true,
-                    'value'=>$this->voiceNumber()
-                ]
-            ])
+            // ->add('number',TextType::class,[
+            //     'attr'=>[
+            //         'disabled'=>true,
+            //         'value'=>$this->voiceNumber()
+            //     ]
+            // ])
             ->add('note',TextareaType::class,[
                 'attr'=>[
                     'placeholder'=>'Des recommandations pour cette commande ? ...'
-                ]
-            ])
-            ->add('state',ChoiceType::class,[
-                'choices'=>[
-                    'in progress'=>'in progress',
-                    'Canceled'=>'canceled',
-                    'Waiting'=>'waiting',
                 ],
-                'attr'=>[
-                    ''
-                ],
-                'label'=>'state order'
             ])
+            // ->add('state',ChoiceType::class,[
+            //     'choices'=>[
+            //         'in progress'=>'in progress',
+            //         'Canceled'=>'canceled',
+            //         'Waiting'=>'waiting',
+            //     ],
+            //     'attr'=>[
+            //         'value'=>'in progress'
+            //     ],
+            //     'label'=>'state order'
+            // ])
             // // ->add('checkout_completed_at')
             // // ->add('total',)
             // ->add('checkout_state')
@@ -74,24 +74,28 @@ class OrderNewType extends AbstractType
             // ])
             ->add('user',EntityType::class,[
                 'class'=>User::class,
-                'choice_label'=>'email'
-            ])
-            ->add('order_item',EntityType::class,[
-                'class'=>Article::class,
                 'query_builder'=> function(EntityRepository $entityRepository){
                     return $entityRepository->createQueryBuilder('p')
-                    ->where('p.enabled = true ');
+                    ->where('p.id <> 1 ');
                 },
-                'choice_label'=>'title',
-                'multiple'=>true,
-                'attr'=>[
-                    'class'=>'select2',
-                    'placeholder'=>'Select articles',
-                    'required'=>true,
-                ],
-                'label'=>'Add articles',
-
+                'choice_label'=>'email'
             ])
+            // ->add('order_item',EntityType::class,[
+            //     'class'=>Article::class,
+            //     'query_builder'=> function(EntityRepository $entityRepository){
+            //         return $entityRepository->createQueryBuilder('p')
+            //         ->where('p.enabled = true ');
+            //     },
+            //     'choice_label'=>'title',
+            //     'multiple'=>true,
+            //     'attr'=>[
+            //         'class'=>'select2',
+            //         'placeholder'=>'Select articles',
+            //         'required'=>true,
+            //     ],
+            //     'label'=>'Add articles',
+
+            // ])
             ->add('payment',PaymentType::class,[
                 'label'=>false
             ])
@@ -110,16 +114,7 @@ class OrderNewType extends AbstractType
         return $list;
     }
 
-    public function voiceNumber()
-    {
-        $invoice= 1;
-        $orders = $this->orderRepository->findLast();
-        foreach($orders as $order)
-        {
-           $invoice += $order->getNumber();
-        }
-        return   sprintf("%06s", $invoice);
-    }
+
 
     public function configureOptions(OptionsResolver $resolver)
     {

@@ -14,6 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Order
 {
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -118,6 +119,7 @@ class Order
     public function __construct()
     {
         $this->order_item = new ArrayCollection();
+        $this->created_at = new \DateTime();
     }
 
     public function getId(): ?int

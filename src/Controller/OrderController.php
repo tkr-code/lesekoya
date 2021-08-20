@@ -41,18 +41,22 @@ class OrderController extends AbstractController
     /**
      * @Route("/new", name="order_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, OrderService $orderService): Response
     {
         $order = new Order();
         $form = $this->createForm(OrderNewType::class, $order);
         $form->handleRequest($request);
+        
+         
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $order = $orderService->calculPersist($order);
             $entityManager->persist($order);
             $entityManager->flush();
             $this->addFlash('success','Order created');
-            return $this->redirectToRoute('order_index', [], Response::HTTP_SEE_OTHER);
+            // dd($order);
+            return $this->redirectToRoute('order_edit', ['id'=>$order->getId(),'tab'=>'articles'], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('admin/order/new.html.twig', [
