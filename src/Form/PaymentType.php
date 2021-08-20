@@ -20,22 +20,21 @@ class PaymentType extends AbstractType
             // ->add('amount',IntegerType::class)
             ->add('state',ChoiceType::class,[
                 'choices'=>[
+                    'In progress'=>'in progress',
                     'Canceled'=>'canceled',
-                    'Waiting'=>'waiting',
-                    'in progress'=>'in progress'
+                    'Waiting'=>'waiting'
                 ]
+            ])
+            
+            ->add('paymentMethod',EntityType::class,[
+                'class'=>PaymentMethod::class,
+                'choice_label'=>'name'
             ])
             ->add('details',TextareaType::class,[
                 'attr'=>[
                 ],
                 'required'=>false
-            ])
-
-            ->add('paymentMethod',EntityType::class,[
-                'class'=>PaymentMethod::class,
-                'choice_label'=>'name'
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

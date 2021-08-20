@@ -92,6 +92,14 @@ class ArticleRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    public function findAllOnArray()
+    {
+        return $this->findQueryBuilder()
+            ->where("p.enabled = true ")
+            ->getQuery()
+            ->getArrayResult();
+            // ->getResult();
+    }
     
     public function findQueryBuilder()
     {
