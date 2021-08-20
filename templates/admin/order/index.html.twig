@@ -78,6 +78,14 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill"
+                            href="#order-canceled" role="tab"
+                            aria-controls="custom-tabs-three-profile"
+                            aria-selected="false">Canceled (<span class="font-weight-bold"> 
+                            {{ ordersCanceled| length }}
+                            </span>)</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill"
                             href="#order-completed" role="tab"
                             aria-controls="custom-tabs-three-profile"
                             aria-selected="false">Completed (<span class="font-weight-bold"> 
@@ -106,6 +114,10 @@
                         aria-labelledby="custom-tabs-three-profile-tab">
                             {{ include ("admin/order/_datatable.html.twig",{id:'4',orders: ordersCompleted}) }}
                     </div>
+                    <div class="tab-pane fade" id="order-canceled" role="tabpanel"
+                        aria-labelledby="custom-tabs-three-profile-tab">
+                            {{ include ("admin/order/_datatable.html.twig",{id:'5',orders: ordersCanceled}) }}
+                    </div>
                 </div>
             </div>
             <!-- /.card -->
@@ -123,6 +135,7 @@
 {{ table.jsDataTable('datatable_2') }} 
 {{ table.jsDataTable('datatable_3') }} 
 {{ table.jsDataTable('datatable_4') }} 
+{{ table.jsDataTable('datatable_5') }} 
 {# {{table.jsDataTable('datatable_2')  }} #}
   <script>
    $(document).ready(function(){

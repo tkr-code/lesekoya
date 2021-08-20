@@ -60,6 +60,7 @@ class OrderType extends AbstractType
             // ])
             ->add('shipping_state',ChoiceType::class,[
                 'choices'=>[
+                    'in Progress'=>'In progress',
                     'Ready'=>'Ready',
                     'shipped'=>'shippedd'
                 ]
@@ -67,6 +68,12 @@ class OrderType extends AbstractType
             // ->add('shipping_adress',AdressType::class,[
             //     'label'=>false
             // ])
+            ->add('shipping',IntegerType::class,[
+                'attr'=>[
+                    'required'=>true,
+                    'value'=>0
+                ]
+            ])
             
         ;
     }

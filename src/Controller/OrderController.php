@@ -34,7 +34,8 @@ class OrderController extends AbstractController
             'orders'=>$orderRepository->findAll(),
             'ordersCompleted'=>$orderRepository->findState('completed'),
             'ordersInProgress'=>$orderRepository->findState('in progress'),
-            'ordersWaiting'=>$orderRepository->findState('waiting')
+            'ordersWaiting'=>$orderRepository->findState('waiting'),
+            'ordersCanceled'=>$orderRepository->findState('canceled'),
         ]);
     }
 
@@ -46,8 +47,7 @@ class OrderController extends AbstractController
         $order = new Order();
         $form = $this->createForm(OrderNewType::class, $order);
         $form->handleRequest($request);
-        
-         
+    
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
@@ -134,13 +134,21 @@ class OrderController extends AbstractController
         }
         //end new orderItem
         
+        // dd($order);
         $form = $this->createForm(OrderType::class, $order);
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {            
+            
+            if($order->getShipping() <= 0 || empty($order->getShipping()) )
+            {
+                $order->setShipping(0);
+            }
+            //
             $this->getDoctrine()->getManager()->flush();
-            return $this->redirectToRoute('order_index', [], Response::HTTP_SEE_OTHER);
+            // return $this->redirectToRoute('order_index', [], Response::HTTP_SEE_OTHER);
             $this->addFlash('success','Order modified');
+            return $this->redirectToRoute('order_edit', ['id'=>$order->getId()], Response::HTTP_SEE_OTHER);       
         }
         
         $orderService->calculOrder($order);

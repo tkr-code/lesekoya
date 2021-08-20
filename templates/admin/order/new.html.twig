@@ -47,16 +47,9 @@
                     </button>
                 </div>
                 <div class="line"></div>
-                    <div class="step" data-target="#article-part">
-                        <button type="button" class="step-trigger" role="tab" aria-controls="article-part" id="article-part-trigger" aria-selected="false" disabled="disabled">
-                        <span class="bs-stepper-circle">2</span>
-                        <span class="bs-stepper-label">Add articles</span>
-                        </button>
-                    </div>
-                <div class="line"></div>
                     <div class="step" data-target="#payment-part">
                         <button type="button" class="step-trigger" role="tab" aria-controls="payment-part" id="payment-part-trigger" aria-selected="false" disabled="disabled">
-                        <span class="bs-stepper-circle">3</span>
+                        <span class="bs-stepper-circle">2</span>
                         <span class="bs-stepper-label">Payment</span>
                         </button>
                     </div>
@@ -88,15 +81,6 @@
                         <button type="button" class="btn btn-primary" onclick="stepper.next()">Next</button>
                     </div>
                     <!-- ./User-->
-                    <!-- Article -->
-                    <div id="article-part" class="content" role="tabpanel" aria-labelledby="article-part-trigger">
-                        <div class="form-group">
-                            {# {{ form_row(form.order_item)}} #}
-                        </div>
-                        <button type="button" class="btn btn-primary" onclick="stepper.previous()">Previous</button>
-                        <button type="button" class="btn btn-primary" onclick="stepper.next()">Next</button>
-                    </div>
-                     <!-- ./article -->
                      <!-- payment -->
                     <div id="payment-part" class="content" role="tabpanel" aria-labelledby="payment-part-trigger">
                         <div class="form-group">

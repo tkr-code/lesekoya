@@ -173,6 +173,9 @@
                 </div>
             </div>
             <!-- /.card -->
+            <div class="card-footer">
+                <a class="btn btn-default" href="{{ path('order_index') }}">back to list order <i class="fa fa-arrow-circle-left" aria-hidden="true"></i> </a>
+            </div>
         </div>
     </div>
     {# <div class="col-md-8">
@@ -199,8 +202,14 @@
             <dl class="row">
                 <dt class="col-sm-4">Order </dt>
                 <dd class="col-sm-8">n° #{{ order.id }}</dd>
+                <dt class="col-sm-4">Invoice </dt>
+                <dd class="col-sm-8">n° #{{ order.number }}</dd>
                 <dt class="col-sm-4">State Order</dt>
                 <dd class="col-sm-8">{{ order.state }}</dd>
+                <dt class="col-sm-4">Shipping state</dt>
+                <dd class="col-sm-8">{{ order.shippingState }}</dd>
+                <dt class="col-sm-4">Shipping amount</dt>
+                <dd class="col-sm-8">{{ order.shipping|number_format(2,'.',' ') }} XOF</dd>
                
             </dl>
             </div>
@@ -216,42 +225,60 @@
             <!-- /.card-header -->
             <div class="card-body">
             <dl class="row">
+                <dt class="col-sm-4">Full name</dt>
+                <dd class="col-sm-8">{{ order.user.personne.firstname ~ ' ' ~ order.user.personne.lastname }}</dd>
+                <dt class="col-sm-4">Domicile</dt>
+                <dd class="col-sm-8">{{ order.user.adress.street }}</dd>
                 <dt class="col-sm-4">Amount </dt>
                 <dd class="col-sm-8">{{ order.total| number_format(2,'.',' ') }} XOF</dd>
+                <dt class="col-sm-4">State payment</dt>
+                <dd class="col-sm-8">{{ order.payment.state }}</dd>
                 <dt class="col-sm-4">Payment method</dt>
                 <dd class="col-sm-8">{{ order.payment.paymentMethod.name }}</dd>
-               
             </dl>
             </div>
             <!-- /.card-body -->
         </div>
-        <div class="card card-outline card-success">
+        <div class="card">
             <div class="card-header">
-                <h4>Order Detail</h4>
+            <h3 class="card-title">
+                <i class="fas fa-text-width"></i>
+                Shipping Adress
+            </h3>
             </div>
+            <!-- /.card-header -->
             <div class="card-body">
-                <h4>Order n° {{ order.id }} </h4>
-                <p>
-                    State payment : {{ order.payment.state }}
-                    <br/>
-                    Payement par : {{ order.payment.paymentMethod.name}}
-                 </p>
-                <h3>Order Facturation :</h3>
-                <p>Nom complet : {{ order.user.personne.firstname ~ ' ' ~ order.user.personne.lastname }} <br/> domicile: Liberte 4</p>
-                <p>11000 {{ order.id }} </p>
-                <p>Email adress:  email@email.com </p>
-                <p>Phone number:  78 127 82 88 </p>
-                <h3>Shipping Adress:</h3>
-                <a href="{{ path('order_adress_edit',{ order_id: order.id , id: order.shippingAdress.id }) }}">Modifier mon adresse de livraison <i class="fa fa-user"></i> </a> <br/>
-                <a href="#">Changer l'adresse de livration <i class="fas fa-pencil-alt    "></i></a>
-                <p>Adress:  {{ order.shippingAdress.postalCode ~ ' ' ~ order.shippingAdress.city }} </p>
-                <p>Phone number:  78 127 82 88 </p>
-                <p>Street: </p>
-                <p>Company name :</p>
-                <p>Postal code: </p>
-                <p>Country code: </p>
-                <p>Province code: </p>
+            <dl class="row">
+            <div class="col-sm-12">            
+                <a href="{{ path('order_adress_edit',{ order_id: order.id , id: order.shippingAdress.id }) }}">
+                    Modifier mon adresse de livraison <i class="fa fa-user"></i> 
+                </a>
             </div>
+            <div class="col-sm-12">            
+                <a href="#">
+                    Changer l'adresse de livration <i class="fas fa-pencil-alt"></i>
+                </a>
+            </div>
+                <dt class="col-sm-4">Email adress</dt>
+                <dd class="col-sm-8"></dd>
+                
+                <dt class="col-sm-4">Phone number</dt>
+                <dd class="col-sm-8"></dd>
+                
+                <dt class="col-sm-4">Company name </dt>
+                <dd class="col-sm-8"></dd>
+                
+                <dt class="col-sm-4">Postal code</dt>
+                <dd class="col-sm-8"></dd>
+
+                <dt class="col-sm-4">Province code</dt>
+                <dd class="col-sm-8"></dd>
+                
+                <dt class="col-sm-4">Adress</dt>
+                <dd class="col-sm-8">{{ order.shippingAdress.postalCode ~ ' ' ~ order.shippingAdress.city }}</dd>
+            </dl>
+            </div>
+            <!-- /.card-body -->
         </div>
     </div>
 </div>

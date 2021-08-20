@@ -102,17 +102,18 @@ class Order
     private $payment;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="integer")
      */
     private $items_total;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="integer")
      */
     private $adjustments_total;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="integer")
+     * @Assert\PositiveOrZero
      */
     private $shipping;
 
@@ -332,38 +333,38 @@ class Order
         return $this;
     }
 
-    public function getItemsTotal(): ?float
+    public function getItemsTotal(): ?int
     {
         return $this->items_total;
     }
 
-    public function setItemsTotal(float $items_total): self
+    public function setItemsTotal(int $items_total): self
     {
         $this->items_total = $items_total;
 
         return $this;
     }
 
-    public function getAdjustmentsTotal(): ?float
+    public function getAdjustmentsTotal(): ?int
     {
         return $this->adjustments_total;
     }
 
-    public function setAdjustmentsTotal(float $adjustments_total): self
+    public function setAdjustmentsTotal($adjustments_total): self
     {
-        $this->adjustments_total = $adjustments_total;
+        $this->adjustments_total =(int) $adjustments_total;
 
         return $this;
     }
 
-    public function getShipping(): ?float
+    public function getShipping(): ?int
     {
         return $this->shipping;
     }
 
-    public function setShipping(float $shipping): self
+    public function setShipping( $shipping): self
     {
-        $this->shipping = $shipping;
+        $this->shipping =(int) $shipping;
 
         return $this;
     }
