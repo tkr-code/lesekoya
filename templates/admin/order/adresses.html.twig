@@ -22,6 +22,9 @@
 {% endblock %}
 
 {% block body %}
+{% for item in app.flashes('success') %}
+  {{ alerte.alert(item,'success')}}
+{% endfor %}
 <div class="row">
     <div class="col-md-12">
         <div class="card card-outline card-success">

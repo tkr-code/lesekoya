@@ -20,10 +20,13 @@ class ProfileController extends AbstractController
     /**
      * @Route("/", name="profile_index", methods={"GET"})
      */
-    public function index(UserRepository $userRepository): Response
+    public function index(Request $request): Response
     {
-        return $this->render('admin/profile/index.html.twig', [
-            'users' => $userRepository->findAll(),
+        $user =  $this->getUser();
+        $form = $this->createForm(ProfileType::class, $user);
+        $form->handleRequest($request);
+        return $this->renderForm('admin/profile/index.html.twig', [
+            'form' => $form,
         ]);
     }
 
@@ -67,23 +70,27 @@ class ProfileController extends AbstractController
     {
         $resetForm = $this->createForm(ChangePasswordFormType::class);
         
-        $form = $this->createForm(ProfileType::class, $user);
+        $form = $this->createForm(ProfileType::class, $user,[]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             $image = $form->get('avatar')->getData();
-            $fichier = md5(uniqid()). '.'.$image->guessExtension();
-            $image->move(
+            // dump($image);
+            $personne = $user->getPersonne();
+            if ($image) {
+                # code...
+                $fichier = md5(uniqid()). '.'.$image->guessExtension();
+                $image->move(
                 $this->getParameter('user_images_directory'),
                 $fichier
-            );
-            $personne = $user->getPersonne();
-            $personne->setAvatar($fichier);
+                );
+                $personne->setAvatar($fichier);
+            }
             $user->setPersonne($personne);
             $this->getDoctrine()->getManager()->flush();
-
-            // return $this->redirectToRoute('profile_index', [], Response::HTTP_SEE_OTHER);
+            $this->addFlash('success','profil modify');
+            return $this->redirectToRoute('profile_index', ['tab'=>'settings'], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('admin/profile/edit.html.twig', [
