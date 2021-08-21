@@ -10,6 +10,7 @@ use App\Form\PaymentType;
 use App\Form\OrderNewType;
 use App\Form\OrderItemType;
 use App\Repository\OrderItemRepository;
+use App\Repository\AdressRepository;
 use App\Repository\OrderRepository;
 use App\Service\Order\OrderService;
 use App\Service\Payment\PaymentService;
@@ -23,6 +24,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class OrderController extends AbstractController
 {
+    /**
+     * @Route("/order-adress/{id}/manage-adress", name="order_adress")
+     */
+    public function adress($id, AdressRepository $adressRepository): Response
+    {
+        return $this->renderForm('admin/order/adresses.html.twig',[
+            'adresses' => $adressRepository->findByOrder($id),
+        ]);
+    }
 
     /**
      * @Route("/", name="order_index", methods={"GET"})
@@ -134,8 +144,10 @@ class OrderController extends AbstractController
         }
         //end new orderItem
         
-        // dd($order);
-        $form = $this->createForm(OrderType::class, $order);
+        // order 
+        $form = $this->createForm(OrderType::class, $order,[
+            'user'=>$order->getUser()
+        ]);
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {            
@@ -150,7 +162,7 @@ class OrderController extends AbstractController
             $this->addFlash('success','Order modified');
             return $this->redirectToRoute('order_edit', ['id'=>$order->getId()], Response::HTTP_SEE_OTHER);       
         }
-        
+
         $orderService->calculOrder($order);
 
         $payment = $order->getPayment();
@@ -159,7 +171,6 @@ class OrderController extends AbstractController
         $paymentService->calculPayment($payment);
         $order->setPayment($payment);
         
-        dump($order);
         return $this->renderForm('admin/order/edit.html.twig', [
             'order' => $order,
             'form' => $form,

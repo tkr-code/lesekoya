@@ -2,8 +2,10 @@
 
 namespace App\Form;
 
+use App\Entity\Adress;
 use App\Entity\User;
 use App\Entity\Order;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -18,6 +20,7 @@ class OrderType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+       $user =  $options['user'];
         $builder
             ->add('created_at',DateType::class,[
                 'label'=>'Date'
@@ -62,17 +65,24 @@ class OrderType extends AbstractType
                 'choices'=>[
                     'in Progress'=>'In progress',
                     'Ready'=>'Ready',
-                    'shipped'=>'shippedd'
+                    'shipped'=>'shippedd',
+                    'completed'=>'Completed',
                 ]
             ])
-            // ->add('shipping_adress',AdressType::class,[
-            //     'label'=>false
-            // ])
+            ->add('shipping_adress',EntityType::class,[
+                'class'=>Adress::class,
+                'query_builder'=> function(EntityRepository $entityRepository) use($user) {
+                    return $entityRepository->createQueryBuilder('p')
+                    ->where("p.user = ". $user->getId());
+                },
+                'choice_label'=>'street',
+                'group_by'=>'lastname'
+            ])
             ->add('shipping',IntegerType::class,[
                 'attr'=>[
-                    'required'=>true,
-                    'value'=>0
-                ]
+                    'required'=>true
+                ],
+                'label'=>'Shipping amount'
             ])
             
         ;
@@ -81,6 +91,7 @@ class OrderType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Order::class,
+            'user'=>null
         ]);
     }
 }

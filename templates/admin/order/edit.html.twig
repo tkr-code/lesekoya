@@ -62,7 +62,11 @@
                 <div class="tab-content" id="custom-tabs-three-tabContent">
                     <div class="tab-pane fade {% if app.request.query.get('tab') is null or app.request.query.get('tab') == ''  %}show active{% endif %}" id="order-detail"
                         role="tabpanel" aria-labelledby="custom-tabs-three-home-tab">
+                        <div class="row">
+                            <div class="col-md-12">
                          {{ include('admin/order/_form.html.twig', {'button_label': 'Update'}) }}
+                            </div>
+                        </div>
                     </div>
                     <div class="tab-pane fade {% if app.request.query.get('tab') == 'facturation' %}show active{% endif %}" id="order-facturation" role="tabpanel"
                         aria-labelledby="custom-tabs-three-profile-tab">
@@ -227,7 +231,8 @@
                 <dt class="col-sm-4">Full name</dt>
                 <dd class="col-sm-8">{{ order.user.personne.firstname ~ ' ' ~ order.user.personne.lastname }}</dd>
                 <dt class="col-sm-4">Domicile</dt>
-                <dd class="col-sm-8">{{ order.user.adress.street }}</dd>
+                <dd class="col-sm-8">a modifier
+                </dd>
                 <dt class="col-sm-4">Amount </dt>
                 <dd class="col-sm-8">{{ order.total| number_format(2,'.',' ') }} XOF</dd>
                 <dt class="col-sm-4">State payment</dt>
@@ -250,12 +255,7 @@
             <dl class="row">
             <div class="col-sm-12">            
                 <a href="{{ path('order_adress_edit',{ order_id: order.id , id: order.shippingAdress.id }) }}">
-                    Modifier mon adresse de livraison <i class="fa fa-user"></i> 
-                </a>
-            </div>
-            <div class="col-sm-12">            
-                <a href="#">
-                    Changer l'adresse de livration <i class="fas fa-pencil-alt"></i>
+                    Manage adresses <i class="fa fa-user"></i> 
                 </a>
             </div>
                 <dt class="col-sm-4">Email adress</dt>
@@ -282,7 +282,6 @@
     </div>
 </div>
 
-    {# {{ include('admin/order/_delete_form.html.twig') }} #}
 {% endblock %}
 
 {% block foot %}

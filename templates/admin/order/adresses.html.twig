@@ -1,0 +1,92 @@
+{% import "macros/table.html.twig" as table %}
+{% import "macros/head.html.twig" as head %}
+{% import "macros/foot.html.twig" as foot %}
+{% import "macros/breadcrumb.html.twig" as utils %}
+{% import "macros/alertes.html.twig" as alerte %}
+{% import "macros/button.html.twig" as btn %}
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Adress index{% endblock %}
+
+{% block stylesheets %}
+  {{ head.dataTable() }}
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ utils.breadcrumb('Manage Order',[
+        {
+            path:'order_index',
+            name:'Manage orders'
+        }
+    ])}}
+{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-outline card-success">
+            <div class="card-header">
+            <h4>Manage adress </h4>
+            </div>
+            <div class="card-body">
+
+            <table id="datatable_1" class="table">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>First_name</th>
+                        <th>Last_name</th>
+                        <th>Phone_number</th>
+                        <th>Street</th>
+                        <th>Company</th>
+                        <th>City</th>
+                        <th>actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for adress in adresses %}
+                    <tr>
+                        <td>{{ adress.id }}</td>
+                        <td>{{ adress.firstName }}</td>
+                        <td>{{ adress.lastName }}</td>
+                        <td>{{ adress.phoneNumber }}</td>
+                        <td>{{ adress.street }}</td>
+                        <td>{{ adress.company }}</td>
+                        <td>{{ adress.city }}</td>
+                        <td>
+                            <a href="{{ path('adress_edit', {'id': adress.id}) }}"><i class="fas fa-pencil-alt text-success"></i></a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="14">no records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            </div>
+            <div class="card-footer">
+                 <a href="{{ path('adress_new') }}">Create new</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block foot %}
+{{ foot.dataTable()}}
+{% endblock %}
+
+
+{% block javascripts %}
+{{ table.jsDataTable('datatable_1') }} 
+  <script>
+   $(document).ready(function(){
+     //nivagation 
+     $('#gestions').addClass(' menu-is-opening menu-open')
+     $('.gestions').addClass('active')
+     $('.gestion-order').addClass('active')
+   })
+  </script>
+{% endblock %}
