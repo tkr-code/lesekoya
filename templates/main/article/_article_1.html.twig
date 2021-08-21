@@ -1,0 +1,33 @@
+                            <div class="col-md-4">
+                                <div class="product-item">
+                                    <div class="product-title">
+                                        <a href="{{ path('articles_show', { category: item.category.title, slug: item.slug, id: item.id}) }}">Product Name</a>
+                                        <div class="ratting">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                    </div>
+                                    <div class="product-image">
+                                        <a href="product-detail.html">
+                                            {% for item in item.images|slice(0,1) %}
+                                                <img src="{{ asset('img/article/' ~ item.name )}}"  alt=""> 
+                                            {% else %}
+                                                <img src="{{ asset('img/vide.png')}}" alt="empty file">
+                                            {% endfor %}
+                                            {# <img src="img/product-1.jpg" alt="Product Image"> #}
+                                        </a>
+                                        <div class="product-action">
+                                            <a href="#"><i class="fa fa-cart-plus"></i></a>
+                                            <a href="#"><i class="fa fa-heart"></i></a>
+                                            <a href="#"><i class="fa fa-search"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-price">
+                                        <h3><span>$</span>99</h3>
+                                        <a class="btn" href=""><i class="fa fa-shopping-cart"></i>Buy Now</a>
+                                    </div>
+                                </div>
+                            </div>

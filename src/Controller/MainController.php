@@ -29,6 +29,7 @@ class MainController extends AbstractController
             ]
         ];
 
+    //   return  $this->render("main/index_1.html.twig", [
       return  $this->render("main/index.html.twig", [
             'pages'=>$pages,
 

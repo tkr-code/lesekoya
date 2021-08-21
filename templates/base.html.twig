@@ -112,7 +112,7 @@
 
     <!-- Main content -->
     <div class="content">
-      <div class="container mb-5">
+      <div class="container-fluid">
         {% block body %}{% endblock %}
 
       </div><!-- /.container-fluid -->
@@ -139,6 +139,6 @@
 <!-- AdminLTE App -->
 <script src="{{ asset('adminLte/dist/js/adminlte.min.js') }}"></script>
 {% block foot %}{% endblock %}
-{% block javascript %}{% endblock %}
+{% block javascripts %}{% endblock %}
 </body>
 </html>

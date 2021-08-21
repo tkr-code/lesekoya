@@ -7,140 +7,167 @@
     <li class="breadcrumb-item"><a href="{{ path('articles',{category: article.category.id }) }}">{{ article.category.title }}</a></li>
     <li class="breadcrumb-item active">{{ article.title }}</li>
 </ol>
-
-<div class="jumbotron">
-    <div class="container">
-        <div class="row">
-            <div class="col-8">
-                <div id="carouselExampleIndicators" class="carousel slide " data-ride="carousel">
-                    <ol class="carousel-indicators bg-dark rounded">
-                        {% for key, item in article.images %}
-                                <li data-target="#carouselExampleIndicators" data-slide-to="{{ key }}"
-                                class="{% if loop.first %}active{% endif %}"></li>
-                        {% endfor %}
-                    </ol>
-                    <div class="carousel-inner">
-                        {% for item in article.images %}
-                            <div class="carousel-item {% if loop.first %}active{% endif %}">
-                                <img class="d-block w-100"
-                                   src="{{ asset('img/article/' ~ item.name )}}"
-                                    alt="First slide">
-                            </div>
-                        {% else %}
-                            <div class="carousel-item active">
-                                <img class="d-block w-100"
-                                   src="{{ asset('img/vide.png')}}"
-                                    alt="Vide">
-                            </div>
-                        {% endfor %}
-                    </div>
-                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button"
-                        data-slide="prev">
-                        <span class="carousel-control-custom-icon" aria-hidden="true">
-                            <i class="fas fa-chevron-left"></i>
-                        </span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button"
-                        data-slide="next">
-                        <span class="carousel-control-custom-icon" aria-hidden="true">
-                            <i class="fas fa-chevron-right"></i>
-                        </span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </div>
-            </div>
-            <div class="col-4">
-                <h1>{{ article.title }}</h1>
-                <h2> Pièces - Surface m</h2>
-                <div class="text-primary font-weight-bold" style="font-size:4rem">
-                    {{ article.formatterPrice }} F cfa
-                </div>
-                <a href="#" class="btn btn-primary">Ajouter au panier</a>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="card card-widget">
-    <!-- /.card-header -->
-    <div class="card-body">
-        <p>{{ article.description | nl2br }}</p>
-        <button type="button" class="btn btn-default btn-sm"><i class="fas fa-share"></i>
-            Share</button>
-        <button type="button" class="btn btn-default btn-sm"><i
-                class="far fa-thumbs-up"></i> Like</button>
-        <span class="float-right text-muted">
-        127 likes - 
-        {# {{ article.comments| length }} comments #}
-        </span>
-    </div>
-</div>
-<h2>Commentaires</h2>
 <div class="row">
-    <div class="col-md-6">
-        <!-- Box Comment -->
-        <div class="card ">
-            <!-- /.card-body -->
-            {# <div class="card-body card-comments bg-white">
-                {% for item in article.comments %}                        
-                <div class="card-comment ">
-                    <!-- User image -->
-                    <img class="img-circle img-sm" src="{{ asset('adminlte/dist/img/user3-128x128.jpg') }}"
-                        alt="User Image">
-                    {% else %}
-                        {{ image.userEmpty()}}
-                    {% endif %}
-
-                    <div class="comment-text">
-                        <span class="username">
-                            {{ item.admin.username }}
-                            <span class="text-muted float-right">{{ item.createdAt | date('d/m/Y à H:m') }}</span>
-                        </span><!-- /.username -->
-                        {{ item.content|nl2br }}
+    <div class="col-lg-8">
+        <div class="jumbotron">
+            <div class="container">
+                <div class="row">
+                    <div class="col-7">
+                        <div id="carouselExampleIndicators" class="carousel slide " data-ride="carousel">
+                            <ol class="carousel-indicators bg-dark rounded">
+                                {% for key, item in article.images %}
+                                        <li data-target="#carouselExampleIndicators" data-slide-to="{{ key }}"
+                                        class="{% if loop.first %}active{% endif %}"></li>
+                                {% endfor %}
+                            </ol>
+                            <div class="carousel-inner">
+                                {% for item in article.images %}
+                                    <div class="carousel-item {% if loop.first %}active{% endif %}">
+                                        <img class="d-block w-100"
+                                        src="{{ asset('img/article/' ~ item.name )}}"
+                                            alt="First slide">
+                                    </div>
+                                {% else %}
+                                    <div class="carousel-item active">
+                                        <img class="d-block w-100"
+                                        src="{{ asset('img/vide.png')}}"
+                                            alt="Vide">
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button"
+                                data-slide="prev">
+                                <span class="carousel-control-custom-icon" aria-hidden="true">
+                                    <i class="fas fa-chevron-left"></i>
+                                </span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button"
+                                data-slide="next">
+                                <span class="carousel-control-custom-icon" aria-hidden="true">
+                                    <i class="fas fa-chevron-right"></i>
+                                </span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
                     </div>
-                    <!-- /.comment-text -->
+                    <div class="col-5">
+                        <h1>{{ article.title }}</h1>
+                        <h2> Pièces - Surface m</h2>
+                        <div class="text-primary font-weight-bold" style="font-size:4rem">
+                            {{ article.formatterPrice }} F cfa
+                        </div>
+                        <div class="quantity">
+                                            <h4>Quantity:</h4>
+                                            <div class="qty">
+                                                <button class="btn-minus"><i class="fa fa-minus"></i></button>
+                                                <input type="text" value="1">
+                                                <button class="btn-plus"><i class="fa fa-plus"></i></button>
+                                            </div>
+                                        </div>
+                        <form action="" method="post">
+                            <div class="form-group">
+                              <label> Quantity</label>
+                              <input type="number" name="" id="" class="form-control" placeholder="" aria-describedby="helpId">
+                            </div>
+                        <a href="#" class="btn btn-primary">Ajouter au panier</a>
+                        </form>
+                    </div>
                 </div>
-                <!-- /.card-comment -->
-                {% else %}
-                    <p>Aucun  commentaire</p>
-                {% endfor %}
-            </div> #}
-            <!-- /.card-footer -->
-            <div class="card-footer">
-            {% if is_granted('ROLE_USER') %}
-                {# {{ include('admin/comment/_form.html.twig')}} #}
-            {% endif %}
-            </div>        
-            <!-- /.card-footer -->
+            </div>
         </div>
-        <!-- /.card -->
-        {% for item in app.flashes('success') %}
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-                <strong>{{ item }}</strong>
+        <div class="card card-widget">
+            <!-- /.card-header -->
+            <div class="card-body">
+                <p>{{ article.description | nl2br }}</p>
+                <button type="button" class="btn btn-default btn-sm"><i class="fas fa-share"></i>
+                    Share</button>
+                <button type="button" class="btn btn-default btn-sm"><i
+                        class="far fa-thumbs-up"></i> Like</button>
+                <span class="float-right text-muted">
+                127 likes - 
+                {# {{ article.comments| length }} comments #}
+                </span>
             </div>
-            
-            <script>
-                $(".alert").alert();
-            </script>
-        {% endfor %}
-    </div>
-    <div class="col-md-6">
+        </div>
+        <h2>Commentaires</h2>
         <div class="row">
-            <div class="col-md-12">
-                <h2>Caractéristique</h2>
-                <table class="table table-striped">
-                    {% for item in article.options %}
-                    <tr>
-                        <td>{{ item.title }}</td>
-                        <td>{{ item.content }}</td>
-                    </tr>
-                    {% endfor %}
-                </table>
+            <div class="col-md-6">
+                <!-- Box Comment -->
+                <div class="card ">
+                    <!-- /.card-body -->
+                    {# <div class="card-body card-comments bg-white">
+                        {% for item in article.comments %}                        
+                        <div class="card-comment ">
+                            <!-- User image -->
+                            <img class="img-circle img-sm" src="{{ asset('adminlte/dist/img/user3-128x128.jpg') }}"
+                                alt="User Image">
+                            {% else %}
+                                {{ image.userEmpty()}}
+                            {% endif %}
+
+                            <div class="comment-text">
+                                <span class="username">
+                                    {{ item.admin.username }}
+                                    <span class="text-muted float-right">{{ item.createdAt | date('d/m/Y à H:m') }}</span>
+                                </span><!-- /.username -->
+                                {{ item.content|nl2br }}
+                            </div>
+                            <!-- /.comment-text -->
+                        </div>
+                        <!-- /.card-comment -->
+                        {% else %}
+                            <p>Aucun  commentaire</p>
+                        {% endfor %}
+                    </div> #}
+                    <!-- /.card-footer -->
+                    <div class="card-footer">
+                    {% if is_granted('ROLE_USER') %}
+                        {# {{ include('admin/comment/_form.html.twig')}} #}
+                    {% endif %}
+                    </div>        
+                    <!-- /.card-footer -->
+                </div>
+                <!-- /.card -->
+                {% for item in app.flashes('success') %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                        <strong>{{ item }}</strong>
+                    </div>
+                    
+                    <script>
+                        $(".alert").alert();
+                    </script>
+                {% endfor %}
             </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2>Caractéristique</h2>
+                        <table class="table table-striped">
+                            {% for item in article.options %}
+                            <tr>
+                                <td>{{ item.title }}</td>
+                                <td>{{ item.content }}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="card card-outline-success">
+            <div class="card-header">
+                <h4>Category</h4>
+            </div>
+            <div class="card-body">
             
+            </div>
         </div>
     </div>
 </div>

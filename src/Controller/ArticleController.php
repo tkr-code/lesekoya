@@ -69,6 +69,7 @@ class ArticleController extends AbstractController
             $request->query->getInt('page',1),
             12
         );
+        // return $this->renderForm('main/article/index_1.html.twig', [
         return $this->renderForm('main/article/index.html.twig', [
             'articles' => $pagination,
             'form'=>$form
