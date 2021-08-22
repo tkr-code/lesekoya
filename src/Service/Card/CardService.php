@@ -12,10 +12,18 @@ class CardService{
         $this->session =$sessionInterface;
         $this->articleRepository = $articleRepository;
     }
+    public function addPost(int $id, int $qty)
+    {
+        $panier = $this->session->get('panier',[]);
+        $panier[$id]=$qty;
+        
+        $this->session->set('panier',$panier);
+        // dd($panier);
+        
+    }
     public function add(int $id)
     {
         $panier = $this->session->get('panier',[]);
-
         if(!empty($panier[$id])){
             $panier[$id]++;
         }else{
@@ -63,7 +71,7 @@ class CardService{
     {
         $total = 0;
         foreach ($this->getFullCard() as $item) {
-            $total+= $item['article']->getPrice() + $item['quantite'];
+            $total+= $item['article']->getPrice() * $item['quantite'];
         }
         return $total;
     }

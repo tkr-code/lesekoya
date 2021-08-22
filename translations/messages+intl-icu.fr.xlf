@@ -7,11 +7,11 @@
     <body>
       <trans-unit id="ftkyiTo" resname="Voir le Panier">
         <source>Voir le Panier</source>
-        <target>__Voir le Panier</target>
+        <target>View cart</target>
       </trans-unit>
       <trans-unit id="alDjd_l" resname="Voir tous nos biens">
-        <source>Voir tous nos biens</source>
-        <target>__Voir tous nos biens</target>
+        <source>See all our articles</source>
+        <target>Voir tous nos biens</target>
       </trans-unit>
       <trans-unit id="DpQINTx" resname="Add to cart">
         <source>Add to cart</source>

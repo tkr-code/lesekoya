@@ -1,0 +1,50 @@
+{
+  "name": "jautocalc",
+  "version": "1.4.1",
+  "description": "jQuery plugin for doing calculations",
+  "main": "jAutoCalc.js",
+  "scripts": {
+    "dev": "npm run development",
+    "development": "npx mix",
+    "watch": "npx mix watch",
+    "hot": "npx mix watch --hot",
+    "prod": "npm run production",
+    "production": "npx mix --production",
+    "clean": "rm -r dist/*",
+    "serve": "nodemon dev-server.js",
+    "prepublishOnly": "npm run production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/c17r/jAutoCalc.git"
+  },
+  "keywords": [
+    "jq",
+    "calc",
+    "jquery",
+    "autocalc",
+    "jautocalc",
+    "calculation",
+    "jquery-plugin",
+    "ecosystem:jquery"
+  ],
+  "author": "Christian Sauer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/c17r/jAutoCalc/issues"
+  },
+  "files": [
+    "CHANGELOG",
+    "LICENSE",
+    "README.md",
+    "dist/**"
+  ],
+  "homepage": "https://github.com/c17r/jAutoCalc#readme",
+  "devDependencies": {
+    "@types/jquery": "^3.5.5",
+    "laravel-mix": "^6.0.13",
+    "nodemon": "^2.0.7",
+    "ts-loader": "^8.0.18",
+    "typescript": "^4.2.3"
+  }
+}

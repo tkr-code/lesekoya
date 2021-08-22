@@ -8,14 +8,20 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 
 class CardController extends AbstractController
 {
     /**
      * @Route("/card", name="card_index")
      */
-    public function index(CardService $cardService): Response
+    public function index(CardService $cardService, Request $request): Response
     {
+        if ($request->request->count() > 0) {
+            $cardService->addPost($request->request->get('article_id'),$request->request->get('qty'));
+            $this->addFlash('success','panier modiifer');
+            return $this->redirectToRoute('card_index');
+        }
         return $this->render('main/card/index.html.twig',[
             'items'=>$cardService->getFullCard(),
             'total'=>$cardService->getTotal()
