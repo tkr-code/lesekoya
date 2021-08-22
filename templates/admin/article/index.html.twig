@@ -4,6 +4,7 @@
 {% import "macros/foot.html.twig" as foot %}
 {% import "macros/breadcrumb.html.twig" as utils %}
 {% import "macros/alertes.html.twig" as alerte %}
+{% import "macros/link.html.twig" as link %}
 
 
 {% block title %}Manage articles | {{ app_name }} {% endblock %}
@@ -23,10 +24,8 @@
 {% endfor %}
 
  <div class="row">
-    <div class="col-12 col-sm-3">
-        <div class="card card-primary card-outline card-tabs">
-          <a href="{{ path('article_new') }}" class="btn btn-lg btn-outline-primary btn-block">Ajouter un article <i class="fa fa-plus" aria-hidden="true"></i> </a>
-        </div>
+    <div class="col-12 mb-1">
+    {{ link.add(path('article_new'),'Create article' )}}
     </div>
     <div class="col-12 col-sm-12">
         <div class="card card-primary card-outline card-tabs">
@@ -64,6 +63,9 @@
                 </div>
             </div>
             <!-- /.card -->
+            <div class="card-footer">
+              {{ link.back(path('admin'),'Back to dashboard')}}
+            </div>
     </div>
   </div>
 {% endblock %}

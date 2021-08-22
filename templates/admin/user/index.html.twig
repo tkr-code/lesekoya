@@ -1,41 +1,118 @@
+{% import "macros/table.html.twig" as table %}
+{% import "macros/head.html.twig" as head %}
+{% import "macros/foot.html.twig" as foot %}
+{% import "macros/breadcrumb.html.twig" as utils %}
+{% import "macros/alertes.html.twig" as alerte %}
+{% import "macros/button.html.twig" as btn %}
+{% import "macros/link.html.twig" as link %}
+
 {% extends 'admin/base.html.twig' %}
 
+
+{% block stylesheets %}
+  {{ head.dataTable() }}
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ utils.breadcrumb('Manage user',[
+        {
+            path:'order_index',
+            name:'Manage orders'
+        }
+    ])}}
+{% endblock %}
 {% block title %}User index{% endblock %}
 
 {% block body %}
-    <h1>User index</h1>
+{% for item in app.flashes('success') %}
+  {{ alerte.alert(item,'success')}}
+{% endfor %}
+<div class="row">
+    <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box mb-3">
+            <span class="info-box-icon bg-success elevation-1"><i class="fas fa-users"></i></span>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Email</th>
-                <th>Roles</th>
-                <th>Password</th>
-                <th>IsVerified</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for user in users %}
-            <tr>
-                <td>{{ user.id }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-                <td>{{ user.password }}</td>
-                <td>{{ user.isVerified ? 'Yes' : 'No' }}</td>
-                <td>
-                    <a href="{{ path('user_show', {'id': user.id}) }}">show</a>
-                    <a href="{{ path('user_edit', {'id': user.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            <div class="info-box-content">
+            <span class="info-box-text">user unregister</span>
+            <span class="info-box-number"> {{ users|length }} </span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+            <!-- /.info-box -->
+    </div>
+    <div class="col-md-12 mb-1">
+        <a class="btn btn-primary btn-lg" href="{{ path('user_new') }}">Create new <i class="fa fa-plus" aria-hidden="true"></i></a>
+    </div>
+    <div class="col-md-12">
+        <div class="card card-outline card-primary">
+            <div class="card-header">
+                <h4>User index</h4>
+            </div>
+            <div class="card-body">
+                <table id="datatable_1" class="table">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Email</th>
+                            <th>Roles</th>
+                            <th>IsVerified</th>
+                            <th>actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>
+                            {% for item in user.roles %}
+                                {% if item == 'ROLE_USER' %}
+                                    User
+                                {% elseif item == 'ROLE_ADMIN' %}
+                                    Admin
+                                {% elseif item == 'ROLE_ADMIN' %}
 
-    <a href="{{ path('user_new') }}">Create new</a>
+                                {% elseif item == 'ROLE_EDITOR' %}
+                                    Editeur
+                                {% endif %}
+                            {% endfor %}
+                            <td>{{ user.isVerified ? 'Yes' : 'No' }}</td>
+                            <td>
+                                {{ link.delete(path('user_show', {'id': user.id})) }}
+                                {{ link.edit(path('user_edit', {'id': user.id}))}}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6">no records found</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="card-footer">
+                {{ link.back(path('admin'), 'back to dashboard') }}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block foot %}
+{{ foot.dataTable()}}
+{% endblock %}
+
+
+{% block javascripts %}
+{{ table.jsDataTable('datatable_1') }} 
+{# {{table.jsDataTable('datatable_2')  }} #}
+  <script>
+   $(document).ready(function(){
+     //nivagation 
+     $('#gestions').addClass(' menu-is-opening menu-open')
+     $('.gestions').addClass('active')
+     $('.gestion-user').addClass('active')
+   })
+  </script>
 {% endblock %}

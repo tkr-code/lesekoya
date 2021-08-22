@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="fr" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="ftkyiTo" resname="Voir le Panier">
+        <source>Voir le Panier</source>
+        <target>__Voir le Panier</target>
+      </trans-unit>
+      <trans-unit id="alDjd_l" resname="Voir tous nos biens">
+        <source>Voir tous nos biens</source>
+        <target>__Voir tous nos biens</target>
+      </trans-unit>
+      <trans-unit id="DpQINTx" resname="Add to cart">
+        <source>Add to cart</source>
+        <target>Ajouter au panier</target>
+      </trans-unit>
+      <trans-unit id="EdWLCN6" resname="Home page">
+        <source>Home page</source>
+        <target>Page d'acueil</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

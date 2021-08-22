@@ -6,6 +6,7 @@ use App\Entity\Article;
 use App\Entity\ArticleSearch;
 use App\Form\ArticleSearchType;
 use App\Repository\ArticleRepository;
+use App\Repository\CategoryRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,6 +28,8 @@ class ArticleController extends AbstractController
                     'id'=>$article->getId()
                 ],301);
         }
+        $search = new ArticleSearch();
+        $form = $this->createForm(ArticleSearchType::class,$search)->handleRequest($request);
         // $comment = new Comment();
         // $comment->setProduit($produit);
         
@@ -55,7 +58,7 @@ class ArticleController extends AbstractController
     /**
      * @Route("/articles", name="articles")
      */
-    public function index(Request $request, PaginatorInterface $paginator, ArticleRepository $articleRepository): Response
+    public function index(Request $request, PaginatorInterface $paginator, ArticleRepository $articleRepository, CategoryRepository $categoryRepository): Response
     {
         $search = new ArticleSearch();
         $form = $this->createForm(ArticleSearchType::class,$search)->handleRequest($request);
@@ -72,7 +75,8 @@ class ArticleController extends AbstractController
         // return $this->renderForm('main/article/index_1.html.twig', [
         return $this->renderForm('main/article/index.html.twig', [
             'articles' => $pagination,
-            'form'=>$form
+            'form'=>$form,
+            'category'=>$categoryRepository->findAll()
         ]);
     }
 }

@@ -74,13 +74,13 @@
           <li class="nav-item dropdown">
             <a id="dropdownSubMenu2" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Langues</a>
             <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
-              {# {% for item in locales %}
-                {% if item != app.request.locale  %}
+              {% for item in locales %}
+                {# {% if item != app.request.locale  %} #}
                 <li>
-                  <a href="{{ path('produits') }}" class="dropdown-item">{{item}} </a>
+                  <a href="{{ path('lang',{ locale: item }) }}" class="dropdown-item">{{item}} </a>
                 </li>
-                {% endif %}
-              {% endfor %} #}
+                {# {% endif %} #}
+              {% endfor %}
             </ul>
           </li>
         </ul>

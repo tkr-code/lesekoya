@@ -1,13 +1,47 @@
-{% extends 'base.html.twig' %}
+{% import "macros/table.html.twig" as table %}
+{% import "macros/head.html.twig" as head %}
+{% import "macros/foot.html.twig" as foot %}
+{% import "macros/breadcrumb.html.twig" as utils %}
+{% import "macros/alertes.html.twig" as alerte %}
+{% import "macros/button.html.twig" as btn %}
+{% import "macros/link.html.twig" as link %}
 
+{% extends 'admin/base.html.twig' %}
+
+
+{% block stylesheets %}
+  {{ head.dataTable() }}
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ utils.breadcrumb('Manage user',[
+        {
+            path:'order_index',
+            name:'Manage orders'
+        }
+    ])}}
+{% endblock %}
 {% block title %}Edit User{% endblock %}
 
 {% block body %}
-    <h1>Edit User</h1>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-outline card-success">
+            <div class="card-header">
+                <h4>Edit User</h4>
 
-    {{ include('admin/user/_form.html.twig', {'button_label': 'Update'}) }}
+            </div>
+            <div class="card-body">
+                {{ include('admin/user/_form.html.twig', {'button_label': 'Update'}) }}
+            </div>
+            <div class="card-footer">
+            {{ link.back(path('user_index')) }}
+            </div>
+        </div>
+    </div>
+</div>
 
-    <a href="{{ path('user_index') }}">back to list</a>
 
-    {{ include('admin/user/_delete_form.html.twig') }}
+
+    {# {{ include('admin/user/_delete_form.html.twig') }} #}
 {% endblock %}

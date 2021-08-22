@@ -7,6 +7,8 @@ parameters:
     article_images_directory: '%kernel.project_dir%/public/img/article'
     user_images_directory: '%kernel.project_dir%/public/img/user'
     maitenance_file_path: '%kernel.project_dir%/public/.maintenance'
+    app.locales: [en, fr]
+    locale: en
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -31,3 +33,6 @@ services:
             - '@twig'
         tags:
             - { name: kernel.event_listener, event: kernel.request }
+
+    App\EventSubscriber\LocaleSubscriber:
+        arguments: ['%kernel.default_locale%']

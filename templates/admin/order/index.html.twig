@@ -7,7 +7,6 @@
 
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}Order manage | {{ app_name }} {% endblock %}
 
 {% block stylesheets %}
   {{ head.dataTable() }}
@@ -21,6 +20,8 @@
         }
     ])}}
 {% endblock %}
+
+{% block title %}Order manage | {{ app_name }} {% endblock %}
 
 
 
