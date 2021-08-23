@@ -5,11 +5,11 @@
       <tool tool-id="symfony" tool-name="Symfony"/>
     </header>
     <body>
-      <trans-unit id="ftkyiTo" resname="Voir le Panier">
-        <source>Voir le Panier</source>
-        <target>View cart</target>
+      <trans-unit id="ftkyiTo" resname="View cart">
+        <source>View cart</source>
+        <target>Voir le Panier</target>
       </trans-unit>
-      <trans-unit id="alDjd_l" resname="Voir tous nos biens">
+      <trans-unit id="alDjd_l" resname="See all our articles">
         <source>See all our articles</source>
         <target>Voir tous nos biens</target>
       </trans-unit>

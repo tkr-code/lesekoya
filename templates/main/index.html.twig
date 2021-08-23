@@ -3,8 +3,8 @@
 {% block title %}Malick{% endblock %}
 
 {% block body %}
+    {{ search.search(searchForm) }}
     <h1> {% trans %}Home page{% endtrans %} </h1>
-    {# {{ search.search(searchForm) }} #}
     <div>
         <ul>
         {% for page in pages %}
@@ -12,9 +12,68 @@
         {% endfor %}
         </ul>
     </div>
+    <div class="container">
+            <div class="slider single-item">
+        <div>
+            <h3>1</h3>
+        </div>
+        <div>
+            <h3>2</h3>
+        </div>
+        <div>
+            <h3>3</h3>
+        </div>
+        <div>
+            <h3>4</h3>
+        </div>
+        <div>
+            <h3>5</h3>
+        </div>
+        <div>
+            <h3>6</h3>
+        </div>
+    </div>
+    </div>
+
     <div class="row">
         {# {% for item in lastProduit %}
             {{ include('pages/produit/_produit.html.twig') }}
         {% endfor %} #}
     </div>
+{% endblock %}
+{% block javascripts %}
+<script>
+    $(document).ready(function(){
+// $('.single-item').slick();
+        $(".single-item").slick({
+            // normal options...
+            infinite: false,
+
+            // the magic
+            responsive: [{
+
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 3,
+                    infinite: true
+                }
+
+                }, {
+
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 2,
+                    dots: true
+                }
+
+                }, {
+
+                breakpoint: 300,
+                settings: "unslick" // destroys slick
+
+                }]
+            });
+
+    })
+</script>
 {% endblock %}

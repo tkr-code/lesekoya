@@ -6,16 +6,18 @@
 {% block title %}Hello CardController!{% endblock %}
 
 {% block body %}
+{{ search.search(form) }}
   {% for item in app.flashes('success') %}
   <div class="alert alert-success">
       <p>{{item}}</p>
   </div>
   {% endfor %}
-{# {{ search.search(form) }} #}
 <div class="row">
   <div class="col-lg-8">
     <div class="card">
-     <tbody id="displayArea"></tbody>
+    <div class="card-header">
+      <h4>Card</h4>
+    </div>
       <div class="card-body">
             <table class="table">
               <thead>
@@ -79,12 +81,17 @@
                   Commander
                 </a> #}
                 <div class="btn-group">
-                  <button class="btn btn-lg rounded btn-primary" type="submit">
+                  <a class="link-default 2rem" href="{{ path('articles') }}">
+                    Tous nos articles
+                  </a>
+                  {% if app.session.get('panier') != [] %}
+                  <a href="{{ path('order_new') }}" class="btn btn-lg ml-1 rounded btn-primary" type="submit">
                     Commander
-                  </button>
-                  <a href="#" class="btn-danger btn-lg ml-1">
+                  </a>
+                  <a href="{{ path('card_clear') }}" class="btn-danger btn-lg ml-1">
                     Clear <i class="fa fa-trash" aria-hidden="true"></i>
                   </a>
+                  {% endif %}
                 </div>
               </div>
             </div>
@@ -94,7 +101,7 @@
   <div class="col-lg-4">
   <div class="card card-outine card-primary">
     <div class="card-body">
-
+    <h4>Article</h4>
     </div>
   </div>
   </div>

@@ -55,6 +55,10 @@ class CardService{
         }
         $this->session->set('panier',$panier);
     }
+    public function clear()
+    {
+        $this->session->set('panier',[]);
+    }
     public function getFullCard(): array
     {
         $panier = $this->session->get('panier',[]);
@@ -75,4 +79,5 @@ class CardService{
         }
         return $total;
     }
+
 }

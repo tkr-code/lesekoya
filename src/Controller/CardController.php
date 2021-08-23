@@ -9,6 +9,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use App\Entity\ArticleSearch;
+use App\Form\ArticleSearchType;
 
 class CardController extends AbstractController
 {
@@ -17,6 +19,8 @@ class CardController extends AbstractController
      */
     public function index(CardService $cardService, Request $request): Response
     {
+                $search = new ArticleSearch();
+        $form = $this->createForm(ArticleSearchType::class,$search)->handleRequest($request);
         if ($request->request->count() > 0) {
             $cardService->addPost($request->request->get('article_id'),$request->request->get('qty'));
             $this->addFlash('success','panier modiifer');
@@ -24,7 +28,8 @@ class CardController extends AbstractController
         }
         return $this->render('main/card/index.html.twig',[
             'items'=>$cardService->getFullCard(),
-            'total'=>$cardService->getTotal()
+            'total'=>$cardService->getTotal(),
+            'form'=>$form->createView()
         ]);
     }
 
@@ -52,6 +57,15 @@ class CardController extends AbstractController
     {
         $cardService->delete($id);
         // $this->addFlash('success','Le produit retiré du panier');
+        return $this->redirectToRoute('card_index');
+    }
+
+    /**
+     * @Route("/card/clear", name="card_clear", methods="GET")
+     */
+    public function claer(CardService $cardService)
+    {
+        $cardService->clear();
         return $this->redirectToRoute('card_index');
     }
 }

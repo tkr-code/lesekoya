@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use App\Entity\ArticleSearch;
+use App\Form\ArticleSearchType;
 // /**
 //  * @Route("/{_locale}", requirements={
 //      *         "_locale": "en|fr|de",
@@ -32,8 +34,10 @@ class MainController extends AbstractController
      * @Route("/",  name="home"
      * )
      */
-    public function home(): Response
+    public function home(Request $request): Response
     {
+        $search = new ArticleSearch();
+        $form = $this->createForm(ArticleSearchType::class,$search)->handleRequest($request);
         $pages =[
             [
                 'path'=>'home',
@@ -50,8 +54,9 @@ class MainController extends AbstractController
         ];
 
     //   return  $this->render("main/index_1.html.twig", [
-      return  $this->render("main/index.html.twig", [
+      return  $this->renderForm("main/index.html.twig", [
             'pages'=>$pages,
+            'searchForm'=>$form
 
         ]);
     }

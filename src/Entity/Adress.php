@@ -85,7 +85,7 @@ class Adress
     private $orders;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="adresses")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="adresses" )
      */
     private $user;
 
@@ -93,6 +93,7 @@ class Adress
     public function __construct()
     {
         $this->orders = new ArrayCollection();
+        $this->created_at = new \DateTime();
     }
 
     public function getId(): ?int

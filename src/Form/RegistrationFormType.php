@@ -43,6 +43,13 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('personne',PersonneType::class,[
+                'label'=>false
+            ])
+            ->add('adresses',Adress1Type::class,[
+                'label'=>false,
+                'mapped'=>false
+            ])
         ;
     }
 
