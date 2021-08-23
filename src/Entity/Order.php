@@ -75,7 +75,7 @@ class Order
     private $shipping_state;
 
     /**
-     * @ORM\OneToMany(targetEntity=OrderItem::class, mappedBy="commande", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=OrderItem::class, mappedBy="commande", orphanRemoval=true, cascade={"persist"})
      */
     private $order_item;
 

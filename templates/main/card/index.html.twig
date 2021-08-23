@@ -6,6 +6,11 @@
 {% block title %}Hello CardController!{% endblock %}
 
 {% block body %}
+<ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Tous les articles</a></li>
+    <li class="breadcrumb-item"><a href="{{ path('articles'}) }}">Panier</a></li>
+    <li class="breadcrumb-item active"> //</li>
+</ol>
 {{ search.search(form) }}
   {% for item in app.flashes('success') %}
   <div class="alert alert-success">
@@ -18,6 +23,7 @@
     <div class="card-header">
       <h4>Card</h4>
     </div>
+{% if app.request.session.get('panier')%}
       <div class="card-body">
             <table class="table">
               <thead>
@@ -81,11 +87,8 @@
                   Commander
                 </a> #}
                 <div class="btn-group">
-                  <a class="link-default 2rem" href="{{ path('articles') }}">
-                    Tous nos articles
-                  </a>
                   {% if app.session.get('panier') != [] %}
-                  <a href="{{ path('order_new') }}" class="btn btn-lg ml-1 rounded btn-primary" type="submit">
+                  <a href="{{ path('order_user') }}" class="btn btn-lg ml-1 rounded btn-primary" type="submit">
                     Commander
                   </a>
                   <a href="{{ path('card_clear') }}" class="btn-danger btn-lg ml-1">
@@ -96,8 +99,20 @@
               </div>
             </div>
       </div>
+{% else %}
+     <div class="card-body">
+       <h3>Panier vide</h3>
+     </div>
+     <div class="card-footer">
+          <a class="link-default 2rem" href="{{ path('articles') }}">
+            Visualiliser d'autre articles
+          </a>
+     </div>
     </div>
   </div>
+  
+{% endif %}
+
   <div class="col-lg-4">
   <div class="card card-outine card-primary">
     <div class="card-body">

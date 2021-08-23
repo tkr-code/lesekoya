@@ -11,13 +11,16 @@ use App\Form\OrderNewType;
 use App\Form\OrderItemType;
 use App\Repository\OrderItemRepository;
 use App\Repository\AdressRepository;
+use App\Repository\ArticleRepository;
 use App\Repository\OrderRepository;
+use App\Repository\PaymentMethodRepository;
 use App\Service\Order\OrderService;
 use App\Service\Payment\PaymentService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * @Route("/admin/order")
@@ -50,6 +53,58 @@ class OrderController extends AbstractController
     }
 
     /**
+     * @Route("/new-order", name="order_user", methods={"GET","POST"})
+     */
+    public function newOrder(PaymentMethodRepository $paymentMethodRepository, ArticleRepository $articleRepository, Request $request, OrderService $orderService, SessionInterface $session): Response
+    {
+        $order = new Order();
+        $order->setPaymentState('in progress');
+        $order->setShippingState('in progress');
+        $order->setCheckoutState('in progress');
+        $order->setState('in progress');
+        $order->setShipping(500);
+        $order->setNumber($orderService->voiceNumber());
+        $order->setPaymentDue(new \DateTime('+ 6 day') );
+        $user  = $this->getUser();
+        $adresses = $user->getAdresses();
+        $order->setShippingAdress($adresses[0]);
+        $order->setUser($user);
+        $panier = $session->get('panier');
+        $total = 0;
+        foreach ($panier as $key => $value) {
+           $article = $articleRepository->find($key);
+           $orderItem = new OrderItem();
+           $orderItem->setProduitName($article->getTitle());
+           $orderItem->setQuantity($value);
+           $orderItem->setUnitPrice($article->getPrice());
+           $orderItem->setUnitsTotal($orderItem->getUnitPrice() * $orderItem->getQuantity());
+           $orderItem->setTotal($orderItem->getUnitsTotal() + $orderItem->getAdjustmentsTotal() );
+           $total += $orderItem->getTotal();
+           $orderItem->setArticle($article);
+           $order->addOrderItem($orderItem);
+        }
+        $order->setItemsTotal($total);
+        $order->setAdjustmentsTotal($order->getShipping());
+        $order->setTotal($order->getItemsTotal() + $order->getAdjustmentsTotal() );
+        $payment = new Payment();
+        $payment->setAmount($order->getTotal());
+        $payment->setState('in progress');
+        $method = $paymentMethodRepository->find(3);
+        $payment->setPaymentMethod($method);
+        // $payment->setOrderPayment($order);
+        // dump($total);
+        // $order = $orderService->calculPersist($order);
+        $order->setPayment($payment);
+        
+        // dd($order);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($order);
+        $entityManager->flush();
+        $this->addFlash('success','Order created');
+        $session->set('panier',[]);
+        return $this->redirectToRoute('order_index',[],Response::HTTP_SEE_OTHER);
+    }
+    /**
      * @Route("/new", name="order_new", methods={"GET","POST"})
      */
     public function new(Request $request, OrderService $orderService): Response
@@ -58,6 +113,7 @@ class OrderController extends AbstractController
         $form = $this->createForm(OrderNewType::class, $order);
         $form->handleRequest($request);
     
+        dd($request->getSession());
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();

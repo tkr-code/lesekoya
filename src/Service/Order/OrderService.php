@@ -102,7 +102,7 @@ class OrderService{
         $payment->setAmount(0);
         $order->setPaymentState('in progress');
         $order->setShippingState('in progress');
-        $order->setPaymentDue(new \DateTime());
+        $order->setPaymentDue(new \DateTime('+ 5 day') );
         $order->setItemsTotal(0);
         $order->setState('in progress');
         $order->setAdjustmentsTotal(0);
