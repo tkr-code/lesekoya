@@ -248,13 +248,6 @@
             </li>
           </ul>
         </li>
-        <li class="nav-item">
-          <a href="{{ path('home')}}" class="my-order nav-link">
-            <i class="nav-icon far fa-circle"></i>
-            <p>{% trans %}My Orders{% endtrans %}</p>
-          
-          </a>
-        </li>
         {% if is_granted('ROLE_EDITOR') %}
         <li id="gestions" class="nav-item">
           <a href="#" class="gestions nav-link">
@@ -265,12 +258,14 @@
             </p>
           </a>
           <ul class="nav nav-treeview">
+          {% if is_granted('ROLE_ADMIN') %}
             <li class="nav-item">
               <a href="{{ path('user_index') }}" class="nav-link gestion-user">
                 <i class="fas fa-users nav-icon"></i>
                 <p>User</p>
               </a>
             </li>
+          {% endif %}
             <li class="nav-item">
               <a href="{{ path('article_index') }}" class="nav-link gestion-article">
                 <i class="far fa-circle nav-icon"></i>

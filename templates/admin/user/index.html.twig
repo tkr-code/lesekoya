@@ -66,12 +66,10 @@
                             <td>{{ user.email }}</td>
                             <td>
                             {% for item in user.roles %}
-                                {% if item == 'ROLE_USER' %}
-                                    User
-                                {% elseif item == 'ROLE_ADMIN' %}
+                                {% if item == 'ROLE_ADMIN' %}
                                     Admin
-                                {% elseif item == 'ROLE_ADMIN' %}
-
+                                {% elseif item == 'ROLE_CLIENT' %}
+                                    Client
                                 {% elseif item == 'ROLE_EDITOR' %}
                                     Editeur
                                 {% endif %}

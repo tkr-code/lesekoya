@@ -1,7 +1,7 @@
 {% macro search(form) %}
 <div class="p-3 bg-white">
     <div class="container">
-        {{ form_start(form,{action:'articles'}) }}
+        {{ form_start(form,{action:path('articles')}) }}
         <div class="row">
             <div class="col-lg-9">
                 <div class="form-row align-items-end">
@@ -27,18 +27,20 @@
                                 {{ app.request.session.get('panier') |length }} 
                             </span>
                     </a>
-                    {# {% if  is_granted('ROLE_USER') %} #}
+                    {% if  is_granted('ROLE_CLIENT') %}
                     <div class="dropdown open d-inline-block">
                         <button class="btn dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
                                 aria-expanded="false">
                                    {% trans %}Hello{% endtrans %} {{ app.user.personne.firstName|default('Malick') }} <i class="fas fa-user-check    "></i>
                                 </button>
                         <div class="dropdown-menu" aria-labelledby="triggerId">
-                            <a class="dropdown-item" href="#">My compte <i class="fa fa-user float-right ml-1" aria-hidden="true"></i> </a>
-                            <a class="dropdown-item" href="#">My orders <i class="ml-1 fas fa-box-open float-right"></i> </a>
+                            <a class="dropdown-item" href="{{ path('client_index') }}">{{ 'My account'|trans }} <i class="fa fa-user float-right ml-1" aria-hidden="true"></i> </a>
+                            <a class="dropdown-item" style="font-size:14px" href="#">{{ 'My orders'|trans }} <i class="ml-1 fas fa-box-open float-right"></i> </a>
+                            <a class="dropdown-item" href="{{ path('app_logout') }}">{{ 'Log out'|trans }} <i class="ml-1 fa fa-power-off text-danger float-right"></i> </a>
+
                         </div>
                     </div>
-                    {# {% endif %} #}
+                    {% endif %}
             </div>
             <div class="col-lg-4 mx-auto">
                 <div class="form-group">

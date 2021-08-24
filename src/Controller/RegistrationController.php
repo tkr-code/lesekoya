@@ -46,6 +46,7 @@ class RegistrationController extends AbstractController
             $adress->setFirstName($user->getPersonne()->getFirstName());
             $adress->setLastName($user->getPersonne()->getLastName());
             $user->addAdress($adress);
+            $user->setRoles(['ROLE_CLIENT']);
 
             // dd($user);
 
@@ -62,8 +63,7 @@ class RegistrationController extends AbstractController
             //         ->htmlTemplate('registration/confirmation_email.html.twig')
             // );
             // do anything else you need here, like send an email
-
-            return $this->redirectToRoute('admin');
+            return $this->redirectToRoute('client_index');
         }
 
         return $this->render('registration/register.html.twig', [

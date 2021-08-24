@@ -5,11 +5,11 @@
       <tool tool-id="symfony" tool-name="Symfony"/>
     </header>
     <body>
-      <trans-unit id="ftkyiTo" resname="View cart">
+      <trans-unit id="eTuFS4d" resname="View cart">
         <source>View cart</source>
         <target>Voir le Panier</target>
       </trans-unit>
-      <trans-unit id="alDjd_l" resname="See all our articles">
+      <trans-unit id="eVF_lX3" resname="See all our articles">
         <source>See all our articles</source>
         <target>Voir tous nos biens</target>
       </trans-unit>
@@ -20,6 +20,30 @@
       <trans-unit id="EdWLCN6" resname="Home page">
         <source>Home page</source>
         <target>Page d'acueil</target>
+      </trans-unit>
+      <trans-unit id="tpChmkD" resname="Dashboard 1">
+        <source>Dashboard 1</source>
+        <target>__Dashboard 1</target>
+      </trans-unit>
+      <trans-unit id="WiNESCj" resname="Manage">
+        <source>Manage</source>
+        <target>__Manage</target>
+      </trans-unit>
+      <trans-unit id="tTGBpNh" resname="My account">
+        <source>My account</source>
+        <target>Mon compte</target>
+      </trans-unit>
+      <trans-unit id="Iv67XLO" resname="My orders">
+        <source>My orders</source>
+        <target>Mes commandes</target>
+      </trans-unit>
+      <trans-unit id="GF_NsyJ" resname="Hello">
+        <source>Hello</source>
+        <target>Salut</target>
+      </trans-unit>
+      <trans-unit id="ScJmuqq" resname="Search">
+        <source>Search</source>
+        <target>Recherche</target>
       </trans-unit>
     </body>
   </file>

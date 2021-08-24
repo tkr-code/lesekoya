@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+{% import "macros/search.html.twig" as search %}
+
+{% block title %}Client | {{app_name}} {% endblock %}
+
+{% block body %}
+{{ search.search(form) }}
+<div class="container">
+    <div class="row mt-3">
+        <div class="col-lg-4">
+            <div class="list-group">
+                <button type="button" class="list-group-item list-group-item-action border-0">
+                    <a href="#">{% trans %}My account{% endtrans %}<i class="fa fa-user float-right ml-1" aria-hidden="true"></i></a>
+                </button>
+                <button type="button" class="list-group-item list-group-item-action border-0">
+                    <a href="#">{% trans %}My orders{% endtrans %}<i class="ml-1 fas fa-box-open float-right"></i> </a>
+                </button>
+           </div>
+           <hr>
+            <div class="list-group">
+                <button type="button" class="list-group-item list-group-item-action border-0">
+                    <a href="#">{% trans %}My account{% endtrans %}</a>
+                </button>
+                <button type="button" class="border-0 list-group-item list-group-item-action">
+                    <a href="#">{% trans %}My orders{% endtrans %}</a>
+                </button>
+           </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <p class="p-0 m-0 h4">{{ 'My account'|trans }}</p>    
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <p class="p-0 m-0 ">Personal information <a href="" class="float-right"><i class="text-success fas fa-pencil-alt    "></i></a> </p>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text">Malick Tounkara</p>
+                                    <p class="text-muted ">malick@store.com</p>
+                                    <p>
+                                        <a href="#" class="text-info 2rem">
+                                            Modifier le mot de passe 
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <p class="p-0 m-0 ">Adress <a href="#" class="float-right"><i class="text-success fas fa-pencil-alt    "></i></a> </p>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text">Dakar senegal, 11000 dakar Liberte 4</p>
+                                    <p>781278288</p>
+                                    <p>
+                                        <a href="#" class="text-info">
+                                            Manage adresses
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
