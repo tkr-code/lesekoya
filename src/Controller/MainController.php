@@ -54,7 +54,7 @@ class MainController extends AbstractController
         ];
 
     //   return  $this->render("main/index_1.html.twig", [
-      return  $this->renderForm("main/index.html.twig", [
+      return  $this->renderForm("main/home/index.html.twig", [
             'pages'=>$pages,
             'searchForm'=>$form
 

@@ -5,7 +5,7 @@
             {% for item in item.images|slice(0,1) %}
             <img src="{{ asset('img/article/' ~ item.name )}}" class="card-img img-fluid" width="96" height="350" alt=""> 
             {% else %}
-            <img src="{{ asset('img/vide.png')}}" alt="">
+            <img src="{{ asset('img/vide.png')}}" class="card-img img-fluid" alt="" width="96" height="350">
             {% endfor %}
         </div>
     </div>
@@ -17,7 +17,7 @@
                 </a> 
             </h6> 
             <a href="#" class="text-muted" data-abc="true">
-                {{item.description}} 
+                {{item.description }} 
             </a>
         </div>
         <h3 class="mb-0 font-weight-semibold">{{ item.formatterPrice }} F</h3>

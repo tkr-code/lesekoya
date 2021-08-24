@@ -20,7 +20,7 @@ class ArticleSearchType extends AbstractType
                 'label'=>false,
                 'attr'=>[
                     'class'=>'form-control',
-                    'placeholder'=>'Entrez un ou plusieurs mots-clés'
+                    'placeholder'=>'Enter one or more keywords'
                 ],
                 'required'=>false
             ])
@@ -28,14 +28,14 @@ class ArticleSearchType extends AbstractType
                 'required'=>false,
                 'label'=>false,
                 'attr'=>[
-                    'placeholder'=>'Budget max'
+                    'placeholder'=>'Maximum budget'
                 ]
             ])
             ->add('minPrice',IntegerType::class,[
                 'required'=>false,
                 'label'=>false,
                 'attr'=>[
-                    'placeholder'=>'Budget min'
+                    'placeholder'=>'Minimum budget'
                 ]
             ])
             ->add('category',EntityType::class,[
@@ -44,8 +44,9 @@ class ArticleSearchType extends AbstractType
                 'label'=>false,
                 'required'=>false,
                 'attr'=>[
-                    'class'=>'select2'
-                ]
+                    'class'=>'select2',  
+                ],
+                'placeholder'=>'All articles'
             ])
         ;
     }

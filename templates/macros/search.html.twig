@@ -1,30 +1,56 @@
 {% macro search(form) %}
-<div class="jumbotron">
+<div class="p-3 bg-white">
     <div class="container">
         {{ form_start(form,{action:'articles'}) }}
-        <div class="form-row align-items-end">
-            <div class="col-8">
-            {{ form_row(form.mots)}}
+        <div class="row">
+            <div class="col-lg-9">
+                <div class="form-row align-items-end">
+                    <div class="col-12">
+                    {{ form_row(form.mots)}}
+                    </div>
+                    <div class="col-4">
+                    {{ form_row(form.category)}}
+                    </div>
+                    <div class="col-4">
+                    {{ form_row(form.minPrice)}}
+                    </div>
+                    <div class="col-4">
+                    {{ form_row(form.maxPrice)}}
+                    </div>
+                </div>
             </div>
-            <div class="col-4">
-            {{ form_row(form.category)}}
+            <div class="col-lg-3">
+                <a href="{{ path('card_index') }}" class="btn">
+                        Cart 
+                        <i class="fa fa-cart-plus text-success fa-1x" aria-hidden="true"></i>
+                            <span class="badge badge-pill badge-primary">
+                                {{ app.request.session.get('panier') |length }} 
+                            </span>
+                    </a>
+                    {# {% if  is_granted('ROLE_USER') %} #}
+                    <div class="dropdown open d-inline-block">
+                        <button class="btn dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                                   {% trans %}Hello{% endtrans %} {{ app.user.personne.firstName|default('Malick') }} <i class="fas fa-user-check    "></i>
+                                </button>
+                        <div class="dropdown-menu" aria-labelledby="triggerId">
+                            <a class="dropdown-item" href="#">My compte <i class="fa fa-user float-right ml-1" aria-hidden="true"></i> </a>
+                            <a class="dropdown-item" href="#">My orders <i class="ml-1 fas fa-box-open float-right"></i> </a>
+                        </div>
+                    </div>
+                    {# {% endif %} #}
             </div>
-            <div class="col-4">
-            {{ form_row(form.minPrice)}}
-            </div>
-            <div class="col-4">
-            {{ form_row(form.maxPrice)}}
-            </div>
-            <div class="col">
-            <div class="form-group">
-                <button class="btn btn-primary">Rechercher</button>
-            </div>
+            <div class="col-lg-4 mx-auto">
+                <div class="form-group">
+                    <button class="btn btn-primary">{% trans %}Search{% endtrans %} <i class="fa fa-search-plus" aria-hidden="true"></i> </button>
+                </div>
             </div>
         </div>
         {{ form_end(form) }}
     </div>
 </div>
 {% endmacro %}
+
 {% macro allAsearch(params) %}
     
 {% endmacro %}

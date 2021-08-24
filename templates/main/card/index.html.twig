@@ -6,12 +6,11 @@
 {% block title %}Hello CardController!{% endblock %}
 
 {% block body %}
-<ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="#">Tous les articles</a></li>
-    <li class="breadcrumb-item"><a href="{{ path('articles'}) }}">Panier</a></li>
-    <li class="breadcrumb-item active"> //</li>
-</ol>
 {{ search.search(form) }}
+<ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ path('articles') }}">Tous les articles</a></li>
+    <li class="breadcrumb-item active">Cart</li>
+</ol>
   {% for item in app.flashes('success') %}
   <div class="alert alert-success">
       <p>{{item}}</p>
@@ -100,8 +99,12 @@
             </div>
       </div>
 {% else %}
-     <div class="card-body">
-       <h3>Panier vide</h3>
+     <div class="card-body text-center">
+       <h3>Empty cart</h3>
+       <a class="btn bg-danger bnt-success p-5 rounded-circle" href="#">
+        <i class="fa fa-cart-arrow-down fa-4x" aria-hidden="true"></i>
+       </a></br>
+       <a href="{{ path('articles') }}">add products</a>
      </div>
      <div class="card-footer">
           <a class="link-default 2rem" href="{{ path('articles') }}">

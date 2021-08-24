@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use Faker\Factory;
 use App\Entity\Image;
@@ -23,7 +23,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 /**
  * @Route("admin/article")
  */
-class AdminArticleController extends AbstractController
+class ArticleController extends AbstractController
 {
     private $em;
     private $translator;
