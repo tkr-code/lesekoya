@@ -39,11 +39,10 @@
           <li class="nav-item">
             <a href="/" class="nav-link">Home</a>
           </li>
-          {% if  is_granted('ROLE_USER') %}
-            <li class="nav-item">
-              <a href="{{ path('admin') }}" class="nav-link">dashboard</a>
-            </li>
-          {% else %}
+          <li class="nav-item">
+            <a href="{{path('articles') }}" class="nav-link">Article</a>
+          </li>
+          {% if not is_granted('ROLE_CLIENT') %}
             <li class="nav-item">
               <a href="{{ path('app_login') }}" class="nav-link">Login</a>
             </li>
@@ -51,11 +50,13 @@
               <a href="{{ path('app_register') }}" class="nav-link">Register</a>
             </li>
           {% endif %}
+          {% if  is_granted('ROLE_EDITOR') %}
           <li class="nav-item dropdown">
-            <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Pages</a>
+            <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">{{app_name}}</a>
             <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
-              {# <li><a href="{{ path('produits') }}" class="dropdown-item">Produit </a></li> #}
-              {# <li><a href="{{ path('card_index') }}" class="dropdown-item">Panier </a></li> #}
+              <li><a href="{{ path('admin') }}" class="dropdown-item">Dashboard </a></li>
+              <li><a href="{{ path('article_index') }}" class="dropdown-item">Manage artices </a></li>
+              <li><a href="{{ path('order_index') }}" class="dropdown-item">Manage orders </a></li>
               {# <li class="dropdown-divider"></li>
 
               <!-- Level two dropdown-->
@@ -83,6 +84,7 @@
               <!-- End Level two --> #}
             </ul>
           </li>
+          {% endif %}
           <li class="nav-item dropdown">
             <a id="dropdownSubMenu2" href="#" data-toggle="dropdown" aria-haspopup="true" 
             aria-expanded="false" class="nav-link dropdown-toggle"><img width="30px" src="{{ asset('img/pays/' ~ app.request.locale ~ '') }}.jpg" alt="lang"> </a>

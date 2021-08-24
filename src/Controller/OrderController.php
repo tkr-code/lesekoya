@@ -102,7 +102,7 @@ class OrderController extends AbstractController
         $entityManager->flush();
         $this->addFlash('success','Order created');
         $session->set('panier',[]);
-        return $this->redirectToRoute('order_index',[],Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('client_index',[],Response::HTTP_SEE_OTHER);
     }
     /**
      * @Route("/new", name="order_new", methods={"GET","POST"})

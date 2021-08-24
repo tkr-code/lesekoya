@@ -11,11 +11,26 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\ArticleSearch;
 use App\Form\ArticleSearchType;
+use App\Repository\OrderRepository;
+
 /**
  * @Route("/customer")
  */
 class ClientController extends AbstractController
 {
+    /**
+     * @Route("/order", name="client_order", methods={"GET"})
+     */
+    public function orderIndex(OrderRepository $orderRepository): Response
+    {
+        $search = new ArticleSearch();
+        $form = $this->createForm(ArticleSearchType::class,$search);
+        $user = $this->getUser();
+        return $this->renderForm('client/order/order_index.html.twig', [
+            'form'=>$form,
+            'orders'=>$orderRepository->findClient($user->getId())
+        ]);
+    }
     /**
      * @Route("/", name="client_index", methods={"GET"})
      */

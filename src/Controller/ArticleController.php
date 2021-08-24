@@ -29,7 +29,7 @@ class ArticleController extends AbstractController
                 ],301);
         }
         $search = new ArticleSearch();
-        $form = $this->createForm(ArticleSearchType::class,$search)->handleRequest($request);
+        $form = $this->createForm(ArticleSearchType::class,$search);
         // $comment = new Comment();
         // $comment->setProduit($produit);
         
@@ -52,7 +52,7 @@ class ArticleController extends AbstractController
         return $this->renderForm('main/article/show.html.twig', [
             'article'=>$article,
             // 'comment' => $comment,
-            // 'form' => $form,
+            'form' => $form,
         ]);
     }
     /**

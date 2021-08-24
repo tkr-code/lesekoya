@@ -1,12 +1,16 @@
 {% extends "base.html.twig" %}
 {% import "macros/image.html.twig" as image %}
+{% import "macros/search.html.twig" as search %}
+
 {% block title %}{{ article.title }} | {{ app_name }} {% endblock %}
 {% block body %}
+{{ search.search(form) }}
 <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="#">Tous les articles</a></li>
     <li class="breadcrumb-item"><a href="{{ path('articles',{category: article.category.id }) }}">{{ article.category.title }}</a></li>
     <li class="breadcrumb-item active">{{ article.title }}</li>
 </ol>
+
 <div class="row">
     <div class="col-lg-8">
         <div class="jumbotron">
@@ -57,13 +61,25 @@
                         <div class="text-primary font-weight-bold" style="font-size:4rem">
                             {{ article.formatterPrice }} F cfa
                         </div>
-                        <form action="" method="post">
+                        <form class="form-row" action="{{ path('card_index') }}" method="post">
+                        <div class="form-group col-6">
+                        <input type="hidden" name="article_id" value="{{ article.id }}">
+                          <input type="number" class="form-control" min="1" max="{{ article.quantity }}" name="qty" value="1" >
+                          <small id="helpId" class="text-muted">Stock: {{ article.quantity  }} </small>
+                        </div>
+                        <div class="form-group col-6">
+                          <button type="submit" class="btn btn-success ml-1" name="card-add">
+                            Add to cart <i class="fa fa-cart-plus" aria-hidden="true"></i>
+                          </button>
+                        </div>
+                      </form>
+                        {# <form action="" method="post">
                             <div class="form-group">
                               <label> Quantity</label>
                               <input type="number" name="" id="" class="form-control" placeholder="" aria-describedby="helpId">
                             </div>
                         <a href="#" class="btn btn-primary">Ajouter au panier</a>
-                        </form>
+                        </form> #}
                     </div>
                 </div>
             </div>

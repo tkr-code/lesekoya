@@ -12,15 +12,15 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Entity\ArticleSearch;
 use App\Form\ArticleSearchType;
 
-class CardController extends AbstractController
+class CartController extends AbstractController
 {
     /**
      * @Route("/card", name="card_index")
      */
     public function index(CardService $cardService, Request $request): Response
     {
-                $search = new ArticleSearch();
-        $form = $this->createForm(ArticleSearchType::class,$search)->handleRequest($request);
+        $search = new ArticleSearch();
+        $form = $this->createForm(ArticleSearchType::class,$search);
         if ($request->request->count() > 0) {
             $cardService->addPost($request->request->get('article_id'),$request->request->get('qty'));
             $this->addFlash('success','panier modiifer');

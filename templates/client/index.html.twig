@@ -7,25 +7,7 @@
 {{ search.search(form) }}
 <div class="container">
     <div class="row mt-3">
-        <div class="col-lg-4">
-            <div class="list-group">
-                <button type="button" class="list-group-item list-group-item-action border-0">
-                    <a href="#">{% trans %}My account{% endtrans %}<i class="fa fa-user float-right ml-1" aria-hidden="true"></i></a>
-                </button>
-                <button type="button" class="list-group-item list-group-item-action border-0">
-                    <a href="#">{% trans %}My orders{% endtrans %}<i class="ml-1 fas fa-box-open float-right"></i> </a>
-                </button>
-           </div>
-           <hr>
-            <div class="list-group">
-                <button type="button" class="list-group-item list-group-item-action border-0">
-                    <a href="#">{% trans %}My account{% endtrans %}</a>
-                </button>
-                <button type="button" class="border-0 list-group-item list-group-item-action">
-                    <a href="#">{% trans %}My orders{% endtrans %}</a>
-                </button>
-           </div>
-        </div>
+            {% include "client/nav.html.twig" %}
         <div class="col-lg-8">
             <div class="card">
                 <div class="card-header">
@@ -43,7 +25,8 @@
                                     <p class="text-muted ">malick@store.com</p>
                                     <p>
                                         <a href="#" class="text-info 2rem">
-                                            Modifier le mot de passe 
+                                            {# Modifier le mot de passe  #}
+                                           {{ 'Change password'|trans }} 
                                         </a>
                                     </p>
                                 </div>
@@ -59,7 +42,7 @@
                                     <p>781278288</p>
                                     <p>
                                         <a href="#" class="text-info">
-                                            Manage adresses
+                                           {{ 'Manage adresses'|trans }}
                                         </a>
                                     </p>
                                 </div>

@@ -27,6 +27,24 @@ class OrderRepository extends ServiceEntityRepository
         ->getQuery()
         ->getResult();
     }
+    public function findClient(int $user)
+    {
+        return $this->findQuery()
+        ->where("o.user = :user")
+        ->setParameter('user',$user)
+        ->getQuery()
+        ->getResult();
+    }
+    public function findClientState(int $user, string $state="in progress")
+    {
+        return $this->findQuery()
+        ->where("o.user = :user")
+        ->setParameter('user',$user)
+        ->andWhere("o.state = :state ")
+        ->setParameter('state',$state)
+        ->getQuery()
+        ->getResult();
+    }
 
     public function findExpired()
     {
