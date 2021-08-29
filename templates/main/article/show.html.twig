@@ -6,7 +6,7 @@
 {% block body %}
 {{ search.search(form) }}
 <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="#">Tous les articles</a></li>
+    <li class="breadcrumb-item"><a href="{{path('articles') }}">Tous les articles</a></li>
     <li class="breadcrumb-item"><a href="{{ path('articles',{category: article.category.id }) }}">{{ article.category.title }}</a></li>
     <li class="breadcrumb-item active">{{ article.title }}</li>
 </ol>
@@ -56,112 +56,154 @@
                         </div>
                     </div>
                     <div class="col-5">
-                        <h1>{{ article.title }}</h1>
-                        <h2> Pièces - Surface m</h2>
-                        <div class="text-primary font-weight-bold" style="font-size:4rem">
+                        <h3>{{ article.title }}</h3>
+                        <p>{{ article.description|nl2br }} </p>
+                        <div class="text-primary font-weight-bold" style="font-size:2rem">
                             {{ article.formatterPrice }} F cfa
                         </div>
                         <form class="form-row" action="{{ path('card_index') }}" method="post">
-                        <div class="form-group col-6">
+                        <div class="form-group col-3">
                         <input type="hidden" name="article_id" value="{{ article.id }}">
                           <input type="number" class="form-control" min="1" max="{{ article.quantity }}" name="qty" value="1" >
                           <small id="helpId" class="text-muted">Stock: {{ article.quantity  }} </small>
                         </div>
                         <div class="form-group col-6">
                           <button type="submit" class="btn btn-success ml-1" name="card-add">
-                            Add to cart <i class="fa fa-cart-plus" aria-hidden="true"></i>
+                            {{'Add to cart'|trans}} <i class="fa fa-cart-plus" aria-hidden="true"></i>
                           </button>
                         </div>
                       </form>
-                        {# <form action="" method="post">
-                            <div class="form-group">
-                              <label> Quantity</label>
-                              <input type="number" name="" id="" class="form-control" placeholder="" aria-describedby="helpId">
-                            </div>
-                        <a href="#" class="btn btn-primary">Ajouter au panier</a>
-                        </form> #}
+                      <div class="social-link">
+                        <button type="button" class="btn btn-default btn-sm"><i class="fas fa-share"></i>
+                            Share</button>
+                        <button type="button" class="btn btn-default btn-sm"><i class="far fa-copy"></i>
+                            Copier le lien de l'article </button>
+                        <button type="button" class="btn btn-default btn-sm"><i class="fab fa-whatsapp    "></i>
+                            Parteager sur Whatsapp</button>
+                        <button type="button" class="btn btn-default btn-sm"><i
+                                class="far fa-thumbs-up"></i> Like</button>
+                        <span class="float-right text-muted">
+                        127 likes - 
+                        {# {{ article.comments| length }} comments #}
+                        </span>
+                      </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="card card-widget">
-            <!-- /.card-header -->
-            <div class="card-body">
-                <p>{{ article.description | nl2br }}</p>
-                <button type="button" class="btn btn-default btn-sm"><i class="fas fa-share"></i>
-                    Share</button>
-                <button type="button" class="btn btn-default btn-sm"><i
-                        class="far fa-thumbs-up"></i> Like</button>
-                <span class="float-right text-muted">
-                127 likes - 
-                {# {{ article.comments| length }} comments #}
-                </span>
+        <div class="row">
+            <div class="col-12">
+                <div class="card card-dark card-outline card-tabs">
+                    <div class="card-header p-0 pt-1 border-bottom-0">
+                        <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="custom-tabs-three-home-tab"
+                                    data-toggle="pill" href="#description" role="tab"
+                                    aria-controls="custom-tabs-three-home" aria-selected="true">{{'Description'|trans}} </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill"
+                                    href="#comment" role="tab"
+                                    aria-controls="custom-tabs-three-profile"
+                                    aria-selected="false">{{'Comment'|trans}}</a>
+                            </li>                        
+                            <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill"
+                                    href="#caracteristique" role="tab"
+                                    aria-controls="custom-tabs-three-profile"
+                                    aria-selected="false">{{'Caractéristique'|trans}}</a>
+                            </li>                        
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content" id="custom-tabs-three-tabContent">
+                            <div class="tab-pane fade show active" id="description"
+                                role="tabpanel" aria-labelledby="custom-tabs-three-home-tab">
+                                    {# {{ include ("admin/order/_datatable.html.twig",{id:'1',orders: orders}) }} #}
+                                        description
+                            </div>
+                            <div class="tab-pane fade" id="comment" role="tabpanel"
+                                aria-labelledby="custom-tabs-three-profile-tab">
+                                           <!-- Box Comment -->
+                                <div class="card ">
+                                    <!-- /.card-body -->
+                                    {# <div class="card-body card-comments bg-white">
+                                        {% for item in article.comments %}                        
+                                        <div class="card-comment ">
+                                            <!-- User image -->
+                                            <img class="img-circle img-sm" src="{{ asset('adminlte/dist/img/user3-128x128.jpg') }}"
+                                                alt="User Image">
+                                            {% else %}
+                                                {{ image.userEmpty()}}
+                                            {% endif %}
+
+                                            <div class="comment-text">
+                                                <span class="username">
+                                                    {{ item.admin.username }}
+                                                    <span class="text-muted float-right">{{ item.createdAt | date('d/m/Y à H:m') }}</span>
+                                                </span><!-- /.username -->
+                                                {{ item.content|nl2br }}
+                                            </div>
+                                            <!-- /.comment-text -->
+                                        </div>
+                                        <!-- /.card-comment -->
+                                        {% else %}
+                                            <p>Aucun  commentaire</p>
+                                        {% endfor %}
+                                    </div> #}
+                                    <!-- /.card-footer -->
+                                    <div class="card-footer">
+                                    {% if is_granted('ROLE_USER') %}
+                                        {# {{ include('admin/comment/_form.html.twig')}} #}
+                                    {% endif %}
+                                    </div>        
+                                    <!-- /.card-footer -->
+                                </div>
+                                <!-- /.card -->
+                                {% for item in app.flashes('success') %}
+                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <strong>{{ item }}</strong>
+                                    </div>
+                                    
+                                    <script>
+                                        $(".alert").alert();
+                                    </script>
+                                {% endfor %}
+                            </div>
+                            <div class="tab-pane fade" id="caracteristique" role="tabpanel"
+                                aria-labelledby="custom-tabs-three-profile-tab">
+                                           <!-- Box Comment -->
+                                <h2>Caractéristique</h2>
+                                <table class="table table-striped">
+                                    {% for item in article.options %}
+                                    <tr>
+                                        <td>{{ item.title }}</td>
+                                        <td>{{ item.content }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card -->
+                    <div class="card-footer">
+                        <a href="{{ path('articles') }}" class="btn btn-default">Back to Articles <i class="fa fa-arrow-circle-left" aria-hidden="true"></i></a>
+                    </div>
+                </div>
             </div>
         </div>
-        <h2>Commentaires</h2>
+        
         <div class="row">
             <div class="col-md-6">
-                <!-- Box Comment -->
-                <div class="card ">
-                    <!-- /.card-body -->
-                    {# <div class="card-body card-comments bg-white">
-                        {% for item in article.comments %}                        
-                        <div class="card-comment ">
-                            <!-- User image -->
-                            <img class="img-circle img-sm" src="{{ asset('adminlte/dist/img/user3-128x128.jpg') }}"
-                                alt="User Image">
-                            {% else %}
-                                {{ image.userEmpty()}}
-                            {% endif %}
-
-                            <div class="comment-text">
-                                <span class="username">
-                                    {{ item.admin.username }}
-                                    <span class="text-muted float-right">{{ item.createdAt | date('d/m/Y à H:m') }}</span>
-                                </span><!-- /.username -->
-                                {{ item.content|nl2br }}
-                            </div>
-                            <!-- /.comment-text -->
-                        </div>
-                        <!-- /.card-comment -->
-                        {% else %}
-                            <p>Aucun  commentaire</p>
-                        {% endfor %}
-                    </div> #}
-                    <!-- /.card-footer -->
-                    <div class="card-footer">
-                    {% if is_granted('ROLE_USER') %}
-                        {# {{ include('admin/comment/_form.html.twig')}} #}
-                    {% endif %}
-                    </div>        
-                    <!-- /.card-footer -->
-                </div>
-                <!-- /.card -->
-                {% for item in app.flashes('success') %}
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                        <strong>{{ item }}</strong>
-                    </div>
-                    
-                    <script>
-                        $(".alert").alert();
-                    </script>
-                {% endfor %}
+ 
             </div>
             <div class="col-md-6">
                 <div class="row">
                     <div class="col-md-12">
-                        <h2>Caractéristique</h2>
-                        <table class="table table-striped">
-                            {% for item in article.options %}
-                            <tr>
-                                <td>{{ item.title }}</td>
-                                <td>{{ item.content }}</td>
-                            </tr>
-                            {% endfor %}
-                        </table>
+                        
                     </div>
                     
                 </div>

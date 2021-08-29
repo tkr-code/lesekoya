@@ -27,6 +27,21 @@ class OrderRepository extends ServiceEntityRepository
         ->getQuery()
         ->getResult();
     }
+    public function findStateClient(int $id_user, string $state = null )
+    {
+
+        $query = $this->findQuery();
+        if ($state != null) {
+            $query
+            ->where("o.state = :state ")
+            ->setParameter('state',$state);
+        }
+       return $query
+        ->andWhere("o.user = :id_user ")
+        ->setParameter('id_user',$id_user)
+        ->getQuery()
+        ->getResult();
+    }
     public function findClient(int $user)
     {
         return $this->findQuery()

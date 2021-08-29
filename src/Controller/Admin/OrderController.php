@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Entity\Order;
 use App\Form\OrderType;
@@ -21,12 +21,18 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @Route("/admin/order")
  */
 class OrderController extends AbstractController
 {
+    private $urlGenerator;
+    public function __construct(UrlGeneratorInterface $urlGeneratorInterface)
+    {
+        $this->urlGenerator= $urlGeneratorInterface;
+    }
     /**
      * @Route("/order-adress/{id}/manage-adress", name="order_adress")
      */
@@ -37,6 +43,21 @@ class OrderController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/client", name="order_client_index", methods={"GET"})
+     */
+    public function Clientindex(OrderRepository $orderRepository): Response
+    {
+        $user = $this->getUser();
+        return $this->render('admin/order/client/index.html.twig', [
+            'nbrOrders'=>count($orderRepository->findAll()),
+            'orders'=>$orderRepository->findClient($user->getId()),
+            'ordersCompleted'=>$orderRepository->findState('completed'),
+            'ordersInProgress'=>$orderRepository->findState('in progress'),
+            'ordersWaiting'=>$orderRepository->findState('waiting'),
+            'ordersCanceled'=>$orderRepository->findState('canceled'),
+        ]);
+    }
     /**
      * @Route("/", name="order_index", methods={"GET"})
      */
@@ -158,10 +179,12 @@ class OrderController extends AbstractController
     }
 
     /**
+     * @Route("/client/{id}/edit", name="order_edit_client", methods={"GET","POST"})
      * @Route("/{id}/edit", name="order_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Order $order, OrderItemRepository $orderItemRepository,  OrderService $orderService, PaymentService $paymentService): Response
+    public function edit( Request $request, Order $order, OrderItemRepository $orderItemRepository,  OrderService $orderService, PaymentService $paymentService): Response
     {
+        // dd($request)
         $message = '';
         // debut payment
         $payment = $order->getPayment();
@@ -212,6 +235,15 @@ class OrderController extends AbstractController
             {
                 $order->setShipping(0);
             }
+            if($order->getState() == 'completed')
+            {
+                $order->setShippingState('completed');
+                $order->setCheckoutState('completed');
+                $payment->setState('completed');
+                $order->setPayment($payment);
+                $order->setCheckoutCompletedAt(new \DateTime());
+            }
+            // dd('oups');
             //
             $this->getDoctrine()->getManager()->flush();
             // return $this->redirectToRoute('order_index', [], Response::HTTP_SEE_OTHER);
@@ -227,11 +259,19 @@ class OrderController extends AbstractController
         $paymentService->calculPayment($payment);
         $order->setPayment($payment);
         
+        $breadcrumb=
+        [
+            [
+                'path'=>$this->urlGenerator->generate('order_index'),
+                'name'=>'Manage orders'
+            ]
+        ];
         return $this->renderForm('admin/order/edit.html.twig', [
             'order' => $order,
             'form' => $form,
             'formItem' => $formItem,
-            'formFacturation'=>$formPayment
+            'formFacturation'=>$formPayment,
+            'breadcrumb'=>$breadcrumb
         ]);
     }
 

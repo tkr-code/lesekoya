@@ -21,13 +21,13 @@
         <source>Home page</source>
         <target>Page d'acueil</target>
       </trans-unit>
-      <trans-unit id="tpChmkD" resname="Dashboard 1">
-        <source>Dashboard 1</source>
-        <target>__Dashboard 1</target>
+      <trans-unit id="Z7aWRoY" resname="Dashboard">
+        <source>Dashboard</source>
+        <target>Tableau de bord</target>
       </trans-unit>
       <trans-unit id="WiNESCj" resname="Manage">
         <source>Manage</source>
-        <target>__Manage</target>
+        <target>Gérer</target>
       </trans-unit>
       <trans-unit id="tTGBpNh" resname="My account">
         <source>My account</source>
@@ -44,6 +44,70 @@
       <trans-unit id="ScJmuqq" resname="Search">
         <source>Search</source>
         <target>Recherche</target>
+      </trans-unit>
+      <trans-unit id="OnhpU4i" resname="Home">
+        <source>Home</source>
+        <target>Accueil</target>
+      </trans-unit>
+      <trans-unit id="K1w9JnI" resname="Contact">
+        <source>Contact</source>
+        <target>Contact</target>
+      </trans-unit>
+      <trans-unit id="DiImtSN" resname="Welcome">
+        <source>Welcome</source>
+        <target>Bienvenue</target>
+      </trans-unit>
+      <trans-unit id="KdlJIlE" resname="Article">
+        <source>Article</source>
+        <target>Article</target>
+      </trans-unit>
+      <trans-unit id="nWMiwfT" resname="Login">
+        <source>Login</source>
+        <target>Se connecter</target>
+      </trans-unit>
+      <trans-unit id="P5yZH2O" resname="Change password">
+        <source>Change password</source>
+        <target>Modifier le mot de passe</target>
+      </trans-unit>
+      <trans-unit id="FaMlmHb" resname="Manage adresses">
+        <source>Manage adresses</source>
+        <target>Gérer les addresses</target>
+      </trans-unit>
+      <trans-unit id="SWFhRVF" resname="Log out">
+        <source>Log out</source>
+        <target>Se déconnecter</target>
+      </trans-unit>
+      <trans-unit id="pSrOQg8" resname="All">
+        <source>All</source>
+        <target>Tous</target>
+      </trans-unit>
+      <trans-unit id="bik6jAC" resname="Waiting">
+        <source>Waiting</source>
+        <target>En attente</target>
+      </trans-unit>
+      <trans-unit id="wfiOnWx" resname="In progress">
+        <source>In progress</source>
+        <target>En cour</target>
+      </trans-unit>
+      <trans-unit id="E8ou4km" resname="Canceled">
+        <source>Canceled</source>
+        <target>Anuller</target>
+      </trans-unit>
+      <trans-unit id="Iqlw0uW" resname="Completed">
+        <source>Completed</source>
+        <target>Terminer</target>
+      </trans-unit>
+      <trans-unit id="Um4Ah8w" resname="Description">
+        <source>Description</source>
+        <target>Description</target>
+      </trans-unit>
+      <trans-unit id="xDY3y18" resname="Caractéristique">
+        <source>Caractéristique</source>
+        <target>__Caractéristique</target>
+      </trans-unit>
+      <trans-unit id="L.WZgUO" resname="Tous">
+        <source>Tous</source>
+        <target>__Tous</target>
       </trans-unit>
     </body>
   </file>

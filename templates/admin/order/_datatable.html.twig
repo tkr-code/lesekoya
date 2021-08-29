@@ -27,7 +27,7 @@
             {{ btn.order(order.state) }}
             
             </td>
-            <td>{{ order.createdAt ? order.createdAt|date('d-m-Y H:i:s') : '' }}</td>
+            <td>{{ order.createdAt|date_format_fr }}</td>
             <td>
             {{ order.user.personne.firstname ~ ' ' ~ order.user.personne.lastname ~ ', ' ~ order.shippingAdress.street }}<br/>
             {{ order.shippingAdress.postalCode ~ ' ' ~ order.shippingAdress.city }} <br/>

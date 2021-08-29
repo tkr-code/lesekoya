@@ -13,7 +13,13 @@
   <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
   <!-- Add the slick-theme.css if you want default styling -->
   <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
-
+  <!-- -->
+  <link rel="stylesheet" href="{{ asset('vendor/suggestions/css/unibox.css') }}">
+  <style>
+    /* #unibox-suggest-box {
+                border-width: 10px;
+            } */
+  </style>
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ asset('adminLte/dist/css/adminlte.min.css') }}">
   {% block head %}{% endblock %}
@@ -37,14 +43,14 @@
         <!-- Left navbar links -->
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a href="/" class="nav-link">Home</a>
+            <a href="/" class="nav-link">{{'Home'|trans}}</a>
           </li>
           <li class="nav-item">
-            <a href="{{path('articles') }}" class="nav-link">Article</a>
+            <a href="{{path('articles') }}" class="nav-link">{{'Article'|trans}}</a>
           </li>
           {% if not is_granted('ROLE_CLIENT') %}
             <li class="nav-item">
-              <a href="{{ path('app_login') }}" class="nav-link">Login</a>
+              <a href="{{ path('app_login') }}" class="nav-link">{{'Login'|trans}}</a>
             </li>
             <li class="nav-item">
               <a href="{{ path('app_register') }}" class="nav-link">Register</a>
@@ -52,11 +58,12 @@
           {% endif %}
           {% if  is_granted('ROLE_EDITOR') %}
           <li class="nav-item dropdown">
-            <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">{{app_name}}</a>
+            <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle rounded bg-primary">Manage {{app_name}}</a>
             <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
               <li><a href="{{ path('admin') }}" class="dropdown-item">Dashboard </a></li>
               <li><a href="{{ path('article_index') }}" class="dropdown-item">Manage artices </a></li>
               <li><a href="{{ path('order_index') }}" class="dropdown-item">Manage orders </a></li>
+              <li><a href="{{ path('app_logout') }}" class="dropdown-item">Log out <i class="fa fa-power-off text-danger" aria-hidden="true"></i> </a></li>
               {# <li class="dropdown-divider"></li>
 
               <!-- Level two dropdown-->
@@ -155,10 +162,66 @@
 <script src="{{ asset('adminLte/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <!-- slick -->
 <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-
+<!-- autocomplete -->
+<script src="{{ asset('vendor/suggestions/js/unibox.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset('adminLte/dist/js/adminlte.min.js') }}"></script>
 {% block foot %}{% endblock %}
-{% block javascripts %}{% endblock %}
+<!-- unibox configuration -->
+  <script>
+      var boxes = [];
+
+      sxQuery(document).ready(function() {
+
+          var settings = {
+              // REQUIRED
+              suggestUrl: 'https://global.sitesearch360.com/sites/suggest?site=fairshopping.online&limit=10&maxQuerySuggestions=50&query=', // the URL that provides the data for the suggest -> this is just an example
+              // suggestUrl: 'http://yourserver.com/suggests?query=', // the URL that provides the data for the suggest
+              ivfImagePath: 'http://yourserver.com/images/ivf/', // the base path for instant visual feedback images
+
+              // OPTIONAL
+              instantVisualFeedback: 'all', // where the instant visual feedback should be shown, 'top', 'bottom', 'all', or 'none', default: 'all'
+              throttleTime: 100, // the number of milliseconds before the suggest is triggered after finished input, default: 300ms
+              extraHtml: undefined, // extra HTML code that is shown in each search suggest
+              highlight: true, // whether matched words should be highlighted, default: true
+              queryVisualizationHeadline: '', // A headline for the image visualization, default: empty
+              animationSpeed: 200, // speed of the animations, default: 300ms
+              callbacks: {
+                  enter: function(text,link){console.log('enter callback: '+text);}, // callback on what should happen when enter is pressed, default: undefined, meaning the link will be followed
+                  enterResult: function(text,link){console.log('enter callback result: ' + text);}, // callback on what should happen when enter is pressed on a result or a suggest is clicked
+              },
+              placeholder: 'Search for something',
+              minChars: 3, // minimum number of characters before the suggests shows, default: 3
+              suggestOrder: [], // the order of the suggests
+              suggestSelectionOrder: [], // the order of how they should be selected
+              noSuggests: '<b>We haven\'t found anything for you, <u>sooorrryyy</u></b>',
+              emptyQuerySuggests: {
+                              "suggests":{
+                                  "Products":[
+                                      // {
+                                      //   "id":"2179584",
+                                      //   "name":"Canon PowerShot SX710 HS",
+                                      //   "image":"https://images-eu.ssl-images-amazon.com/images/I/41JNvHrzCAL._AC_SY200_.jpg",
+                                      //   "link":"https://www.amazon.com/Canon-PowerShot-SX720-HS-Black/dp/B01BV14I40/"
+                                      // },
+                                      {
+                                        "id":"1",
+                                        "name":"hp probook",
+                                        "image":"{{ asset('img/article/38d54b4d742e50968f60b64c0bce0171.jpg' )}}",
+                                        "link":"{{ path('articles_show', { category: 'Smartphone', slug: 'hp-probook', id: '1'}) }}"
+                                      },
+                                  ]
+                              }
+                          },
+              //maxWidth: 400 // the maximum width of the suggest box, default: as wide as the input box
+          };
+
+          // apply the settings to an input that should get the unibox
+          // apply to multiple boxes
+          boxes = sxQuery(".s").unibox(settings);
+      });
+  </script>
+{% block javascripts %}
+{% endblock %}
 </body>
 </html>

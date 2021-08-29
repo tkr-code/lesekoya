@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>UniBox Search with Suggestions Example</title>
+      
+    <!-- UniBox CSS -->
+    <link rel="stylesheet" href="css/unibox.min.css"/>
+	<!-- Demo CSS -->
+	<link rel="stylesheet" href="css/demo.css">
+  
+              <style>
+            .searchbox{
+                 padding: 10px;
+                border: 1px solid #ccc;
+                outline: 0;
+            }
+            .btn-search{
+                padding: 10px;
+                border: 1px solid #16a085;
+                background: #16a085;
+                color: #fff;
+                margin-left: -5px;
+                cursor: pointer;
+                
+            }
+            .btn-search:hover{
+                opacity: 0.8;
+                
+            }
+            
+        </style>
+  </head>
+  <body>
+ <header class="intro">
+ <h1>UniBox Search with Suggestions Example</h1>
+ <p>A Javascript plugin for a universal search box with search suggestion.</p>
+ <p> Written in HTML, CSS, JavaScript... </p>
+ <div class="action">
+ <a href="https://www.codehim.com/text-input/search-box-with-suggestions-dropdown-unibox-js/" title="Back to download and tutorial page" class="btn back">Back to Tutorial</a>
+ <a href="https://github.com/ddsky/unibox" title="View, Fork or Star on GitHub" class="btn github">View on GitHub</a>
+ </div>
+ 
+ </header>
+  
+ <main>
+  <article>
+  <p>The following is the example of search box with suggestions dropdown. </p>
+   
+              <div id="main">
+            <div id="head">
+                <form>
+                    <input class="s searchbox" id="searchInput" type="text" placeholder="My search..." />
+                    <input class="btn-search" type="submit" value="search" />
+                </form>
+                <br><br><br><br><br><br><br><br><br><br><br><br><br>
+            </div>
+  </article>
+ </main>
+ 
+  <footer class="credit">Author: David Urbansky - Distributed By: <a title="Awesome web design code & scripts" href="https://www.codehim.com?source=demo-page" target="_blank">CodeHim</a></footer>
+  
+  <!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<!-- UniBox JS -->
+<script src="js/unibox.min.js"></script>
+
+     <!-- unibox configuration -->
+        <script>
+            var boxes = [];
+
+            sxQuery(document).ready(function() {
+
+                var settings = {
+                    // REQUIRED
+                    suggestUrl: 'https://global.sitesearch360.com/sites/suggest?site=fairshopping.online&limit=10&maxQuerySuggestions=50&query=', // the URL that provides the data for the suggest -> this is just an example
+                    // suggestUrl: 'http://yourserver.com/suggests?query=', // the URL that provides the data for the suggest
+                    ivfImagePath: 'http://yourserver.com/images/ivf/', // the base path for instant visual feedback images
+
+                    // OPTIONAL
+                    instantVisualFeedback: 'all', // where the instant visual feedback should be shown, 'top', 'bottom', 'all', or 'none', default: 'all'
+                    throttleTime: 100, // the number of milliseconds before the suggest is triggered after finished input, default: 300ms
+                    extraHtml: undefined, // extra HTML code that is shown in each search suggest
+                    highlight: true, // whether matched words should be highlighted, default: true
+                    queryVisualizationHeadline: '', // A headline for the image visualization, default: empty
+                    animationSpeed: 200, // speed of the animations, default: 300ms
+                    callbacks: {
+                        enter: function(text,link){console.log('enter callback: '+text);}, // callback on what should happen when enter is pressed, default: undefined, meaning the link will be followed
+                        enterResult: function(text,link){console.log('enter callback result: ' + text);}, // callback on what should happen when enter is pressed on a result or a suggest is clicked
+                    },
+                    placeholder: 'Search for something',
+                    minChars: 3, // minimum number of characters before the suggests shows, default: 3
+                    suggestOrder: [], // the order of the suggests
+                    suggestSelectionOrder: [], // the order of how they should be selected
+                    noSuggests: '<b>We haven\'t found anything for you, <u>sooorrryyy</u></b>',
+                    emptyQuerySuggests: {
+                                    "suggests":{
+                                        "Cool Things to Check Out":[
+                                            {"id":"1","name":"Mason Jar Lid Lights","link":"https://spoonacular.com/articles/mason-jar-lid-lights","image":"https://spoonacular.com/images/articles/mason-jar-lid-lights.jpg"},
+                                            {"id":"2","name":"Spreadable Beer","link":"https://spoonacular.com/articles/spreadable-beer","image":"https://spoonacular.com/images/articles/spreadable-beer.jpg"}
+                                        ],
+                                        "Products":[
+                                            {"name":"Canon PowerShot SX710 HS","image":"https://images-eu.ssl-images-amazon.com/images/I/41JNvHrzCAL._AC_SY200_.jpg","id":"2179584","link":"https://www.amazon.com/Canon-PowerShot-SX720-HS-Black/dp/B01BV14I40/"},
+                                        ]
+                                    }
+                                },
+                    //maxWidth: 400 // the maximum width of the suggest box, default: as wide as the input box
+                };
+
+                // apply the settings to an input that should get the unibox
+                // apply to multiple boxes
+                boxes = sxQuery(".s").unibox(settings);
+            });
+        </script>
+  
+  </body>
+</html>

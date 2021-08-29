@@ -75,14 +75,20 @@
 .bg-buy:hover {
     color: #fff
 }
-
+/* .list-group .active{
+    background:red;
+    color:#000!important;
+} */
+.list-group .active a{
+    color:#fff!important;
+}
 a {
     text-decoration: none !important
 }
 </style>
 {{ search.search(form) }}
 <div class="row">
-    <div class="col-lg-2">
+    <div class="col-lg-3">
         <div class="card">
             <div class="card-header">
                 <p class="h3" >All articles </p>
@@ -90,9 +96,9 @@ a {
             <div class="card-body">
                 <ul class="list-group">
                     {% for item in category %}
-                    <li class="list-group-item d-flex justify-content-between align-items-center border-none ">
+                    <li class="list-group-item d-flex rounded justify-content-between align-items-center border-0 {{ app.request.get('category') == item.id ? 'active':'' }}">
                         <a class="font-weight-bold" href="{{ path('articles',{category: item.id }) }}">{{ item.title }}</a>
-                        <span class="badge badge-secondary badge-pill">0</span>
+                        {# <span>(920200)</span> #}
                     </li>
                     {% endfor %}
                 </ul>

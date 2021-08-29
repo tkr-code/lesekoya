@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Client;
 
 use App\Entity\Client;
 use App\Form\ClientType;

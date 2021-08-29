@@ -103,12 +103,12 @@ class AdressController extends AbstractController
      */
     public function delete(Request $request, Adress $adress): Response
     {
+
         if ($this->isCsrfTokenValid('delete'.$adress->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($adress);
             $entityManager->flush();
         }
-
         return $this->redirectToRoute('adress_index', [], Response::HTTP_SEE_OTHER);
     }
 }

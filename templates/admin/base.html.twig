@@ -10,7 +10,7 @@
     <!-- Select2 -->
   <link rel="stylesheet" href="{{ asset('adminlte/plugins/select2/css/select2.min.css') }}">
   <link rel="stylesheet" href="{{ asset('adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
-        <title>{% block title %}Welcome! | {{ app_name }} {% endblock %}</title>
+        <title>{% block title %}{{'Welcome'|trans}}! | {{ app_name }} {% endblock %}</title>
         {# Run `composer require symfony/webpack-encore-bundle`
            and uncomment the following Encore helpers to start using Symfony UX #}
         {% block stylesheets %}
@@ -28,11 +28,26 @@
       <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
     </li>
     <li class="nav-item d-none d-sm-inline-block">
-      <a href="index3.html" class="nav-link">Home</a>
+      <a href="index3.html" class="nav-link">{{'Home'|trans}}</a>
     </li>
     <li class="nav-item d-none d-sm-inline-block">
-      <a href="#" class="nav-link">Contact</a>
+      <a href="#" class="nav-link">{{'Contact'|trans}}</a>
     </li>
+     <li class="nav-item dropdown">
+            <a id="dropdownSubMenu2" href="#" data-toggle="dropdown" aria-haspopup="true" 
+            aria-expanded="false" class="nav-link dropdown-toggle"><img width="30px" src="{{ asset('img/pays/' ~ app.request.locale ~ '') }}.jpg" alt="lang"> </a>
+            <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
+              {% for item in locales %}
+                {% if item != app.request.locale  %}
+                <li>
+                  <a href="{{ path('lang',{ locale: item }) }}" class="dropdown-item">
+                    <img width="30px" src="{{ asset('img/pays/' ~ item ~ '') }}.jpg" alt="" srcset="">
+                   {{item}} </a>
+                </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </li>
   </ul>
 
   <!-- Right navbar links -->
@@ -211,7 +226,7 @@
           <a href="#" class="nav-link tableau-de-board">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
-              Tableau de board
+              {{'Dashboard'|trans}}
               <i class="right fas fa-angle-left"></i>
             </p>
           </a>
@@ -219,7 +234,7 @@
             <li class="nav-item">
               <a href="{{ path('admin')}}" class="nav-link tableau-de-board">
                 <i class="far fa-circle nav-icon"></i>
-                <p>{% trans %}Dashboard 1 {% endtrans %}</p>
+                <p>{% trans %}Dashboard{% endtrans %} 1</p>
               </a>
             </li>
           </ul>
@@ -253,56 +268,29 @@
           <a href="#" class="gestions nav-link">
             <i class="nav-icon fa fa-cogs"></i>
             <p>
-            {% trans %}Manage{% endtrans %}
+            {{ 'Manage'|trans }}
               <i class="right fas fa-angle-left"></i>
             </p>
           </a>
           <ul class="nav nav-treeview">
           {% if is_granted('ROLE_ADMIN') %}
-            <li class="nav-item">
-              <a href="{{ path('user_index') }}" class="nav-link gestion-user">
-                <i class="fas fa-users nav-icon"></i>
-                <p>User</p>
-              </a>
-            </li>
+              {% for item in navs.getNavs.admin %}
+              <li class="nav-item">
+                <a href="{{ item.path }}" class="nav-link gestion-{{item.title}}">
+                  <i class="{{item.icon}} nav-icon"></i>
+                  <p>{{ item.title|trans }}</p>
+                </a>
+              </li>
+              {% endfor %}
           {% endif %}
-            <li class="nav-item">
-              <a href="{{ path('article_index') }}" class="nav-link gestion-article">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Article</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="{{ path('category_index') }}" class="nav-link gestion-category">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Category</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="{{ path('order_index') }}" class="nav-link gestion-order ">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Order</p>
-              </a>
-            </li>
-            {# <li class="nav-item">
-              <a href="{{ path('user_index') }}" class="nav-link gestion-user">
-                <i class="fas fa-users nav-icon"></i>
-                <p>Utulisateurs</p>
-              </a>
-            </li> #}
-            {# <li class="nav-item">
-              <a href="{{ path('comment_index') }}" class="nav-link gestion-comment">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Commentaire</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="{{ path('critere_index') }}" class="nav-link gestion-critere">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Critère</p>
-              </a>
-            </li>
-             #}
+              {% for item in navs.getNavs.editor %}
+              <li class="nav-item">
+                <a href="{{ item.path }}" class="nav-link gestion-{{item.title}}">
+                  <i class="{{item.icon}} nav-icon"></i>
+                  <p>{{ item.title|trans }}</p>
+                </a>
+              </li>
+              {% endfor %}
           </ul>
         </li>
          {% endif %}
@@ -328,7 +316,7 @@
         <li class="nav-item">
           <a href="{{ path('app_logout')}}" class="nav-link">
             <i class="nav-icon fas fa-power-off text-danger"></i>
-            <p>Log out</p>
+            <p>{{'Log out'|trans}}</p>
           </a>
         </li>
       </ul>

@@ -79,4 +79,18 @@ class ArticleController extends AbstractController
             'category'=>$categoryRepository->findAll()
         ]);
     }
+
+    /**
+     * @Route("/suggestion/", name="suggestions")
+     */
+    public function suggestion($mots, ArticleRepository $articleRepository)
+    {
+       $search = $articleRepository->searchJson($mots);
+        // dd($search);
+        return $this->json(
+            [
+                'suggests'=>[ $search ]
+            ]
+        );
+    }
 }

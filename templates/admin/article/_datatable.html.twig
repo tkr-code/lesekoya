@@ -14,15 +14,15 @@
     <tbody>
     {% for item in articles %}
     <tr>
-        <td>{{ item.title}}</td>
+        <td>#{{ item.id}} {{ item.title}}</td>
         <td>{{ item.formatterBuying}}</td>
         <td>{{ item.formatterPrice}}</td>
         <td>{{ item.quantity}}</td>
         <td>{{ item.description}}</td>
-        <td>{{ item.createdAt|date('d/m/Y à H:m') }}</td>
+        <td>{{ item.createdAt|date_format_fr|trans }}</td>
         <td>
         {% if item.updatedAt %} 
-        {{ item.updatedAt|date('d/m/Y à H:m') }}
+        {{ item.updatedAt|date_format_fr|trans }}
         {% else %}
         Not modify
         {% endif %}

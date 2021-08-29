@@ -61,6 +61,8 @@ class OrderItemEditType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => OrderItem::class,
+             'translation_domain'=>'forms',
+
         ]);
     }
 }

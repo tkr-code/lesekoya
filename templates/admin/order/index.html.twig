@@ -4,6 +4,7 @@
 {% import "macros/breadcrumb.html.twig" as utils %}
 {% import "macros/alertes.html.twig" as alerte %}
 {% import "macros/button.html.twig" as btn %}
+{% import "macros/link.html.twig" as link %}
 
 {% extends 'admin/base.html.twig' %}
 
@@ -45,10 +46,8 @@
         </div>
             <!-- /.info-box -->
     </div>
-    <div class="col-12 col-sm-6 col-md-3">
-        <div class="card card-primary card-outline card-tabs">
-          <a href="{{ path('order_new') }}" class="btn btn-lg btn-outline-primary btn-block">Add order <i class="fa fa-plus" aria-hidden="true"></i> </a>
-        </div>
+    <div class="col-12">
+        {{link.add(path('order_new'),'Add order') }}
     </div>
     <div class="col-12 col-sm-12">
         <div class="card card-primary card-outline card-tabs">
@@ -57,7 +56,7 @@
                     <li class="nav-item">
                         <a class="nav-link active" id="custom-tabs-three-home-tab"
                             data-toggle="pill" href="#custom-tabs-three-home" role="tab"
-                            aria-controls="custom-tabs-three-home" aria-selected="true">Tous (<span class="font-weight-bold"> 
+                            aria-controls="custom-tabs-three-home" aria-selected="true">{{'Tous'|trans}} (<span class="font-weight-bold"> 
                             {{ orders| length }}
                             </span>)</a>
                     </li>
@@ -65,7 +64,7 @@
                         <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill"
                             href="#order-en-attente" role="tab"
                             aria-controls="custom-tabs-three-profile"
-                            aria-selected="false">Waiting (<span class="font-weight-bold"> 
+                            aria-selected="false">{{'Waiting'|trans}} (<span class="font-weight-bold"> 
                             {{ ordersWaiting| length }}
                             </span>)</a>
                     </li>
@@ -73,7 +72,7 @@
                         <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill"
                             href="#order-in-progress" role="tab"
                             aria-controls="custom-tabs-three-profile"
-                            aria-selected="false">In progress (<span class="font-weight-bold"> 
+                            aria-selected="false">{{'In progress'|trans}} (<span class="font-weight-bold"> 
                             {{ ordersInProgress| length }}
                             </span>)</a>
                     </li>
@@ -81,7 +80,7 @@
                         <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill"
                             href="#order-canceled" role="tab"
                             aria-controls="custom-tabs-three-profile"
-                            aria-selected="false">Canceled (<span class="font-weight-bold"> 
+                            aria-selected="false">{{'Canceled'|trans}} (<span class="font-weight-bold"> 
                             {{ ordersCanceled| length }}
                             </span>)</a>
                     </li>
@@ -89,7 +88,7 @@
                         <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill"
                             href="#order-completed" role="tab"
                             aria-controls="custom-tabs-three-profile"
-                            aria-selected="false">Completed (<span class="font-weight-bold"> 
+                            aria-selected="false">{{'Completed'|trans}} (<span class="font-weight-bold"> 
                             {{ ordersCompleted| length }}
                             </span>)</a>
                     </li>

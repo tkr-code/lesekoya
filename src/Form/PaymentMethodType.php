@@ -22,6 +22,8 @@ class PaymentMethodType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => PaymentMethod::class,
+             'translation_domain'=>'forms',
+
         ]);
     }
 }

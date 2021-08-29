@@ -1,9 +1,9 @@
 
 <div class="card">
     <div class="card-body">
-        <div class="card-img-actions">
+        <div style="height:200px" class="overflow-hidden">
             {% for item in item.images|slice(0,1) %}
-            <img src="{{ asset('img/article/' ~ item.name )}}" class="card-img img-fluid" width="" alt=""> 
+            <img style="width:70%;height:100%" src="{{ asset('img/article/' ~ item.name )}}" class="overflow-hidden" alt=""> 
             {% else %}
             <img src="{{ asset('img/vide.png')}}" class="card-img img-fluid" alt="" width="96">
             {% endfor %}
@@ -11,14 +11,18 @@
     </div>
     <div class="card-body bg-light text-center">
         <div class="mb-2">
-            <h6 class="font-weight-semibold mb-2"> 
-                <a href="{{ path('articles_show', { category: item.category.title, slug: item.slug, id: item.id}) }}" class="text-default mb-2" data-abc="true">
-                    {{item.title}} 
-                </a> 
-            </h6> 
-            <a href="#" class="text-muted" data-abc="true">
-                {{item.description }} 
-            </a>
+            <div style="height:50px">
+                <h6 class="font-weight-semibold mb-2"> 
+                    <a href="{{ path('articles_show', { category: item.category.title, slug: item.slug, id: item.id}) }}" class="text-default mb-2" data-abc="true">
+                        {{item.title}}
+                    </a> 
+                </h6> 
+            </div>
+            <div style="height:50px;">
+                <a href="#" class="text-muted" data-abc="true">
+                    {{item.description }}
+                </a>
+            </div>
         </div>
         <h3 class="mb-0 font-weight-semibold">{{ item.formatterPrice }} F</h3>
         <div> <i class="fa fa-star star"></i> <i class="fa fa-star star"></i> <i class="fa fa-star star"></i> <i class="fa fa-star star"></i> </div>

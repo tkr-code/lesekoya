@@ -47,6 +47,7 @@ class PaymentType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Payment::class,
+            'translation_domain'=>'forms',
         ]);
     }
 }

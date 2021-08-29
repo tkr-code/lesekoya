@@ -65,6 +65,8 @@ class ArticleType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Article::class,
+            'translation_domain'=>'forms',
+
         ]);
     }
 }

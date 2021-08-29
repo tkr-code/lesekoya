@@ -36,7 +36,8 @@ class OrderType extends AbstractType
                 'choices'=>[
                     'Canceled'=>'canceled',
                     'Waiting'=>'waiting',
-                    'in progress'=>'in progress'
+                    'in progress'=>'in progress',
+                    'Completed'=>'completed'
                 ]
             ])
             ->add('note',TextareaType::class)
@@ -92,6 +93,7 @@ class OrderType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Order::class,
+            'translation_domain'=>'forms',
             'user'=>null
         ]);
     }

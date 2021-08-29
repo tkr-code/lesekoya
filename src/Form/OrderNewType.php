@@ -120,6 +120,8 @@ class OrderNewType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Order::class,
+             'translation_domain'=>'forms',
+
         ]);
     }
 }

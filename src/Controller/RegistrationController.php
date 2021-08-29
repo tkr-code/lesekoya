@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Client;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
@@ -47,6 +48,8 @@ class RegistrationController extends AbstractController
             $adress->setLastName($user->getPersonne()->getLastName());
             $user->addAdress($adress);
             $user->setRoles(['ROLE_CLIENT']);
+            $client = new Client();
+            $user->setClient($client);
 
             // dd($user);
 

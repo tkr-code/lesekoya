@@ -5,6 +5,7 @@ twig:
         app_name: 'Store 2'
         locales: '%app.locales%'
         search_form: '@App\Twig\SearchExtension'
+        navs: '@App\Twig\NavExtension'
 when@test:
     twig:
         strict_variables: true

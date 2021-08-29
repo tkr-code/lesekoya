@@ -1,13 +1,12 @@
 {% macro search(form) %}
 <div class="p-3 bg-white">
     <div class="container">
-        {{ form_start(form,{action:path('articles')}) }}
+        {{ form_start(form,{action:path('articles'), attr:{
+            id:'search-form'
+        } }) }}
         <div class="row">
             <div class="col-lg-9">
                 <div class="form-row align-items-end">
-                    <div class="col-12">
-                    {{ form_row(form.mots)}}
-                    </div>
                     <div class="col-4">
                     {{ form_row(form.category)}}
                     </div>
@@ -17,10 +16,13 @@
                     <div class="col-4">
                     {{ form_row(form.maxPrice)}}
                     </div>
+                    <div class="col-12">
+                    {{ form_row(form.mots)}}
+                    </div>
                 </div>
             </div>
             <div class="col-lg-3">
-                <a href="{{ path('card_index') }}" class="btn">
+                    <a href="{{ path('card_index') }}" class="btn">
                         Cart 
                         <i class="fa fa-cart-plus text-success fa-1x" aria-hidden="true"></i>
                             <span class="badge badge-pill badge-primary">

@@ -1,0 +1,152 @@
+{% import "macros/table.html.twig" as table %}
+{% import "macros/head.html.twig" as head %}
+{% import "macros/foot.html.twig" as foot %}
+{% import "macros/breadcrumb.html.twig" as utils %}
+{% import "macros/alertes.html.twig" as alerte %}
+{% import "macros/button.html.twig" as btn %}
+
+{% extends 'admin/base.html.twig' %}
+
+
+{% block stylesheets %}
+  {{ head.dataTable() }}
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ utils.breadcrumb('Manage customer',[
+        {
+            path:'order_index',
+            name:'Manage orders'
+        }
+    ])}}
+{% endblock %}
+
+{% block title %}customer manage | {{ app_name }} {% endblock %}
+
+
+
+{% block body %}
+
+{% for item in app.flashes('success') %}
+  {{ alerte.alert(item,'success')}}
+{% endfor %}
+
+
+ <div class="row">
+    <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box mb-3">
+            <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-thumbs-up"></i></span>
+
+            <div class="info-box-content">
+            <span class="info-box-text">customer unregister</span>
+            <span class="info-box-number"> {{ nbrOrders }} </span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+            <!-- /.info-box -->
+    </div>
+    <div class="col-12 col-sm-6 col-md-3">
+        <div class="card card-primary card-outline card-tabs">
+          <a href="{{ path('order_new') }}" class="btn btn-lg btn-outline-primary btn-block">Add order <i class="fa fa-plus" aria-hidden="true"></i> </a>
+        </div>
+    </div>
+    <div class="col-12 col-sm-12">
+        <div class="card card-primary card-outline card-tabs">
+            <div class="card-header p-0 pt-1 border-bottom-0">
+                <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-three-home-tab"
+                            data-toggle="pill" href="#custom-tabs-three-home" role="tab"
+                            aria-controls="custom-tabs-three-home" aria-selected="true">Tous (<span class="font-weight-bold"> 
+                            {{ orders| length }}
+                            </span>)</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill"
+                            href="#order-en-attente" role="tab"
+                            aria-controls="custom-tabs-three-profile"
+                            aria-selected="false">Waiting (<span class="font-weight-bold"> 
+                            {{ ordersWaiting| length }}
+                            </span>)</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill"
+                            href="#order-in-progress" role="tab"
+                            aria-controls="custom-tabs-three-profile"
+                            aria-selected="false">In progress (<span class="font-weight-bold"> 
+                            {{ ordersInProgress| length }}
+                            </span>)</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill"
+                            href="#order-canceled" role="tab"
+                            aria-controls="custom-tabs-three-profile"
+                            aria-selected="false">Canceled (<span class="font-weight-bold"> 
+                            {{ ordersCanceled| length }}
+                            </span>)</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill"
+                            href="#order-completed" role="tab"
+                            aria-controls="custom-tabs-three-profile"
+                            aria-selected="false">Completed (<span class="font-weight-bold"> 
+                            {{ ordersCompleted| length }}
+                            </span>)</a>
+                    </li>
+                   
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content" id="custom-tabs-three-tabContent">
+                    <div class="tab-pane fade show active" id="custom-tabs-three-home"
+                        role="tabpanel" aria-labelledby="custom-tabs-three-home-tab">
+                            {{ include ("admin/order/_datatable.html.twig",{id:'1',orders: orders}) }}
+                                
+                    </div>
+                    <div class="tab-pane fade" id="order-in-progress" role="tabpanel"
+                        aria-labelledby="custom-tabs-three-profile-tab">
+                            {{ include ("admin/order/_datatable.html.twig",{id:'2',orders: ordersInProgress}) }}
+                    </div>
+                    <div class="tab-pane fade" id="order-en-attente" role="tabpanel"
+                        aria-labelledby="custom-tabs-three-profile-tab">
+                            {{ include ("admin/order/_datatable.html.twig",{id:'3',orders: ordersWaiting}) }}
+                    </div>
+                    <div class="tab-pane fade" id="order-completed" role="tabpanel"
+                        aria-labelledby="custom-tabs-three-profile-tab">
+                            {{ include ("admin/order/_datatable.html.twig",{id:'4',orders: ordersCompleted}) }}
+                    </div>
+                    <div class="tab-pane fade" id="order-canceled" role="tabpanel"
+                        aria-labelledby="custom-tabs-three-profile-tab">
+                            {{ include ("admin/order/_datatable.html.twig",{id:'5',orders: ordersCanceled}) }}
+                    </div>
+                </div>
+            </div>
+            <!-- /.card -->
+            <div class="card-footer">
+                <a href="{{ path('admin') }}" class="btn btn-default">Back to dashboard <i class="fa fa-arrow-circle-left" aria-hidden="true"></i></a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block foot %}
+{{ foot.dataTable()}}
+{% endblock %}
+
+
+{% block javascripts %}
+{{ table.jsDataTable('datatable_1') }} 
+{{ table.jsDataTable('datatable_2') }} 
+{{ table.jsDataTable('datatable_3') }} 
+{{ table.jsDataTable('datatable_4') }} 
+{{ table.jsDataTable('datatable_5') }} 
+{# {{table.jsDataTable('datatable_2')  }} #}
+  <script>
+   $(document).ready(function(){
+     //nivagation 
+     $('#gestions').addClass(' menu-is-opening menu-open')
+     $('.gestions').addClass('active')
+     $('.gestion-customer').addClass('active')
+   })
+  </script>
+{% endblock %}

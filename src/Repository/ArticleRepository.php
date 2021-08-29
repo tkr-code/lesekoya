@@ -51,6 +51,32 @@ class ArticleRepository extends ServiceEntityRepository
         } 
         return $query->getQuery();
     }
+        /**
+     * Recheche les articles en fonctions du formulaire
+     *
+     * @param  mixed $var
+     * @return void
+     */
+    public function searchJson($mots=null)
+    {
+        $query = $this->findQueryBuilder()
+        ->AndWhere('p.enabled = true');
+        if($mots != null){
+            $query->andWhere('MATCH_AGAINST(p.title, p.description) AGAINST(:mots boolean) > 0')
+            ->setParameter('mots',$mots);
+        }
+       $articles = $query->getQuery()->getResult();
+        $suggestions = [];
+       foreach($articles as $v){
+        $suggestions[]= [
+            'id'=>$v->getId(),
+            'name'=>$v->getTitle(),
+            'link'=>'',
+            'image'=>''
+        ];
+       }
+       return $suggestions;
+    }
 
     /**
      * @return Query[]

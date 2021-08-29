@@ -1,0 +1,20 @@
+State: Etat
+Shipping state: Etat de la livraison
+Shipping amount: Montant de la livraison
+Shipping adress: Addresse de la livraison
+Note: note
+Date: Date
+Payment method: Méthode de paiement
+order: Commande
+Details: Details
+Unit price: prix unitaire
+Quantity: Quantité
+Article: Artcicle
+Category: Categori
+Waiting: En attente
+in progress: En cour
+shipped: expédié
+Ready: pret
+completed: terminé
+Canceled: annuller
+Year: année

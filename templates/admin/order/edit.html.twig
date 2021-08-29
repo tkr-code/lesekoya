@@ -3,6 +3,7 @@
 {% import "macros/foot.html.twig" as foot %}
 {% import "macros/alertes.html.twig" as alerte %}
 {% import "macros/table.html.twig" as table %}
+{% import "macros/link.html.twig" as link %}
 
 
 {% extends 'admin/base.html.twig' %}
@@ -16,12 +17,7 @@
 
 
 {% block breadcrumb %}
-    {{ utils.breadcrumb('Edit Order',[
-        {
-            path:'order_index',
-            name:'Manage orders'
-        }
-    ])}}
+    {{ utils.breadcrumb('Edit Order',breadcrumb) }}
 {% endblock %}
 
 {% block body %}
@@ -120,7 +116,7 @@
                             </div>
                             <!-- /.col -->
                             <div class="col-6">
-                                <p class="lead">Amount Due {{ order.paymentDue| date('d/m/Y') }}</p>
+                                <p class="lead">Amount Due {{ order.paymentDue|date_format_fr  }}</p>
 
                                 <div class="table-responsive">
                                 <table class="table">
@@ -178,7 +174,8 @@
             </div>
             <!-- /.card -->
             <div class="card-footer">
-                <a class="btn btn-default" href="{{ path('order_index') }}">back to list order <i class="fa fa-arrow-circle-left" aria-hidden="true"></i> </a>
+                {{ link.back(path('order_index'),'back to list order') }}
+                {{ link.back(path('admin_client_order',{id:order.user.id }),'back to client list order') }}
             </div>
         </div>
     </div>
@@ -204,15 +201,15 @@
             <!-- /.card-header -->
             <div class="card-body">
             <dl class="row">
-                <dt class="col-sm-4">Order </dt>
+                <dt class="col-sm-4">{{'Order'|trans }} </dt>
                 <dd class="col-sm-8">n° #{{ order.id }}</dd>
-                <dt class="col-sm-4">Invoice </dt>
+                <dt class="col-sm-4">{{'Invoice'|trans }} </dt>
                 <dd class="col-sm-8">n° #{{ order.number }}</dd>
-                <dt class="col-sm-4">State Order</dt>
+                <dt class="col-sm-4">{{'State Order'|trans}}</dt>
                 <dd class="col-sm-8">{{ order.state }}</dd>
-                <dt class="col-sm-4">Shipping state</dt>
+                <dt class="col-sm-4">{{'Shipping state'|trans }}</dt>
                 <dd class="col-sm-8">{{ order.shippingState }}</dd>
-                <dt class="col-sm-4">Shipping amount</dt>
+                <dt class="col-sm-4">{{'Shipping amount'|trans }}</dt>
                 <dd class="col-sm-8">{{ order.shipping|number_format(2,'.',' ') }} XOF</dd>
             </dl>
             </div>
@@ -222,22 +219,22 @@
             <div class="card-header">
             <h3 class="card-title">
                 <i class="fas fa-text-width"></i>
-                Order Facturation
+                {{'Order Facturation'|trans }}
             </h3>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
             <dl class="row">
-                <dt class="col-sm-4">Full name</dt>
+                <dt class="col-sm-4">{{'Full nam'|trans }}e</dt>
                 <dd class="col-sm-8">{{ order.user.personne.firstname ~ ' ' ~ order.user.personne.lastname }}</dd>
                 <dt class="col-sm-4">Domicile</dt>
                 <dd class="col-sm-8">a modifier
                 </dd>
-                <dt class="col-sm-4">Amount </dt>
+                <dt class="col-sm-4">{{'Amount'|trans}} </dt>
                 <dd class="col-sm-8">{{ order.total| number_format(2,'.',' ') }} XOF</dd>
-                <dt class="col-sm-4">State payment</dt>
+                <dt class="col-sm-4">{{'State payment'|trans }}</dt>
                 <dd class="col-sm-8">{{ order.payment.state }}</dd>
-                <dt class="col-sm-4">Payment method</dt>
+                <dt class="col-sm-4">{{'Payment method'|trans }}</dt>
                 <dd class="col-sm-8">{{ order.payment.paymentMethod.name }}</dd>
             </dl>
             </div>
@@ -247,7 +244,7 @@
             <div class="card-header">
             <h3 class="card-title">
                 <i class="fas fa-text-width"></i>
-                Shipping Adress
+                {{'Shipping Adress'|trans }}
             </h3>
             </div>
             <!-- /.card-header -->

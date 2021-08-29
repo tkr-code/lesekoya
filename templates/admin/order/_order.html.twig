@@ -61,7 +61,7 @@
     <tr>
         <td>{{ item.quantity }}</td>
         <td>{{ item.produitName }}</td>
-        <td>{{ item.article.description }}</td>
+        <td>{{ item.article.id }}</td>
         <td>{{ item.UnitsTotal | number_format(2,'.',' ') }} XOF</td>
     </tr>
     {% endfor %}
