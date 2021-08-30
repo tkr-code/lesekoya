@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\ArticleSearch;
 use App\Entity\Client;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Form\RegistrationClientFormType;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -15,6 +17,7 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
+use App\Form\ArticleSearchType;
 
 class RegistrationController extends AbstractController
 {
@@ -28,8 +31,10 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/register", name="app_register")
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function appRegister(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
+        $search = new ArticleSearch();
+        $formSearch = $this->createForm(ArticleSearchType::class,$search);
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -73,6 +78,7 @@ class RegistrationController extends AbstractController
             'registrationForm' => $form->createView(),
         ]);
     }
+
 
     /**
      * @Route("/verify/email", name="app_verify_email")

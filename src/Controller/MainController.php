@@ -9,11 +9,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\ArticleSearch;
 use App\Form\ArticleSearchType;
-// /**
-//  * @Route("/{_locale}", requirements={
-//      *         "_locale": "en|fr|de",
-//      *     })
-//  */
+use App\Repository\ClientRepository;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use App\Repository\UserRepository;
+
 class MainController extends AbstractController
 {
     /**

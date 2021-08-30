@@ -1,10 +1,10 @@
 <?php 
-namespace App\Service\Card;
+namespace App\Service\Cart;
 
 use App\Repository\ArticleRepository;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class CardService{
+class CartService{
     private$session;
     private $articleRepository;
     public function __construct(SessionInterface $sessionInterface, ArticleRepository $articleRepository)
@@ -59,7 +59,7 @@ class CardService{
     {
         $this->session->set('panier',[]);
     }
-    public function getFullCard(): array
+    public function getFullCart(): array
     {
         $panier = $this->session->get('panier',[]);
         $panierWithData = [];
@@ -74,7 +74,7 @@ class CardService{
     public function getTotal():float
     {
         $total = 0;
-        foreach ($this->getFullCard() as $item) {
+        foreach ($this->getFullCart() as $item) {
             $total+= $item['article']->getPrice() * $item['quantite'];
         }
         return $total;

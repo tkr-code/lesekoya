@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\ArticleRepository;
-use App\Service\Card\CardService;
+use App\Service\Cart\CartService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -15,57 +15,57 @@ use App\Form\ArticleSearchType;
 class CartController extends AbstractController
 {
     /**
-     * @Route("/card", name="card_index")
+     * @Route("/cart", name="cart_index")
      */
-    public function index(CardService $cardService, Request $request): Response
+    public function index(CartService $cartService, Request $request): Response
     {
         $search = new ArticleSearch();
         $form = $this->createForm(ArticleSearchType::class,$search);
         if ($request->request->count() > 0) {
-            $cardService->addPost($request->request->get('article_id'),$request->request->get('qty'));
+            $cartService->addPost($request->request->get('article_id'),$request->request->get('qty'));
             $this->addFlash('success','panier modiifer');
-            return $this->redirectToRoute('card_index');
+            return $this->redirectToRoute('cart_index');
         }
-        return $this->render('main/card/index.html.twig',[
-            'items'=>$cardService->getFullCard(),
-            'total'=>$cardService->getTotal(),
+        return $this->render('main/cart/index.html.twig',[
+            'items'=>$cartService->getFullCart(),
+            'total'=>$cartService->getTotal(),
             'form'=>$form->createView()
         ]);
     }
 
     /**
-     * @Route("card/add/{id}", name="card_add")
+     * @Route("cart/add/{id}", name="cart_add")
      */
-    public function add(int $id, CardService $cardService )
+    public function add(int $id, CartService $cartService )
     {
-        $cardService->add($id);
-        return $this->redirectToRoute('card_index');
+        $cartService->add($id);
+        return $this->redirectToRoute('cart_index');
     }
     /**
-     * @Route("/card/remove/{id}", name="card_remove", methods="GET")
+     * @Route("/cart/remove/{id}", name="cart_remove", methods="GET")
      */
-    public function remove($id, CardService $cardService)
+    public function remove($id, CartService $cartService)
     {
-        $cardService->remove($id);
+        $cartService->remove($id);
         // $this->addFlash('success','Le produit retiré du panier');
-        return $this->redirectToRoute('card_index');
+        return $this->redirectToRoute('cart_index');
     }
     /**
-     * @Route("/card/delete/{id}", name="card_delete", methods="GET")
+     * @Route("/cart/delete/{id}", name="cart_delete", methods="GET")
      */
-    public function delete($id, CardService $cardService)
+    public function delete($id, CartService $cartService)
     {
-        $cardService->delete($id);
+        $cartService->delete($id);
         // $this->addFlash('success','Le produit retiré du panier');
-        return $this->redirectToRoute('card_index');
+        return $this->redirectToRoute('cart_index');
     }
 
     /**
-     * @Route("/card/clear", name="card_clear", methods="GET")
+     * @Route("/cart/clear", name="cart_clear", methods="GET")
      */
-    public function claer(CardService $cardService)
+    public function claer(CartService $cartService)
     {
-        $cardService->clear();
-        return $this->redirectToRoute('card_index');
+        $cartService->clear();
+        return $this->redirectToRoute('cart_index');
     }
 }
