@@ -1,0 +1,51 @@
+{% import "macros/breadcrumb.html.twig" as utils %}
+{% import ('macros/ribbon.html.twig') as ribbon %}
+{% import "macros/search.html.twig" as search %}
+
+{% extends 'base.html.twig' %}
+
+{% block title %} Facture {{ app_name }} - {{ order.user.personne.firstName ~ ' ' ~ order.user.personne.lastName }} {% endblock %}
+
+
+{% block body %}
+{{ search.search(form) }}
+
+<div class="container">
+  <div class="row">
+     {% include "client/nav.html.twig" %}
+    <div class="col-lg-9">
+      {{ ribbon.ribbon(order.state)}}
+      <!-- Main content -->
+        <div class="invoice p-3 mb-3">
+          {% include ('admin/order/_order.html.twig') %}
+          <!-- this row will not appear when printing -->
+          <div class="row no-print">
+              <div class="col-12">
+                  <a 
+                      href="{{ path('order_print',{ id : order.id }) }}" 
+                      rel="noopener" 
+                      target="_blank"
+                      class="btn btn-default"><i class="fas fa-print"></i> Print
+                  </a>
+                  {# <button type="button" class="btn btn-success float-right"><i class="far fa-credit-card"></i> Submit
+                  Payment
+                  </button> #}
+                  {# <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
+                  <i class="fas fa-download"></i> Generate PDF
+                  </button> #}
+              </div>
+          </div>
+        </div>
+      <!-- /.invoice -->
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function(){
+            $('.my-orders').addClass('active')
+        })
+    </script>
+{% endblock %}

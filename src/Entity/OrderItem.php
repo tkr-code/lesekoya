@@ -47,7 +47,6 @@ class OrderItem
      */
     private $total;
 
-
     /**
      * @ORM\Column(type="string", length=255)
      */

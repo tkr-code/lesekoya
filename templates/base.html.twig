@@ -16,12 +16,13 @@
   <!-- -->
   <link rel="stylesheet" href="{{ asset('vendor/suggestions/css/unibox.css') }}">
   <style>
-    /* #unibox-suggest-box {
-                border-width: 10px;
-            } */
+    .list-group .active a{
+        color:#fff!important;
+    }
   </style>
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ asset('adminLte/dist/css/adminlte.min.css') }}">
+  {% block stylesheets %}{% endblock %}
   {% block head %}{% endblock %}
 </head>
 <body class="hold-transition layout-top-nav">

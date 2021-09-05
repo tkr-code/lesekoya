@@ -1,0 +1,214 @@
+{% extends 'base.html.twig' %}
+{% import "macros/search.html.twig" as search %}
+
+{% block title %}Client | {{app_name}} {% endblock %}
+{% block head %}
+<!-- bs-stepper -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bs-stepper/dist/css/bs-stepper.min.css">
+{% endblock %}
+
+{% block body %}
+<style>
+    .card-order-step{
+        min-height:500px;
+    }
+    #loader-livraison,
+    #loader-livraison-cities {
+        display:none;
+    }
+</style>
+{{ search.search(form) }}
+<div class="container">
+    <div class="row mt-3">
+        <div class="col-lg-10 mx-auto">
+            <div class="card card-default">
+                <div class="card-header">
+                <h3 class="card-title">bs-stepper</h3>
+                </div>
+                <div class="card-body p-0">
+                <div class="bs-stepper linear">
+                    <div class="bs-stepper-header" role="tablist">
+                    <!-- your steps here -->
+                    <div class="step active" data-target="#one-part">
+                        <button type="button" class="step-trigger" role="tab" aria-controls="one-part" id="one-part-trigger" aria-selected="true">
+                        <span class="bs-stepper-circle">1</span>
+                        <span class="bs-stepper-label">Verify Order</span>
+                        </button>
+                    </div>
+                    <div class="line"></div>
+                        <div class="step" data-target="#two-part">
+                            <button type="button" class="step-trigger" role="tab" aria-controls="two-part" id="two-part-trigger" aria-selected="false" disabled="disabled">
+                            <span class="bs-stepper-circle">2</span>
+                            <span class="bs-stepper-label">Payment et  livraison</span>
+                            </button>
+                        </div>
+                    <div class="line"></div>
+                        <div class="step" data-target="#tree-part">
+                            <button type="button" class="step-trigger" role="tab" aria-controls="tree-part" id="tree-part-trigger" aria-selected="false" disabled="disabled">
+                            <span class="bs-stepper-circle">3</span>
+                            <span class="bs-stepper-label">Email and Password</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bs-stepper-content">
+                        <!-- your steps content here -->
+                        <div id="one-part" class="content  " role="tabpanel" aria-labelledby="one-part-trigger">
+                            <div class="card card-outline card-primary card-order-step ">
+                                <div class="card-body">
+                                    <table class="table">
+                                        <thead>
+                                        <th>Image</th>
+                                        <th>Name</th>
+                                        <th>Quantity</th>
+                                        <th>Price</th>
+                                        <th>Subtotal</th>
+                                        </thead>              
+                                        <tbody>
+                                        {% for key, item in items %}
+                                        <tr>
+                                            <td>
+                                                {% for item in item.article.images|slice(0,1) %}
+                                                <img src="{{ asset('img/article/' ~ item.name )}}" class="border border-primary" width="80px" alt=""> 
+                                                {% else %}
+                                                <img src="{{ asset('img/vide.png')}}" class="border border-primary" alt="" width="80px">
+                                                {% endfor %}
+                                            </td>
+                                            <td>{{ item.article.title}} </td>
+                                            <td>
+                                                {{ item.quantite }}
+                                            </td>
+                                            <td>
+                                                {{ item.article.price|number_format(2,'.',' ') }} XOF
+                                            </td>
+                                            <td>
+                                                {{ (item.article.price * item.quantite) | number_format(2,'.',' ') }} XOF
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    <div class="row">
+                                        <div class="col-lg-6 offset-6 ">
+                                        <table class="table">
+                                            <tr>
+                                            <td>Total :</td>
+                                            <td> {{ total|number_format(2,'.',' ') }} XOF</td>
+                                            </tr>
+                                        </table>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="stepper.next()">Next</button>
+                        </div>
+                        <!-- ./User-->
+                        <!-- two -->
+                        <div id="two-part" class="content dstepper-block active" role="tabpanel" aria-labelledby="two-part-trigger">
+                            <div class="card card-outline card-primary card-order-step ">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <p>Mode de paiment</p>
+                                            {{ form_start(formPayment)}}
+                                            {{ form_end(formPayment)}}
+                                            <div id="loader-livraison" class="text-center overlay">
+                                                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                                            </div>
+                                            <div id="js-lieu-de-livraion"></div>
+                                            
+                                            <div id="loader-livraison-cities" class="text-center overlay">
+                                                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                                            </div>
+                                            <div id="js-lieu-de-livraion-cities"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="stepper.previous()">Previous</button>
+                            <button type="button" class="btn btn-primary" onclick="stepper.next()">Next</button>
+
+                        </div>
+                        <!-- ./two -->
+                        <!-- two -->
+                        <div id="tree-part" class="content" role="tabpanel" aria-labelledby="tree-part-trigger">
+                            <div class="card card-outline card-primary card-order-step ">
+
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="stepper.previous()">Previous</button>
+                            
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                        <!-- ./two -->
+                    </div>
+                </div>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                    <a class="btn btn-dark" href="{{ path('order_index') }}">back to list <i class="fas fa-arrow-alt-circle-left    "></i> </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block foot %}
+    <!-- bs-stepper -->
+    <script src="https://cdn.jsdelivr.net/npm/bs-stepper/dist/js/bs-stepper.min.js"></script>
+    {# // <script src="{{ asset('adminlte/plugins/bs-stepper/js/bs-stepper.min.js') }}"></script> #}
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $(document).ready(function(){
+            $('.my-account').addClass('active')
+            $('#payment1_country').on('change',function(){
+
+                let value = $(this).find('option:selected').val()
+                  $.ajax({
+                        url: "{{ path('client_shipping') }}",
+                        method: 'POST',
+                        dataType: 'json',
+                        data: {
+                            id_pays: value,
+                        },
+                        beforeSend: function() {
+                            $('#loader-livraison').show()
+                            $('#js-lieu-de-livraion').hide()
+                        },
+                        success: function(data) {
+                            $('#js-lieu-de-livraion').show()
+                            $('#loader-livraison').hide()
+                            $('#js-lieu-de-livraion').html(data.reponse);
+                            console.log(data.code);
+                        }
+                    }) // ./ajax
+            })
+            $(document).on('change','#payment1_cities',function(){
+                let value = $(this).find('option:selected').val()
+                  $.ajax({
+                        url: "{{ path('client_shipping_cities') }}",
+                        method: 'POST',
+                        dataType: 'json',
+                        data: {
+                            id_city: value,
+                        },
+                        beforeSend: function() {
+                            $('#loader-livraison-cities').show()
+                        },
+                        success: function(data) {
+                            $('#loader-livraison-cities').hide()
+                            $('#js-lieu-de-livraion-cities').html(data.reponse);
+                            console.log(data.code);
+                        }
+                    }) // ./ajax
+            })
+        })
+    </script>
+    <script>
+        // BS-Stepper Init
+        document.addEventListener('DOMContentLoaded', function () {
+            window.stepper = new Stepper(document.querySelector('.bs-stepper'))
+        })
+    </script>
+{% endblock %}

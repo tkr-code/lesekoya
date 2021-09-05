@@ -1,5 +1,5 @@
 <?php
-namespace App\Service;
+namespace App\Service\Image;
 
 use App\Entity\Image;
 use App\Entity\Produit;

@@ -1,0 +1,53 @@
+{% import "macros/button.html.twig" as btn %}
+<table id="datatable_{{ id }}" class="table">
+    <thead>
+        <tr>
+            <th>Order</th>
+            <th>state</th>
+            <th>Date</th>
+            <th>Total</th>
+            <th>actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for order in orders %}
+        <tr>
+            <td>#{{ order.id }}
+             <a 
+                class="float-right"
+                data-toggle="tooltip"
+                data-placement="bottom"
+                title="Look"
+                href="{{ path('client_order_show', {'id': order.id}) }}"><i class="fa fa-eye text-dark"></i></a>
+                
+            </td>
+            <td>
+            {{ btn.order(order.state) }}
+            
+            </td>
+            <td>{{ order.createdAt|date_format_fr }}</td>
+            <td>{{ order.total | number_format(2,'.',' ') }} XOF </br>
+                <small class="text-info">Via : {{ order.payment.paymentMethod.name}} </small>
+            </td>
+            <td>
+                {% if order.state == 'waiting' or order.state == 'in progress' %}
+                <a data-toggle="tooltip" data-placement="bottom" title="Annuller la commande" href="#" class="text-danger">Cancel</a>
+                {% endif %}
+            </td>
+        </tr>
+    {% else %}
+        <tr class="text-center">
+            <td colspan="12">no records found</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>Order</th>
+            <th>state</th>
+            <th>Createdat</th>
+            <th>Total</th>
+            <th>actions</th>
+        </tr>
+    </tfoot>
+    </table>

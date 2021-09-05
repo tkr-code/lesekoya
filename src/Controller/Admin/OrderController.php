@@ -23,9 +23,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-/**
- * @Route("/admin/order")
- */
 class OrderController extends AbstractController
 {
     private $urlGenerator;
@@ -34,7 +31,7 @@ class OrderController extends AbstractController
         $this->urlGenerator= $urlGeneratorInterface;
     }
     /**
-     * @Route("/order-adress/{id}/manage-adress", name="order_adress")
+     * @Route("/admin/order/order-adress/{id}/manage-adress", name="order_adress")
      */
     public function adress($id, AdressRepository $adressRepository): Response
     {
@@ -44,7 +41,7 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Route("/client", name="order_client_index", methods={"GET"})
+     * @Route("/admin/order/client", name="order_client_index", methods={"GET"})
      */
     public function Clientindex(OrderRepository $orderRepository): Response
     {
@@ -59,7 +56,7 @@ class OrderController extends AbstractController
         ]);
     }
     /**
-     * @Route("/", name="order_index", methods={"GET"})
+     * @Route("/admin/order/", name="order_index", methods={"GET"})
      */
     public function index(OrderRepository $orderRepository): Response
     {
@@ -74,7 +71,7 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Route("/new-order", name="order_user", methods={"GET","POST"})
+     * @Route("/admin/order/new-order", name="order_user", methods={"GET","POST"})
      */
     public function newOrder(PaymentMethodRepository $paymentMethodRepository, ArticleRepository $articleRepository, Request $request, OrderService $orderService, SessionInterface $session): Response
     {
@@ -126,7 +123,7 @@ class OrderController extends AbstractController
         return $this->redirectToRoute('client_index',[],Response::HTTP_SEE_OTHER);
     }
     /**
-     * @Route("/new", name="order_new", methods={"GET","POST"})
+     * @Route("/admin/order/new", name="order_new", methods={"GET","POST"})
      */
     public function new(Request $request, OrderService $orderService): Response
     {
@@ -153,12 +150,12 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="order_show", methods={"GET"})
+     * @Route("/admin/order/{id}", name="order_show", methods={"GET"})
      */
     public function show(Order $order): Response
     {
         // dd($order);
-        dump($order);
+        // dump($order);
     //    $var =  sprintf("%06s", 1);
         // $ribbon_text = ($order->getState() == 'paid') ? 'PAID':'NOT PAID';
 
@@ -168,7 +165,7 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Route("/print/{id}", name="order_print", methods={"GET"})
+     * @Route("/order/print/{id}", name="order_print", methods={"GET"})
      */
     public function invoice(Order $order): Response
     {
@@ -179,8 +176,8 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Route("/client/{id}/edit", name="order_edit_client", methods={"GET","POST"})
-     * @Route("/{id}/edit", name="order_edit", methods={"GET","POST"})
+     * @Route("/admin/order/client/{id}/edit", name="order_edit_client", methods={"GET","POST"})
+     * @Route("/admin/order/{id}/edit", name="order_edit", methods={"GET","POST"})
      */
     public function edit( Request $request, Order $order, OrderItemRepository $orderItemRepository,  OrderService $orderService, PaymentService $paymentService): Response
     {
@@ -276,7 +273,7 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="order_delete", methods={"POST"})
+     * @Route("/admin/order/{id}", name="order_delete", methods={"POST"})
      */
     public function delete(Request $request, Order $order): Response
     {

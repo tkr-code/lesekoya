@@ -52,16 +52,16 @@
     <tr>
         <th>Qty</th>
         <th>Product</th>
-        <th>Description</th>
+        <th>price</th>
         <th>Subtotal</th>
     </tr>
     </thead>
     <tbody>
     {% for item in order.orderItem %}
     <tr>
-        <td>{{ item.quantity }}</td>
+        <td width="3%" >{{ item.quantity }}</td>
         <td>{{ item.produitName }}</td>
-        <td>{{ item.article.id }}</td>
+        <td>{{ item.unitPrice|number_format(2,'.',' ') }} XOF</td>
         <td>{{ item.UnitsTotal | number_format(2,'.',' ') }} XOF</td>
     </tr>
     {% endfor %}
