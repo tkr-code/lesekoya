@@ -2,7 +2,7 @@ twig:
     default_path: '%kernel.project_dir%/templates'
     form_themes: ['bootstrap_4_layout.html.twig'] # accepte plusieurs thèmes
     globals: 
-        app_name: 'Store 2'
+        app_name: 'LeSekoya'
         locales: '%app.locales%'
         search_form: '@App\Twig\SearchExtension'
         navs: '@App\Twig\NavExtension'
