@@ -11,16 +11,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\ArticleSearch;
 use App\Form\ArticleSearchType;
+use Service\SearchService\SearchService;
 
 class CartController extends AbstractController
 {
     /**
      * @Route("/cart", name="cart_index")
      */
-    public function index(CartService $cartService, Request $request): Response
+    public function index(SearchService $searchService, CartService $cartService, Request $request): Response
     {
-        $search = new ArticleSearch();
-        $form = $this->createForm(ArticleSearchType::class,$search);
+        $form = $searchService->form();
         if ($request->request->count() > 0) {
             $cartService->addPost($request->request->get('article_id'),$request->request->get('qty'));
             $this->addFlash('success','panier modiifer');

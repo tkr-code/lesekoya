@@ -61,7 +61,7 @@
                         <div class="text-primary font-weight-bold" style="font-size:2rem">
                             {{ article.formatterPrice }} F cfa
                         </div>
-                        <form class="form-row" action="{{ path('card_index') }}" method="post">
+                        <form class="form-row" action="{{ path('cart_index') }}" method="post">
                         <div class="form-group col-3">
                         <input type="hidden" name="article_id" value="{{ article.id }}">
                           <input type="number" class="form-control" min="1" max="{{ article.quantity }}" name="qty" value="1" >

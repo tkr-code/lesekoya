@@ -90,6 +90,7 @@ class Article
         $this->images = new ArrayCollection();
         $this->options = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->created_at = new \DateTime();
     }
 
     public function getId(): ?int

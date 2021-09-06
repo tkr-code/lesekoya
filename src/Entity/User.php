@@ -80,6 +80,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->comments = new ArrayCollection();
         $this->orders = new ArrayCollection();
         $this->adresses = new ArrayCollection();
+        $this->created_at = new \DateTime();
     }
 
     public function getId(): ?int
