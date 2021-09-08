@@ -6,7 +6,7 @@
 {% block body %}
 {{ search.search(form) }}
 <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{{path('articles') }}">Tous les articles</a></li>
+    <li class="breadcrumb-item"><a href="{{ path('articles') }}">Tous les articles</a></li>
     <li class="breadcrumb-item"><a href="{{ path('articles',{category: article.category.id }) }}">{{ article.category.title }}</a></li>
     <li class="breadcrumb-item active">{{ article.title }}</li>
 </ol>

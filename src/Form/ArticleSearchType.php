@@ -22,7 +22,7 @@ class ArticleSearchType extends AbstractType
                 'label'=>false,
                 'attr'=>[
                     'id'=>'searchBox',
-                    'class'=>'form-control s text-lowercase',
+                    'class'=>'form-control rounded s text-lowercase',
                     'placeholder'=>'Enter one or more keywords'
                 ],
                 'required'=>false
@@ -41,20 +41,20 @@ class ArticleSearchType extends AbstractType
                     'placeholder'=>'Minimum budget'
                 ]
             ])
-            ->add('category',EntityType::class,[
-                'class'=>Category::class,
-                // 'query_builder'=>function(EntityRepository $entityRepository){
-                //     return $entityRepository->createQueryBuilder('p')
-                //     ->where('is_anabled = true');
-                // },
-                'choice_label'=>'title',
-                'label'=>false,
-                'required'=>false,
-                'attr'=>[
-                    'class'=>'select2',  
-                ],
-                'placeholder'=>'All articles'
-            ])
+            // ->add('category',EntityType::class,[
+            //     'class'=>Category::class,
+            //     // 'query_builder'=>function(EntityRepository $entityRepository){
+            //     //     return $entityRepository->createQueryBuilder('p')
+            //     //     ->where('is_anabled = true');
+            //     // },
+            //     'choice_label'=>'title',
+            //     'label'=>false,
+            //     'required'=>false,
+            //     'attr'=>[
+            //         'class'=>'select2',  
+            //     ],
+            //     'placeholder'=>'All articles'
+            // ])
         ;
     }
     public function getCats(){

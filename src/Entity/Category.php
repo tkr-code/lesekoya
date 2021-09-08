@@ -42,6 +42,11 @@ class Category
      */
     private $articles;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $is_active;
+
     public function __construct()
     {
         $this->articles = new ArrayCollection();
@@ -91,6 +96,18 @@ class Category
                 $article->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIsActive(): ?bool
+    {
+        return $this->is_active;
+    }
+
+    public function setIsActive(bool $is_active): self
+    {
+        $this->is_active = $is_active;
 
         return $this;
     }

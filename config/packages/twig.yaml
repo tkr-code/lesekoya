@@ -6,6 +6,11 @@ twig:
         locales: '%app.locales%'
         search_form: '@App\Twig\SearchExtension'
         navs: '@App\Twig\NavExtension'
+        site: 
+            name: 'leSekoya'
+            email: 'leseoya@gmail.com'
+            current_name: 'F cfa'
+            current: 'XOF'
 when@test:
     twig:
         strict_variables: true
