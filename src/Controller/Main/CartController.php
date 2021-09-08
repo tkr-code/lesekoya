@@ -26,7 +26,7 @@ class CartController extends AbstractController
             $this->addFlash('success','panier modiifer');
             return $this->redirectToRoute('cart_index');
         }
-        return $this->render('main/cart/index.html.twig',[
+        return $this->render('leSekoya/cart/index.html.twig',[
             'items'=>$cartService->getFullCart(),
             'total'=>$cartService->getTotal(),
             'form'=>$form->createView()

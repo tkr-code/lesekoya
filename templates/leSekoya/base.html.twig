@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="{{ asset('aroma/vendors/bootstrap/bootstrap.min.css') }}">
   <link rel="stylesheet" href="{{ asset('aroma/vendors/fontawesome/css/all.min.css') }}">
 	<link rel="stylesheet" href="{{ asset('aroma/vendors/themify-icons/themify-icons.css') }}">
-  {# <link rel="stylesheet" href="{{ asset('aroma/vendors/nice-select/nice-select.css') }}"> #}
+  <link rel="stylesheet" href="{{ asset('aroma/vendors/nice-select/nice-select.css') }}">
   <link rel="stylesheet" href="{{ asset('aroma/vendors/owl-carousel/owl.theme.default.min.css') }}">
   <link rel="stylesheet" href="{{ asset('aroma/vendors/owl-carousel/owl.carousel.min.css') }}">
     <!-- Select2 -->
@@ -74,15 +74,9 @@
             <ul class="nav navbar-nav menu_nav ml-auto mr-auto">
               <li class="nav-item active"><a class="nav-link" href="{{ path('home') }}">Home</a></li>
               <li class="nav-item">
-                <a href="{{ path('articles') }}" class="nav-link" 
-                  aria-expanded="false">Shop</a>
-                {# <ul class="dropdown-menu">
-                  <li class="nav-item"><a class="nav-link" href="{{ path('articles') }}">Shop Category</a></li>
-                  <li class="nav-item"><a class="nav-link" href="single-product.html">Product Details</a></li>
-                  <li class="nav-item"><a class="nav-link" href="checkout.html">Product Checkout</a></li>
-                  <li class="nav-item"><a class="nav-link" href="confirmation.html">Confirmation</a></li>
-                  <li class="nav-item"><a class="nav-link" href="cart.html">Shopping Cart</a></li>
-                </ul> #}
+                <a href="{{ path('articles') }}" class="nav-link">
+                  Shop
+                </a>
 							</li>
               <li class="nav-item submenu dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
@@ -142,7 +136,15 @@
 
             <ul class="nav-shop">
               <li class="nav-item"><button><i class="ti-search"></i></button></li>
-              <li class="nav-item"><button><i class="ti-shopping-cart"></i><span class="nav-shop__circle">{{ app.request.session.get('panier') |length }}</span></button> </li>
+              <li class="nav-item">
+                <a href="{{ path('cart_index') }}">
+                  <button>
+                    <i class="ti-shopping-cart"></i>
+                    <span class="nav-shop__circle">
+                      {{ app.request.session.get('panier') |length }}</span>
+                  </button>
+                </a>
+              </li>
               <li class="nav-item dropdown">
                 <a id="dropdownSubMenu2" href="#" data-toggle="dropdown" aria-haspopup="true" 
                 aria-expanded="false" class="nav-link dropdown-toggle"><img width="30px" src="{{ asset('img/pays/' ~ app.request.locale ~ '') }}.jpg" alt="lang"> </a>
@@ -266,7 +268,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
   <script src="{{ asset('aroma/vendors/nice-select/jquery.nice-select.min.js') }}"></script>
   <script src="{{ asset('aroma/vendors/jquery.ajaxchimp.min.js') }}"></script>
   <!-- Select2 -->
-<script src="{{ asset('adminlte/plugins/select2/js/select2.full.min.js') }}"></script>
+{# <script src="{{ asset('adminlte/plugins/select2/js/select2.full.min.js') }}"></script> #}
   <script src="{{ asset('aroma/vendors/mail-script.js') }}"></script>
   <script src="{{ asset('aroma/js/main.js') }}"></script>
   <script>
