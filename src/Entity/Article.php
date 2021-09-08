@@ -15,6 +15,11 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Article
 {
+    const etats =[
+        'Choiser'=>null,
+        'Top'=>'top',
+        'populaire'=>'populaire'
+    ];
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -83,6 +88,11 @@ class Article
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="article", orphanRemoval=true)
      */
     private $comments;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $etat;
 
 
     public function __construct()
@@ -303,6 +313,18 @@ class Article
                 $comment->setArticle(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getEtat(): ?string
+    {
+        return $this->etat;
+    }
+
+    public function setEtat(?string $etat): self
+    {
+        $this->etat = $etat;
 
         return $this;
     }
