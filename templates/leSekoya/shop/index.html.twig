@@ -57,6 +57,7 @@
               </li>
             </ul>
           </div>
+          
           <div class="sidebar-filter">
             <div class="top-filter-head">Product Filters</div>
             <div class="common-filter">
@@ -135,7 +136,9 @@
           <section class="lattest-product-area pb-40 category-list">
             <div class="row">
               {% for item in articles %}
-                {% include "leSekoya/shop/_article.html.twig" %}  
+                <div class="col-md-6 col-lg-4 ">    
+                  {% include "leSekoya/shop/_article.html.twig" %}  
+                </div>
               {% endfor %}
 
               {# <div class="col-md-6 col-lg-4">
@@ -285,7 +288,7 @@
     </div>
   </section>
 	<!-- ================ category section end ================= -->		  
-
+  
 	<!-- ================ top product area start ================= -->	
 	<section class="related-product-area">
 		<div class="container">

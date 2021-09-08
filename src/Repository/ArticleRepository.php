@@ -118,6 +118,24 @@ class ArticleRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    public function findEtat($etat = null)
+    {
+        return $this->findQueryBuilder()
+            ->where("p.etat = :etat ")
+            ->setParameter('etat',$etat)
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
+    }
+    public function findRand()
+    {
+        return $this->findQueryBuilder()
+            ->addSelect('RAND() as HIDDEN rand')
+            ->orderBy('rand')
+            ->setMaxResults(16)
+            ->getQuery()
+            ->getResult();
+    }
     public function findAllOnArray()
     {
         return $this->findQueryBuilder()

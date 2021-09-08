@@ -1,0 +1,155 @@
+{% import "macros/search.html.twig" as search %}
+
+{% extends 'base.html.twig' %}
+
+
+{% block title %}Hello CardController!{% endblock %}
+
+{% block body %}
+{{ search.search(form) }}
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ path('articles') }}">Tous les articles</a></li>
+    <li class="breadcrumb-item active">Cart</li>
+</ol>
+
+{% for item in app.flashes('success') %}
+  <div class="alert alert-success">
+      <p>{{item}}</p>
+  </div>
+{% endfor %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8">
+    {% if app.request.session.get('panier') %}
+    
+      <div class="card">
+        <div class="card-header">
+          <h3>Cart</h3>
+        </div>
+        <div class="card-body">
+          <table class="table">
+            <thead>
+              <th>X</th>
+              <th>Image</th>
+              <th>Name</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th>Subtotal</th>
+            </thead>              
+            <tbody>
+            {% for key, item in items %}
+              <tr>
+                <td>
+                  <a href="{{ path('cart_delete',{id: item.article.id} ) }}" class="btn-sm"><i class="fa fa-window-close text-danger" aria-hidden="true"></i></a>
+                </td>
+                <td><img src="{{ asset('img/vide.png') }}" width="80px" alt=""> </td>
+                <td>{{ item.article.title}} </td>
+                <td>
+                    <form class="form-row" action="" method="post">
+                      <div class="form-group col-6">
+                      <input type="hidden" name="article_id" value="{{ item.article.id }}">
+                        <input type="number" class="form-control" min="1" max="{{ item.article.quantity }}" name="qty" value="{{ item.quantite }}" >
+                        <small id="helpId" class="text-muted">Stock: {{ item.article.quantity  }} </small>
+                      </div>
+                      <div class="form-group col-2">
+                        <button type="submit" class="btn btn-success ml-1">
+                          Appliquer
+                        </button>
+                      </div>
+                    </form>
+                </td>
+                <td>
+                    {{ item.article.price|number_format(2,'.',' ') }} XOF
+                </td>
+                <td>
+                    {{ (item.article.price * item.quantite) | number_format(2,'.',' ') }} XOF
+                </td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+          <div class="row">
+            <div class="col-lg-6 offset-6 ">
+              <table class="table">
+                <tr>
+                  <td>Total :</td>
+                  <td> {{ total|number_format(2,'.',' ') }} XOF</td>
+                </tr>
+              </table>
+                <div class="btn-group">
+                  {% if app.session.get('panier') != [] %}
+                  {% if is_granted('ROLE_CLIENT') %}
+                    <a href="{{ path('order_client_shipping') }}" class="btn btn-lg ml-1 rounded btn-primary" type="submit">
+                      Commander
+                    </a>
+                    {% else %}
+                    <a href="{{ path('app_login') }}" class="btn btn-lg ml-1 rounded btn-primary" type="submit">
+                      Commander
+                    </a>
+                  {% endif %}
+
+                  <a href="{{ path('cart_clear') }}" class="btn-danger btn-lg ml-1">
+                    Clear <i class="fa fa-trash" aria-hidden="true"></i>
+                  </a>
+                  {% endif %}
+                </div>
+            </div>
+          </div>
+        </div>
+      </div> 
+    {% else %}
+      <div class="card">
+        <div class="card-body text-center">
+            <a class="btn bg-primary bnt-primary p-5 rounded-circle" href="#">
+              <i class="fa fa-cart-arrow-down fa-4x" aria-hidden="true"></i>
+            </a>
+            <h3>{{'Empty cart'|trans }}</h3>
+            <a href="{{ path('articles') }}" class="btn btn-primary mt-2 w-100">View All products</a>
+        </div>
+      </div>
+    {% endif %}  
+      <div class="card">
+        <div class="card-header">
+          <h3>Ces articles vous intéresses ?</h3>
+        </div>
+        <div class="card-body">
+            
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-header">
+            <h3>Adress de Livraison </h3>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12">
+              <P>Adress de Livraison</P>
+              <div class="form-group">
+                <select class="custom-select select2" name="" id="">
+                  <option >Select one</option>
+                  <option selected value="">Dakar</option>
+                  <option value="">Bamako</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <select class="custom-select" name="" id="">
+                  <option selected>Select one</option>
+                  <option value="">Sacre coeur</option>
+                  <option value="">Liberte 6</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-12">
+
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock %}

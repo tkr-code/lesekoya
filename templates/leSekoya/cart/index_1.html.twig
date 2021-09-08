@@ -1,0 +1,123 @@
+{% import "macros/search.html.twig" as search %}
+
+{% extends 'base.html.twig' %}
+
+
+{% block title %}Hello CardController!{% endblock %}
+
+{% block body %}
+  {% for item in app.flashes('success') %}
+  <div class="alert alert-success">
+      <p>{{item}}</p>
+  </div>
+  {% endfor %}
+  <pre>
+    {{ dump(items) }}
+  </pre>
+{# {{ search.search(form) }} #}
+<div class="row">
+  <div class="col-lg-8">
+  <form action="" name="cart" id="form">
+    <div class="card">
+     <tbody id="displayArea"></tbody>
+      <div class="card-body">
+            <table class="table">
+              <thead>
+                <th>X</th>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Subtotal</th>
+              </thead>
+              
+              <tbody>
+              {% for key, item in items %}
+                <tr name="line_items">
+                  <td>
+                    <a href="{{ path('card_delete',{id: item.article.id} ) }}" class="btn-sm"><i class="fa fa-window-close text-danger" aria-hidden="true"></i></a>
+                  </td>
+                  <td><img src="{{ asset('img/vide.png') }}" width="80px" alt=""> </td>
+                  <td>{{ item.article.title}} </td>
+                  <td>
+                      <input type="number" class="form-control" min="1" max="{{ item.article.quantity }}" name="qty" value="{{ item.quantite }}" >
+                      <small id="helpId" class="text-muted">Stock: {{ item.article.quantity  }} </small>
+                  </td>
+                  <td>
+                      <input type="number" disabled class="form-control" name="price" value="{{ item.article.price }}" >
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" name="item_total" value="" jAutoCalc="{qty} * {price}">
+                  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+            <div class="row">
+              <div class="col-lg-6 offset-6 ">
+                <table class="table">
+                  <tr>
+                    <td>Total Subtoal</td>
+                    <td><input type="text" class="form-control" disabled name="subtotal" value="" jAutoCalc="SUM({item_total})"></td>
+                  </tr>
+                  <tr>
+                    <td>Shipping</td>
+                    <td> <input type="text" disabled name="shipping" class="form-control" value="1000"></td>
+                  </tr>
+                  <tr>
+                    <td>Total :</td>
+                    <td><input type="text" disabled name="total" value="" jAutoCalc="{subtotal} + {shipping} "></td>
+                  </tr>
+                </table>
+                {# <a  href="#">
+                  Commander
+                </a> #}
+                  <button class="btn btn-lg rounded btn-primary" type="submit">
+                    Commander
+                  </button>
+              </div>
+            </div>
+      </div>
+    </div>
+  </form>
+  </div>
+  <div class="col-lg-4">
+  <div class="card card-outine card-primary">
+    <div class="card-body">
+
+    </div>
+  </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block foot %}
+  <script src="{{ asset('autocal/dist/jautocalc.min.js') }}"></script>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+  $(document).ready(function(){
+  //  $('form').jAutoCalc();
+
+    function autoCalcSetup() {
+        $('form[name=cart]').jAutoCalc('destroy');
+        $('form[name=cart] tr[name=line_items]').jAutoCalc({keyEventsFire: true, decimalPlaces: 2, emptyAsZero: true});
+        $('form[name=cart]').jAutoCalc({decimalPlaces: 2});
+    }
+    autoCalcSetup()
+
+    $('#form').submit(function(e) {
+      e.preventDefault()
+    var $inputs = $('#form :input');
+    var values = {};
+    $inputs.each(function() {
+      values[this.name] = $(this).val();
+    // console.log($(this).val());
+    });
+    console.log(values);
+    // $('#displayArea').append("<td>" + values.name + "</td><td>" + values.roll + "</td><td>" + values.class + "</td><td>" + values.age + "</td><td>" + values.nid + "</td></tr>");
+  });
+  })
+</script>
+{% endblock %}

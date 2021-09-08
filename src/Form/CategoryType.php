@@ -18,6 +18,7 @@ class CategoryType extends AbstractType
                     'placeholder'=>'Enter category'
                 ],
             ])
+            ->add('is_active')
         ;
     }
 

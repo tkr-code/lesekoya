@@ -1,23 +1,26 @@
-<div class="col-md-6 col-lg-4">
-    <a href="{{ path('articles_show', { category: item.category.title, slug: item.slug, id: item.id}) }}">
-        <div class="card text-center card-product">
-        <div class="card-product__img">
-            {% for item in item.images|slice(0,1) %}
-                <img class="card-img" src="{{ asset('img/article/' ~ item.name )}}" alt="{{ item.title }}">
-            {% else %}
-                <img class="card-img" src="{{ asset('img/vide.png')}}" alt="">
-            {% endfor %}
-            <ul class="card-product__imgOverlay">
-                <li><button><i class="ti-search"></i></button></li>
-                <li><button><i class="ti-shopping-cart"></i></button></li>
-                <li><button><i class="ti-heart"></i></button></li>
-            </ul>
-        </div>
-        <div class="card-body">
-            <p>{{ item.category.title }}</p>
-            <h4 class="card-product__title"><a href="{{ path('articles_show', { category: item.category.title, slug: item.slug, id: item.id}) }}">{{ item.title }}</a></h4>
-            <p class="card-product__price">{{ item.formatterPrice }} {{ site.current_name }} </p>
-        </div>
+
+<div class="card text-center card-product">
+    <div class="card-product__img">
+        {% for item in item.images|slice(0,1) %}
+            <img class="card-img" src="{{ asset('img/article/' ~ item.name )}}" alt="{{ item.name }}">
+        {% else %}
+            <img class="card-img" src="{{ asset('img/vide.png')}}" alt="">
+        {% endfor %}
+        <ul class="card-product__imgOverlay">
+            <li>
+                <a href="{{ path('articles_show', { category: item.category.title, slug: item.slug, id: item.id}) }}">
+                    <button><i class="ti-search"></i></button></li>
+                </a>
+            <li>
+                <a href="{{ path('cart_add',{ id: item.id }) }}">
+                    <button><i class="ti-shopping-cart"></i></button></li>
+                </a>
+            <li><button><i class="ti-heart"></i></button></li>
+        </ul>
     </div>
-    </a>
+    <div class="card-body">
+        <p>{{ item.category.title }}</p>
+        <h4 class="card-product__title"><a href="{{ path('articles_show', { category: item.category.title, slug: item.slug, id: item.id}) }}">{{ item.title }}</a></h4>
+        <p class="card-product__price">{{ item.formatterPrice }} {{ site.current_name }} </p>
+    </div>
 </div>

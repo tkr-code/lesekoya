@@ -29,33 +29,4 @@ class MainController extends AbstractController
         
         return $this->redirect($request->headers->get('referer'));
     }
-    /**
-     * @Route("/",  name="home"
-     * )
-     */
-    public function home(Request $request): Response
-    {
-        $search = new ArticleSearch();
-        $form = $this->createForm(ArticleSearchType::class,$search)->handleRequest($request);
-        $pages =[
-            [
-                'path'=>'home',
-                'name'=>'Home'
-            ],
-            [
-                'path'=>'articles',
-                'name'=>'Tous nos articles'
-            ],
-            [
-                'path'=>'article_index',
-                'name'=>'Liste des articles | admin '
-            ]
-        ];
-
-        //   return  $this->renderForm("main/home/index.html.twig", [
-      return  $this->render("leSekoya/home/index.html.twig", [
-            'pages'=>$pages,
-            'searchForm'=>$form
-        ]);
-    }
 }

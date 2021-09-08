@@ -33,6 +33,16 @@
     .bg-default{
       background:#f1f6f7!important;
     }
+    .bg-primary{
+       background: #384aeb!important;
+       color:#fff!important;
+       font-size: 1rem;
+       margin: 0 2px 0 2px;
+    }
+    .form-control{
+      border-radius:30px!important;
+
+    }
     .btn-primary{
       background:#384aeb;
       color:#fff;
@@ -63,16 +73,16 @@
           <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
             <ul class="nav navbar-nav menu_nav ml-auto mr-auto">
               <li class="nav-item active"><a class="nav-link" href="{{ path('home') }}">Home</a></li>
-              <li class="nav-item submenu dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+              <li class="nav-item">
+                <a href="{{ path('articles') }}" class="nav-link" 
                   aria-expanded="false">Shop</a>
-                <ul class="dropdown-menu">
+                {# <ul class="dropdown-menu">
                   <li class="nav-item"><a class="nav-link" href="{{ path('articles') }}">Shop Category</a></li>
                   <li class="nav-item"><a class="nav-link" href="single-product.html">Product Details</a></li>
                   <li class="nav-item"><a class="nav-link" href="checkout.html">Product Checkout</a></li>
                   <li class="nav-item"><a class="nav-link" href="confirmation.html">Confirmation</a></li>
                   <li class="nav-item"><a class="nav-link" href="cart.html">Shopping Cart</a></li>
-                </ul>
+                </ul> #}
 							</li>
               <li class="nav-item submenu dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
@@ -92,12 +102,62 @@
                 </ul>
               </li>
               <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+              {% if  is_granted('ROLE_EDITOR') %}
+          <li class="nav-item dropdown">
+            <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle rounded bg-primary">Manage {{app_name}}</a>
+            <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
+              <li><a href="{{ path('admin') }}" class="dropdown-item">Dashboard </a></li>
+              <li><a href="{{ path('article_index') }}" class="dropdown-item">Manage artices </a></li>
+              <li><a href="{{ path('order_index') }}" class="dropdown-item">Manage orders </a></li>
+              <li><a href="{{ path('app_logout') }}" class="dropdown-item">Log out <i class="fa fa-power-off text-danger" aria-hidden="true"></i> </a></li>
+              {# <li class="dropdown-divider"></li>
+
+              <!-- Level two dropdown-->
+              <li class="dropdown-submenu dropdown-hover">
+                <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Hover for action</a>
+                <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
+                  <li>
+                    <a tabindex="-1" href="#" class="dropdown-item">level 2</a>
+                  </li>
+
+                  <!-- Level three dropdown-->
+                  <li class="dropdown-submenu">
+                    <a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">level 2</a>
+                    <ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow">
+                      <li><a href="#" class="dropdown-item">3rd level</a></li>
+                      <li><a href="#" class="dropdown-item">3rd level</a></li>
+                    </ul>
+                  </li>
+                  <!-- End Level three -->
+
+                  <li><a href="#" class="dropdown-item">level 2</a></li>
+                  <li><a href="#" class="dropdown-item">level 2</a></li>
+                </ul>
+              </li>
+              <!-- End Level two --> #}
+            </ul>
+          </li>
+          {% endif %}
             </ul>
 
             <ul class="nav-shop">
               <li class="nav-item"><button><i class="ti-search"></i></button></li>
               <li class="nav-item"><button><i class="ti-shopping-cart"></i><span class="nav-shop__circle">{{ app.request.session.get('panier') |length }}</span></button> </li>
-              <li class="nav-item"><a class="button button-header" href="#">Buy Now</a></li>
+              <li class="nav-item dropdown">
+                <a id="dropdownSubMenu2" href="#" data-toggle="dropdown" aria-haspopup="true" 
+                aria-expanded="false" class="nav-link dropdown-toggle"><img width="30px" src="{{ asset('img/pays/' ~ app.request.locale ~ '') }}.jpg" alt="lang"> </a>
+              <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
+                {% for item in locales %}
+                  {% if item != app.request.locale  %}
+                  <li>
+                    <a href="{{ path('lang',{ locale: item }) }}" class="dropdown-item">
+                      <img width="30px" src="{{ asset('img/pays/' ~ item ~ '') }}.jpg" alt="" srcset="">
+                    {{item}} </a>
+                  </li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            </li>
             </ul>
           </div>
         </div>
