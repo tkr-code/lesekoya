@@ -7,7 +7,7 @@ $(function() {
   });
 
   //------- Active Nice Select --------//
-  $('select').niceSelect();
+  $('select_nice').niceSelect();
 
   //------- hero carousel -------//
   $(".hero-carousel").owlCarousel({

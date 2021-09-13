@@ -1,0 +1,109 @@
+{% extends "leSekoya/base.html.twig" %}
+
+{% block title %}Cart {% endblock %}
+
+{% block body %}
+<ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ path('home') }}">Home</a></li>
+    <li class="breadcrumb-item"><a href="{{ path('articles') }}">Shop</a></li>
+    <li class="breadcrumb-item"><a href="{{ path('articles') }}">Cart</a></li>
+    <li class="breadcrumb-item active">Preview command</li>
+</ol>
+<main class="site-main">
+
+  <section class="cart_areax"  style="background: #e9ecef;">
+      <div class="container">
+          <div class="row bg-white mt-2 pb-5 rounded">
+            <div class="col-12">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in items %}
+                        <tr>
+                            <td>
+                                {{ item.article.title }}
+                            </td>
+                            <td>
+                                <h5>{{ item.article.price|number_format(2,'.',' ') }} {{ site.current}} </h5>
+                            </td>
+                            <td>
+                                {{ item.quantite }}
+                            </td>
+                            <td>
+                                <h5>{{ (item.article.price * item.quantite) | number_format(2,'.',' ') ~ ' ' ~ site.current }}</h5>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <p class="h4">Methode de payment:</p>
+                        <p>Payment à la livraison</p>
+                    </div>
+                    <div class="col-6">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                            <td colspan="2"></td>
+                            <td>
+                                <h5>Subtotal</h5>
+                            </td>
+                            <td>
+                                {{ subtotal|number_format(2,'.',' ') }} {{ site.current }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"></td>
+                            <td>
+                                <h5>Montant de la livraion</h5>
+                            </td>
+                            <td>
+                                {{ shippingAmount|number_format(2,'.',' ') }} {{ site.current }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"></td>
+                            <td>
+                                <h5>Total</h5>
+                            </td>
+                            <td>
+                                {{ (shippingAmount + subtotal) |number_format(2,'.',' ') }} {{ site.current }}
+                            </td>
+                        </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mx-auto">
+                <div class="row">
+                    <div class="col-sm">
+                     <a href="{{ path('cart_index') }}" class="btn btn-primary btn-lg">
+                        Retour au panier
+                    </a>
+                    </div>
+                    <div class="col-sm">
+                        <button class="btn btn-primary btn-lg">
+                        Commander
+                        </button>
+                    </div>
+                </div>
+                   
+                    
+            
+            </div>
+          </div>
+      </div>
+  </section>
+</main>
+{% endblock %}

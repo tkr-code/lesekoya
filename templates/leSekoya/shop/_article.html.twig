@@ -2,7 +2,7 @@
 <div class="card text-center card-product">
     <div class="card-product__img">
         {% for item in item.images|slice(0,1) %}
-            <img class="card-img" src="{{ asset('img/article/' ~ item.name )}}" alt="{{ item.name }}">
+            <img class="card-img" src="{{ asset('img/article/' ~ item.name )|imagine_filter('square') }}" alt="{{ item.name }}">
         {% else %}
             <img class="card-img" src="{{ asset('img/vide.png')}}" alt="">
         {% endfor %}
@@ -15,7 +15,13 @@
                 <a href="{{ path('cart_add',{ id: item.id }) }}">
                     <button><i class="ti-shopping-cart"></i></button></li>
                 </a>
-            <li><button><i class="ti-heart"></i></button></li>
+            <li>
+                <a href="{{ path('home') }}">
+                    <button>
+                        <i class="ti-heart "></i>
+                    </button>
+                </a>
+            </li>
         </ul>
     </div>
     <div class="card-body">

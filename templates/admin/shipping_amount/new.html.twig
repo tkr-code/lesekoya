@@ -1,0 +1,11 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}New ShippingAmount{% endblock %}
+
+{% block body %}
+    <h1>Create new ShippingAmount</h1>
+
+    {{ include('admin/shipping_amount/_form.html.twig') }}
+
+    <a href="{{ path('shipping_amount_index') }}">back to list</a>
+{% endblock %}

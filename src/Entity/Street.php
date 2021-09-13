@@ -33,6 +33,11 @@ class Street
      */
     private $city;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=ShippingAmount::class, inversedBy="street")
+     */
+    private $shippingAmount;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -58,6 +63,18 @@ class Street
     public function setCity(?City $city): self
     {
         $this->city = $city;
+
+        return $this;
+    }
+
+    public function getShippingAmount(): ?ShippingAmount
+    {
+        return $this->shippingAmount;
+    }
+
+    public function setShippingAmount(?ShippingAmount $shippingAmount): self
+    {
+        $this->shippingAmount = $shippingAmount;
 
         return $this;
     }

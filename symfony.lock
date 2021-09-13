@@ -109,6 +109,9 @@
     "fzaninotto/faker": {
         "version": "v1.9.2"
     },
+    "imagine/imagine": {
+        "version": "1.2.4"
+    },
     "knplabs/knp-components": {
         "version": "v3.1.0"
     },
@@ -117,6 +120,19 @@
     },
     "laminas/laminas-code": {
         "version": "4.4.2"
+    },
+    "liip/imagine-bundle": {
+        "version": "1.8",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.8",
+            "ref": "ffbb72e74598f04cc7f79f9fc736c77eeb98f569"
+        },
+        "files": [
+            "./config/packages/liip_imagine.yaml",
+            "./config/routes/liip_imagine.yaml"
+        ]
     },
     "monolog/monolog": {
         "version": "2.3.2"

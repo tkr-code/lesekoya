@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit ShippingAmount{% endblock %}
+
+{% block body %}
+    <h1>Edit ShippingAmount</h1>
+
+    {{ include('admin/shipping_amount/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('shipping_amount_index') }}">back to list</a>
+
+    {{ include('admin/shipping_amount/_delete_form.html.twig') }}
+{% endblock %}

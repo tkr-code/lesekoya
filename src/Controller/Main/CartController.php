@@ -10,26 +10,63 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\ArticleSearch;
+use App\Entity\Payment;
 use App\Form\ArticleSearchType;
+use App\Form\Payment1Type;
+use App\Repository\CityRepository;
+use App\Repository\ShippingAmountRepository;
+use App\Repository\StreetRepository;
 
 class CartController extends AbstractController
 {
+    private $cartService;
+    public function __construct(CartService $cartService)
+    {
+        $this->cartService = $cartService;
+    }
+    /**
+     * cart
+     * @Route("/cart/order-step-1", name="cart_step_1")
+     * @return void
+     */
+    public function step1(ShippingAmountRepository $shippingAmountRepository, Request $request):Response
+    {
+        // recupere la rue
+        $id_street = $request->request->get('street');
+        // on recuppere le montant corespondant
+        $amount = $shippingAmountRepository->findByStreet($id_street);
+        // on recupere le total du panier
+        $total = $this->cartService->getTotal();
+        // dd($request->request);
+        //on gener la nouvelle commande avec le prix de la livraion
+        return $this->render('lesekoya/cart/order-step-1.html.twig',[
+            'items'=>$this->cartService->getFullCart(),
+            'subtotal'=>$this->cartService->getTotal(),
+            'shippingAmount'=>$amount
+
+        ]);
+    }
     /**
      * @Route("/cart", name="cart_index")
      */
-    public function index(CartService $cartService, Request $request): Response
+    public function index(StreetRepository $streetRepository, CartService $cartService, Request $request, CityRepository $cityRepository): Response
     {
         $search = new ArticleSearch();
         $form = $this->createForm(ArticleSearchType::class,$search);
+        $payment = new Payment();
+        $formPayment = $this->createForm(Payment1Type::class,$payment);
         if ($request->request->count() > 0) {
             $cartService->addPost($request->request->get('article_id'),$request->request->get('qty'));
             $this->addFlash('success','panier modiifer');
             return $this->redirectToRoute('cart_index');
         }
-        return $this->render('leSekoya/cart/index.html.twig',[
+        return $this->renderForm('leSekoya/cart/index.html.twig',[
             'items'=>$cartService->getFullCart(),
             'total'=>$cartService->getTotal(),
-            'form'=>$form->createView()
+            'form'=>$form,
+            'cities'=>$cityRepository->findbyCountryName(),
+            'streets'=>$streetRepository->findbyCity(),
+            'form_payment'=>$formPayment,
         ]);
     }
 

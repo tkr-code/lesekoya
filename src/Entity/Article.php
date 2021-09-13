@@ -94,6 +94,11 @@ class Article
      */
     private $etat;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="favoris")
+     */
+    private $favori;
+
 
     public function __construct()
     {
@@ -101,6 +106,7 @@ class Article
         $this->options = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->created_at = new \DateTime();
+        $this->favori = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -325,6 +331,30 @@ class Article
     public function setEtat(?string $etat): self
     {
         $this->etat = $etat;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getFavori(): Collection
+    {
+        return $this->favori;
+    }
+
+    public function addFavori(User $favori): self
+    {
+        if (!$this->favori->contains($favori)) {
+            $this->favori[] = $favori;
+        }
+
+        return $this;
+    }
+
+    public function removeFavori(User $favori): self
+    {
+        $this->favori->removeElement($favori);
 
         return $this;
     }

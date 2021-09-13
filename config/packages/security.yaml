@@ -39,4 +39,4 @@ security:
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/customer, roles: ROLE_CLIENT }
     role_hierarchy:
-        ROLE_ADMIN: ROLE_EDITOR
+        ROLE_ADMIN: [ROLE_EDITOR,ROLE_CLIENT]

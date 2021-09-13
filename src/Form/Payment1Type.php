@@ -2,10 +2,14 @@
 
 namespace App\Form;
 
+use App\Entity\City;
 use App\Entity\Country;
 use App\Entity\Payment;
 use App\Entity\PaymentMethod;
+use App\Entity\ShippingAmount;
 use App\Entity\Street;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -13,6 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType as TypeTextType;
 
 class Payment1Type extends AbstractType
 {
@@ -38,18 +43,34 @@ class Payment1Type extends AbstractType
                     'required'=>true
                 ]
                 ])
-                // ->add('city',EntityType::class,[
-                //     'class'=>Street::class,
+                //  ->add('country',EntityType::class,[
+                //     'class'=>Country::class,
                 //     'choice_label'=>'name',
                 //     'mapped'=>false,
-                //     'label'=>'Lieu de livraison'
+                //     'label'=>false
                 // ])
-                ->add('country',EntityType::class,[
-                    'class'=>Country::class,
+                ->add('city',EntityType::class,[
+                    'class'=>City::class,
+                    'query_builder'=>function(EntityRepository $entityRepository){
+                        return $entityRepository->createQueryBuilder('a')
+                        ->join('a.country', 'b')
+                        ->where("b.name = 'Sénégal' ");
+                    },
                     'choice_label'=>'name',
                     'mapped'=>false,
-                    'label'=>'Pays'
+                    'label'=>false
                 ])
+                ->add('street',EntityType::class,[
+                    'class'=>Street::class,
+                    'query_builder'=>function(EntityRepository $entityRepository){
+                        return $entityRepository->createQueryBuilder('a')
+                        ->join('a.city', 'b')
+                        ->where("b.name = 'Dakar' ");
+                    },
+                    'choice_label'=>'name',
+                    'mapped'=>false,
+                    'label'=>false
+                ])               
                 ;
             // ->add('details',TextareaType::class,[
             //     'attr'=>[

@@ -75,12 +75,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $created_at;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Article::class, mappedBy="favori")
+     */
+    private $favoris;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->orders = new ArrayCollection();
         $this->adresses = new ArrayCollection();
         $this->created_at = new \DateTime();
+        $this->favoris = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -317,6 +323,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCreatedAt(\DateTimeInterface $created_at): self
     {
         $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Article[]
+     */
+    public function getFavoris(): Collection
+    {
+        return $this->favoris;
+    }
+
+    public function addFavori(Article $favori): self
+    {
+        if (!$this->favoris->contains($favori)) {
+            $this->favoris[] = $favori;
+            $favori->addFavori($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavori(Article $favori): self
+    {
+        if ($this->favoris->removeElement($favori)) {
+            $favori->removeFavori($this);
+        }
 
         return $this;
     }

@@ -30,6 +30,19 @@ class StreetRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+     /**
+     * @return Street[] Returns an array of City objects
+     */
+    public function findbyCity($city_name = 'Dakar')
+    {
+        return $this->createQueryBuilder('c')
+            ->join('c.city','b')
+            ->andWhere('b.name = :city_name')
+            ->setParameter('city_name', $city_name)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
     // /**
     //  * @return Street[] Returns an array of Street objects
     //  */
