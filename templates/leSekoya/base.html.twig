@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>{{ app_name }} - {% block title %}{% endblock %} </title>
-  <link rel="icon" href="img/Fevicon.png" type="image/png">
+  <link rel="icon" href="{{ asset('img/lesekoya (2).png') }}" type="image/png">
   <link rel="stylesheet" href="{{ asset('aroma/vendors/bootstrap/bootstrap.min.css') }}">
   <link rel="stylesheet" href="{{ asset('aroma/vendors/fontawesome/css/all.min.css') }}">
   <link rel="stylesheet" href="{{ asset('aroma/vendors/themify-icons/themify-icons.css') }}">
@@ -19,6 +19,29 @@
   {% block head %}{% endblock %}
   <link rel="stylesheet" href="{{ asset('aroma/css/style.css') }}">
   <style>
+    .pagination{
+      font-size:18px;
+    }
+    .pagination a{
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      border-radius: 30px;
+      margin-left: 1px;
+      margin-right: 1px;
+      color: #000;
+      border:none;
+    }
+    .page-item.disabled .page-link {
+      border:none
+    }
+    .page-item.active .page-link {
+     background: #384aeb;
+      border-radius: 30px;
+      margin-left: 2px;
+      margin-right: 2px;
+      font-weight: 700;
+      border:none;
+    }
     .list-group .active a {
       color: #fff !important;
     }
@@ -49,6 +72,9 @@
       color: #fff !important;
       font-size: 1rem;
       margin: 0 2px 0 2px;
+    }
+    .bg-2{
+      background: #e9ecef;
     }
 
     .form-primary {
@@ -88,32 +114,17 @@
           </button>
           <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
             <ul class="nav navbar-nav menu_nav ml-auto mr-auto">
-              <li class="nav-item active"><a class="nav-link" href="{{ path('home') }}">Home</a></li>
+              <li class="nav-item active"><a class="nav-link" href="{{ path('home') }}"> <i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
               <li class="nav-item">
                 <a href="{{ path('articles') }}" class="nav-link">
                   Shop
                 </a>
               </li>
-              {# <li class="nav-item submenu dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                  aria-expanded="false">Blog</a>
-                <ul class="dropdown-menu">
-                  <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
-                  <li class="nav-item"><a class="nav-link" href="single-blog.html">Blog Details</a></li>
-                </ul>
-              </li> #}
-              <li class="nav-item submenu dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                  aria-expanded="false">Pages</a>
-                <ul class="dropdown-menu">
-                  <li class="nav-item"><a class="nav-link" href="{{ path('app_login') }}">Login</a></li>
-                  <li class="nav-item"><a class="nav-link" href="register.html">Register</a></li>
-                  <li class="nav-item"><a class="nav-link" href="tracking-order.html">Tracking</a></li>
-                </ul>
-              </li>
-              <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+              
+              <li class="nav-item"><a class="nav-link" href="{{ path('contact') }}">Contact</a></li>
+              
               {% if is_granted('ROLE_EDITOR') %}
-              <li class="nav-item dropdown">
+              {# <li class="nav-item dropdown">
                 <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                   class="nav-link dropdown-toggle rounded bg-primary">Manage {{app_name}}</a>
                 <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
@@ -122,36 +133,26 @@
                   <li><a href="{{ path('order_index') }}" class="dropdown-item">Manage orders </a></li>
                   <li><a href="{{ path('app_logout') }}" class="dropdown-item">Log out <i
                         class="fa fa-power-off text-danger" aria-hidden="true"></i> </a></li>
-                  {# <li class="dropdown-divider"></li>
-
-                  <!-- Level two dropdown-->
-                  <li class="dropdown-submenu dropdown-hover">
-                    <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
-                      aria-expanded="false" class="dropdown-item dropdown-toggle">Hover for action</a>
-                    <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
-                      <li>
-                        <a tabindex="-1" href="#" class="dropdown-item">level 2</a>
-                      </li>
-
-                      <!-- Level three dropdown-->
-                      <li class="dropdown-submenu">
-                        <a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
-                          aria-expanded="false" class="dropdown-item dropdown-toggle">level 2</a>
-                        <ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow">
-                          <li><a href="#" class="dropdown-item">3rd level</a></li>
-                          <li><a href="#" class="dropdown-item">3rd level</a></li>
-                        </ul>
-                      </li>
-                      <!-- End Level three -->
-
-                      <li><a href="#" class="dropdown-item">level 2</a></li>
-                      <li><a href="#" class="dropdown-item">level 2</a></li>
-                    </ul>
-                  </li>
-                  <!-- End Level two --> #}
+                  
+                </ul>
+              </li> #}
+               <li class="nav-item submenu dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                  aria-expanded="false">Manage</a>
+                <ul class="dropdown-menu">
+                  <li class="nav-item"><a class="nav-link" href="{{ path('admin') }}">Dashbord</a></li>
                 </ul>
               </li>
               {% endif %}
+              <li class="nav-item submenu dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                  aria-expanded="false">Compte</a>
+                <ul class="dropdown-menu">
+                  <li class="nav-item"><a class="nav-link" href="{{ path('app_login') }}">Login</a></li>
+                  <li class="nav-item"><a class="nav-link" href="register.html">Register</a></li>
+                  <li class="nav-item"><a class="nav-link" href="tracking-order.html">Tracking</a></li>
+                </ul>
+              </li>
             </ul>
 
             <ul class="nav-shop">

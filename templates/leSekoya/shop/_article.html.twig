@@ -1,6 +1,6 @@
 
 <div class="card text-center card-product">
-    <div class="card-product__img">
+    <div class="card-product__img rounded bg-2">
         {% for item in item.images|slice(0,1) %}
             <img class="card-img" src="{{ asset('img/article/' ~ item.name )|imagine_filter('square') }}" alt="{{ item.name }}">
         {% else %}
