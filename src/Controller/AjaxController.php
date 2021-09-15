@@ -59,6 +59,7 @@ class AjaxController extends AbstractController
         $id_street = $request->request->get('id_street');
         $amount = $shippingAmountRepository->findByStreet($id_street);
         $response =[
+            'amount'=>$amount,
             'response'=>$this->render('client/order/ajax/amount.html.twig',
                 [
                     'amount'=>$amount

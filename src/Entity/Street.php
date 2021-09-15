@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\StreetRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -37,6 +39,16 @@ class Street
      * @ORM\ManyToOne(targetEntity=ShippingAmount::class, inversedBy="street")
      */
     private $shippingAmount;
+
+    /**
+     * @ORM\OneToMany(targetEntity=DeliverySpace::class, mappedBy="street")
+     */
+    private $deliverySpaces;
+
+    public function __construct()
+    {
+        $this->deliverySpaces = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -75,6 +87,36 @@ class Street
     public function setShippingAmount(?ShippingAmount $shippingAmount): self
     {
         $this->shippingAmount = $shippingAmount;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|DeliverySpace[]
+     */
+    public function getDeliverySpaces(): Collection
+    {
+        return $this->deliverySpaces;
+    }
+
+    public function addDeliverySpace(DeliverySpace $deliverySpace): self
+    {
+        if (!$this->deliverySpaces->contains($deliverySpace)) {
+            $this->deliverySpaces[] = $deliverySpace;
+            $deliverySpace->setStreet($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDeliverySpace(DeliverySpace $deliverySpace): self
+    {
+        if ($this->deliverySpaces->removeElement($deliverySpace)) {
+            // set the owning side to null (unless already changed)
+            if ($deliverySpace->getStreet() === $this) {
+                $deliverySpace->setStreet(null);
+            }
+        }
 
         return $this;
     }

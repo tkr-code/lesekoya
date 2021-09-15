@@ -37,6 +37,10 @@
               <li class="common-filter">
                 <form action="#">
                   <ul>
+                    <li class="filter-list">
+                      <input class="pixel-radio" {{ app.request.get('category') == null ? 'checked':'' }} type="radio" name="brand">
+                      <label for="men"><a style="color:#777" href="{{ path('articles') }}">Toutes les categories <span> ({{ category|length}})</span></a></label>
+                    </li>
                     {% for item in category %}
                     <li class="filter-list">
                       <input class="pixel-radio" {{ item.id == app.request.get('category') ? 'checked':'' }} type="radio" data-id="{{ item.id }}" name="brand">

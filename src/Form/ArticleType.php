@@ -10,6 +10,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -31,13 +32,13 @@ class ArticleType extends AbstractType
                 ],
                 'help'=>'The price must be greater than zero'
             ])
-            ->add('price',TextType::class,[
+            ->add('price',IntegerType::class,[
                 'attr'=>[
                     'placeholder'=>'The price must be greater than zero'
                 ],
                 'help'=>'The price must be greater than zero'
             ])
-            ->add('quantity',NumberType::class,[
+            ->add('quantity',IntegerType::class,[
                 'attr'=>[
                     'placeholder'=>'The quantity must be greater than zero'
                 ],
@@ -45,11 +46,14 @@ class ArticleType extends AbstractType
             ])
             ->add('description',TextareaType::class,[
                 'attr'=>[
-                    'placeholder'=>'The descripsion greater 10 characters'
+                    'placeholder'=>'The descripsion greater 10 characters',
                 ]
             ])
             ->add('etat',ChoiceType::class,[
-                'choices'=>Article::etats
+                'choices'=>Article::etats,
+                'attr'=>[
+                    'class'=>'select2'
+                ]
             ])
             ->add('category',EntityType::class,[
                 'class'=>Category::class,

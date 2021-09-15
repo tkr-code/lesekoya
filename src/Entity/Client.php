@@ -29,6 +29,11 @@ class Client
      */
     private $user;
 
+    /**
+     * @ORM\OneToOne(targetEntity=DeliverySpace::class, mappedBy="client", cascade={"persist", "remove"})
+     */
+    private $deliverySpace;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -42,6 +47,23 @@ class Client
     public function setUser(User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getDeliverySpace(): ?DeliverySpace
+    {
+        return $this->deliverySpace;
+    }
+
+    public function setDeliverySpace(DeliverySpace $deliverySpace): self
+    {
+        // set the owning side of the relation if necessary
+        if ($deliverySpace->getClient() !== $this) {
+            $deliverySpace->setClient($this);
+        }
+
+        $this->deliverySpace = $deliverySpace;
 
         return $this;
     }

@@ -9,6 +9,10 @@
 
 {% block title %}New Article | {{ app_name}} {% endblock %}
 
+{% block head %}
+      <!-- summernote -->
+  <link rel="stylesheet" href="{{ asset('adminlte/plugins/summernote/summernote-bs4.min.css') }}">
+{% endblock %}
 {% block stylesheets %}
   {{ head.dataTable() }}
 {% endblock %}
@@ -26,12 +30,13 @@
 <a class="btn btn-dark m-2" href="{{ path('article_index') }}">back to list <i class="fa fa-arrow-circle-left" aria-hidden="true"></i> </a>
 
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
         <div class="card card-outline card-primary">
             <div class="card-header">
                 <h4>{{ action_text }}</h4>
             </div>
             <div class="card-body">
+
                 {{ include('admin/article/_form.html.twig',{button_label:action}) }}
                 <a class="btn btn-light mt-2" href="{{ path('article_index') }}">back to list <i class="fa fa-arrow-circle-left" aria-hidden="true"></i> </a>
             </div>
@@ -117,7 +122,10 @@
 </div>
 {% endblock %}
 {% block foot %}
+    <!-- Summernote -->
+    <script src="{{ asset('adminlte/plugins/summernote/summernote-bs4.min.js') }}"></script>
     <script src="{{ asset('js/image.js') }}"></script>
+    
     {{ foot.dataTable()}}
 {% endblock %}
 
@@ -126,6 +134,19 @@
 
   <script>
    $(document).ready(function(){
+
+    //    $('#article_description').summernote({
+    //        toolbar: [
+    //       ['style', ['style']],
+    //       ['font', ['bold', 'underline', 'clear']],
+    //       ['color', ['color']],
+    //       ['para', ['ul', 'ol', 'paragraph']],
+    //       ['table', []],
+    //       ['insert', ['link']],
+    //       ['view', ['fullscreen', 'codeview', 'help']]
+    //     ]
+    //    })
+
      $('#gestions').addClass(' menu-is-opening menu-open')
      $('.gestions').addClass('active')
      $('.gestion-article').addClass('active')

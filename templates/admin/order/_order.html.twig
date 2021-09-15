@@ -26,9 +26,9 @@
     To
     <address>
     <strong>{{ order.user.personne.firstName ~ ' ' ~ order.user.personne.lastName }}</strong><br>
-    {{ order.shippingAdress.street }}<br>
-    {{ order.shippingAdress.city }}{{ ', ' ~ order.shippingAdress.countrycode }} {{ order.shippingAdress.postalCode }}<br>
-    Phone: {{ order.shippingAdress.phoneNumber }}<br>
+    {{ 'sacre coeur' }}<br>
+    {{ 'Dakar' }}{{ ', ' ~ 'Sn' }} {{ '11000' }}<br>
+    Phone: {{ '78 127 82 88' }}<br>
     Email: {{ order.user.email }}
     </address>
 </div>
@@ -108,10 +108,12 @@
         <th>Tax (9.3%)</th>
         <td>$10.34</td>
         </tr> #}
+        {% if order.shipping != null %}
         <tr>
-        <th>Shipping:</th>
-        <td>{{ order.shipping| number_format(2,'.',' ') }} XOF </td>
+            <th>Shipping:</th>
+            <td>{{ order.shipping.amount| number_format(2,'.',' ') }} XOF </td>
         </tr>
+        {% endif %}
         <tr>
         <th>Total:</th>
         <td>{{ order.total| number_format(2,'.',' ') }} XOF </td>

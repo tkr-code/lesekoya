@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}DeliverySpace index{% endblock %}
+
+{% block body %}
+    <h1>DeliverySpace index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Email</th>
+                <th>Lieu de livraison</th>
+                <th>montant</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for delivery_space in delivery_spaces %}
+            <tr>
+                <td>{{ delivery_space.id }}</td>
+                <td>{{ delivery_space.client.user.email }}</td>
+                <td>{{ delivery_space.street.name }}</td>
+                <td>{{ delivery_space.street.shippingAmount.amount }}</td>
+                <td>
+                    <a href="{{ path('delivery_space_show', {'id': delivery_space.id}) }}">show</a>
+                    <a href="{{ path('delivery_space_edit', {'id': delivery_space.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('delivery_space_new') }}">Create new</a>
+{% endblock %}

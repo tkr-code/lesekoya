@@ -7,7 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ArticleRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
  * @ORM\Table(name="article", indexes={@ORM\Index(columns={"title","description"}, flags={"fulltext"})})
@@ -28,17 +29,24 @@ class Article
     private $id;
 
     /**
+     * @Assert\Length(
+     *     min = 3,
+     *     max = 70
+     * )
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255)
      */
     private $title;
     
 
     /**
+     * @Assert\NotBlank()
      * @ORM\Column(type="float")
      */
     private $price;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\Column(type="text")
      */
     private $description;
@@ -54,11 +62,13 @@ class Article
     private $updated_at;
 
     /**
+     * 
      * @ORM\Column(type="boolean")
      */
     private $enabled;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="articles")
      * @ORM\JoinColumn(nullable=true)
      */
@@ -90,6 +100,7 @@ class Article
     private $comments;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $etat;

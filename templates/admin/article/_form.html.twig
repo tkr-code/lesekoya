@@ -3,6 +3,31 @@
         'novalidate':'novalidate'
     }
 }) }}
+<div class="row">
+    <div class="col-lg-4">
+        {{form_row(form.title)}}
+    </div>
+    <div class="col-lg-4">
+        {{form_row(form.buyingPrice)}}
+    </div>
+    <div class="col-lg-4">
+        {{form_row(form.price)}}
+    </div>
+    <div class="col-lg-4">
+        {{form_row(form.quantity)}}
+    </div>
+    <div class="col-lg-4">
+        {{form_row(form.etat)}}
+    </div>
+    <div class="col-lg-4">
+        {{form_row(form.category)}}
+    </div>
+    <div class="col-lg-12">
+        {{form_row(form.description)}}
+    </div>
+    <div class="col-lg-12">
     {{ form_widget(form) }}
     <button class="btn btn-primary btn-lg">{{ button_label|default('Save') }} <i class="fas fa-save"></i></button>
+    </div>
+</div>
 {{ form_end(form) }}

@@ -5,7 +5,7 @@
             <th>Order</th>
             <th>state</th>
             <th>Date</th>
-            <th>Facturation</th>
+            <th>Livraison</th>
             <th>Total</th>
             <th>actions</th>
         </tr>
@@ -29,8 +29,9 @@
             </td>
             <td>{{ order.createdAt|date_format_fr }}</td>
             <td>
-            {{ order.user.personne.firstname ~ ' ' ~ order.user.personne.lastname ~ ', ' ~ order.shippingAdress.street }}<br/>
-            {{ order.shippingAdress.postalCode ~ ' ' ~ order.shippingAdress.city }} <br/>
+            {{ order.user.personne.firstname ~ ' ' ~ order.user.personne.lastname ~ ', '}}
+            {{ order.deliverySpace != null  ? order.deliverySpace.street.name :'' }}
+            <br/>
             <small class="text-info">Via : {{ order.payment.paymentMethod.name}} </small>
 
             </td>
@@ -55,7 +56,7 @@
         <tr>
             <th>Order</th>
             <th>state</th>
-            <th>Facturation</th>
+            <th>Livraison</th>
             <th>Createdat</th>
             <th>Total</th>
             <th>actions</th>

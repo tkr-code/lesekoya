@@ -60,30 +60,10 @@ class Order
 
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $checkout_state;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $payment_state;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $shipping_state;
-
-    /**
      * @ORM\OneToMany(targetEntity=OrderItem::class, mappedBy="commande", orphanRemoval=true, cascade={"persist"})
      */
     private $order_item;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Adress::class, inversedBy="orders", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $shipping_adress;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="orders")
@@ -112,10 +92,15 @@ class Order
     private $adjustments_total;
 
     /**
-     * @ORM\Column(type="integer")
-     * @Assert\PositiveOrZero
+     * @ORM\OneToOne(targetEntity=Shipping::class, inversedBy="order_shipping", cascade={"persist", "remove"})
      */
     private $shipping;
+
+    /**
+     * @ORM\OneToOne(targetEntity=DeliverySpace::class, inversedBy="commande", cascade={"persist", "remove"})
+     */
+    private $delivery_space;
+
 
     public function __construct()
     {
@@ -218,43 +203,6 @@ class Order
         return $this;
     }
 
-
-    public function getCheckoutState(): ?string
-    {
-        return $this->checkout_state;
-    }
-
-    public function setCheckoutState(string $checkout_state): self
-    {
-        $this->checkout_state = $checkout_state;
-
-        return $this;
-    }
-
-    public function getPaymentState(): ?string
-    {
-        return $this->payment_state;
-    }
-
-    public function setPaymentState(string $payment_state): self
-    {
-        $this->payment_state = $payment_state;
-
-        return $this;
-    }
-
-    public function getShippingState(): ?string
-    {
-        return $this->shipping_state;
-    }
-
-    public function setShippingState(string $shipping_state): self
-    {
-        $this->shipping_state = $shipping_state;
-
-        return $this;
-    }
-
     /**
      * @return Collection|OrderItem[]
      */
@@ -285,17 +233,6 @@ class Order
         return $this;
     }
 
-    public function getShippingAdress(): ?Adress
-    {
-        return $this->shipping_adress;
-    }
-
-    public function setShippingAdress(?Adress $shipping_adress): self
-    {
-        $this->shipping_adress = $shipping_adress;
-
-        return $this;
-    }
 
     public function getUser(): ?User
     {
@@ -357,14 +294,26 @@ class Order
         return $this;
     }
 
-    public function getShipping(): ?int
+    public function getShipping(): ?Shipping
     {
         return $this->shipping;
     }
 
-    public function setShipping( $shipping): self
+    public function setShipping(?Shipping $shipping): self
     {
-        $this->shipping =(int) $shipping;
+        $this->shipping = $shipping;
+
+        return $this;
+    }
+
+    public function getDeliverySpace(): ?DeliverySpace
+    {
+        return $this->delivery_space;
+    }
+
+    public function setDeliverySpace(?DeliverySpace $delivery_space): self
+    {
+        $this->delivery_space = $delivery_space;
 
         return $this;
     }

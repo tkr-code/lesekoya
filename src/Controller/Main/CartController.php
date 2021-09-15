@@ -2,20 +2,22 @@
 
 namespace App\Controller\Main;
 
-use App\Repository\ArticleRepository;
+use App\Entity\Payment;
+use App\Form\Payment1Type;
+use App\Entity\ArticleSearch;
+use App\Entity\DeliverySpace;
+use App\Form\ArticleSearchType;
+use App\Form\DeliverySpaceType;
 use App\Service\Cart\CartService;
+use App\Repository\CityRepository;
+use App\Repository\StreetRepository;
+use App\Repository\ArticleRepository;
+use App\Repository\ShippingAmountRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use App\Entity\ArticleSearch;
-use App\Entity\Payment;
-use App\Form\ArticleSearchType;
-use App\Form\Payment1Type;
-use App\Repository\CityRepository;
-use App\Repository\ShippingAmountRepository;
-use App\Repository\StreetRepository;
 
 class CartController extends AbstractController
 {
@@ -35,14 +37,17 @@ class CartController extends AbstractController
         $id_street = $request->request->get('street');
         // on recuppere le montant corespondant
         $amount = $shippingAmountRepository->findByStreet($id_street);
+        //on recupere la methode de paiment
+        $methodPaiement = $request->request->get('method');
         // on recupere le total du panier
         $total = $this->cartService->getTotal();
-        // dd($request->request);
         //on gener la nouvelle commande avec le prix de la livraion
+        dump($request->request);
         return $this->render('lesekoya/cart/order-step-1.html.twig',[
             'items'=>$this->cartService->getFullCart(),
             'subtotal'=>$this->cartService->getTotal(),
-            'shippingAmount'=>$amount
+            'shippingAmount'=>$amount,
+            'methodPayment'=>$methodPaiement
 
         ]);
     }
@@ -60,6 +65,10 @@ class CartController extends AbstractController
             $this->addFlash('success','panier modiifer');
             return $this->redirectToRoute('cart_index');
         }
+
+        $deliverySpace = new DeliverySpace();
+        $formDeliverySpace = $this->createForm(DeliverySpaceType::class, $deliverySpace);
+        $formDeliverySpace->handleRequest($request);
         return $this->renderForm('leSekoya/cart/index.html.twig',[
             'items'=>$cartService->getFullCart(),
             'total'=>$cartService->getTotal(),
@@ -67,6 +76,7 @@ class CartController extends AbstractController
             'cities'=>$cityRepository->findbyCountryName(),
             'streets'=>$streetRepository->findbyCity(),
             'form_payment'=>$formPayment,
+            'form_delivery_space'=>$formDeliverySpace
         ]);
     }
 

@@ -8,6 +8,8 @@ use App\Entity\Payment;
 use App\Form\ClientType;
 use App\Entity\OrderItem;
 use App\Entity\ArticleSearch;
+use App\Entity\DeliverySpace;
+use App\Entity\Shipping;
 use App\Form\ArticleSearchType;
 use App\Form\Payment1Type;
 use App\Repository\OrderRepository;
@@ -15,6 +17,7 @@ use App\Service\Order\OrderService;
 use App\Repository\ClientRepository;
 use App\Repository\ArticleRepository;
 use App\Repository\PaymentMethodRepository;
+use App\Repository\StreetRepository;
 use App\Service\Cart\CartService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,21 +47,22 @@ class ClientController extends AbstractController
         ]);
     }
         /**
-     * @Route("/order/new-order", name="order_client_new", methods={"GET","POST"})
+     * @Route("/order/new-order", name="order_client_new", methods={"POST"})
      */
-    public function newOrder(PaymentMethodRepository $paymentMethodRepository, ArticleRepository $articleRepository, Request $request, OrderService $orderService, SessionInterface $session): Response
+    public function newOrder(StreetRepository $streetRepository, PaymentMethodRepository $paymentMethodRepository, ArticleRepository $articleRepository, Request $request, OrderService $orderService, SessionInterface $session): Response
     {
+        // nouvelle commande
         $order = new Order();
-        $order->setPaymentState('in progress');
-        $order->setShippingState('in progress');
-        $order->setCheckoutState('in progress');
+        //rue de la livraison
+        $id_street = $request->request->get('street');
+        $street = $streetRepository->find($id_street);
         $order->setState('in progress');
-        $order->setShipping(500);
+        // $order->setShipping(500);
         $order->setNumber($orderService->voiceNumber());
         $order->setPaymentDue(new \DateTime('+ 6 day') );
         $user  = $this->getUser();
         $adresses = $user->getAdresses();
-        $order->setShippingAdress($adresses[0]);
+        // $order->setShippingAdress($adresses[0]);
         $order->setUser($user);
         $panier = $session->get('panier');
         $total = 0;
@@ -77,15 +81,34 @@ class ClientController extends AbstractController
         $order->setItemsTotal($total);
         $order->setAdjustmentsTotal($order->getShipping());
         $order->setTotal($order->getItemsTotal() + $order->getAdjustmentsTotal() );
+        
         $payment = new Payment();
         $payment->setAmount($order->getTotal());
         $payment->setState('in progress');
         $method = $paymentMethodRepository->find(3);
         $payment->setPaymentMethod($method);
+        // livraison
+        $shipping = new Shipping();
+        //montant de la livraison
+        $shippingAmount = 1500;
+        $shipping->setAmount($shippingAmount);
+        //statut de la livraison
+        $shipping->setState('In progress');
+
+        //lieu de livraison
+        $deliverySpace = new DeliverySpace();
+        //rue de la livraison
+        $deliverySpace->setStreet($street);
+        //client 
+        $deliverySpace->setClient($user->getClient());
         // $payment->setOrderPayment($order);
         // dump($total);
         // $order = $orderService->calculPersist($order);
         $order->setPayment($payment);
+        $order->setShipping($shipping);
+        $order->setDeliverySpace($deliverySpace);
+        // dump($request->request);
+        // dd($order);
         
         // dd($order);
         $entityManager = $this->getDoctrine()->getManager();
@@ -93,7 +116,7 @@ class ClientController extends AbstractController
         $entityManager->flush();
         $this->addFlash('success','Order created');
         $session->set('panier',[]);
-        return $this->redirectToRoute('client_index',[],Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('client_order',[],Response::HTTP_SEE_OTHER);
     }
     /**
      * @Route("/order/{id}", name="client_order_show", methods={"GET"})
@@ -110,7 +133,7 @@ class ClientController extends AbstractController
     /**
      * @Route("/order", name="client_order", methods={"GET"})
      */
-    public function orderIndex(OrderRepository $orderRepository): Response
+    public function clientOrder(OrderRepository $orderRepository): Response
     {
         $search = new ArticleSearch();
         $form = $this->createForm(ArticleSearchType::class,$search);

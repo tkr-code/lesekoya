@@ -8,7 +8,7 @@ parameters:
     user_images_directory: '%kernel.project_dir%/public/img/user'
     maitenance_file_path: '%kernel.project_dir%/public/.maintenance'
     app.locales: [en, fr]
-    locale: en
+    locale: fr
 services:
     # default configuration for services in *this* file
     _defaults:
