@@ -3,7 +3,7 @@
         <div class="card-body">
             <div class="list-group">
                 <button type="button" class="list-group-item list-group-item-action rounded my-account border-0">
-                    <a href="{{ path('client_index') }}">{% trans %}My account{% endtrans %}<i class="fa fa-user float-right ml-1" aria-hidden="true"></i></a>
+                    <a href="{{ path('client_index') }}"><i class="fa fa-user float-right ml-1" aria-hidden="true"></i> {% trans %}My account{% endtrans %}</a>
                 </button>
                 <button type="button" class="list-group-item list-group-item-action my-orders rounded border-0">
                     <a href="{{ path('client_order') }}">{% trans %}My orders{% endtrans %}<i class="ml-1 fas fa-box-open float-right"></i> </a>

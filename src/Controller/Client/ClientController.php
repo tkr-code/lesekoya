@@ -31,6 +31,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ClientController extends AbstractController
 {
     /**
+     * confirmation
+     * @Route("/confirmation", name="client_confirmation")
+     * @return Response
+     */
+    public function confirmation():Response
+    {
+        return $this->renderForm('client/confirmation.html.twig',[]);
+    }
+    /**
      * @Route("/order-adress", name="order_client_shipping")
      */
     public function orderClientShipping(CartService $cartService): Response
@@ -47,9 +56,9 @@ class ClientController extends AbstractController
         ]);
     }
         /**
-     * @Route("/order/new-order", name="order_client_new", methods={"POST"})
+     * @Route("/order/new-order", name="order_client_new", methods={"POST|GET"})
      */
-    public function newOrder(StreetRepository $streetRepository, PaymentMethodRepository $paymentMethodRepository, ArticleRepository $articleRepository, Request $request, OrderService $orderService, SessionInterface $session): Response
+    public function newOrder(OrderRepository $orderRepository, StreetRepository $streetRepository, PaymentMethodRepository $paymentMethodRepository, ArticleRepository $articleRepository, Request $request, OrderService $orderService, SessionInterface $session): Response
     {
         // nouvelle commande
         $order = new Order();
@@ -92,6 +101,7 @@ class ClientController extends AbstractController
         //montant de la livraison
         $shippingAmount = 1500;
         $shipping->setAmount($shippingAmount);
+        $order->setAdjustmentsTotal($shippingAmount);
         //statut de la livraison
         $shipping->setState('In progress');
 
@@ -116,7 +126,8 @@ class ClientController extends AbstractController
         $entityManager->flush();
         $this->addFlash('success','Order created');
         $session->set('panier',[]);
-        return $this->redirectToRoute('client_order',[],Response::HTTP_SEE_OTHER);
+        // $order = $orderRepository->find(3);
+        return $this->render('client/confirmation.html.twig',compact('order'));
     }
     /**
      * @Route("/order/{id}", name="client_order_show", methods={"GET"})

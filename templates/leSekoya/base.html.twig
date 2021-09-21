@@ -95,6 +95,12 @@
       background: #13a251;
       border-color: #13a251
     }
+    .div-primary {
+      box-shadow:0px 10px 40px 0px rgba(56,74,235,0.1);
+      height:100%;
+      /* text-align:center; */
+      padding:30px 20px
+      }
   </style>
 </head>
 
@@ -114,45 +120,61 @@
           </button>
           <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
             <ul class="nav navbar-nav menu_nav ml-auto mr-auto">
-              <li class="nav-item active"><a class="nav-link" href="{{ path('home') }}"> <i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
-              <li class="nav-item">
+              <li class="nav-item" id="home"><a class="nav-link" href="{{ path('home') }}"> <i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
+              <li class="nav-item" id="shop">
                 <a href="{{ path('articles') }}" class="nav-link">
-                  Shop
+                 <i class="fa fa-shopping-bag" aria-hidden="true"></i> Shop
                 </a>
               </li>
               
-              <li class="nav-item"><a class="nav-link" href="{{ path('contact') }}">Contact</a></li>
-              
-              {% if is_granted('ROLE_EDITOR') %}
-              {# <li class="nav-item dropdown">
-                <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                  class="nav-link dropdown-toggle rounded bg-primary">Manage {{app_name}}</a>
-                <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
-                  <li><a href="{{ path('admin') }}" class="dropdown-item">Dashboard </a></li>
-                  <li><a href="{{ path('article_index') }}" class="dropdown-item">Manage artices </a></li>
-                  <li><a href="{{ path('order_index') }}" class="dropdown-item">Manage orders </a></li>
-                  <li><a href="{{ path('app_logout') }}" class="dropdown-item">Log out <i
-                        class="fa fa-power-off text-danger" aria-hidden="true"></i> </a></li>
-                  
+              <li class="nav-item" id="contact">
+                <a class="nav-link" href="{{ path('contact') }}"> 
+                  <i class="fa fa-address-card" aria-hidden="true"></i> 
+                  Contact
+                </a>
+              </li>
+              <li class="nav-item submenu dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                  aria-expanded="false">LeSekoya</a>
+                <ul class="dropdown-menu">
+                  <li class="nav-item"><a class="nav-link" href="{{ path('app_login') }}">Login</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{{ path('app_register') }}">Register</a></li>
+                  <li class="nav-item"><a class="nav-link" href="tracking-order.html">Tracking</a></li>
                 </ul>
-              </li> #}
+              </li>
+              {% if is_granted('ROLE_EDITOR') %}
                <li class="nav-item submenu dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                   aria-expanded="false">Manage</a>
                 <ul class="dropdown-menu">
                   <li class="nav-item"><a class="nav-link" href="{{ path('admin') }}">Dashbord</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{{ path('article_index') }}">Articles</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{{ path('order_index') }}">Order</a></li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_logout') }}">
+                      <i class="fa fa-power-off text-danger" aria-hidden="true"></i>
+                      Log out
+                    </a>
+                  </li>
                 </ul>
               </li>
               {% endif %}
-              <li class="nav-item submenu dropdown">
+              {% if is_granted('ROLE_CLIENT') %}
+               <li class="nav-item submenu dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                  aria-expanded="false">Compte</a>
+                  aria-expanded="false"> <i class="fa fa-user" aria-hidden="true"></i> Hello {{ app.user.personne.firstName}} </a>
                 <ul class="dropdown-menu">
-                  <li class="nav-item"><a class="nav-link" href="{{ path('app_login') }}">Login</a></li>
-                  <li class="nav-item"><a class="nav-link" href="register.html">Register</a></li>
-                  <li class="nav-item"><a class="nav-link" href="tracking-order.html">Tracking</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{{ path('client_index') }}">Mon compte</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{{ path('client_order') }}">Order</a></li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_logout') }}">
+                      <i class="fa fa-power-off text-danger" aria-hidden="true"></i>
+                      Log out
+                    </a>
+                  </li>
                 </ul>
               </li>
+              {% endif %}
             </ul>
 
             <ul class="nav-shop">
@@ -166,6 +188,7 @@
                   </button>
                 </a>
               </li>
+              {% if is_granted('ROLE_CLIENT') == null %}
               <li class="nav-item">
                 <a href="{{ path('app_login') }}">
                   <button>
@@ -175,6 +198,7 @@
                   </button>
                 </a>
               </li>
+              {% endif %}
               <li class="nav-item dropdown">
                 <a id="dropdownSubMenu2" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                   class="nav-link dropdown-toggle"><img width="30px"
@@ -210,8 +234,7 @@
             <div class="single-footer-widget tp_widgets">
               <h4 class="footer_title large_title">Our Mission</h4>
               <p>
-                So seed seed green that winged cattle in. Gathering thing made fly you're no
-                divided deep moved us lan Gathering thing us land years living.
+              {{ site.mission_text }}
               </p>
               <p>
                 So seed seed green that winged cattle in. Gathering thing made fly you're no divided deep moved
@@ -222,12 +245,10 @@
             <div class="single-footer-widget tp_widgets">
               <h4 class="footer_title">Quick Links</h4>
               <ul class="list">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Shop</a></li>
-                <li><a href="#">Blog</a></li>
-                <li><a href="#">Product</a></li>
-                <li><a href="#">Brand</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="{{ path('home') }}">Home</a></li>
+                <li><a href="{{ path('articles') }}">Shop</a></li>
+                <li><a href="{{ path('app_login') }}">Se connecter</a></li>
+                <li><a href="{{ path('app_register') }}">S'inscrire</a></li>
               </ul>
             </div>
           </div>
@@ -252,15 +273,15 @@
                   <span class="fa fa-location-arrow"></span>
                   Head Office
                 </p>
-                <p>123, Main Street, Your City</p>
+                <p>Sacré coeur, Dakar</p>
 
                 <p class="sm-head">
                   <span class="fa fa-phone"></span>
                   Phone Number
                 </p>
                 <p>
-                  +123 456 7890 <br>
-                  +123 456 7890
+                  {{site.phone_number_1}} <br>
+                  {{ site.phone_number_2}}
                 </p>
 
                 <p class="sm-head">
@@ -268,8 +289,8 @@
                   Email
                 </p>
                 <p>
-                  free@infoexample.com <br>
-                  www.infoexample.com
+                  {{ site.email }} <br>
+                  www.{{site.name}}.com
                 </p>
               </div>
             </div>
@@ -309,8 +330,6 @@
   <script>
     $(document).ready(function () {
       //Initialize Select2 Elements
-      // $('[data-toggle="tooltip"]').tooltip()
-      // $('.select2').select2()
         $('select').select2({
           theme:'bootstrap4'
         })

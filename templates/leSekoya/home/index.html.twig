@@ -344,8 +344,13 @@
       </div>
     </section>
     <!-- ================ Subscribe section end ================= --> 
-
-    
-
   </main>
+{% endblock %}
+{% block javascripts %}
+  <script>
+    $(document).ready(function(){
+      // active page home
+      $('#home').addClass('active')
+    })
+  </script>
 {% endblock %}

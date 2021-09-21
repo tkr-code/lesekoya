@@ -16,11 +16,13 @@
 {% endblock %}
 
 {% block body %}
-{{ search.search(form) }}
-
-
+<ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ path('home') }}">Home</a></li>
+    <li class="breadcrumb-item"><a href="{{ path('client_order') }}">Mes commandes</a></li>
+    <li class="breadcrumb-item active">Cart</li>
+</ol>
 <div class="container">
-    <div class="row mt-3">
+    <div class="row my-5">
             {% include "client/nav.html.twig" %}
         <div class="col-lg-9">
             <div class="card card-primary card-outline card-tabs">

@@ -44,14 +44,10 @@ class RegistrationController extends AbstractController
             $user->setPassword(
                 $passwordEncoder->encodePassword(
                     $user,
-                    $form->get('plainPassword')->getData()
+                    $form->get('password')->getData()
                 )
             );
 
-            $adress = $form->get('adresses')->getData();
-            $adress->setFirstName($user->getPersonne()->getFirstName());
-            $adress->setLastName($user->getPersonne()->getLastName());
-            $user->addAdress($adress);
             $user->setRoles(['ROLE_CLIENT']);
             $client = new Client();
             $user->setClient($client);
@@ -63,18 +59,18 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
 
             // generate a signed url and email it to the user
-            // $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
-            //     (new TemplatedEmail())
-            //         ->from(new Address('malick.tounkara.1@gmail.com', 'store.test'))
-            //         ->to($user->getEmail())
-            //         ->subject('Please Confirm your Email')
-            //         ->htmlTemplate('registration/confirmation_email.html.twig')
-            // );
+            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+                (new TemplatedEmail())
+                    ->from(new Address('contact@lesekoya.com', 'Inscription'))
+                    ->to($user->getEmail())
+                    ->subject('Please Confirm your Email')
+                    ->htmlTemplate('registration/confirmation_email.html.twig')
+            );
             // do anything else you need here, like send an email
             return $this->redirectToRoute('client_index');
         }
 
-        return $this->render('registration/register.html.twig', [
+        return $this->render('registration/register_1.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
     }

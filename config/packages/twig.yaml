@@ -11,6 +11,10 @@ twig:
             email: 'leseoya@gmail.com'
             current_name: 'F cfa'
             current: 'XOF'
+            phone_number_1: '+221 78 127 82 88'
+            phone_number_2: '+221 77 000 00 00'
+            link: "https://leseoya.com"
+            mission_text: 'text à definir'
 when@test:
     twig:
         strict_variables: true

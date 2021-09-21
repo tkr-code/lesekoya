@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ClientRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -30,9 +32,14 @@ class Client
     private $user;
 
     /**
-     * @ORM\OneToOne(targetEntity=DeliverySpace::class, mappedBy="client", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity=DeliverySpace::class, mappedBy="client")
      */
-    private $deliverySpace;
+    private $deliverySpaces;
+
+    public function __construct()
+    {
+        $this->deliverySpaces = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -51,19 +58,32 @@ class Client
         return $this;
     }
 
-    public function getDeliverySpace(): ?DeliverySpace
+    /**
+     * @return Collection|DeliverySpace[]
+     */
+    public function getDeliverySpaces(): Collection
     {
-        return $this->deliverySpace;
+        return $this->deliverySpaces;
     }
 
-    public function setDeliverySpace(DeliverySpace $deliverySpace): self
+    public function addDeliverySpace(DeliverySpace $deliverySpace): self
     {
-        // set the owning side of the relation if necessary
-        if ($deliverySpace->getClient() !== $this) {
+        if (!$this->deliverySpaces->contains($deliverySpace)) {
+            $this->deliverySpaces[] = $deliverySpace;
             $deliverySpace->setClient($this);
         }
 
-        $this->deliverySpace = $deliverySpace;
+        return $this;
+    }
+
+    public function removeDeliverySpace(DeliverySpace $deliverySpace): self
+    {
+        if ($this->deliverySpaces->removeElement($deliverySpace)) {
+            // set the owning side to null (unless already changed)
+            if ($deliverySpace->getClient() === $this) {
+                $deliverySpace->setClient(null);
+            }
+        }
 
         return $this;
     }

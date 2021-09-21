@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use App\Repository\PersonneRepository;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=PersonneRepository::class)
  */
@@ -18,11 +18,21 @@ class Personne
     private $id;
 
     /**
+     * @Assert\Length(
+     *     min = 3,
+     *     max = 70
+     * )
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255)
      */
     private $firstName;
 
     /**
+     * @Assert\Length(
+     *     min = 3,
+     *     max = 70
+     * )
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255)
      */
     private $lastName;

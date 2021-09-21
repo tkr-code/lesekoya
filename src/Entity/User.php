@@ -9,6 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -24,6 +26,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $id;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=180, unique=true)
      */
     private $email;
@@ -38,6 +41,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * password_verify
+     * @Assert\EqualTo(propertyPath="password", message="Le Mot de passe ne correspond pas")
+     * @var mixed
+     */
+    private $password_verify;
 
     /**
      * @ORM\Column(type="boolean")
@@ -79,6 +89,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\ManyToMany(targetEntity=Article::class, mappedBy="favori")
      */
     private $favoris;
+
+    /**
+     * @ORM\OneToOne(targetEntity=DeliverySpace::class, inversedBy="user", cascade={"persist", "remove"})
+     */
+    private $delivery_space;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $username;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *     min = 9,
+     *     max = 9
+     * )
+     * @Assert\NotBlank()
+     */
+    private $phone_number;
 
     public function __construct()
     {
@@ -350,6 +380,57 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if ($this->favoris->removeElement($favori)) {
             $favori->removeFavori($this);
         }
+
+        return $this;
+    }
+
+    public function getDeliverySpace(): ?DeliverySpace
+    {
+        return $this->delivery_space;
+    }
+
+    public function setDeliverySpace(?DeliverySpace $delivery_space): self
+    {
+        $this->delivery_space = $delivery_space;
+
+        return $this;
+    }
+
+    public function setUsername(?string $username): self
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    public function getPhoneNumber(): ?string
+    {
+        return $this->phone_number;
+    }
+
+    public function setPhoneNumber(string $phone_number): self
+    {
+        $this->phone_number = $phone_number;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of password_verify
+     */ 
+    public function getPasswordVerify()
+    {
+        return $this->password_verify;
+    }
+
+    /**
+     * Set the value of password_verify
+     *
+     * @return  self
+     */ 
+    public function setPasswordVerify($password_verify)
+    {
+        $this->password_verify = $password_verify;
 
         return $this;
     }

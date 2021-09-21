@@ -27,6 +27,17 @@ class CartController extends AbstractController
         $this->cartService = $cartService;
     }
     /**
+     * checkout
+     * @Route("/checkout", name="checkout")
+     * @return void
+     */
+    public function checkout():Response
+    {
+        return $this->render('lesekoya/cart/checkout.html.twig',[
+
+        ]);
+    }
+    /**
      * cart
      * @Route("/cart/order-step-1", name="cart_step_1")
      * @return void
@@ -42,7 +53,7 @@ class CartController extends AbstractController
         // on recupere le total du panier
         $total = $this->cartService->getTotal();
         //on gener la nouvelle commande avec le prix de la livraion
-        dump($request->request);
+        // dump($request->request);
         return $this->render('lesekoya/cart/order-step-1.html.twig',[
             'items'=>$this->cartService->getFullCart(),
             'subtotal'=>$this->cartService->getTotal(),

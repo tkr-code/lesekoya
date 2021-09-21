@@ -23,16 +23,21 @@ class DeliverySpace
      */
     private $street;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Client::class, inversedBy="deliverySpace", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $client;
 
     /**
      * @ORM\OneToOne(targetEntity=Order::class, mappedBy="delivery_space", cascade={"persist", "remove"})
      */
     private $commande;
+
+    /**
+     * @ORM\OneToOne(targetEntity=User::class, mappedBy="delivery_space", cascade={"persist", "remove"})
+     */
+    private $user;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="deliverySpaces")
+     */
+    private $client;
 
     public function getId(): ?int
     {
@@ -47,18 +52,6 @@ class DeliverySpace
     public function setStreet(?Street $street): self
     {
         $this->street = $street;
-
-        return $this;
-    }
-
-    public function getClient(): ?Client
-    {
-        return $this->client;
-    }
-
-    public function setClient(Client $client): self
-    {
-        $this->client = $client;
 
         return $this;
     }
@@ -81,6 +74,40 @@ class DeliverySpace
         }
 
         $this->commande = $commande;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($user === null && $this->user !== null) {
+            $this->user->setDeliverySpace(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($user !== null && $user->getDeliverySpace() !== $this) {
+            $user->setDeliverySpace($this);
+        }
+
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Client $client): self
+    {
+        $this->client = $client;
 
         return $this;
     }
