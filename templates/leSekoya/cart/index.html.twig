@@ -187,7 +187,11 @@
               <div class="col-lg-4">
                 <div class="row">
                 <div class="col-lg-12">
+                  {% if app.request.session.get('shipping') %}
                     <h5>Total : <span class="text-danger" id="total"> {{ (total + delivery.shippingAmount.amount)|number_format(2,'.',' ') }} {{ site.current }} </span> </h5>
+                  {% else %}
+                    <h5>Total : <span class="text-danger" id="total"></span> </h5>
+                  {% endif %}
                 </div>
                   <div class="col text-center mb-2">
                       <a class="gray_btn btn-primary w-100" href="{{ path('articles') }}">Continue Shopping</a>
