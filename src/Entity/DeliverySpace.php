@@ -18,7 +18,7 @@ class DeliverySpace
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Street::class, inversedBy="deliverySpaces")
+     * @ORM\ManyToOne(targetEntity=Street::class, inversedBy="deliverySpaces", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $street;

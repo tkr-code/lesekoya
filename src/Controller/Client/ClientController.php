@@ -56,15 +56,14 @@ class ClientController extends AbstractController
         ]);
     }
         /**
-     * @Route("/order/new-order", name="order_client_new", methods={"POST|GET"})
+     * @Route("/order/new-order", name="order_client_new", methods={"POST"})
      */
     public function newOrder(OrderRepository $orderRepository, StreetRepository $streetRepository, PaymentMethodRepository $paymentMethodRepository, ArticleRepository $articleRepository, Request $request, OrderService $orderService, SessionInterface $session): Response
     {
         // nouvelle commande
         $order = new Order();
         //rue de la livraison
-        $id_street = $request->request->get('street');
-        $street = $streetRepository->find($id_street);
+        $street = $session->get('shipping');
         $order->setState('in progress');
         // $order->setShipping(500);
         $order->setNumber($orderService->voiceNumber());
@@ -99,7 +98,7 @@ class ClientController extends AbstractController
         // livraison
         $shipping = new Shipping();
         //montant de la livraison
-        $shippingAmount = 1500;
+        $shippingAmount = $street->getShippingAmount()->getAmount();
         $shipping->setAmount($shippingAmount);
         $order->setAdjustmentsTotal($shippingAmount);
         //statut de la livraison
@@ -116,7 +115,7 @@ class ClientController extends AbstractController
         // $order = $orderService->calculPersist($order);
         $order->setPayment($payment);
         $order->setShipping($shipping);
-        $order->setDeliverySpace($deliverySpace);
+        // $order->setDeliverySpace($deliverySpace);
         // dump($request->request);
         // dd($order);
         

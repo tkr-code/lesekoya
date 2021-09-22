@@ -3,7 +3,9 @@
 namespace App\Controller\Main;
 
 use App\Entity\Payment;
+use App\Entity\User;
 use App\Form\Payment1Type;
+use App\Form\RegistrationFormType;
 use App\Entity\ArticleSearch;
 use App\Entity\DeliverySpace;
 use App\Form\ArticleSearchType;
@@ -13,6 +15,7 @@ use App\Repository\CityRepository;
 use App\Repository\StreetRepository;
 use App\Repository\ArticleRepository;
 use App\Repository\ShippingAmountRepository;
+use App\Service\Shipping\ShippingService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,9 +25,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class CartController extends AbstractController
 {
     private $cartService;
-    public function __construct(CartService $cartService)
+    private $shippingService;
+    public function __construct(CartService $cartService, ShippingService $shippingService)
     {
         $this->cartService = $cartService;
+        $this->shippingService = $shippingService;
     }
     /**
      * checkout
@@ -42,30 +47,35 @@ class CartController extends AbstractController
      * @Route("/cart/order-step-1", name="cart_step_1")
      * @return void
      */
-    public function step1(ShippingAmountRepository $shippingAmountRepository, Request $request):Response
+    public function step1(SessionInterface $sessionInterface, StreetRepository $streetRepository, ShippingService $shippingService, ShippingAmountRepository $shippingAmountRepository, Request $request):Response
     {
+        $user = new User();
+        $formRegistration = $this->createForm(RegistrationFormType::class, $user);
         // recupere la rue
-        $id_street = $request->request->get('street');
+        $street = $sessionInterface->get('shipping');
         // on recuppere le montant corespondant
-        $amount = $shippingAmountRepository->findByStreet($id_street);
+        if($request->request->count() > 0 )
+        {
+            $methodPaiement = $request->request->get('method');
+            $sessionInterface->set('methodPayment',$methodPaiement);
+
+        }
         //on recupere la methode de paiment
-        $methodPaiement = $request->request->get('method');
         // on recupere le total du panier
-        $total = $this->cartService->getTotal();
         //on gener la nouvelle commande avec le prix de la livraion
-        // dump($request->request);
-        return $this->render('lesekoya/cart/order-step-1.html.twig',[
+        return $this->renderForm('lesekoya/cart/order-step-1.html.twig',[
             'items'=>$this->cartService->getFullCart(),
             'subtotal'=>$this->cartService->getTotal(),
-            'shippingAmount'=>$amount,
-            'methodPayment'=>$methodPaiement
+            'street'=>$street,
+            'registrationForm'=>$formRegistration
+
 
         ]);
     }
     /**
      * @Route("/cart", name="cart_index")
      */
-    public function index(StreetRepository $streetRepository, CartService $cartService, Request $request, CityRepository $cityRepository): Response
+    public function index( ArticleRepository $articleRepository,StreetRepository $streetRepository, CartService $cartService, Request $request, CityRepository $cityRepository): Response
     {
         $search = new ArticleSearch();
         $form = $this->createForm(ArticleSearchType::class,$search);
@@ -87,7 +97,9 @@ class CartController extends AbstractController
             'cities'=>$cityRepository->findbyCountryName(),
             'streets'=>$streetRepository->findbyCity(),
             'form_payment'=>$formPayment,
-            'form_delivery_space'=>$formDeliverySpace
+            'form_delivery_space'=>$formDeliverySpace,
+            'rand_articles'=>$articleRepository->findRand()
+
         ]);
     }
 
@@ -97,6 +109,14 @@ class CartController extends AbstractController
     public function add(int $id, CartService $cartService )
     {
         $cartService->add($id);
+        return $this->redirectToRoute('cart_index');
+    }
+    /**
+     * @Route("/cart/shipping/add/{id}", name="shipping_add")
+     */
+    public function addShipping(int $id, ShippingService $shippingService )
+    {
+        $shippingService->add($id);
         return $this->redirectToRoute('cart_index');
     }
     /**

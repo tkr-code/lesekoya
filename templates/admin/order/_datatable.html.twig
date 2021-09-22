@@ -32,7 +32,7 @@
             {{ order.user.personne.firstname ~ ' ' ~ order.user.personne.lastname ~ ', '}}
             {{ order.deliverySpace != null  ? order.deliverySpace.street.name :'' }}
             <br/>
-            <small class="text-info">Via : {{ order.payment.paymentMethod.name}} </small>
+            <small class="text-info">Via : {{ order.payment.paymentMethod.name|default('sans')}} </small>
 
             </td>
             <td>{{ order.total | number_format(2,'.',' ') }} XOF</td>

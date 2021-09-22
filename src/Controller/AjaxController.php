@@ -5,12 +5,13 @@ namespace App\Controller;
 use App\Repository\CityRepository;
 use App\Repository\ShippingAmountRepository;
 use App\Repository\StreetRepository;
+use App\Service\Shipping\ShippingService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class AjaxController extends AbstractController
 {
@@ -54,15 +55,19 @@ class AjaxController extends AbstractController
     /**
      * @Route("/order-shipping-amount", name="client_shipping_amount", methods={"GET","POST"})
      */
-    public function changeAmount(ShippingAmountRepository $shippingAmountRepository ,Request $request):Response
+    public function changeAmount(ShippingService $shippingService, StreetRepository $streetRepository, SessionInterface $seesion ,ShippingAmountRepository $shippingAmountRepository ,Request $request):Response
     {
+        $shipping = $seesion->get('shipping');
         $id_street = $request->request->get('id_street');
+        $street = $streetRepository->find($id_street=2);
         $amount = $shippingAmountRepository->findByStreet($id_street);
+        $seesion->set('shipping',$street);
         $response =[
-            'amount'=>$amount,
+            'street'=>$street,
             'response'=>$this->render('client/order/ajax/amount.html.twig',
                 [
-                    'amount'=>$amount
+                    'amount'=>$amount,
+                    'street'=>$street
                 ])->getContent()
         ];
         return new JsonResponse($response,200);

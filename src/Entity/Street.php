@@ -36,7 +36,7 @@ class Street
     private $city;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ShippingAmount::class, inversedBy="street")
+     * @ORM\ManyToOne(targetEntity=ShippingAmount::class, inversedBy="street", cascade={"persist"})
      */
     private $shippingAmount;
 
