@@ -20,6 +20,7 @@ class CategoryFixtures extends Fixture
         foreach ($categories as $value) {
             $category= new Category();
             $category->setTitle($value['title']);
+            $category->setIsActive(true);
             $manager->persist($category);
         }
 

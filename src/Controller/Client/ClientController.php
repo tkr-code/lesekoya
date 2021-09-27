@@ -32,12 +32,14 @@ class ClientController extends AbstractController
 {
     /**
      * confirmation
-     * @Route("/confirmation", name="client_confirmation")
+     * @Route("/confirmation/{id}", name="client_confirmation")
      * @return Response
      */
-    public function confirmation():Response
+    public function confirmation(Order $order):Response
     {
-        return $this->renderForm('client/confirmation.html.twig',[]);
+        return $this->renderForm('client/confirmation.html.twig',[
+            'order'=>$order
+        ]);
     }
     /**
      * @Route("/order-adress", name="order_client_shipping")
@@ -61,9 +63,13 @@ class ClientController extends AbstractController
     public function newOrder(OrderRepository $orderRepository, StreetRepository $streetRepository, PaymentMethodRepository $paymentMethodRepository, ArticleRepository $articleRepository, Request $request, OrderService $orderService, SessionInterface $session): Response
     {
         // nouvelle commande
+        // dd($request->request);
         $order = new Order();
+        //methode de paiment
+        $id_methodPayment = $session->get('methodPayment');
         //rue de la livraison
         $street = $session->get('shipping');
+        $street = $streetRepository->find($street->getId());
         $order->setState('in progress');
         // $order->setShipping(500);
         $order->setNumber($orderService->voiceNumber());
@@ -93,7 +99,7 @@ class ClientController extends AbstractController
         $payment = new Payment();
         $payment->setAmount($order->getTotal());
         $payment->setState('in progress');
-        $method = $paymentMethodRepository->find(3);
+        $method = $paymentMethodRepository->find($id_methodPayment);
         $payment->setPaymentMethod($method);
         // livraison
         $shipping = new Shipping();
@@ -115,7 +121,7 @@ class ClientController extends AbstractController
         // $order = $orderService->calculPersist($order);
         $order->setPayment($payment);
         $order->setShipping($shipping);
-        // $order->setDeliverySpace($deliverySpace);
+        $order->setDeliverySpace($deliverySpace);
         // dump($request->request);
         // dd($order);
         
@@ -126,7 +132,7 @@ class ClientController extends AbstractController
         $this->addFlash('success','Order created');
         $session->set('panier',[]);
         // $order = $orderRepository->find(3);
-        return $this->render('client/confirmation.html.twig',compact('order'));
+        return $this->redirectToRoute('client_confirmation',['id'=>$order->getId()]);
     }
     /**
      * @Route("/order/{id}", name="client_order_show", methods={"GET"})

@@ -19,19 +19,19 @@ class PersonneType extends AbstractType
                 'label'=>false,
                 'attr'=>[
                     'placeholder'=>'Prenom',
-                    'value'=>'Prenom'
+                    // 'value'=>'Prenom'
                 ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter first name',
-                    ]),
-                    new Length([
-                        'min' => 3,
-                        'minMessage' => 'Your name should be at least {{ limit }} characters',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 4096,
-                    ]),
-                ]
+                // 'constraints' => [
+                //     new NotBlank([
+                //         'message' => 'Please enter first name',
+                //     ]),
+                //     new Length([
+                //         'min' => 3,
+                //         'minMessage' => 'Your name should be at least {{ limit }} characters',
+                //         // max length allowed by Symfony for security reasons
+                //         'max' => 4096,
+                //     ]),
+                // ]
             ])
             ->add('lastName',TextType::class,[
                 'label'=>false,
@@ -39,17 +39,17 @@ class PersonneType extends AbstractType
                     'placeholder'=>'Nom',
                     'value'=>'Nom'
                 ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter last name',
-                    ]),
-                    new Length([
-                        'min' => 3,
-                        'minMessage' => 'Your name should be at least {{ limit }} characters',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 4096,
-                    ]),
-                ]
+                // 'constraints' => [
+                //     new NotBlank([
+                //         'message' => 'Please enter last name',
+                //     ]),
+                //     new Length([
+                //         'min' => 3,
+                //         'minMessage' => 'Your name should be at least {{ limit }} characters',
+                //         // max length allowed by Symfony for security reasons
+                //         'max' => 4096,
+                //     ]),
+                // ]
             ])
         ;
     }
@@ -58,7 +58,7 @@ class PersonneType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Personne::class,
-             'translation_domain'=>'forms',
+            'translation_domain'=>'forms',
 
         ]);
     }

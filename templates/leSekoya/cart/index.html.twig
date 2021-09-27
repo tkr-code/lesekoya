@@ -2,6 +2,9 @@
 {% import "macros/alertes.html.twig" as alert %}
 
 {% extends "leSekoya/base.html.twig" %}
+{% if app.request.session.get('shipping') %}
+      {% set delivery = app.request.session.get('shipping') %}
+{% endif %}
 
 
 {% block title %}Cart {% endblock %}
@@ -47,13 +50,13 @@
                           <div class="media">
                               <div class="d-flex">
                                   {% for item in item.article.images|slice(0,1) %}
-                                    <img src="{{ asset('img/article/' ~ item.name) }}" width="100px" alt="">
+                                    <img src="{{ asset('img/article/' ~ item.name) }}" width="60px" alt="">
                                   {% else %}
-                                    <img src="{{ asset('img/vide.png') }}" alt="">
+                                    <img src="{{ asset('img/vide.png') }}" width="60px" alt="">
                                   {% endfor %}
                               </div>
                               <div class="media-body">
-                                  <p>{{ item.article.title }}</p>
+                                  <p class="text-justify">{{ item.article.title }}</p>
                               </div>
                           </div>
                       </td>
@@ -89,6 +92,25 @@
                           </h5> 
                       </td>
                   </tr>
+                  <tr>
+                      <td colspan="3" >
+                          <h5 class="float-right">Shipping</h5>
+                      </td>
+                      <td>
+                          <h5>
+                            {{ (delivery) ? delivery.shippingAmount.amount:'0'|number_format(2,'.',' ') }} {{ site.current }}
+                          </h5> 
+                      </td>
+                  </tr>
+                  <tr>
+                      <td colspan="3" >
+                          <h5 class="float-right">Total</h5>
+                      </td>
+                      <td>
+                          <h5><span class="text-danger" id="total"> {{ ( (total) + ((delivery) ? delivery.shippingAmount.amount:'0' ))|number_format(2,'.',' ') }} {{ site.current }} </span> </h5>
+                      </td>
+                  </tr>
+
               </tbody>
           </table>
         </div>
@@ -98,26 +120,21 @@
               <div class="col-lg-4">
                 <p class="h4">Methode de paiment</p>
               <ul>
+              {% for item in methodPayment %}                
                   <li class="filter-list">
-                    <input class="pixel-radio" value="Payment à la livraison" checked type="radio" name="method">
-                    <label for="men">Payment à la livraion</label>
+                    <input class="pixel-radio" value="{{ item.id }}" {{ (  app.request.session.get('methodPayment') and app.request.session.get('methodPayment') == item.id )  ? 'checked':'' }}  type="radio" name="method">
+                    <label for="{{ item.name }}">{{ item.name }}</label>
                   </li>
-                  <li class="filter-list">
-                    <input class="pixel-radio" value="Orange Money" type="radio" name="method">
-                    <label for="men">Orange Money</label>
-                  </li>
-                  <li class="filter-list">
-                    <input class="pixel-radio" value="Wave" type="radio" name="method">
-                    <label for="men">Wave</label>
-                  </li>
+              {% endfor %}
+              
               </ul>
               </div>
               <div class="col-lg-4">
                   <div class="row">
                     <div class="col-lg-12">
                       <p class="h4">Adress de livraison</p>
+                      
                           {% if app.request.session.get('shipping') %}
-                          {% set delivery = app.request.session.get('shipping') %}
                           <div class="shipping_box">
                             <div class="form-group loader-city">
                               <select class="custom-select" name="city" id="select-city">
@@ -187,7 +204,6 @@
               <div class="col-lg-4">
                 <div class="row">
                 <div class="col-lg-12">
-                    <h5>Total : <span class="text-danger" id="total"> {{ (total + delivery.shippingAmount.amount)|number_format(2,'.',' ') }} {{ site.current }} </span> </h5>
                 </div>
                   <div class="col text-center mb-2">
                       <a class="gray_btn btn-primary w-100" href="{{ path('articles') }}">Continue Shopping</a>

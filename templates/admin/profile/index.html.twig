@@ -320,7 +320,9 @@
             <!-- /.tab-pane -->
 
             <div class="tab-pane {% if app.request.query.get('tab') == 'settings' %}active{% endif %}" id="settings">
-               {{ form_start(form,{action: path('profile_edit',{id: app.user.id })}) }}
+               {{ form_start(form,{attr:{
+                 'novalidate':'novalidate'
+               }, action: path('profile_edit',{id: app.user.id })}) }}
                     {{ form_widget(form) }}
                     <button class="btn btn-primary btn-lg">Update <i class="fas fa-save"></i> </button>
                 {{ form_end(form) }}

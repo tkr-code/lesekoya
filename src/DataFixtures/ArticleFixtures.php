@@ -114,6 +114,7 @@ class ArticleFixtures extends Fixture
         ];
         $category = new Category();
         $category->setTitle('Autres');
+        $category->setIsActive(true);
         $manager->persist($category);
         $manager->flush();
 

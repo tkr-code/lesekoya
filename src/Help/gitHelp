@@ -1,0 +1,55 @@
+
+Pour lier votre dépôt local au dépôt distant, vous devez effectuer la commande :
+> git remote add DEP https://github.com/xxxxxx/monDepotDistant
+#
+
+La commande git clone permet de dupliquer le contenu distant en local. 
+Pour être valide, cette commande doit être écrite sous la forme :
+> git clone https://github.com/nom-dutilisateur/monDossier.  
+
+Pour créer chacune des branches, vous devez utiliser la commande git branch, puis réaliser un git checkout sur la branche où vous souhaitez basculer. Utilisée seule, la commande git branch permet de visualiser les différentes branches d’un projet.
+
+#
+La commande git branch permet de consulter l'état de notre arbre, et ici de visualiser 4 branches : Branch1, Branch2, Branch3 et notre branche principale, la branche “main”. La commande git checkout permet de basculer d'une branche à une autre.
+
+git commit -m permet de réaliser un commit en indiquant un message de description. Les autres commandes ne sont pas valides.
+
+#
+git add fichier.html
+git commit -m “message”
+git push origin main
+Pour commencer, on indexe le fichier .html avec la commande  git add  , puis on crée une version avec la commande  git commit  , et enfin on envoie cette version sur le dépôt distant avec la commande  git push origin main  . Les autres commandes ne sont pas valides
+
+#
+git checkout main
+git merge modifications
+
+La commande merge doit s'utiliser à partir de la branche dans laquelle nous voulons apporter les évolutions. Nous voulons apporter les évolutions de la branche “modifications” dans la branche principale (main).
+
+#
+supprimer une branche que nous venons de créer. Pour cela, il suffit d'exécuter la commande :
+> git branch -d nom_de_la_branche
+
+#
+forcer la supression avec des modifications
+> git branch -D nom_de_la_branche
+
+#
+modifie le message du dernier commit
+git commit --amend -m "Votre nouveau message de commit"
+
+#
+git commit --amend  vous permet de sélectionner le dernier commit afin d'y ajouter de nouveaux changements en attente.
+
+#
+    git branch -d permet de supprimer une branche.
+
+    git status permet de voir l’état des fichiers.
+
+    git stash enregistre les modifications non indexées pour une utilisation ultérieure. 
+
+    git log affiche l'historique des commits réalisés sur la branche courante.
+
+    git reset --hard HEAD^ permet de réinitialiser l'index et le répertoire de travail à l'état du dernier commit.
+
+    git commit --amend permet de sélectionner le dernier commit pour y effectuer des modifications.

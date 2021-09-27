@@ -1,0 +1,6 @@
+maildev --hide-extensions STARTTLS
+
+//deploiement
+composer dump-env prod
+
+composer install --no-dev --optimize-autoloader

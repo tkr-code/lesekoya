@@ -1,0 +1,11 @@
+Taille Point d'arrêt Modificateur de classe 
+
+Très petite < 576 px aucun 
+
+Petite ≥ 576 px -sm
+
+Moyenne ≥ 768 px -md
+
+Grande ≥ 992 px -lg
+
+Très grande	≥ 1 200 px -xl

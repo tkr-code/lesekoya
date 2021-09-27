@@ -14,6 +14,7 @@ use App\Service\Cart\CartService;
 use App\Repository\CityRepository;
 use App\Repository\StreetRepository;
 use App\Repository\ArticleRepository;
+use App\Repository\PaymentMethodRepository;
 use App\Repository\ShippingAmountRepository;
 use App\Service\Shipping\ShippingService;
 use Symfony\Component\HttpFoundation\Request;
@@ -75,7 +76,7 @@ class CartController extends AbstractController
     /**
      * @Route("/cart", name="cart_index")
      */
-    public function index( ArticleRepository $articleRepository,StreetRepository $streetRepository, CartService $cartService, Request $request, CityRepository $cityRepository): Response
+    public function index( PaymentMethodRepository $paymentMethodRepository, ArticleRepository $articleRepository,StreetRepository $streetRepository, CartService $cartService, Request $request, CityRepository $cityRepository): Response
     {
         $search = new ArticleSearch();
         $form = $this->createForm(ArticleSearchType::class,$search);
@@ -98,7 +99,8 @@ class CartController extends AbstractController
             'streets'=>$streetRepository->findbyCity(),
             'form_payment'=>$formPayment,
             'form_delivery_space'=>$formDeliverySpace,
-            'rand_articles'=>$articleRepository->findRand()
+            'rand_articles'=>$articleRepository->findRand(),
+            'methodPayment'=>$paymentMethodRepository->findAll()
 
         ]);
     }

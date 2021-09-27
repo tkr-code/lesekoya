@@ -34,22 +34,22 @@ class ClientFixtures extends Fixture
             ],
             
         ];
-        foreach ($clients as $value) {
-            $user = new User();
-            $user->isVerified($value['is_verified']);
-            $personne = new Personne();
-            $personne->setFirstName($value['first_name'])
-            ->setLastName($value['last_name']);
-            $user->setEmail($value['email']);
-            $user->setPassword($this->passwordEncoder->hashPassword($user,$value['password']))
-            ->setRoles($value['roles'])
-            ->setPersonne($personne);
-            $client = new Client();
-            $client->setUser($user);
+        // foreach ($clients as $value) {
+        //     $user = new User();
+        //     $user->isVerified($value['is_verified']);
+        //     $personne = new Personne();
+        //     $personne->setFirstName($value['first_name'])
+        //     ->setLastName($value['last_name']);
+        //     $user->setEmail($value['email']);
+        //     $user->setPassword($this->passwordEncoder->hashPassword($user,$value['password']))
+        //     ->setRoles($value['roles'])
+        //     ->setPersonne($personne);
+        //     $client = new Client();
+        //     $client->setUser($user);
         
-            $manager->persist($client);
-        }
+        //     $manager->persist($client);
+        // }
 
-        $manager->flush();
+        // $manager->flush();
     }
 }

@@ -1,0 +1,52 @@
+{% import "macros/table.html.twig" as table %}
+{% import "macros/head.html.twig" as head %}
+{% import "macros/foot.html.twig" as foot %}
+{% import "macros/breadcrumb.html.twig" as utils %}
+{% import "macros/alertes.html.twig" as alerte %}
+{% import "macros/button.html.twig" as btn %}
+{% import "macros/link.html.twig" as link %}
+{% import "macros/search.html.twig" as search %}
+
+{% extends 'lesekoya/base.html.twig' %}
+
+{% block title %}Achat | {{app_name}} {% endblock %}
+
+{% block head %}
+  {{ head.dataTable() }}
+{% endblock %}
+
+{% block body %}
+<ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ path('home') }}">Home</a></li>
+    <li class="breadcrumb-item"><a href="{{ path('client_buy') }}">Mes achats</a></li>
+    <li class="breadcrumb-item active">Achat</li>
+</ol>
+<div class="container">
+    <div class="row my-5">
+            {% include "client/nav.html.twig" %}
+        <div class="col-lg-9 mb-3">
+            <div class="card card-primary card-outline card-tabs">
+            
+            <!-- /.card -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block foot %}
+{{ foot.dataTable()}}
+{% endblock %}
+
+{% block javascripts %}
+{{ table.jsDataTable('datatable_1') }} 
+{{ table.jsDataTable('datatable_2') }} 
+{{ table.jsDataTable('datatable_3') }} 
+{{ table.jsDataTable('datatable_4') }} 
+{{ table.jsDataTable('datatable_5') }} 
+    <script>
+        $(document).ready(function(){
+            $('.my-orders').addClass('active')
+        })
+    </script>
+{% endblock %}

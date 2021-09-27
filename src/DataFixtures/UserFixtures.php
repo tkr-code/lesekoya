@@ -21,10 +21,10 @@ class UserFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $users = array(
-        array('first_name' => 'Malick','last_name' => 'Tounkara','email' => 'admin@store.com','roles' => ["ROLE_ADMIN","ROLE_EDITOR"],'password' => 'adminstore','is_verified' => '1'),
-        array('first_name' => 'Mamadou','last_name' => 'Dieme','email' => 'user1@store.com','roles' => ["ROLE_EDITOR","ROLE_USER"],'password' => 'userstore','is_verified' => '1'),
-        array('first_name' => 'Pepin','last_name' => 'Ngoulou','email' => 'user2@store.com','roles' => ["ROLE_USER"],'password' => 'userstore','is_verified' => '1'),
-        array('first_name' => 'Mariame','last_name' => 'Daffee','email' => 'user3@store.com','roles' => ["ROLE_USER"],'password' => 'userstore','is_verified' => '1'),
+        array('first_name' => 'Malick','last_name' => 'Tounkara','email' => 'admin@mail.com','roles' => ["ROLE_ADMIN","ROLE_EDITOR"],'password' => 'adminstore','is_verified' => '1'),
+        array('first_name' => 'Mamadou','last_name' => 'Dieme','email' => 'user1@mail.com','roles' => ["ROLE_EDITOR","ROLE_USER"],'password' => 'userstore','is_verified' => '1'),
+        array('first_name' => 'Pepin','last_name' => 'Ngoulou','email' => 'user2@mail.com','roles' => ["ROLE_USER"],'password' => 'userstore','is_verified' => '1'),
+        array('first_name' => 'Mariame','last_name' => 'Daffee','email' => 'user3@mail.com','roles' => ["ROLE_USER"],'password' => 'userstore','is_verified' => '1'),
         );
         $adress = array(
             array('id' => '1','first_name' => 'Malick','last_name' => 'Tounkara','phone_number' => '781278288','street' => 'Liberte 4','company' => 'PMD developper','city' => 'Dakar','postal_code' => '11000','created_at' => '2021-08-14 10:08:16','updated_at' => NULL,'country_code' => 'SN','province_code' => 'DK','province_name' => 'Dakar','user_id' => '1'),
@@ -45,7 +45,8 @@ class UserFixtures extends Fixture
             $personne->setFirstName($value['first_name'])
             ->setLastName($value['last_name']);
             $user->setEmail($value['email']);
-            $user->setPassword($this->passwordEncoder->hashPassword($user,$value['password']))
+            $user->setPhoneNumber('781278288');
+            $user->setPassword($this->passwordEncoder->hashPassword($user,'password'))
             ->setRoles($value['roles'])
             ->setPersonne($personne);
         
