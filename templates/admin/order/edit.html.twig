@@ -130,7 +130,7 @@
                                     </tr> #}
                                     <tr>
                                     <th>Shipping:</th>
-                                    <td>{{ order.shipping| number_format(2,'.',' ') }} XOF </td>
+                                    <td>{{ order.total| number_format(2,'.',' ') }} XOF </td>
                                     </tr>
                                     <tr>
                                     <th>Total:</th>
@@ -208,9 +208,9 @@
                 <dt class="col-sm-4">{{'State Order'|trans}}</dt>
                 <dd class="col-sm-8">{{ order.state }}</dd>
                 <dt class="col-sm-4">{{'Shipping state'|trans }}</dt>
-                <dd class="col-sm-8">{{ order.shippingState }}</dd>
+                <dd class="col-sm-8">{{ 'shipping state' }}</dd>
                 <dt class="col-sm-4">{{'Shipping amount'|trans }}</dt>
-                <dd class="col-sm-8">{{ order.shipping|number_format(2,'.',' ') }} XOF</dd>
+                <dd class="col-sm-8">{{ 'shipping'|number_format(2,'.',' ') }} XOF</dd>
             </dl>
             </div>
             <!-- /.card-body -->
@@ -251,9 +251,9 @@
             <div class="card-body">
             <dl class="row">
             <div class="col-sm-12">            
-                <a href="{{ path('order_adress_edit',{ order_id: order.id , id: order.shippingAdress.id }) }}">
+                {# <a href="{{ path('order_adress_edit',{ order_id: order.id , id: order.shippingAdress.id }) }}">
                     Manage adresses <i class="fa fa-user"></i> 
-                </a>
+                </a> #}
             </div>
                 <dt class="col-sm-4">Email adress</dt>
                 <dd class="col-sm-8"></dd>
@@ -271,7 +271,7 @@
                 <dd class="col-sm-8"></dd>
                 
                 <dt class="col-sm-4">Adress</dt>
-                <dd class="col-sm-8">{{ order.shippingAdress.postalCode ~ ' ' ~ order.shippingAdress.city }}</dd>
+                {# <dd class="col-sm-8">{{ order.shippingAdress.postalCode ~ ' ' ~ order.shippingAdress.city }}</dd> #}
             </dl>
             </div>
             <!-- /.card-body -->

@@ -57,13 +57,17 @@ class AjaxController extends AbstractController
      */
     public function changeAmount(ShippingService $shippingService, StreetRepository $streetRepository, SessionInterface $seesion ,ShippingAmountRepository $shippingAmountRepository ,Request $request):Response
     {
-        $shipping = $seesion->get('shipping');
-        $id_street = $request->request->get('id_street');
-        $street = $streetRepository->find($id_street=2);
-        $amount = $shippingAmountRepository->findByStreet($id_street);
+        $street = $seesion->get('shipping');
+       $id_street = $request->request->get('id_street') ? $request->request->get('id_street') : 0;
+        $street = $streetRepository->find($id_street);
+        $amount = $street->getShippingAmount() ? $street->getShippingAmount()->getAmount() :'0';
+        $total = $amount + $request->request->get('total');
         $seesion->set('shipping',$street);
         $response =[
             'street'=>$street,
+            'amount'=>$amount,
+            'total'=>number_format($total,0,'',' ').' XOF',
+            'amount2'=>number_format($amount,0,'',' ').' XOF',
             'response'=>$this->render('client/order/ajax/amount.html.twig',
                 [
                     'amount'=>$amount,

@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ArticleBuy{% endblock %}
+
+{% block body %}
+    <h1>ArticleBuy</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ article_buy.id }}</td>
+            </tr>
+            <tr>
+                <th>Price</th>
+                <td>{{ article_buy.price }}</td>
+            </tr>
+            <tr>
+                <th>Quantity</th>
+                <td>{{ article_buy.quantity }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('admin_article_buy_index') }}">back to list</a>
+
+    <a href="{{ path('admin_article_buy_edit', {'id': article_buy.id}) }}">edit</a>
+
+    {{ include('admin_article_buy/_delete_form.html.twig') }}
+{% endblock %}

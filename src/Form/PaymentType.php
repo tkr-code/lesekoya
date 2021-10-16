@@ -22,7 +22,8 @@ class PaymentType extends AbstractType
                 'choices'=>[
                     'In progress'=>'in progress',
                     'Canceled'=>'canceled',
-                    'Waiting'=>'waiting'
+                    'Waiting'=>'waiting',
+                    'completed'=>'completed'
                 ],
                 'attr'=>[
                     'value'=>'In progress'

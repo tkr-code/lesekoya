@@ -6,9 +6,11 @@ use App\Entity\Article;
 use App\Entity\Category;
 use App\Repository\CategoryRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Faker;
 
-class ArticleFixtures extends Fixture
+class ArticleFixtures extends Fixture implements DependentFixtureInterface
 {
     private $categoryRepository;
     public function __construct(CategoryRepository $categoryRepository)
@@ -17,6 +19,7 @@ class ArticleFixtures extends Fixture
     }
     public function load(ObjectManager $manager)
     {
+        $faker = Faker\Factory::create('fr_FR');
         $articles = [
             [
                 'title' => 'Hp probook','price' => '150000','description' => 'Praesentium ea dolorum aut accusantium modi.',
@@ -112,24 +115,28 @@ class ArticleFixtures extends Fixture
                 'buying_price' => '100000'
             ],
         ];
-        $category = new Category();
-        $category->setTitle('Autres');
-        $category->setIsActive(true);
-        $manager->persist($category);
-        $manager->flush();
 
             foreach ($articles as $value) {
+                $category  = $this->getReference(('category_'.rand(0,4)));
                 $article  = new Article();
                 $article->setTitle($value['title'])
                 ->setCategory($category)
                 ->setBuyingPrice($value['buying_price'])
-                ->setPrice($value['price'])
+                ->setPrice($faker->numberBetween(1000,500000))
                 ->setEnabled(true)
                 ->setDescription($value['description'])
-                ->setQuantity(10);
+                ->setQuantity($faker->numberBetween(1,7))
+                ->setQtyReel($faker->numberBetween(8,15));
                 $manager->persist($article);
             }
 
         $manager->flush();
+    }
+
+    public function getDependencies()
+    {
+        return [
+            CategoryFixtures::class
+        ];
     }
 }

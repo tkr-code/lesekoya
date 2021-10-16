@@ -9,7 +9,7 @@
 {% extends 'admin/base.html.twig' %}
 
 
-{% block stylesheets %}
+{% block head %}
   {{ head.dataTable() }}
 {% endblock %}
 
@@ -53,6 +53,7 @@
                     <thead>
                         <tr>
                             <th>Id</th>
+                            <th>{{'full name'|trans}}</th>
                             <th>Email</th>
                             <th>Roles</th>
                             <th>IsVerified</th>
@@ -63,6 +64,7 @@
                     {% for user in users %}
                         <tr>
                             <td>{{ user.id }}</td>
+                            <td>{{ user.personne.fullName }}</td>
                             <td>{{ user.email }}</td>
                             <td>
                             {% for item in user.roles %}
@@ -70,6 +72,8 @@
                                     Admin
                                 {% elseif item == 'ROLE_CLIENT' %}
                                     Client
+                                {% elseif item == 'ROLE_USER' %}
+                                    {{'User'|trans}}
                                 {% elseif item == 'ROLE_EDITOR' %}
                                     Editeur
                                 {% endif %}

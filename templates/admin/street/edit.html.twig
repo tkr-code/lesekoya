@@ -5,9 +5,9 @@
 {% block body %}
     <h1>Edit Street</h1>
 
-    {{ include('street/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('admin/street/_form.html.twig', {'button_label': 'Update'}) }}
 
     <a href="{{ path('street_index') }}">back to list</a>
 
-    {{ include('street/_delete_form.html.twig') }}
+    {{ include('admin/street/_delete_form.html.twig') }}
 {% endblock %}

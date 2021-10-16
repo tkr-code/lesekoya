@@ -47,6 +47,7 @@
                     {% for item in categories %}
                     <tr>
                       <td data-title="">{{ item.title}}</td>
+                      <td>{{ item.parent.title|default('') }}</td>
                       <td>
                         <a href="{{ path('category_edit', {'id': item.id}) }}" id="{{ item.id }}" class="btn js-edit"><i
                             class="fas fa-edit text-success"></i>

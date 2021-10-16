@@ -1,20 +1,37 @@
 {% extends "admin/base.html.twig" %}
-{% import "macros/table.html.twig" as table %}
-{% import "macros/head.html.twig" as head %}
-{% import "macros/foot.html.twig" as foot %}
+{% import "macros/dataTable.html.twig" as dataTable %}
 {% import "macros/breadcrumb.html.twig" as utils %}
 {% import "macros/alertes.html.twig" as alerte %}
 {% import "macros/link.html.twig" as link %}
 
 
-{% block title %}Manage articles | {{ app_name }} {% endblock %}
+{% block title %}Manage articles {% endblock %}
 
-{% block stylesheets %}
-  {{ head.dataTable() }}
-{% endblock %}
 
 {% block breadcrumb %}
     {{ utils.breadcrumb('Manage articles')}}
+{% endblock %}
+
+{% block head %}
+  {{ dataTable.css() }}
+{% endblock %}
+
+{% block foot %}
+{{ dataTable.js()}}
+{% endblock %}
+
+
+{% block javascripts %}
+{{ dataTable.script('#datatable_1') }} 
+{{ dataTable.script('#datatable_2')  }}
+  <script>
+   $(document).ready(function(){
+     //nivagation 
+     $('#gestions').addClass(' menu-is-opening menu-open')
+     $('.gestions').addClass('active')
+     $('.gestion-article').addClass('active')
+   })
+  </script>
 {% endblock %}
 
 {% block body %}
@@ -68,22 +85,4 @@
             </div>
     </div>
   </div>
-{% endblock %}
-
-{% block foot %}
-{{ foot.dataTable()}}
-{% endblock %}
-
-
-{% block javascripts %}
-{{ table.jsDataTable('datatable_1') }} 
-{{table.jsDataTable('datatable_2')  }}
-  <script>
-   $(document).ready(function(){
-     //nivagation 
-     $('#gestions').addClass(' menu-is-opening menu-open')
-     $('.gestions').addClass('active')
-     $('.gestion-article').addClass('active')
-   })
-  </script>
 {% endblock %}

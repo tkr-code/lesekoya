@@ -10,18 +10,24 @@ class CategoryFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        $categories = array(
-            array('id' => '2','title' => 'Ordinateur'),
-            array('id' => '3','title' => 'Smartphone'),
-            array('id' => '4','title' => 'Mode homme'),
-            array('id' => '5','title' => 'Chemise'),
-            array('id' => '6','title' => 'Accessoires')
-        );
-        foreach ($categories as $value) {
+        $categories = 
+        [
+            ['title' => 'Autres'],
+            ['title' => 'Ordinateur'],
+            ['title' => 'Smartphone'],
+            ['title' => 'Mode homme'],
+            ['title' => 'Chemise'],
+            ['title' => 'Accessoires']
+        ];
+
+        foreach ($categories  as $key => $value) {
             $category= new Category();
             $category->setTitle($value['title']);
             $category->setIsActive(true);
             $manager->persist($category);
+
+            //enregistre la categorie
+            $this->addReference('category_'. $key, $category);
         }
 
         $manager->flush();

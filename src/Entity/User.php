@@ -103,13 +103,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Length(
-     *     min = 9,
-     *     max = 9
-     * )
      * @Assert\NotBlank()
      */
     private $phone_number;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $last_login_at;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $is_active = true;
 
     public function __construct()
     {
@@ -435,4 +441,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getLastLoginAt(): ?\DateTimeInterface
+    {
+        return $this->last_login_at;
+    }
+
+    public function setLastLoginAt(?\DateTimeInterface $last_login_at): self
+    {
+        $this->last_login_at = $last_login_at;
+
+        return $this;
+    }
+
+    public function getIsActive(): ?bool
+    {
+        return $this->is_active;
+    }
+
+    public function setIsActive(bool $is_active): self
+    {
+        $this->is_active = $is_active;
+
+        return $this;
+    }
+
 }

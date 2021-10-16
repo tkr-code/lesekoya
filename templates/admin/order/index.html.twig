@@ -13,10 +13,16 @@
   {{ head.dataTable() }}
 {% endblock %}
 
+{% block head %}
+  <!-- datatable -->
+  <link rel="stylesheet" href="{{ asset('vendor/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+
+{% endblock %}
+
 {% block breadcrumb %}
     {{ utils.breadcrumb('Manage Order',[
         {
-            path:'order_index',
+            path:path('order_index'),
             name:'Manage orders'
         }
     ])}}

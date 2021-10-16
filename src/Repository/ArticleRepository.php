@@ -100,6 +100,14 @@ class ArticleRepository extends ServiceEntityRepository
             
            return $query->getQuery();
     }
+    public function recently()
+    {
+        return $this->findQueryBuilder()
+            ->orderBy('p.id','DESC')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult();
+    }
     public function findAllOff()
     {
         return $this->findQueryBuilder()

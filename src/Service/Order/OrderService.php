@@ -93,22 +93,22 @@ class OrderService{
      */
     public function total(Order $order)
     {
-       $order->setTotal($this->subTotal($order) + $order->getShipping());
+       $order->setTotal($this->subTotal($order) );
 
         return $order;
     }
     public function calculPersist(Order $order){
         $payment = $order->getPayment();
         $payment->setAmount(0);
-        $order->setPaymentState('in progress');
-        $order->setShippingState('in progress');
+        // $order->setPaymentState('in progress');
+        // $order->setShippingState('in progress');
         $order->setPaymentDue(new \DateTime('+ 5 day') );
         $order->setItemsTotal(0);
         $order->setState('in progress');
         $order->setAdjustmentsTotal(0);
-        $order->setShippingAdress($order->getUser()->getAdress());
+        // $order->setShippingAdress($order->getUser()->getAdress());
         $order->setNumber($this->voiceNumber());
-        $order->setCheckoutState('in progress');
+        // $order->setCheckoutState('in progress');
         $order->setTotal(0);
 
         $orderItem = $order->getOrderItem();

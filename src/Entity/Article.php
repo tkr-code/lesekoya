@@ -12,12 +12,14 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
  * @ORM\Table(name="article", indexes={@ORM\Index(columns={"title","description"}, flags={"fulltext"})})
-
+ * @UniqueEntity(
+ *  fields="title"
+ * )
  */
 class Article
 {
     const etats =[
-        'Choiser'=>null,
+        // ''=>null,
         'Top'=>'top',
         'populaire'=>'populaire'
     ];
@@ -110,6 +112,16 @@ class Article
      */
     private $favori;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ArticleBuy::class, mappedBy="article", orphanRemoval=true)
+     */
+    private $articleBuys;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $qty_reel;
+
 
     public function __construct()
     {
@@ -118,6 +130,7 @@ class Article
         $this->comments = new ArrayCollection();
         $this->created_at = new \DateTime();
         $this->favori = new ArrayCollection();
+        $this->articleBuys = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -366,6 +379,48 @@ class Article
     public function removeFavori(User $favori): self
     {
         $this->favori->removeElement($favori);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ArticleBuy[]
+     */
+    public function getArticleBuys(): Collection
+    {
+        return $this->articleBuys;
+    }
+
+    public function addArticleBuy(ArticleBuy $articleBuy): self
+    {
+        if (!$this->articleBuys->contains($articleBuy)) {
+            $this->articleBuys[] = $articleBuy;
+            $articleBuy->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticleBuy(ArticleBuy $articleBuy): self
+    {
+        if ($this->articleBuys->removeElement($articleBuy)) {
+            // set the owning side to null (unless already changed)
+            if ($articleBuy->getArticle() === $this) {
+                $articleBuy->setArticle(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getQtyReel(): ?int
+    {
+        return $this->qty_reel;
+    }
+
+    public function setQtyReel(int $qty_reel): self
+    {
+        $this->qty_reel = $qty_reel;
 
         return $this;
     }

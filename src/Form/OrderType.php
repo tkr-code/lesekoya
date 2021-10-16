@@ -62,29 +62,29 @@ class OrderType extends AbstractType
             //         'Paid'=>'Paid'
             //     ]
             // ])
-            ->add('shipping_state',ChoiceType::class,[
-                'choices'=>[
-                    'in Progress'=>'In progress',
-                    'Ready'=>'Ready',
-                    'shipped'=>'shippedd',
-                    'completed'=>'Completed',
-                ]
-            ])
-            ->add('shipping_adress',EntityType::class,[
-                'class'=>Adress::class,
-                'query_builder'=> function(EntityRepository $entityRepository) use($user) {
-                    return $entityRepository->createQueryBuilder('p')
-                    ->where("p.user = ". $user->getId());
-                },
-                'choice_label'=>'street',
-                'group_by'=>'lastname'
-            ])
-            ->add('shipping',IntegerType::class,[
-                'attr'=>[
-                    'required'=>true
-                ],
-                'label'=>'Shipping amount'
-            ])
+            // ->add('shipping_state',ChoiceType::class,[
+            //     'choices'=>[
+            //         'in Progress'=>'In progress',
+            //         'Ready'=>'Ready',
+            //         'shipped'=>'shippedd',
+            //         'completed'=>'Completed',
+            //     ]
+            // ])
+            // ->add('shipping_adress',EntityType::class,[
+            //     'class'=>Adress::class,
+            //     'query_builder'=> function(EntityRepository $entityRepository) use($user) {
+            //         return $entityRepository->createQueryBuilder('p')
+            //         ->where("p.user = ". $user->getId());
+            //     },
+            //     'choice_label'=>'street',
+            //     'group_by'=>'lastname'
+            // ])
+            // ->add('shipping',IntegerType::class,[
+            //     'attr'=>[
+            //         'required'=>true
+            //     ],
+            //     'label'=>'Shipping amount'
+            // ])
             
         ;
     }

@@ -1,8 +1,8 @@
 <div class="row">
     <div class="col-lg-{{col|default('10')}} mx-auto">
         <div class="login_form_inner register_form_inner">
-            <h3>Create an account</h3>
-            {{ form_start(registrationForm,{attr:{
+            <h3>{{'Create an account'|trans}}</h3>
+            {{ form_start(registrationForm,{action:path('app_register'),attr:{
                 'class':'login_form row align-items-end',
                 'novalidate':'novalidate'
             }}) }}

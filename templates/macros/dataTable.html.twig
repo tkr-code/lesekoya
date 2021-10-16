@@ -1,0 +1,48 @@
+{% macro head(items = '') %}
+    <tr>
+    {% for item in items %}
+        <th>{{ item }}</th>
+    {% endfor %}
+        <th>Action</th>
+    </tr>
+{% endmacro %}
+{% macro css() %}
+  <!-- DataTables -->
+  <link rel="stylesheet" href="{{ asset('vendor/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('vendor/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('vendor/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+{% endmacro %}
+{% macro js() %}
+      <!-- DataTables  & Plugins -->
+<script src="{{ asset('vendor/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('vendor/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('vendor/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('vendor/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('vendor/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('vendor/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('vendor/jszip/jszip.min.js') }}"></script>
+<script src="{{ asset('vendor/pdfmake/pdfmake.min.js') }}"></script>
+<script src="{{ asset('vendor/pdfmake/vfs_fonts.js') }}"></script>
+<script src="{{ asset('vendor/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('vendor/datatables-buttons/js/buttons.print.min.js') }}"></script>
+<script src="{{ asset('vendor/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+{% endmacro %}
+{% macro script(id) %}
+    <!-- DataTable script {{id}} -->
+  <script>
+   $(document).ready(function(){
+      // Datatable
+     $('{{ id }}').DataTable({
+      "responsive": true, 
+      "lengthChange": false, 
+      "autoWidth": false,
+      "order":[[3,"desc"]],
+      "buttons": 
+        ["csv", "excel", "pdf", "print","colvis"]
+    }).buttons().container().appendTo('{{id}}_wrapper .col-md-6:eq(0)');
+   })
+  </script>
+{% endmacro %}
+{% macro table() %}
+  
+{% endmacro %}

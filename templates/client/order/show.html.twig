@@ -2,18 +2,22 @@
 {% import ('macros/ribbon.html.twig') as ribbon %}
 {% import "macros/search.html.twig" as search %}
 
-{% extends 'base.html.twig' %}
+{# {% extends 'base.html.twig' %} #}
+{% extends 'lesekoya/base.html.twig' %}
 
 {% block title %} Facture {{ app_name }} - {{ order.user.personne.firstName ~ ' ' ~ order.user.personne.lastName }} {% endblock %}
 
 
 {% block body %}
-{{ search.search(form) }}
-
+<ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ path('home') }}">Home</a></li>
+    <li class="breadcrumb-item"><a href="{{ path('client_order') }}">Mes commandes</a></li>
+    <li class="breadcrumb-item active">Cart</li>
+</ol>
 <div class="container">
-  <div class="row">
+  <div class="row my-5">
      {% include "client/nav.html.twig" %}
-    <div class="col-lg-9">
+    <div class="col-lg-9 div-primary">
       {{ ribbon.ribbon(order.state)}}
       <!-- Main content -->
         <div class="invoice p-3 mb-3">

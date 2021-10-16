@@ -1,4 +1,36 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+<div class="row">
+    <div class="col-lg-6">
+        <div class="form-row">
+            <div class="form-group col-lg-6 col-6">
+                {{ form_row(form.personne.firstName)}}
+            </div>
+            <div class="form-group col-lg-6 col-6">
+                {{ form_row(form.personne.lastName)}}
+            </div>
+            <div class="form-group col-lg-6 col-6">
+                {{ form_row(form.email)}}
+            </div>
+            <div class="form-group col-lg-6 col-6">
+                {{ form_row(form.roles)}}
+            </div>
+            <div class="form-group col-lg-6 col-6">
+                {{ form_row(form.password)}}
+            </div>
+            <div class="form-group col-lg-6 col-6">
+                {{ form_row(form.phone_number)}}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <ul class="options" data-index="{{ form.options|length > 0 ? form.options|last.vars.name + 1 : 0 }}"
+            data-prototype="{{ form_widget(form.options.vars.prototype)|e('html_attr') }}"></ul>
+        <button type="button" class="add_item_link" data-collection-holder-class="options">Add a tag</button>
+
+    </div>
+    {{ form_widget(form,{attr:{
+    'novalidate':'novalidate'
+    }}) }}
+    <button class="btn btn-success">{{ button_label|default('Save') }}</button>
+    {{ form_end(form) }}
+</div>

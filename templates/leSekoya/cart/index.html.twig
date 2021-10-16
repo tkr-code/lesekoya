@@ -97,8 +97,8 @@
                           <h5 class="float-right">Shipping</h5>
                       </td>
                       <td>
-                          <h5>
-                            {{ (delivery) ? delivery.shippingAmount.amount:'0'|number_format(2,'.',' ') }} {{ site.current }}
+                          <h5 class="js-show-amount">
+                            {{ (app.request.session.get('shipping')) ? delivery.shippingAmount.amount:'0'|number_format(2,'.',' ') }} {{ site.current }}
                           </h5> 
                       </td>
                   </tr>
@@ -107,7 +107,7 @@
                           <h5 class="float-right">Total</h5>
                       </td>
                       <td>
-                          <h5><span class="text-danger" id="total"> {{ ( (total) + ((delivery) ? delivery.shippingAmount.amount:'0' ))|number_format(2,'.',' ') }} {{ site.current }} </span> </h5>
+                          <h5><span class="text-danger total"> {{ ( (total) + ((app.request.session.get('shipping')) ? delivery.shippingAmount.amount:'0' ))|number_format(2,'.',' ') }} {{ site.current }} </span> </h5>
                       </td>
                   </tr>
 
@@ -122,7 +122,7 @@
               <ul>
               {% for item in methodPayment %}                
                   <li class="filter-list">
-                    <input class="pixel-radio" value="{{ item.id }}" {{ (  app.request.session.get('methodPayment') and app.request.session.get('methodPayment') == item.id )  ? 'checked':'' }}  type="radio" name="method">
+                    <input required class="pixel-radio" value="{{ item.id }}" {{ (  app.request.session.get('methodPayment') and app.request.session.get('methodPayment') == item.id )  ? 'checked':'' }}  type="radio" name="method">
                     <label for="{{ item.name }}">{{ item.name }}</label>
                   </li>
               {% endfor %}
@@ -194,7 +194,7 @@
                                 <i class="fas fa-2x fa-sync-alt fa-spin"></i>
                               </div>
                               <div class="card-body  js-amount"></div>
-                              <p class="h4">Total : <span id="total"></span> </p>
+                              <p class="h4">Total : <span class="total"></span> </p>
                             </div>
                           </div>
                           {% endif %}
@@ -300,7 +300,8 @@
         method:"POST",
         dataType:'json',
         data:{
-          id_street : id
+          id_street : id,
+          total : {{ total }}
         },
         beforeSend:function(){
           $('#loader-street-amount').show()
@@ -310,9 +311,8 @@
         success:function(data){
           $('.js-amount').html(data.response).show()
           $('#loader-street-amount').hide()
-          $('#total').text(total(data.amount).number_format(2,'.',''))
-
-          // console.log(data.amount)
+          $('.total').text(data.total)
+          $('.js-show-amount').text(data.amount2)
         }
       })
     })

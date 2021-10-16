@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="fr" target-language="fr" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="o7UMR2c" resname="State">
+        <source>State</source>
+        <target>Etat</target>
+      </trans-unit>
+      <trans-unit id="9kr9X1_" resname="Shipping state">
+        <source>Shipping state</source>
+        <target>Etat de la livraison</target>
+      </trans-unit>
+      <trans-unit id="RyDVw3g" resname="Shipping amount">
+        <source>Shipping amount</source>
+        <target>Montant de la livraison</target>
+      </trans-unit>
+      <trans-unit id="FJKn98h" resname="Shipping adress">
+        <source>Shipping adress</source>
+        <target>Addresse de la livraison</target>
+      </trans-unit>
+      <trans-unit id="2NosSd8" resname="Note">
+        <source>Note</source>
+        <target>note</target>
+      </trans-unit>
+      <trans-unit id="mcQKtAW" resname="Date">
+        <source>Date</source>
+        <target>Date</target>
+      </trans-unit>
+      <trans-unit id="uUisBLh" resname="Payment method">
+        <source>Payment method</source>
+        <target>Méthode de paiement</target>
+      </trans-unit>
+      <trans-unit id="Put_luW" resname="order">
+        <source>order</source>
+        <target>Commande</target>
+      </trans-unit>
+      <trans-unit id="RZid5J_" resname="Details">
+        <source>Details</source>
+        <target>Details</target>
+      </trans-unit>
+      <trans-unit id="5QGPyUU" resname="Unit price">
+        <source>Unit price</source>
+        <target>prix unitaire</target>
+      </trans-unit>
+      <trans-unit id="giurjUG" resname="Quantity">
+        <source>Quantity</source>
+        <target>Quantité</target>
+      </trans-unit>
+      <trans-unit id="KdlJIlE" resname="Article">
+        <source>Article</source>
+        <target>Artcicle</target>
+      </trans-unit>
+      <trans-unit id="KSwG8AR" resname="Category">
+        <source>Category</source>
+        <target>Categori</target>
+      </trans-unit>
+      <trans-unit id="bik6jAC" resname="Waiting">
+        <source>Waiting</source>
+        <target>En attente</target>
+      </trans-unit>
+      <trans-unit id="K2uFPJ5" resname="in progress">
+        <source>in progress</source>
+        <target>En cour</target>
+      </trans-unit>
+      <trans-unit id="aYMQ_tv" resname="shipped">
+        <source>shipped</source>
+        <target>expédié</target>
+      </trans-unit>
+      <trans-unit id="X6eqxTd" resname="Ready">
+        <source>Ready</source>
+        <target>pret</target>
+      </trans-unit>
+      <trans-unit id="Tds_loA" resname="completed">
+        <source>completed</source>
+        <target>terminé</target>
+      </trans-unit>
+      <trans-unit id="E8ou4km" resname="Canceled">
+        <source>Canceled</source>
+        <target>annuller</target>
+      </trans-unit>
+      <trans-unit id="ifaDJWD" resname="Year">
+        <source>Year</source>
+        <target>année</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

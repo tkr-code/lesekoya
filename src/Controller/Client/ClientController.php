@@ -62,6 +62,7 @@ class ClientController extends AbstractController
      */
     public function newOrder(OrderRepository $orderRepository, StreetRepository $streetRepository, PaymentMethodRepository $paymentMethodRepository, ArticleRepository $articleRepository, Request $request, OrderService $orderService, SessionInterface $session): Response
     {
+
         // nouvelle commande
         // dd($request->request);
         $order = new Order();
@@ -93,8 +94,8 @@ class ClientController extends AbstractController
            $order->addOrderItem($orderItem);
         }
         $order->setItemsTotal($total);
-        $order->setAdjustmentsTotal($order->getShipping());
-        $order->setTotal($order->getItemsTotal() + $order->getAdjustmentsTotal() );
+        // $order->setAdjustmentsTotal($order->getShipping());
+        $order->setTotal($order->getItemsTotal());
         
         $payment = new Payment();
         $payment->setAmount($order->getTotal());
@@ -107,6 +108,7 @@ class ClientController extends AbstractController
         $shippingAmount = $street->getShippingAmount()->getAmount();
         $shipping->setAmount($shippingAmount);
         $order->setAdjustmentsTotal($shippingAmount);
+        $order->setTotal($order->getTotal()+ $order->getAdjustmentsTotal());
         //statut de la livraison
         $shipping->setState('In progress');
 
@@ -116,14 +118,10 @@ class ClientController extends AbstractController
         $deliverySpace->setStreet($street);
         //client 
         $deliverySpace->setClient($user->getClient());
-        // $payment->setOrderPayment($order);
-        // dump($total);
-        // $order = $orderService->calculPersist($order);
+        
         $order->setPayment($payment);
         $order->setShipping($shipping);
         $order->setDeliverySpace($deliverySpace);
-        // dump($request->request);
-        // dd($order);
         
         // dd($order);
         $entityManager = $this->getDoctrine()->getManager();
@@ -131,7 +129,6 @@ class ClientController extends AbstractController
         $entityManager->flush();
         $this->addFlash('success','Order created');
         $session->set('panier',[]);
-        // $order = $orderRepository->find(3);
         return $this->redirectToRoute('client_confirmation',['id'=>$order->getId()]);
     }
     /**
@@ -145,6 +142,15 @@ class ClientController extends AbstractController
             'order' => $order,
             'form'=>$form
         ]);
+    }
+    /**
+     * buy
+     * @Route("/buy", name="client_buy")
+     * @return void
+     */
+    public function buy():Response
+    {
+        return $this->render('client/buy/index.html.twig');
     }
     /**
      * @Route("/order", name="client_order", methods={"GET"})
