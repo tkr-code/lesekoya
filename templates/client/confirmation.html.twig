@@ -13,14 +13,20 @@
   }
 </style>
 <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{{ path('home') }}">Home</a></li>
-    <li class="breadcrumb-item"><a href="{{ path('client_order') }}">Orders</a></li>
-    <li class="breadcrumb-item active">Confirmation</li>
+    <li class="breadcrumb-item"><a href="{{ path('home') }}">{{ 'Home'|trans }}</a></li>
+    <li class="breadcrumb-item"><a href="{{ path('client_order') }}">{{ 'Orders'|trans }}</a></li>
+    <li class="breadcrumb-item active">{{'Confirmation'|trans }}</li>
 </ol>
 <section class="order_details section-margin--small">
     <div class="container">
-        <p class="text-center billing-alert">Thank you. Your order has been received.</p>
+
+        <p class="text-center billing-alert">{{ 'Thank you. Your order has been received.'|trans }}</p>
         <div class="row mb-5">
+        <div class="col-12">
+            {% for item in app.flashes('success') %}
+            {{ alert.alert(item,'success')}}
+            {% endfor %}
+        </div>
         <div class="col-md-6 col-xl-6 mb-4 mb-xl-0">
             <div class="confirmation-card">
                 <h3 class="billing-title">Order Info</h3>
@@ -48,19 +54,19 @@
         </div>
         <div class="col-md-6 col-xl-6 mb-4 mb-xl-0">
             <div class="confirmation-card">
-            <h3 class="billing-title">Delivery Space</h3>
+            <h3 class="billing-title">{{ 'Delivery Space'|trans }}</h3>
             <table class="order-rable">
                 <tbody><tr>
-                <td>Street</td>
-                <td>: {{ order.deliverySpace.street.name }} </td>
+                <td>{{'Street'|trans }}</td>
+                <td>: {{ (order.deliverySpace)? order.deliverySpace.street.name:'non definie' }}</td>
                 </tr>
                 <tr>
-                <td>City</td>
-                <td>: {{ order.deliverySpace.street.city.name }}</td>
+                <td>{{ 'City'|trans }}</td>
+                <td>: {{ (order.deliverySpace)? order.deliverySpace.street.city.name:'non definie' }}</td>
                 </tr>
                 <tr>
-                <td>Country</td>
-                <td>: {{ order.deliverySpace.street.city.country.name }}</td>
+                <td>{{'Country'|trans}}</td>
+                <td>: {{ (order.deliverySpace)? order.deliverySpace.street.city.country.name:'non definie' }}</td>
                 </tr>
                 <tr>
                     <td>Postcode</td>
@@ -138,7 +144,7 @@
                     <h5></h5>
                 </td>
                 <td>
-                    <p>Flat rate: {{ order.shipping.amount|number_format(2,'.',' ') }} {{ site.current }}</p>
+                    <p>Flat rate: {{ (order.deliverySpace)? order.deliverySpace.street.shippingAmount.amount:'0' |number_format(2,'.',' ') }} {{ site.current }}</p>
                 </td>
                 </tr>
                 <tr>

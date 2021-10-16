@@ -92,12 +92,7 @@ class Order
     private $adjustments_total;
 
     /**
-     * @ORM\OneToOne(targetEntity=Shipping::class, inversedBy="order_shipping", cascade={"persist", "remove"})
-     */
-    private $shipping;
-
-    /**
-     * @ORM\OneToOne(targetEntity=DeliverySpace::class, inversedBy="commande", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=DeliverySpace::class, inversedBy="orders", cascade={"persist"})
      */
     private $delivery_space;
 
@@ -290,18 +285,6 @@ class Order
     public function setAdjustmentsTotal($adjustments_total): self
     {
         $this->adjustments_total =(int) $adjustments_total;
-
-        return $this;
-    }
-
-    public function getShipping(): ?Shipping
-    {
-        return $this->shipping;
-    }
-
-    public function setShipping(?Shipping $shipping): self
-    {
-        $this->shipping = $shipping;
 
         return $this;
     }

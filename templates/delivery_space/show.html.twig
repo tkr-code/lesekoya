@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}DeliverySpace{% endblock %}
+
+{% block body %}
+    <h1>DeliverySpace</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ delivery_space.id }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('delivery_space_index') }}">back to list</a>
+
+    <a href="{{ path('delivery_space_edit', {'id': delivery_space.id}) }}">edit</a>
+
+    {{ include('delivery_space/_delete_form.html.twig') }}
+{% endblock %}

@@ -108,7 +108,7 @@
           </div>
       </div>
     </form>
-    {% if is_granted('ROLE_CLIENT') is null %}
+    {% if is_granted('ROLE_CLIENT') %}
     <div class="container mb-5">
         {% include ("registration/_form.html.twig") %}
     </div>

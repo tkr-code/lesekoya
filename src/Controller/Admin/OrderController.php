@@ -6,6 +6,7 @@ use App\Entity\Order;
 use App\Form\OrderType;
 use App\Entity\OrderItem;
 use App\Entity\Payment;
+use App\Entity\PaymentMethod;
 use App\Form\PaymentType;
 use App\Form\OrderNewType;
 use App\Form\OrderItemType;
@@ -76,16 +77,16 @@ class OrderController extends AbstractController
     public function newOrder(PaymentMethodRepository $paymentMethodRepository, ArticleRepository $articleRepository, Request $request, OrderService $orderService, SessionInterface $session): Response
     {
         $order = new Order();
-        $order->setPaymentState('in progress');
-        $order->setShippingState('in progress');
-        $order->setCheckoutState('in progress');
+        // $order->setPaymentState('in progress');
+        // $order->setShippingState('in progress');
+        // $order->setCheckoutState('in progress');
         $order->setState('in progress');
-        $order->setShipping(500);
+        // $order->setShipping(500);
         $order->setNumber($orderService->voiceNumber());
         $order->setPaymentDue(new \DateTime('+ 6 day') );
         $user  = $this->getUser();
         $adresses = $user->getAdresses();
-        $order->setShippingAdress($adresses[0]);
+        // $order->setShippingAdress($adresses[0]);
         $order->setUser($user);
         $panier = $session->get('panier');
         $total = 0;
@@ -102,7 +103,7 @@ class OrderController extends AbstractController
            $order->addOrderItem($orderItem);
         }
         $order->setItemsTotal($total);
-        $order->setAdjustmentsTotal($order->getShipping());
+        $order->setAdjustmentsTotal($order->getDeliverySpace()->getshippingAmount->getAmount());
         $order->setTotal($order->getItemsTotal() + $order->getAdjustmentsTotal() );
         $payment = new Payment();
         $payment->setAmount($order->getTotal());
@@ -128,14 +129,14 @@ class OrderController extends AbstractController
     public function new(Request $request, OrderService $orderService): Response
     {
         $order = new Order();
+        
         $form = $this->createForm(OrderNewType::class, $order);
         $form->handleRequest($request);
     
-        dd($request->getSession());
-
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $order = $orderService->calculPersist($order);
+            // dd($order);
             $entityManager->persist($order);
             $entityManager->flush();
             $this->addFlash('success','Order created');
@@ -228,14 +229,14 @@ class OrderController extends AbstractController
         
         if ($form->isSubmitted() && $form->isValid()) {            
             
-            if($order->getShipping() <= 0 || empty($order->getShipping()) )
-            {
-                $order->setShipping(0);
-            }
+            // if($order->getShipping() <= 0 || empty($order->getShipping()) )
+            // {
+            //     // $order->setShipping(0);
+            // }
             if($order->getState() == 'completed')
             {
-                $order->setShippingState('completed');
-                $order->setCheckoutState('completed');
+                // $order->setShippingState('completed');
+                // $order->setCheckoutState('completed');
                 $payment->setState('completed');
                 $order->setPayment($payment);
                 $order->setCheckoutCompletedAt(new \DateTime());

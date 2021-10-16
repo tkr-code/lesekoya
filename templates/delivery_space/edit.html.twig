@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit DeliverySpace{% endblock %}
+
+{% block body %}
+    <h1>Edit DeliverySpace</h1>
+
+    {{ include('delivery_space/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('delivery_space_index') }}">back to list</a>
+
+    {{ include('delivery_space/_delete_form.html.twig') }}
+{% endblock %}

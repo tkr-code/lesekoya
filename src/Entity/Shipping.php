@@ -27,10 +27,6 @@ class Shipping
      */
     private $state;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Order::class, mappedBy="shipping", cascade={"persist", "remove"})
-     */
-    private $order_shipping;
 
     public function getId(): ?int
     {
@@ -61,25 +57,4 @@ class Shipping
         return $this;
     }
 
-    public function getOrderShipping(): ?Order
-    {
-        return $this->order_shipping;
-    }
-
-    public function setOrderShipping(?Order $order_shipping): self
-    {
-        // unset the owning side of the relation if necessary
-        if ($order_shipping === null && $this->order_shipping !== null) {
-            $this->order_shipping->setShipping(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($order_shipping !== null && $order_shipping->getShipping() !== $this) {
-            $order_shipping->setShipping($this);
-        }
-
-        $this->order_shipping = $order_shipping;
-
-        return $this;
-    }
 }

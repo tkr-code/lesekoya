@@ -4,6 +4,7 @@ use App\Entity\Order;
 use App\Entity\OrderItem;
 use App\Entity\Payment;
 use App\Entity\PaymentMethod;
+use App\Entity\Shipping;
 use App\Repository\OrderItemRepository;
 use App\Repository\OrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -93,34 +94,19 @@ class OrderService{
      */
     public function total(Order $order)
     {
-       $order->setTotal($this->subTotal($order) + $order->getShipping());
+       $order->setTotal($this->subTotal($order));
 
         return $order;
     }
     public function calculPersist(Order $order){
         $payment = $order->getPayment();
         $payment->setAmount(0);
-        $order->setPaymentState('in progress');
-        $order->setShippingState('in progress');
         $order->setPaymentDue(new \DateTime('+ 5 day') );
         $order->setItemsTotal(0);
         $order->setState('in progress');
         $order->setAdjustmentsTotal(0);
-        $order->setShippingAdress($order->getUser()->getAdress());
         $order->setNumber($this->voiceNumber());
-        $order->setCheckoutState('in progress');
         $order->setTotal(0);
-
-        $orderItem = $order->getOrderItem();
-        // foreach($orderItem as $o){
-        //     $orderItem = new OrderItem();
-        //     $orderItem->getProduitName($o->getTitle())
-        //     ->getUnitPrice($o->getPrix());
-        //     // ->get
-        // }
-
-
-        // $this->total($order);
         return $order;
     }
     public function calculOrder(Order $order)
