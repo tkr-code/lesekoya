@@ -51,6 +51,7 @@ class ArticleType extends AbstractType
             ])
             ->add('etat',ChoiceType::class,[
                 'choices'=>Article::etats,
+                'required'=>false,
                 'attr'=>[
                     'class'=>'select2'
                 ]

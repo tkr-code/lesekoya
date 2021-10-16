@@ -17,11 +17,11 @@ class SecurityController extends AbstractController
      */
     public function login(AuthenticationUtils $authenticationUtils, UserRepository $userRepository): Response
     {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('home');
+        }
         $search = new ArticleSearch();
         $formSearch = $this->createForm(ArticleSearchType::class,$search);
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();

@@ -1,0 +1,41 @@
+<div class="login_form_inner">
+<h3>Log in to enter</h3>
+<form class="row login_form" method="post">
+    {% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    {% if app.user %}
+        <div class="mb-3">
+            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">{{'Logout'|trans}}</a>
+        </div>
+    {% endif %}
+    <div class="col-md-12 form-group">
+        <input type="email" value="{{ last_username }}" name="email" id="inputEmail" placeholder="email" class="form-control" autocomplete="email" required autofocus>
+    </div>
+    <div class="col-md-12 form-group">
+        <input type="password" name="password" id="inputPassword" placeholder="password" class="form-control" autocomplete="current-password" required>
+
+        <input type="hidden" name="_csrf_token"
+            value="{{ csrf_token('authenticate') }}"
+        >
+    </div>
+    <div class="col-md-12 form-group">
+        <div class="creat_account">
+            <input type="checkbox" id="f-option2" name="selector">
+            <label for="f-option2">{{'Keep me logged in'|trans}}</label>
+        </div>
+    </div>
+    <div class="checkbox mb-3">
+        <label>
+            <input type="checkbox" name="_remember_me"> {{'Remember me'|trans}}
+        </label>
+    </div>
+    
+    <div class="col-md-12 form-group">
+        <button type="submit" value="submit" class="button button-login w-100">{{'Log In'|trans}}</button>
+        <a href="#">{{'Forgot Password'|trans}}?</a>
+    </div>
+    
+</form>
+</div>

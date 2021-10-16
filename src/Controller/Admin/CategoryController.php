@@ -82,13 +82,13 @@ class CategoryController extends AbstractController
             return $this->redirectToRoute('category_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        // $breadcrumb = [];
-        // return $this->renderForm('admin/category/edit.html.twig', [
-        //     'breadcrumb'=>$breadcrumb,
-        //     'category' => $category,
-        //     'form' => $form,
-        // ]);
-        return $this->json(['code'=>200,'form'=>$form->createView()],200);
+        $breadcrumb = [];
+        return $this->renderForm('admin/category/edit.html.twig', [
+            'breadcrumb'=>$breadcrumb,
+            'category' => $category,
+            'form' => $form,
+        ]);
+        // return $this->json(['code'=>200,'form'=>$form->createView()],200);
 
     }
     /**

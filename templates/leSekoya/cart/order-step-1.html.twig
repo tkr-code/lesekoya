@@ -50,7 +50,8 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <p class="h4">Methode de payment:</p>
-                        <p>{{app.request.session.get('methodPayment') }}</p>
+                        <p>{{ methodPayment.name }}</p>
+                        <p>{{methodPayment.description}}</p>
                     </div>
                     <div class="col-6">
                         <table class="table">
@@ -82,8 +83,8 @@
                                 <h5>Total</h5>
                             </td>
                             <td>
-                                <input type="hidden" name="total"  value="{{ (street.shippingAmount.amount + subtotal) }}">
-                               <h5>{{ (street.shippingAmount.amount + subtotal) |number_format(2,'.',' ') }} {{ site.current }}</h5>
+                                <input type="hidden" name="total"  value="{{ ( ( (street.shippingAmount) ? street.shippingAmount.amount : 0 )+ subtotal) }}">
+                               <h5>{{ ( ( (street.shippingAmount) ? street.shippingAmount.amount : 0 )+ subtotal) |number_format(2,'.',' ') }} {{ site.current }}</h5>
                             </td>
                         </tr>
                             </tbody>
@@ -99,8 +100,10 @@
                             Commander
                             </button>
                         {% else %}
+                            <p>
                             Pour commander connecter vous ou creer un compte. :) 
-                            <a class="btn btn-primary btn-lg" href="{{ path('app_login') }}">Connecter vous ou créer un compte ci-dessous</a>
+                            </p>
+                            <a class="btn btn-primary btn-lg" href="{{ path('app_login') }}">{{'Login'|trans}}</a>
                         {% endif %}
                     </div>
                 </div>
@@ -108,7 +111,11 @@
           </div>
       </div>
     </form>
+<<<<<<< HEAD
     {% if is_granted('ROLE_CLIENT') %}
+=======
+    {% if not is_granted('ROLE_CLIENT') %}
+>>>>>>> dev
     <div class="container mb-5">
         {% include ("registration/_form.html.twig") %}
     </div>

@@ -16,8 +16,8 @@
 {% block breadcrumb %}
     {{ utils.breadcrumb('Manage user',[
         {
-            path:'order_index',
-            name:'Manage orders'
+            path:path('user_index'),
+            name:'Manage users'
         }
     ])}}
 {% endblock %}
@@ -40,8 +40,4 @@
         </div>
     </div>
 </div>
-
-
-
-    {# {{ include('admin/user/_delete_form.html.twig') }} #}
 {% endblock %}

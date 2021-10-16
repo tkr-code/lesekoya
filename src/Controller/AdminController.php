@@ -3,7 +3,10 @@
 namespace App\Controller;
 
 use App\Repository\ArticleRepository;
+use App\Repository\ClientRepository;
+use App\Repository\OrderRepository;
 use App\Repository\ProduitRepository;
+use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,28 +17,22 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class AdminController extends AbstractController
 {
-    
-    public function __construct()
-    {
-        $this->gestions = [
-            [
-                'name'=>'Category',
-                'path'=>'category_index',
-                'icon'=>'far fa-circle nav-icon'
-            ]
-        ];
-    }
-    private $nameApp = 'Framework Tounkara';
-
     /**
      * @Route("/", name="admin")
      */
-    public function index(ArticleRepository $articleRepository)
+    public function index(ClientRepository $clientRepository, OrderRepository $orderRepository, ArticleRepository $articleRepository, UserRepository $userRepository)
     {
         return $this->render('admin/index.html.twig',[
             'title'=>'titre de la page',
-            'productOnline'=>$articleRepository->findCountOnline()
-
+            'productOnline'=>$articleRepository->findCountOnline(),
+            'allArticle'=>count($articleRepository->findAll()),
+            'orderInProgress'=>$orderRepository->findState('in progress'),
+            'lastOrder'=>$orderRepository->findAllLast(),
+            'orders'=>count($orderRepository->findAll()),
+            'clients'=>$clientRepository->findAll(),
+            'recentlys'=>$articleRepository->recently(),
+            'parent_page'=>'Dashboard',
+            'latestUser'=>$userRepository->findByRole('ROLE_USER',)
         ]);
     }
         

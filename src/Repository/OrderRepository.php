@@ -91,6 +91,14 @@ class OrderRepository extends ServiceEntityRepository
         ->getResult()
         ;   
     }
+    public function findAllLast()
+    {
+       return $this->findQuery()
+        ->orderBy('o.id','desc')
+        ->getQuery()
+        ->getResult()
+        ;   
+    }
 
     /*
     public function findOneBySomeField($value): ?Order

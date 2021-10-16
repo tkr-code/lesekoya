@@ -36,9 +36,15 @@ class Client
      */
     private $deliverySpaces;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ArticleBuy::class, mappedBy="client", orphanRemoval=true)
+     */
+    private $articleBuys;
+
     public function __construct()
     {
         $this->deliverySpaces = new ArrayCollection();
+        $this->articleBuys = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -82,6 +88,36 @@ class Client
             // set the owning side to null (unless already changed)
             if ($deliverySpace->getClient() === $this) {
                 $deliverySpace->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ArticleBuy[]
+     */
+    public function getArticleBuys(): Collection
+    {
+        return $this->articleBuys;
+    }
+
+    public function addArticleBuy(ArticleBuy $articleBuy): self
+    {
+        if (!$this->articleBuys->contains($articleBuy)) {
+            $this->articleBuys[] = $articleBuy;
+            $articleBuy->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticleBuy(ArticleBuy $articleBuy): self
+    {
+        if ($this->articleBuys->removeElement($articleBuy)) {
+            // set the owning side to null (unless already changed)
+            if ($articleBuy->getClient() === $this) {
+                $articleBuy->setClient(null);
             }
         }
 

@@ -5,33 +5,34 @@
 
 {% block body %}
 <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{{ path('home') }}">Home</a></li>
-    <li class="breadcrumb-item"><a href="{{ path('articles') }}">Shop</a></li>
+    <li class="breadcrumb-item"><a href="{{ path('home') }}">{{'Home'|trans}}</a></li>
+    <li class="breadcrumb-item"><a href="{{ path('client_index') }}">{{'Customer'|trans}}</a></li>
     <li class="breadcrumb-item active">Cart</li>
 </ol>
 <section>
     <div class="container">
         <div class="row my-5">
-                {% include "client/nav.html.twig" %}
-            <div class="col-lg-8">
+            {% include "client/nav.html.twig" %}
+            <div class="col-lg-8 div-primary">
                 <div class="card">
                     <div class="card-header">
-                        <p class="p-0 m-0 h4">{{ 'My account'|trans }}</p>    
+                        <p class="p-0 m-0 h4">{{'My account'|trans}}</p>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-6">
                                 <div class="card">
                                     <div class="card-header">
-                                        <p class="p-0 m-0 ">Personal information <a href="" class="float-right"><i class="text-success fas fa-pencil-alt    "></i></a> </p>
+                                        <p class="p-0 m-0 ">Personal information <a href="#" class="float-right"><i
+                                                    class="text-success fas fa-pencil-alt    "></i></a> </p>
                                     </div>
                                     <div class="card-body">
-                                        <p class="card-text">Malick Tounkara</p>
-                                        <p class="text-muted ">malick@store.com</p>
+                                        <p class="card-text">{{ app.user.personne.firstName|default('not found')}} {{
+                                            app.user.personne.lastName|default('not found') }}</p>
+                                        <p class="text-muted ">{{ app.user.email|default('not email') }}</p>
                                         <p>
                                             <a href="#" class="text-info 2rem">
-                                                {# Modifier le mot de passe  #}
-                                            {{ 'Change password'|trans }} 
+                                                {{ 'Change password'|trans }}
                                             </a>
                                         </p>
                                     </div>
@@ -40,14 +41,15 @@
                             <div class="col-6">
                                 <div class="card">
                                     <div class="card-header">
-                                        <p class="p-0 m-0 ">Adress <a href="#" class="float-right"><i class="text-success fas fa-pencil-alt    "></i></a> </p>
+                                        <p class="p-0 m-0 ">Adress <a href="#" class="float-right"><i
+                                                    class="text-success fas fa-pencil-alt    "></i></a> </p>
                                     </div>
                                     <div class="card-body">
                                         <p class="card-text">Dakar senegal, 11000 dakar Liberte 4</p>
-                                        <p>781278288</p>
+                                        <p>{{ app.user.phoneNumber }}</p>
                                         <p>
                                             <a href="#" class="text-info">
-                                            {{ 'Manage adresses'|trans }}
+                                                {{ 'Manage adresses'|trans }}
                                             </a>
                                         </p>
                                     </div>
@@ -64,9 +66,9 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script>
-        $(document).ready(function(){
-            $('.my-account').addClass('active')
-        })
-    </script>
+<script>
+    $(document).ready(function () {
+        $('.my-account').addClass('active')
+    })
+</script>
 {% endblock %}

@@ -2,11 +2,12 @@
 <table id="datatable_{{ id }}" class="table">
     <thead>
         <tr>
-            <th>Order</th>
-            <th>state</th>
-            <th>Date</th>
-            <th>Total</th>
-            <th>actions</th>
+            <th>{{'Order'|trans}}</th>
+            <th>{{'Invoice'|trans}}</th>
+            <th>{{'State'|trans}}</th>
+            <th>{{'Date'|trans}}</th>
+            <th>{{'Total'|trans}}</th>
+            <th>{{'Actions'|trans}}</th>
         </tr>
     </thead>
     <tbody>
@@ -21,6 +22,7 @@
                 href="{{ path('client_order_show', {'id': order.id}) }}"><i class="fa fa-eye text-dark"></i></a>
                 
             </td>
+            <td>{{ order.number }}</td>
             <td>
             {{ btn.order(order.state) }}
             
@@ -37,17 +39,18 @@
         </tr>
     {% else %}
         <tr class="text-center">
-            <td colspan="12">no records found</td>
+            <td colspan="12">{{'no records found'|trans}}</td>
         </tr>
     {% endfor %}
     </tbody>
     <tfoot>
         <tr>
-            <th>Order</th>
-            <th>state</th>
-            <th>Createdat</th>
-            <th>Total</th>
-            <th>actions</th>
+            <th>{{'Order'|trans}}</th>
+            <th>{{'Invoice'|trans}}</th>
+            <th>{{'State'|trans}}</th>
+            <th>{{'Date'|trans}}</th>
+            <th>{{'Total'|trans}}</th>
+            <th>{{'Actions'|trans}}</th>
         </tr>
     </tfoot>
     </table>

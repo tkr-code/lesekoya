@@ -96,11 +96,17 @@ class Order
      */
     private $delivery_space;
 
+    /**
+     * @ORM\Column(type="boolean" ,options={"default"="1"})
+     */
+    private $is_immuable;
+
 
     public function __construct()
     {
         $this->order_item = new ArrayCollection();
         $this->created_at = new \DateTime();
+        $this->is_immuable = true;
     }
 
     public function getId(): ?int
@@ -297,6 +303,18 @@ class Order
     public function setDeliverySpace(?DeliverySpace $delivery_space): self
     {
         $this->delivery_space = $delivery_space;
+
+        return $this;
+    }
+
+    public function getIsImmuable(): ?bool
+    {
+        return $this->is_immuable;
+    }
+
+    public function setIsImmuable(bool $is_immuable): self
+    {
+        $this->is_immuable = $is_immuable;
 
         return $this;
     }

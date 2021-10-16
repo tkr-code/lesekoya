@@ -48,7 +48,7 @@ class CartController extends AbstractController
      * @Route("/cart/order-step-1", name="cart_step_1")
      * @return void
      */
-    public function step1(SessionInterface $sessionInterface, StreetRepository $streetRepository, ShippingService $shippingService, ShippingAmountRepository $shippingAmountRepository, Request $request):Response
+    public function step1(SessionInterface $sessionInterface, PaymentMethodRepository $paymentMethodRepository, StreetRepository $streetRepository, ShippingService $shippingService, ShippingAmountRepository $shippingAmountRepository, Request $request):Response
     {
         $user = new User();
         $formRegistration = $this->createForm(RegistrationFormType::class, $user);
@@ -61,6 +61,14 @@ class CartController extends AbstractController
             $sessionInterface->set('methodPayment',$methodPaiement);
 
         }
+        if($sessionInterface->get('methodPayment'))
+        {
+            $methodPaiement = $sessionInterface->get('methodPayment');
+        }
+        else{
+            return $this->redirectToRoute('cart_index');
+        }
+        
         //on recupere la methode de paiment
         // on recupere le total du panier
         //on gener la nouvelle commande avec le prix de la livraion
@@ -68,7 +76,8 @@ class CartController extends AbstractController
             'items'=>$this->cartService->getFullCart(),
             'subtotal'=>$this->cartService->getTotal(),
             'street'=>$street,
-            'registrationForm'=>$formRegistration
+            'registrationForm'=>$formRegistration,
+            'methodPayment'=>$paymentMethodRepository->find($methodPaiement)
 
 
         ]);

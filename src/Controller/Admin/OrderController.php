@@ -68,6 +68,7 @@ class OrderController extends AbstractController
             'ordersInProgress'=>$orderRepository->findState('in progress'),
             'ordersWaiting'=>$orderRepository->findState('waiting'),
             'ordersCanceled'=>$orderRepository->findState('canceled'),
+            'parent_page'=>'List'
         ]);
     }
 
@@ -77,16 +78,23 @@ class OrderController extends AbstractController
     public function newOrder(PaymentMethodRepository $paymentMethodRepository, ArticleRepository $articleRepository, Request $request, OrderService $orderService, SessionInterface $session): Response
     {
         $order = new Order();
+<<<<<<< HEAD
         // $order->setPaymentState('in progress');
         // $order->setShippingState('in progress');
         // $order->setCheckoutState('in progress');
         $order->setState('in progress');
         // $order->setShipping(500);
+=======
+        $order->setState('in progress');
+>>>>>>> dev
         $order->setNumber($orderService->voiceNumber());
         $order->setPaymentDue(new \DateTime('+ 6 day') );
         $user  = $this->getUser();
         $adresses = $user->getAdresses();
+<<<<<<< HEAD
         // $order->setShippingAdress($adresses[0]);
+=======
+>>>>>>> dev
         $order->setUser($user);
         $panier = $session->get('panier');
         $total = 0;
@@ -133,6 +141,11 @@ class OrderController extends AbstractController
         $form = $this->createForm(OrderNewType::class, $order);
         $form->handleRequest($request);
     
+<<<<<<< HEAD
+=======
+        // dd($request->getSession());
+
+>>>>>>> dev
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $order = $orderService->calculPersist($order);
@@ -229,6 +242,7 @@ class OrderController extends AbstractController
         
         if ($form->isSubmitted() && $form->isValid()) {            
             
+<<<<<<< HEAD
             // if($order->getShipping() <= 0 || empty($order->getShipping()) )
             // {
             //     // $order->setShipping(0);
@@ -237,6 +251,10 @@ class OrderController extends AbstractController
             {
                 // $order->setShippingState('completed');
                 // $order->setCheckoutState('completed');
+=======
+            if($order->getState() == 'completed')
+            {
+>>>>>>> dev
                 $payment->setState('completed');
                 $order->setPayment($payment);
                 $order->setCheckoutCompletedAt(new \DateTime());

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" target-language="fr" datatype="plaintext" original="file.ext">
+  <file source-language="fr" target-language="fr" datatype="plaintext" original="file.ext">
     <header>
       <tool tool-id="symfony" tool-name="Symfony"/>
     </header>
@@ -108,6 +108,162 @@
       <trans-unit id="L.WZgUO" resname="Tous">
         <source>Tous</source>
         <target>__Tous</target>
+      </trans-unit>
+      <trans-unit id="T8c922M" resname="Email send">
+        <source>Email send</source>
+        <target>__Email send</target>
+      </trans-unit>
+      <trans-unit id="Hi6LwD1" resname="Product Online">
+        <source>Product Online</source>
+        <target>Produit en ligne</target>
+      </trans-unit>
+      <trans-unit id="zKBmL53" resname="Likes">
+        <source>Likes</source>
+        <target>J'aime</target>
+      </trans-unit>
+      <trans-unit id="6QVIx.z" resname="Order in progress">
+        <source>Order in progress</source>
+        <target>Commande en cour</target>
+      </trans-unit>
+      <trans-unit id="dXsED11" resname="New Members">
+        <source>New Members</source>
+        <target>Nouveaux Membres</target>
+      </trans-unit>
+      <trans-unit id="eNJwRef" resname="Latest Orders">
+        <source>Latest Orders</source>
+        <target>Dernière commande</target>
+      </trans-unit>
+      <trans-unit id="kg5BPH1" resname="Status">
+        <source>Status</source>
+        <target>Statut</target>
+      </trans-unit>
+      <trans-unit id="d1tb_WR" resname="Created at">
+        <source>Created at</source>
+        <target>Crée à</target>
+      </trans-unit>
+      <trans-unit id="HprKvji" resname="Place New Order">
+        <source>Place New Order</source>
+        <target>Passer une nouvelle commande</target>
+      </trans-unit>
+      <trans-unit id="LW6m35d" resname="View All Orders">
+        <source>View All Orders</source>
+        <target>Voir toutes les commandes</target>
+      </trans-unit>
+      <trans-unit id="t_is3VI" resname="Orders">
+        <source>Orders</source>
+        <target>Commandes</target>
+      </trans-unit>
+      <trans-unit id="a_CQgly" resname="Order">
+        <source>Order</source>
+        <target>Commande</target>
+      </trans-unit>
+      <trans-unit id="uDIALaK" resname="Invoice">
+        <source>Invoice</source>
+        <target>Facture</target>
+      </trans-unit>
+      <trans-unit id="e2ddU7j" resname="State Order">
+        <source>State Order</source>
+        <target>Etat de la commande</target>
+      </trans-unit>
+      <trans-unit id="9kr9X1_" resname="Shipping state">
+        <source>Shipping state</source>
+        <target>Etat de livraison</target>
+      </trans-unit>
+      <trans-unit id="RyDVw3g" resname="Shipping amount">
+        <source>Shipping amount</source>
+        <target>Montant de livraison</target>
+      </trans-unit>
+      <trans-unit id="OLLEIIQ" resname="Order Facturation">
+        <source>Order Facturation</source>
+        <target>Facturation de la commande</target>
+      </trans-unit>
+      <trans-unit id="tIeN1q5" resname="Full nam">
+        <source>Full nam</source>
+        <target>__Full nam</target>
+      </trans-unit>
+      <trans-unit id="SeltfN9" resname="Amount">
+        <source>Amount</source>
+        <target>Montant</target>
+      </trans-unit>
+      <trans-unit id="qD00ZDe" resname="State payment">
+        <source>State payment</source>
+        <target>__State payment</target>
+      </trans-unit>
+      <trans-unit id="uUisBLh" resname="Payment method">
+        <source>Payment method</source>
+        <target>Mehode de paiment</target>
+      </trans-unit>
+      <trans-unit id="enxPy3Q" resname="Shipping Adress">
+        <source>Shipping Adress</source>
+        <target>__Shipping Adress</target>
+      </trans-unit>
+      <trans-unit id="T1j3H0b" resname="Order confirmation">
+        <source>Order confirmation</source>
+        <target>Confirmation de la commande</target>
+      </trans-unit>
+      <trans-unit id="a9BhVZZ" resname="Mes achats">
+        <source>Mes achats</source>
+        <target>__Mes achats</target>
+      </trans-unit>
+      <trans-unit id="0Aqua3_" resname="Shop">
+        <source>Shop</source>
+        <target>Boutique</target>
+      </trans-unit>
+      <trans-unit id="u3I07BJ" resname="Register">
+        <source>Register</source>
+        <target>__Register</target>
+      </trans-unit>
+      <trans-unit id="NrbKGIY" resname="Tracking">
+        <source>Tracking</source>
+        <target>__Tracking</target>
+      </trans-unit>
+      <trans-unit id="CavtAjw" resname="Empty cart">
+        <source>Empty cart</source>
+        <target>Panier vide</target>
+      </trans-unit>
+      <trans-unit id="Pktf4BE" resname="Mon to Fri 9am to 6pm">
+        <source>Mon to Fri 9am to 6pm</source>
+        <target>__Mon to Fri 9am to 6pm</target>
+      </trans-unit>
+      <trans-unit id="UZPFRgq" resname="Send us your query anytime!">
+        <source>Send us your query anytime!</source>
+        <target>__Send us your query anytime!</target>
+      </trans-unit>
+      <trans-unit id="D_BXH6z" resname="Send Message">
+        <source>Send Message</source>
+        <target>Envové un message</target>
+      </trans-unit>
+      <trans-unit id="RPXj__x" resname="Comment">
+        <source>Comment</source>
+        <target>Commentaire</target>
+      </trans-unit>
+      <trans-unit id="hgM.daT" resname="Create an account">
+        <source>Create an account</source>
+        <target>Crée un compte</target>
+      </trans-unit>
+      <trans-unit id="O.bdQdy" resname="Create an Account">
+        <source>Create an Account</source>
+        <target>Créer un compte</target>
+      </trans-unit>
+      <trans-unit id="0FJ_Sz1" resname="Logout">
+        <source>Logout</source>
+        <target>Se déconnecter</target>
+      </trans-unit>
+      <trans-unit id="867Auob" resname="Keep me logged in">
+        <source>Keep me logged in</source>
+        <target>Restez connecté</target>
+      </trans-unit>
+      <trans-unit id="_TJnqhH" resname="Remember me">
+        <source>Remember me</source>
+        <target>Se souvenir de moi</target>
+      </trans-unit>
+      <trans-unit id="Le1KPuZ" resname="Log In">
+        <source>Log In</source>
+        <target>Se connecter</target>
+      </trans-unit>
+      <trans-unit id=".f1B3nr" resname="Forgot Password">
+        <source>Forgot Password</source>
+        <target>Mot de passe oublier</target>
       </trans-unit>
     </body>
   </file>

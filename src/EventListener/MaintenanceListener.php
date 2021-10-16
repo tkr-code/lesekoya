@@ -20,8 +20,8 @@ class MaintenanceListener {
         }
         $event->setResponse(
           new Response(
-              $this->twig->render('maintenance.html.twig'),
-              Response::HTTP_SERVICE_UNAVAILABLE
+              $this->twig->render('maintenance/maintenance.html.twig'),
+            //   Response::HTTP_SERVICE_UNAVAILABLE
           )  
         );
         $event->stopPropagation();

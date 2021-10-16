@@ -51,6 +51,10 @@ class Personne
     {
         return $this->firstName;
     }
+    public function getFullName(): ?string
+    {
+        return $this->getFirstName().' '.$this->getLastName();
+    }
 
     public function setFirstName(string $firstName): self
     {

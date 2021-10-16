@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\ArticleBuy;
 use App\Entity\Payment;
 use App\Form\PaymentType;
 use App\Repository\PaymentRepository;
@@ -67,6 +68,33 @@ class PaymentController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if($payment->getState() == 'completed')
+            {
+                $enntyManager = $this->getDoctrine()->getManager();
+                //on creer les achats
+                $order = $payment->getOrderPayment();
+            
+                if($order->getIsImmuable())
+                {
+                    $client = $order->getUser()->getClient();
+                    foreach ($order->getOrderItem() as $key => $value) {
+                        $ArticleBuy = new ArticleBuy();
+                        $ArticleBuy->setPrice($value->getUnitPrice());
+                        $ArticleBuy->setQuantity($value->getQuantity());
+                        $ArticleBuy->setArticle($value->getArticle());
+                        $ArticleBuy->setClient($client);
+                        
+                        $enntyManager->persist($ArticleBuy);
+                    }
+                    $order->setIsImmuable(false);
+                    $order->setState('completed');
+                }
+                //on modifie le status de la commande
+                //on met a jour le stock reel
+                //on envoie en email de confirmation de reception
+                // dd($order);
+            }
+            // dd($payment);
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success','Payment updated');
             return $this->redirectToRoute('order_edit', ['id'=>$payment->getOrderPayment()->getId(),'tab'=>'facturation'], Response::HTTP_SEE_OTHER);

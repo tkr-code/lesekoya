@@ -6,6 +6,8 @@
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
 /public/e-store/
+/public/adminlte/
+/public/aroma/
 /public/img/user/
 /var/
 /vendor/

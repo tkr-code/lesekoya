@@ -117,6 +117,7 @@ class ArticleController extends AbstractController
             }else{
                 $article->setUpdatedAt(new \DateTime());
             }
+            $article->setQtyReel($article->getQuantity());
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($article);
             $entityManager->flush();
@@ -130,7 +131,8 @@ class ArticleController extends AbstractController
             'action'=>$action,
             'action_text'=>$action_text,
             'form' => $form,
-            'formOption' => $formOption
+            'formOption' => $formOption,
+            'parent_page'=>'Produit'
         ]);
     }
 

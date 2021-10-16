@@ -21,6 +21,23 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     {
         parent::__construct($registry, User::class);
     }
+    
+    /**
+     * @param string $role
+     *
+     * @return array
+     */
+    public function findByRole($role)
+    {
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('u')
+            ->from($this->_entityName, 'u')
+            ->where('u.roles LIKE :roles')
+            // ->orderBy('u.last_login_at','ASC')
+            ->setParameter('roles', '%"'.$role.'"%');
+
+        return $qb->getQuery()->getResult();
+    }
 
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
