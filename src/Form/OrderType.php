@@ -72,10 +72,6 @@ class OrderType extends AbstractType
             // ])
             // ->add('shipping_adress',EntityType::class,[
             //     'class'=>Adress::class,
-<<<<<<< HEAD
-            //     'mapped'=>false,
-=======
->>>>>>> dev
             //     'query_builder'=> function(EntityRepository $entityRepository) use($user) {
             //         return $entityRepository->createQueryBuilder('p')
             //         ->where("p.user = ". $user->getId());
