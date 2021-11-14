@@ -1,0 +1,41 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Parent Categorys{% endblock %}
+
+{% block body %}
+<div class="card">
+    <div class="card-header">
+        <h1>Parent Categorys</h1>
+    </div>
+    <div class="card-body">
+        <div class="btn-group">
+            <a href="{{ path('admin_parent_category_new') }}">Create new</a>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Ativer</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for parent_category in parent_categories %}
+                <tr>
+                    <td>{{ parent_category.name }}</td>
+                    <td>{{ parent_category.isActive ? 'OUI':'NON' }}</td>
+                    <td>
+                        <a href="{{ path('admin_parent_category_show', {'id': parent_category.id}) }}">show</a>
+                        <a href="{{ path('admin_parent_category_edit', {'id': parent_category.id}) }}">edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

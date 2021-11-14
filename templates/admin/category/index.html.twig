@@ -2,22 +2,57 @@
 {% import "macros/breadcrumb.html.twig" as utils %}
 {% import "macros/table.html.twig" as table %}
 {% import "macros/alertes.html.twig" as alerte %}
+{% import "macros/dataTable.html.twig" as dataTable %}
 
-{% block title %}Category index | {{app_name}} {% endblock %}
+{% block title %}Category {% endblock %}
 
-{% block stylesheets %}
-  {% import "macros/head.html.twig" as head %}
-  {{ head.dataTable() }}
+{% block head %}
+{{ dataTable.css() }}
 {% endblock %}
 
+{% block foot %}
+{{ dataTable.js() }}
+{% endblock %}
+
+{% block javascripts %}
+{{ dataTable.script('#table-1')}}
+<script>
+  $(document).ready(function () {
+    //nivagation
+
+    // edit category
+    // $(document).on('click','.js-edit',function(e){
+    //   e.preventDefault()
+    //   let id  = $(this).attr('id')
+    //   // $('.modal-title').val('Edit category')
+
+    //   $.ajax({
+    //     url: $(this).attr('href'),
+    //     method:"POST",
+    //     data:{
+    //       id_category : id
+    //     },
+    //     dataType:"json",
+    //     success:function(data) {
+
+    //       $('#title').val(data.category.title)
+    //       $('#modal-add').modal('show')
+    //       // console.log(data);
+    //     }
+    //   })
+    //   // alert(id_category)
+    // })
+  })
+</script>
+{% endblock %}
 {% block breadcrumb %}
-    {{ utils.breadcrumb('Manage categories')}}
+{{ utils.breadcrumb('Manage categories')}}
 {% endblock %}
 
 {% block body %}
 
 {% for item in app.flashes('success') %}
-  {{ alerte.alert(item,'success')}}
+{{ alerte.alert(item,'success')}}
 {% endfor %}
 
 <div class="row">
@@ -31,43 +66,49 @@
       </div>
     </div>
   </div>
-    <div class="col-md-12 col-12">
-        <div class="card card-primary card-outline card-tabs">
-        <div class="card-header">
-            <p>Manage categories</p>
-        </div>
-            <div class="card-body">
-            <div class="col-md-12">
-                {# {{ include ('admin/category/_dataTable.html.twig',{id:'1',items: categories}) }} #}
-                <table id="datatable_1" class="table table-bordered table-striped">
-                  <thead>
-                  {{ table.head(['Nom']) }}
-                  </thead>
-                  <tbody>
-                    {% for item in categories %}
-                    <tr>
-                      <td data-title="">{{ item.title}}</td>
-                      <td>{{ item.parent.title|default('') }}</td>
-                      <td>
-                        <a href="{{ path('category_edit', {'id': item.id}) }}" id="{{ item.id }}" class="btn js-edit"><i
-                            class="fas fa-edit text-success"></i>
-                        </a>
-                        <form method="post" class="d-inline-block js-delete" action="{{ path('category_delete', {'id': item.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
-                          <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ item.id) }}">
-                          <button class="btn"><i class="fas fa-trash-alt text-danger "></i></button>
-                        </form>
-                      </td>
-                    </tr>
-                    {% endfor %}
-                  </tbody>
-                      <tfoot>
-                      {{ table.head(['Nom']) }}
-                      </tfoot>
-              </table>
-            </div>
-            </div>
-        </div>
+  <div class="col-md-6">
+    <div class="card card-primary card-outline">
+      <div class="card-header">
+        <p>Create parent category</p>
+      </div>
+      <div class="card-body">
+        {{ include('admin/category/_form_parent.html.twig') }}
+      </div>
     </div>
+  </div>
+  <div class="col-md-12 col-12">
+    <div class="card card-primary card-outline card-tabs">
+      <div class="card-header">
+        <p>Manage categories</p>
+      </div>
+      <div class="card-body">
+        <div class="col-md-12">
+          <table id="table-1" class="table table-bordered">
+            <thead>
+              <th>Nom</th>
+              <th>Parent</th>
+              <th>Actions</th>
+            </thead>
+            <tbody>
+              {% for item in categories %}
+              <tr>
+                <td>{{ item.title}}</td>
+                <td>{{ item.parentCategory.name|default()}}</td>
+                <td>
+                  <div class="btn-group">
+                    <a href="{{ path('category_edit', {'id': item.id}) }}" id="{{ item.id }}" class="btn js-edit"><i
+                        class="fas fa-edit text-success"></i>
+                    </a>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- Modal -->
@@ -104,44 +145,4 @@
   <!-- /.modal-dialog -->
 </div>
 <!-- ./Modal -->
-{% endblock %}
-
-{% block foot %}
-  {% import "macros/foot.html.twig" as foot %}
-  {{ foot.dataTable() }}
-{% endblock %}
-
-{% block javascripts %}
-{{ table.jsDataTable('datatable_1')}}
-  <script>
-   $(document).ready(function(){
-     //nivagation 
-     $('#gestions').addClass(' menu-is-opening menu-open')
-     $('.gestions').addClass('active')
-     $('.gestion-category').addClass('active') 
-      
-      // edit category
-      // $(document).on('click','.js-edit',function(e){
-      //   e.preventDefault()
-      //   let id  = $(this).attr('id')
-      //   // $('.modal-title').val('Edit category')
-
-      //   $.ajax({
-      //     url: $(this).attr('href'),
-      //     method:"POST",
-      //     data:{
-      //       id_category : id
-      //     },
-      //     dataType:"json",
-      //     success:function(data) {
-            
-      //       $('#title').val(data.category.title)
-      //       $('#modal-add').modal('show')
-      //       // console.log(data);
-      //     }
-      //   })
-      //   // alert(id_category)
-      // })
-   })
-  </script>
 {% endblock %}

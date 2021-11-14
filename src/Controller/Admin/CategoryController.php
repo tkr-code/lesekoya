@@ -3,8 +3,11 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Category;
+use App\Entity\ParentCategory;
+use App\Form\CategoryParentType;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
+use App\Repository\ParentCategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,22 +21,35 @@ class CategoryController extends AbstractController
     /**
      * @Route("/", name="category_index", methods={"GET|POST"})
      */
-    public function index(CategoryRepository $categoryRepository, Request $request): Response
+    public function index(ParentCategoryRepository $parentCategoryRepository, CategoryRepository $categoryRepository, Request $request): Response
     {
         $category = new Category();
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
 
+        $entityManager = $this->getDoctrine()->getManager();
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($category);
             $entityManager->flush();
             $this->addFlash('success','La catégorie a été créé. ');
             return $this->redirectToRoute('category_index', [], Response::HTTP_SEE_OTHER);
         }
-        return $this->render('admin/category/index.html.twig', [
+        
+        $parentCategorie = new ParentCategory();
+        $formParent = $this->createForm(CategoryParentType::class,$parentCategorie)
+        ->handleRequest($request);
+        if($formParent->isSubmitted() && $formParent->isValid()){
+            $entityManager->persist($parentCategorie);
+            $entityManager->flush();
+            $this->addFlash('success','le parent catégorie a été créé. ');
+            return $this->redirectToRoute('category_index', [], Response::HTTP_SEE_OTHER);
+        }
+        return $this->renderForm('admin/category/index.html.twig', [
             'categories' => $categoryRepository->findAll(),
-            'form'=>$form->createView()
+            'parents'=>$parentCategoryRepository->findAll(),
+            'form'=>$form,
+            'form_parent'=>$formParent,
+            'parent_page'=>'Categorie'
         ]);
     }
 

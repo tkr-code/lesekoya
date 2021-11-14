@@ -8,6 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -20,8 +21,15 @@ class User1Type extends AbstractType
             ->add('personne',PersonneType::class,[
                 'label'=>false
             ])
-            ->add('email',EmailType::class)
+            ->add('email',EmailType::class,[
+                'attr'=>[
+                    'placeholder'=>'Email'
+                ]
+            ])
             ->add('roles',ChoiceType::class,[
+                'attr'=>[
+                    'placeholder'=>'Roles'
+                ],
                 'choices'=>[
                     'Administrateur'=>'ROLE_ADMIN',
                     'Editeur'=>'ROLE_EDITOR',
@@ -30,9 +38,17 @@ class User1Type extends AbstractType
                 ],
                 'multiple'=>true
             ])
-            ->add('password',PasswordType::class)
+            ->add('password',PasswordType::class,[
+                'attr'=>[
+                    'placeholder'=>'Mot de passe'
+                ]
+            ])
 
-            ->add('phone_number')
+            ->add('phone_number',NumberType::class,[
+                'attr'=>[
+                    'placeholder'=>'Téléphone'
+                ]
+            ])
             ->add('isVerified')
         ;
     }

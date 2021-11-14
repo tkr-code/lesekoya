@@ -19,9 +19,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class Article
 {
     const etats =[
-        // ''=>null,
-        'Top'=>'top',
-        'populaire'=>'populaire'
+        0=>'Top',
+        1=>'Tendance',
+        2=>'Populaire'
     ];
     /**
      * @ORM\Id
@@ -93,6 +93,7 @@ class Article
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\NotNull
      */
     private $buyingPrice;
 
@@ -102,7 +103,6 @@ class Article
     private $comments;
 
     /**
-     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $etat;

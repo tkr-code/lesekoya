@@ -25,13 +25,6 @@ class OrderType extends AbstractType
             ->add('created_at',DateType::class,[
                 'label'=>'Date'
             ])
-            // ->add('number',IntegerType::class,[
-            //     'attr'=>[
-            //         ''
-            //     ],
-            //     'help'=>'Number of order'
-            // ])
-            
             ->add('state',ChoiceType::class,[
                 'choices'=>[
                     'Canceled'=>'canceled',
@@ -40,52 +33,7 @@ class OrderType extends AbstractType
                     'Completed'=>'completed'
                 ]
             ])
-            ->add('note',TextareaType::class)
-            // ->add('user',EntityType::class,[
-            //     'class'=>User::class,
-            //     'choice_label'=>'personne.lastName',
-            //     'attr'=>[
-            //         'disabled'=>true
-            //     ]
-            // ])
-            // ->add('checkout_completed_at')
-            // ->add('total')
-            // ->add('checkout_state',ChoiceType::class,[
-            //     'choices'=>[
-            //         'incomplet'=>'incomplet',
-            //         'completed'=>'completed'
-            //     ]
-            // ])
-            // ->add('payment_state',ChoiceType::class,[
-            //     'choices'=>[
-            //         'awaiting_payment'=>'awaiting_payment',
-            //         'Paid'=>'Paid'
-            //     ]
-            // ])
-            // ->add('shipping_state',ChoiceType::class,[
-            //     'choices'=>[
-            //         'in Progress'=>'In progress',
-            //         'Ready'=>'Ready',
-            //         'shipped'=>'shippedd',
-            //         'completed'=>'Completed',
-            //     ]
-            // ])
-            // ->add('shipping_adress',EntityType::class,[
-            //     'class'=>Adress::class,
-            //     'query_builder'=> function(EntityRepository $entityRepository) use($user) {
-            //         return $entityRepository->createQueryBuilder('p')
-            //         ->where("p.user = ". $user->getId());
-            //     },
-            //     'choice_label'=>'street',
-            //     'group_by'=>'lastname'
-            // ])
-            // ->add('shipping',IntegerType::class,[
-            //     'attr'=>[
-            //         'required'=>true
-            //     ],
-            //     'label'=>'Shipping amount'
-            // ])
-            
+            ->add('note',TextareaType::class)            
         ;
     }
     

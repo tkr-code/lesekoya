@@ -8,6 +8,9 @@ body {
  font-weight:400;
  line-height:1.667
 }
+a{
+  color: #000 !important;
+}
 .bg-1{
   background-color: #01796F!important;
 }
@@ -791,7 +794,7 @@ a {
  border:0;
  border-radius:0;
  padding:7px 12px;
- background:#8894ff
+ background:#0009;
 }
 .card-product__imgOverlay li button i,
 .card-product__imgOverlay li button span {
@@ -3255,7 +3258,6 @@ a {
  }
 }
 .cart_area {
- padding-top:90px;
  padding-bottom:55px
 }
 .cart_inner .table th,
@@ -3963,7 +3965,7 @@ a {
  height:28px;
  line-height:28px;
  text-align:center;
- background:#01796F;
+ background:#0009;
  color:#ffffff;
  border-radius:20px
 }
@@ -3975,13 +3977,13 @@ a {
  font-family:"Roboto",sans-serif
 }
 .tp_widgets .list li a:hover {
- color:#01796F
+ color:#0009;
 }
 .tp_widgets .list li:last-child {
  margin-bottom:0px
 }
 .tp_widgets p {
- color:#7b838a
+ color:#fff
 }
 .footer_title {
  font-size:18px;
@@ -4087,7 +4089,7 @@ a {
     }
 
     .form-primary {
-      border-radius: 30px !important;
+      border-radius: 10px !important;
 
     }
 

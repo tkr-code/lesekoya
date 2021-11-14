@@ -1,0 +1,43 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Shipping{% endblock %}
+
+{% block body %}
+<div class="card card-outline card-primary">
+    <div class="card-header">
+        <h1>Shipping index</h1>
+    </div>
+    <div class="card-body">
+        <div class="btn-group">
+            <a href="{{ path('shipping_new') }}">Create new</a>
+        </div>
+        <table id="table-1" class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Amount</th>
+                    <th>State</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for shipping in shippings %}
+                <tr>
+                    <td>{{ shipping.id }}</td>
+                    <td>{{ shipping.amount }}</td>
+                    <td>{{ shipping.state }}</td>
+                    <td>
+                        <a href="{{ path('shipping_show', {'id': shipping.id}) }}">show</a>
+                        <a href="{{ path('shipping_edit', {'id': shipping.id}) }}">edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

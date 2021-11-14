@@ -3,17 +3,10 @@
 {% extends 'admin/base.html.twig' %}
 
 
-{% block title %}Hello !{% endblock %}
+{% block title %} {{'Dashboard'|trans}} 1 {% endblock %}
 
 {% block breadcrumb %}
     {{ utils.breadcrumb('Dashboard'|trans) }}
-{% endblock %}
-
-{% block head %}
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- overlayScrollbars -->
-  <link rel="stylesheet" href="{{ asset('adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
 {% endblock %}
 
 {% block body %}
@@ -110,8 +103,8 @@
                 <table class="table m-0">
                 <thead>
                 <tr>
-                    <th>Order number</th>
-                    <th>{{'client'}}</th>
+                    <th>{{'Order number'|trans}}</th>
+                    <th>{{'Customer'|trans}}</th>
                     <th>{{'Status'|trans}}</th>
                     <th>{{'Created at'|trans}}</th>
                 </tr>
@@ -275,19 +268,6 @@
 {% endblock %}
 
 {% block foot %}
-<!-- overlayScrollbars -->
-<script src="{{ asset('vendor/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
-<!-- AdminLTE App -->
-
-<!-- PAGE PLUGINS -->
-<!-- jQuery Mapael -->
-<script src="{{ asset('vendor/jquery-mousewheel/jquery.mousewheel.js') }}"></script>
-<script src="{{ asset('vendor/raphael/raphael.min.js') }}"></script>
-<script src="{{ asset('vendor/jquery-mapael/jquery.mapael.min.js') }}"></script>
-<script src="{{ asset('vendor/jquery-mapael/maps/usa_states.min.js') }}"></script>
-<!-- ChartJS -->
-<script src="{{ asset('vendor/chart.js/Chart.min.js') }}"></script>
-
 <!-- AdminLTE for demo purposes -->
 <script src="{{ asset('js/demo.js') }}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->

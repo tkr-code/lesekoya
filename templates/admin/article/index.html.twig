@@ -9,11 +9,11 @@
 
 
 {% block breadcrumb %}
-    {{ utils.breadcrumb('Manage articles')}}
+{{ utils.breadcrumb('Manage articles')}}
 {% endblock %}
 
 {% block head %}
-  {{ dataTable.css() }}
+{{ dataTable.css() }}
 {% endblock %}
 
 {% block foot %}
@@ -22,67 +22,77 @@
 
 
 {% block javascripts %}
-{{ dataTable.script('#datatable_1') }} 
-{{ dataTable.script('#datatable_2')  }}
-  <script>
-   $(document).ready(function(){
-     //nivagation 
-     $('#gestions').addClass(' menu-is-opening menu-open')
-     $('.gestions').addClass('active')
-     $('.gestion-article').addClass('active')
-   })
-  </script>
+{{ dataTable.script('#datatable_1') }}
+{{ dataTable.script('#datatable_2') }}
+<script>
+  $(document).ready(function () {
+    //nivagation 
+    $('#gestions').addClass(' menu-is-opening menu-open')
+    $('.gestions').addClass('active')
+    $('.gestion-article').addClass('active')
+  })
+</script>
 {% endblock %}
 
 {% block body %}
 
 {% for item in app.flashes('success') %}
-  {{ alerte.alert(item,'success')}}
+{{ alerte.alert(item,'success')}}
 {% endfor %}
 
- <div class="row">
-    <div class="col-12">
-    {{ link.add(path('article_new'),'Create article' )}}
-    </div>
-    <div class="col-12 col-sm-12">
-        <div class="card card-primary card-outline card-tabs">
-            <div class="card-header p-0 pt-1 border-bottom-0">
-                <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link active" id="custom-tabs-three-home-tab"
-                            data-toggle="pill" href="#custom-tabs-three-home" role="tab"
-                            aria-controls="custom-tabs-three-home" aria-selected="true">Activer |<span class="font-weight-bold"> 
-                            {{ articlesOn| length }}
-                            </span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill"
-                            href="#custom-tabs-three-profile" role="tab"
-                            aria-controls="custom-tabs-three-profile"
-                            aria-selected="false">Desactiver |<span class="font-weight-bold"> 
-                            {{ articlesOff| length }}
-                            </span></a>
-                    </li>
-                   
-                </ul>
-            </div>
-            <div class="card-body">
-                <div class="tab-content" id="custom-tabs-three-tabContent">
-                    <div class="tab-pane fade show active" id="custom-tabs-three-home"
-                        role="tabpanel" aria-labelledby="custom-tabs-three-home-tab">
-                            {{ include ("admin/article/_datatable.html.twig",{id:'1',articles: articlesOn}) }}
-                    </div>
-                    <div class="tab-pane fade" id="custom-tabs-three-profile" role="tabpanel"
-                        aria-labelledby="custom-tabs-three-profile-tab">
-                            {{ include ("admin/article/_datatable.html.twig",{id:'2',articles: articlesOff}) }}
-                    </div>
-                    </div>
-                </div>
-            </div>
-            <!-- /.card -->
-            <div class="card-footer">
-              {{ link.back(path('admin'),'Back to dashboard')}}
-            </div>
+<div class="row">
+  <div class="col-12 col-sm-12">
+    <div class="card card-primary card-outline card-tabs">
+      <div class="card-header p-0 pt-1 border-bottom-0">
+        <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="custom-tabs-three-home-tab" data-toggle="pill" href="#custom-tabs-three-home"
+              role="tab" aria-controls="custom-tabs-three-home" aria-selected="true">En ligne |<span
+                class="font-weight-bold">
+                {{ articlesOn| length }}
+              </span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill" href="#custom-tabs-three-profile"
+              role="tab" aria-controls="custom-tabs-three-profile" aria-selected="false">Desactiver |<span
+                class="font-weight-bold">
+                {{ articlesOff| length }}
+              </span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="tab-article-top" data-toggle="pill" href="#article-top" role="tab"
+              aria-controls="article-top" aria-selected="false">Top |<span class="font-weight-bold">
+                {{ articlesTop| length }}
+              </span></a>
+          </li>
+
+        </ul>
+      </div>
+      <div class="card-body">
+        <div class="btn-group">
+          {{ link.add(path('article_new'),'Create article' )}}
+        </div>
+        <div class="tab-content" id="custom-tabs-three-tabContent">
+          <div class="tab-pane fade show active" id="custom-tabs-three-home" role="tabpanel"
+            aria-labelledby="custom-tabs-three-home-tab">
+            <p> <i class="fa fa-info" aria-hidden="true"></i> Liste des articles visible par les internautes.
+            </p>
+            {{ include ("admin/article/_datatable.html.twig",{id:'1',articles: articlesOn}) }}
+          </div>
+          <div class="tab-pane fade" id="custom-tabs-three-profile" role="tabpanel"
+            aria-labelledby="custom-tabs-three-profile-tab">
+            <p>Liste des articles desactiver, ils ne sont pas visible par les internautes.</p>
+            {{ include ("admin/article/_datatable.html.twig",{id:'2',articles: articlesOff}) }}
+          </div>
+          <div class="tab-pane fade" id="article-top" role="tabpanel" aria-labelledby="tab-article-top">
+            <p>Liste des articles visible dans les sections top produit</p>
+            {{ include ("admin/article/_datatable.html.twig",{id:'3',articles: articlesTop}) }}
+          </div>
+        </div>
+      {{ link.back(path('admin'),'Back to dashboard')}}
+
+      </div>
     </div>
   </div>
+</div>
 {% endblock %}

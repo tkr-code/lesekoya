@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Category;
+use App\Entity\ParentCategory;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -19,10 +20,10 @@ class CategoryType extends AbstractType
                     'placeholder'=>'Enter category'
                 ],
             ])
-            ->add('parent',EntityType::class,[
-                'class'=>Category::class,
+            ->add('parent_category',EntityType::class,[
+                'class'=>ParentCategory::class,
                 'required'=>false,
-                'choice_label'=>'title'
+                'choice_label'=>'name'
             ])
             ->add('is_active')
         ;

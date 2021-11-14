@@ -21,51 +21,36 @@
         }
     ])}}
 {% endblock %}
-{% block title %}User index{% endblock %}
+{% block title %}Users{% endblock %}
 
 {% block body %}
 {% for item in app.flashes('success') %}
   {{ alerte.alert(item,'success')}}
 {% endfor %}
 <div class="row">
-    <div class="col-12 col-sm-6 col-md-3">
-        <div class="info-box mb-3">
-            <span class="info-box-icon bg-success elevation-1"><i class="fas fa-users"></i></span>
-
-            <div class="info-box-content">
-            <span class="info-box-text">user unregister</span>
-            <span class="info-box-number"> {{ users|length }} </span>
-            </div>
-            <!-- /.info-box-content -->
-        </div>
-            <!-- /.info-box -->
-    </div>
-    <div class="col-md-12 mb-1">
-        <a class="btn btn-primary btn-lg" href="{{ path('user_new') }}">Create new <i class="fa fa-plus" aria-hidden="true"></i></a>
-    </div>
     <div class="col-md-12">
         <div class="card card-outline card-primary">
             <div class="card-header">
-                <h4>User index</h4>
+                <h3> <span class="badge badge-info">{{ users|length }}</span> {{'Users'|trans}}</h3> 
             </div>
             <div class="card-body">
+                <div class="btn-group mb-3">
+                    <a class="btn btn-primary" href="{{ path('user_new') }}"><i class="fa fa-plus"></i> Create new user</a>
+                </div>
                 <table id="datatable_1" class="table">
                     <thead>
                         <tr>
-                            <th>Id</th>
-                            <th>{{'full name'|trans}}</th>
-                            <th>Email</th>
+                            <th>{{'accompte'|trans}}</th>
                             <th>Roles</th>
-                            <th>IsVerified</th>
+                            <th>Verified</th>
                             <th>actions</th>
                         </tr>
                     </thead>
                     <tbody>
                     {% for user in users %}
                         <tr>
-                            <td>{{ user.id }}</td>
-                            <td>{{ user.personne.fullName }}</td>
-                            <td>{{ user.email }}</td>
+                            <td>{{ user.personne.fullName }} </br>
+                          <span class="font-weight-bold">Email:</span> {{ user.email }}</td>
                             <td>
                             {% for item in user.roles %}
                                 {% if item == 'ROLE_ADMIN' %}
@@ -78,9 +63,8 @@
                                     Editeur
                                 {% endif %}
                             {% endfor %}
-                            <td>{{ user.isVerified ? 'Yes' : 'No' }}</td>
+                            <td>{{ user.isVerified ? 'Oui' : 'Non' }}</td>
                             <td>
-                                {{ link.delete(path('user_show', {'id': user.id})) }}
                                 {{ link.edit(path('user_edit', {'id': user.id}))}}
                             </td>
                         </tr>
@@ -91,10 +75,8 @@
                     {% endfor %}
                     </tbody>
                 </table>
-
-            </div>
-            <div class="card-footer">
                 {{ link.back(path('admin'), 'back to dashboard') }}
+
             </div>
         </div>
     </div>

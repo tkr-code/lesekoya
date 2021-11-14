@@ -1,0 +1,13 @@
+{{ form_start(form_parent,{
+    'attr':{
+        'novalidate':'novalidate',
+        'class':'col-lg-12'
+    }
+}) }}
+    {{ form_widget(form_parent) }}
+    <button type="submit" class="btn-{{btn_color|default('primary')}} btn-lg btn float-right" type="submit">{{button_label|default('Save')}} <i class="fas fa-save"></i> </button>
+    {% if app.request.attributes.get('_route') == 'category_edit' %}
+    <a href="{{ path('category_index') }}"> <i class="fa text-dark fa-arrow-circle-left" aria-hidden="true"></i> back to list</a>
+    {% endif %}
+
+{{ form_end(form_parent) }}

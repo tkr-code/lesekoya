@@ -6,8 +6,8 @@
 
 {% block body %}
 <nav class="breadcrumb">
-   <a class="breadcrumb-item" href="/">Home</a>
-   <span class="breadcrumb-item active">Login</span>
+   <a class="breadcrumb-item" href="/">{{'Home'|trans}}</a>
+   <span class="breadcrumb-item active">{{'Login'|trans}}</span>
 </nav>
 
   <!--================Login Box Area =================-->
@@ -17,7 +17,7 @@
 				<div class="col-lg-6">
 					<div class="login_box_img">
 						<div class="hover">
-							<h4>New to our website?</h4>
+							<h4>{{'New to our website?'|trans}}</h4>
                             <p>Créez votre compte client {{app_name }} en quelques clics ! Vous pouvez vous inscrire soit en utilisant votre adresse e-mail, soit via votre compte Facebook.</p>
 							<a class="button button-account" href="{{ path('app_register') }}">{{'Create an Account'|trans }}</a>
 						</div>
@@ -25,10 +25,12 @@
 				</div>
 				<div class="col-lg-6">
 					<div class="login_form_inner">
-						<h3>Log in to enter</h3>
+						<h3>{{'Log in to enter'|trans}}</h3>
                         <form class="row login_form" method="post">
                             {% if error %}
-                                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+								<div class="col-12">
+                                	<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+								</div>
                             {% endif %}
 
                             {% if app.user %}

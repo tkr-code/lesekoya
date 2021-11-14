@@ -42,15 +42,16 @@
         </div>
             <!-- /.info-box -->
     </div>
-    <div class="col-md-12 mb-1">
-        <a class="btn btn-primary btn-lg" href="{{ path('user_new') }}">Create new <i class="fa fa-plus" aria-hidden="true"></i></a>
-    </div>
     <div class="col-md-12">
         <div class="card card-outline card-primary">
             <div class="card-header">
                 <h4>Client index</h4>
             </div>
             <div class="card-body">
+                <div class="btn-group">
+                    <a class="btn btn-primary" href="{{ path('user_new') }}">New client 
+                        <i class="fa fa-plus"></i></a>
+                </div>
                 <table id="datatable_1" class="table">
                     <thead>
                         <tr>

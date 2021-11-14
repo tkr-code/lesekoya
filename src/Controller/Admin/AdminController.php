@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Repository\ArticleRepository;
 use App\Repository\ClientRepository;
@@ -11,12 +11,18 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @Route("/admin")
  */
 class AdminController extends AbstractController
 {
+    private $translator;
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;   
+    }
     /**
      * @Route("/", name="admin")
      */
@@ -31,7 +37,7 @@ class AdminController extends AbstractController
             'orders'=>count($orderRepository->findAll()),
             'clients'=>$clientRepository->findAll(),
             'recentlys'=>$articleRepository->recently(),
-            'parent_page'=>'Dashboard',
+            'parent_page'=>$this->translator->trans('Dashboard'),
             'latestUser'=>$userRepository->findByRole('ROLE_USER',)
         ]);
     }

@@ -11,6 +11,7 @@
 /public/img/user/
 /var/
 /vendor/
+/list de produit
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###

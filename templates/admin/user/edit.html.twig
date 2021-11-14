@@ -21,23 +21,15 @@
         }
     ])}}
 {% endblock %}
-{% block title %}Edit User{% endblock %}
+{% block title %}{{'Edit User'|trans}}{% endblock %}
 
 {% block body %}
-<div class="row">
-    <div class="col-md-12">
-        <div class="card card-outline card-success">
-            <div class="card-header">
-                <h4>Edit User</h4>
-
-            </div>
-            <div class="card-body">
-                {{ include('admin/user/_form.html.twig', {'button_label': 'Update'}) }}
-            </div>
-            <div class="card-footer">
-            {{ link.back(path('user_index')) }}
-            </div>
-        </div>
+<div class="card card-outline card-success">
+    <div class="card-header">
+        <h3>Edit User</h3>
+    </div>
+    <div class="card-body">
+        {{ include('admin/user/_form.html.twig', {'button_label': 'Update'}) }}
     </div>
 </div>
 {% endblock %}

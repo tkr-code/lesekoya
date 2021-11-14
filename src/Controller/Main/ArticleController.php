@@ -7,6 +7,7 @@ use App\Entity\ArticleSearch;
 use App\Form\ArticleSearchType;
 use App\Repository\ArticleRepository;
 use App\Repository\CategoryRepository;
+use App\Repository\ParentCategoryRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ArticleController extends AbstractController
 {
     /**
-     * @Route("articles/{category}/{slug}/{id}", name="articles_show", requirements={"slug": "[a-z0-9\-]*"} )
+     * @Route("boutique/{category}/{slug}/{id}", name="articles_show", requirements={"slug": "[a-z0-9\-]*"} )
      */
     public function show(Article $article,string $category, string $slug, Request $request): Response
     {
@@ -56,9 +57,9 @@ class ArticleController extends AbstractController
         ]);
     }
     /**
-     * @Route("/articles", name="articles")
+     * @Route("/boutique", name="articles")
      */
-    public function index(Request $request, PaginatorInterface $paginator, ArticleRepository $articleRepository, CategoryRepository $categoryRepository): Response
+    public function index(ParentCategoryRepository $parentCategoryRepository, Request $request, PaginatorInterface $paginator, ArticleRepository $articleRepository, CategoryRepository $categoryRepository): Response
     {
         $id_category = $request->query->get('category');
         $search = new ArticleSearch();
@@ -76,10 +77,12 @@ class ArticleController extends AbstractController
         );
         // return $this->renderForm('main/article/index_1.html.twig', [
         // return $this->renderForm('main/article/index.html.twig', [
+            // dd($categoryRepository->parents());
         return $this->renderForm('leSekoya/shop/index.html.twig', [
             'articles' => $pagination,
             'form'=>$form,
-            'category'=>$categoryRepository->findAll()
+            'category'=>$categoryRepository->findAll(),
+            'category_parents'=>$parentCategoryRepository->etat(true)
         ]);
     }
 

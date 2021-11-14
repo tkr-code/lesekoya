@@ -55,6 +55,7 @@ class ArticleController extends AbstractController
         return $this->render('admin/article/index.html.twig', [
             'articlesOn' => $articleRepository->findAllOn(),
             'articlesOff' => $articleRepository->findAllOff(),
+            'articlesTop' => $articleRepository->findEtat('top'),
         ]);
     }
 
@@ -62,8 +63,9 @@ class ArticleController extends AbstractController
      * @Route("/new", name="article_new", methods={"GET","POST"})
      * @Route("/{id}/edit", name="article_edit", methods={"GET","POST"})
      */
-    public function form(Request $request, Article $article = null): Response
+    public function form(Request $request, Article $article = null, TranslatorInterface $translator): Response
     {
+        
         $action = 'Update';
         $action_text = 'Update ';
         if(!$article){
@@ -93,6 +95,7 @@ class ArticleController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // dd($form->getClickedButton());
 
             //on recupere les images transmise
             $images = $form->get('images')->getData();
@@ -121,8 +124,11 @@ class ArticleController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($article);
             $entityManager->flush();
-            $message = ($article) ? 'Article cree' : 'Article modifier';
+            $message = ($action == 'Save') ? $translator->trans('Article cree') : $translator->trans('Article modifier');
             $this->addFlash('success',$message);
+            if ($form->getClickedButton() === $form->get('saveAndAdd')){
+                return $this->redirectToRoute('article_new', [], Response::HTTP_SEE_OTHER);
+            }
             return $this->redirectToRoute('article_index', [], Response::HTTP_SEE_OTHER);
         }
 

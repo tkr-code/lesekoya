@@ -10,15 +10,12 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        $shippingAmounts = 
-        [
-            '500','1000','1500','2000','2500'
-        ];
-        foreach ($shippingAmounts as $value)
-        {
+        $montant = 0;
+        for($i=0; $i< 100 ;$i++){
             $shippingAmount = new ShippingAmount();
-            $shippingAmount->setAmount($value);
+            $shippingAmount->setAmount($montant);
             $manager->persist($shippingAmount);
+            $montant = $montant +100;
         }
         $manager->flush();
     }

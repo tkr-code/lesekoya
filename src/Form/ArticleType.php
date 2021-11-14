@@ -7,11 +7,13 @@ use App\Entity\Category;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -50,7 +52,7 @@ class ArticleType extends AbstractType
                 ]
             ])
             ->add('etat',ChoiceType::class,[
-                'choices'=>Article::etats,
+                'choices'=>$this->getEtats(),
                 'required'=>false,
                 'attr'=>[
                     'class'=>'select2'
@@ -66,10 +68,27 @@ class ArticleType extends AbstractType
                 'mapped'=>false,
                 'required'=>false
                 ])
-            ->add('enabled')
+            ->add('enabled',CheckboxType::class,[
+                'label'=>'Activer',
+            ])
+            ->add('saveAndAdd', SubmitType::class, [
+                'label' => 'Save and Add',
+                'attr'=>[
+                    'class'=>'btn btn-info'
+                ]
+                ])
         ;
     }
 
+    public function getEtats(){
+       $choices = Article::etats;
+       $outpout =[];
+       foreach($choices as $k => $v)
+       {
+           $outpout[$v]= $k;
+       }
+       return $outpout;
+    }
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

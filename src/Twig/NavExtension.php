@@ -2,11 +2,17 @@
 namespace App\Twig;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 class NavExtension extends AbstractExtension
 {
+    private $translator;
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
     const icon ='far fa-circle';
     public function getFunctions():array
     {
@@ -19,34 +25,29 @@ class NavExtension extends AbstractExtension
     {
         return 
         [
+            'client'=>
+            [
+                
+            ],
             'user'=>
             [
+
                 [
-                    'name'=>'LeSekoya',
-                    'links'=>
+                    'name'=>'Client',
+                    'links'=>[
                         [
-                            [
-                                'name'=>'Home',
-                                'path'=>'home'
-                            ],
-                            [
-                                'name'=>'Articles',
-                                'path'=>'articles'
-                            ],
-                            [
-                                'name'=>'contact',
-                                'path'=>'contact'
-                            ],
-                            [
-                                'name'=>'panier',
-                                'path'=>'cart_index'
-                            ]
-                        ]
+                            'name'=>'Clients',
+                            'path'=>'admin_client_index'
+                        ],
+                        // [
+                        //     'name'=>'Nouveau client',
+                        //     'path'=>'client_new'
+                        // ],
+                    ]
                 ],
                 [
                     'name'=>'Produit',
                     'path'=>'article_index',
-                    'icon'=>'fab fa-product-hunt',
                     'links'=>
                         [
                             [
@@ -54,19 +55,18 @@ class NavExtension extends AbstractExtension
                                 'path'=>'article_index',
                             ],
                             [
-                                'name'=>'New Article',
+                                'name'=>'New Produit',
                                 'path'=>'article_new',
-                                'icon'=>'fas fa-shopping-bag'
                             ]
                         ]
                 ],
                 [
-                    'name'=>'Order',
-                    'icon'=>'fab fa-first-order',
+                    'name'=>'Commande',
+                    'icon'=>'fa fa-shopping-bag',
                     'links'=>
                         [
                             [
-                                'name'=>'List',
+                                'name'=>'Commandes',
                                 'path'=>'order_index'
                             ],
                             [
@@ -75,13 +75,19 @@ class NavExtension extends AbstractExtension
                             ],
                         ]
                 ],
+            ],
+            'admin'=>
+            [
                 [
                     'name'=>'Categorie',
-                    'icon'=>'fab fa-cuttlefish',
                     'links'=>
                         [
                             [
-                                'name'=>'List',
+                                'name'=>'Parent',
+                                'path'=>'admin_parent_category_index'
+                            ],
+                            [
+                                'name'=>'Categories',
                                 'path'=>'category_index'
                             ],
                             [
@@ -90,43 +96,80 @@ class NavExtension extends AbstractExtension
                             ]
                         ]
                 ],
-            ],
-            'admin'=>
-            [
                 [
                     'name'=>'user',
-                    'path'=>'user_index',
                     'icon'=>'fas fa-users',
+                    'links'=>[
+                        [
+                            'name'=>'Users',
+                            'path'=>'user_index',
+                        ],
+                        [
+                            'name'=>'new User',
+                            'path'=>'user_new',
+                        ],
+                    ]
                     
                 ],
                 [
-                    'name'=>'pays',
-                    'path'=>'user_index',
-                    'icon'=>self::icon
-                ],
-                [
-                    'name'=>'Ville',
-                    'path'=>'user_index',
-                    'icon'=>self::icon
-                ],
-                [
-                    'name'=>'pays',
-                    'path'=>'user_index',
-                    'icon'=>self::icon
-                ],
+                    'name'=>'Gestion',
+                    'icon'=>'fas fa-cogs',
+                    'links'=>[
+                        [
+                            'name'=>'pays',
+                            'path'=>'home',
+                        ],
+                        [
+                            'name'=>'Rue',
+                            'path'=>'street_index'
+                        ],
+                        [
+                            'name'=>'Lieu de livraison',
+                            'path'=>'delivery_space_index'
+                        ]       
+                    ]
+                ]
             ],
             'dashboard'=>
             [
                 [
-                    'name'=>'Dashbord 1',
-                    'path'=>'admin',
-                    'icon'=>self::icon
+                    'name'=>$this->translator->trans('Dashboard'),
+                    'icon'=>'fas fa-tachometer-alt',
+                    'links'=>[
+                        [
+                            'name'=>$this->translator->trans('Dashboard').' 1',
+                            'path'=>'admin'
+                        ]
+                    ]
                 ],
                 [
                     'name'=>'Profil',
                     'path'=>'profile_index',
-                    'icon'=>self::icon
-                ]
+                    'icon'=>'fas fa-user'
+                ],
+                [
+                    'name'=>'LeSekoya',
+                    'icon'=>'fa fa-home',
+                    'links'=>
+                        [
+                            [
+                                'name'=>$this->translator->trans('Home'),
+                                'path'=>'home'
+                            ],
+                            [
+                                'name'=>'Produits',
+                                'path'=>'articles'
+                            ],
+                            [
+                                'name'=>'Contact',
+                                'path'=>'contact'
+                            ],
+                            [
+                                'name'=>$this->translator->trans('cart'),
+                                'path'=>'cart_index'
+                            ]
+                        ]
+                ],
             ],
             'editor'=>
             [

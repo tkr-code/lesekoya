@@ -179,7 +179,8 @@ class ClientController extends AbstractController
         $form = $this->createForm(ArticleSearchType::class,$search);
         return $this->renderForm('client/index.html.twig', [
             'clients' => $clientRepository->findAll(),
-            'form'=>$form
+            'form'=>$form,
+            'parent_page'=>'Client'
         ]);
     }
 

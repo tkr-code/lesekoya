@@ -48,14 +48,10 @@ class Category
     private $is_active;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="categories")
+     * @ORM\ManyToOne(targetEntity=ParentCategory::class, inversedBy="categorys")
      */
-    private $parent;
+    private $parentCategory;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Category::class, mappedBy="parent")
-     */
-    private $categories;
 
     public function __construct()
     {
@@ -123,18 +119,6 @@ class Category
         return $this;
     }
 
-    public function getParent(): ?self
-    {
-        return $this->parent;
-    }
-
-    public function setParent(?self $parent): self
-    {
-        $this->parent = $parent;
-
-        return $this;
-    }
-
     /**
      * @return Collection|self[]
      */
@@ -143,24 +127,14 @@ class Category
         return $this->categories;
     }
 
-    public function addCategory(self $category): self
+    public function getParentCategory(): ?ParentCategory
     {
-        if (!$this->categories->contains($category)) {
-            $this->categories[] = $category;
-            $category->setParent($this);
-        }
-
-        return $this;
+        return $this->parentCategory;
     }
 
-    public function removeCategory(self $category): self
+    public function setParentCategory(?ParentCategory $parentCategory): self
     {
-        if ($this->categories->removeElement($category)) {
-            // set the owning side to null (unless already changed)
-            if ($category->getParent() === $this) {
-                $category->setParent(null);
-            }
-        }
+        $this->parentCategory = $parentCategory;
 
         return $this;
     }

@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/shipping")
+ * @Route("/admin/shipping")
  */
 class ShippingController extends AbstractController
 {
@@ -20,7 +20,7 @@ class ShippingController extends AbstractController
      */
     public function index(ShippingRepository $shippingRepository): Response
     {
-        return $this->render('shipping/index.html.twig', [
+        return $this->render('admin/shipping/index.html.twig', [
             'shippings' => $shippingRepository->findAll(),
         ]);
     }
@@ -42,7 +42,7 @@ class ShippingController extends AbstractController
             return $this->redirectToRoute('shipping_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('shipping/new.html.twig', [
+        return $this->renderForm('admin/shipping/new.html.twig', [
             'shipping' => $shipping,
             'form' => $form,
         ]);
@@ -53,7 +53,7 @@ class ShippingController extends AbstractController
      */
     public function show(Shipping $shipping): Response
     {
-        return $this->render('shipping/show.html.twig', [
+        return $this->render('admin/shipping/show.html.twig', [
             'shipping' => $shipping,
         ]);
     }
@@ -72,7 +72,7 @@ class ShippingController extends AbstractController
             return $this->redirectToRoute('shipping_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('shipping/edit.html.twig', [
+        return $this->renderForm('admin/shipping/edit.html.twig', [
             'shipping' => $shipping,
             'form' => $form,
         ]);

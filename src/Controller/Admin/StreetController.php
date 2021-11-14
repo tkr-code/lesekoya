@@ -26,7 +26,7 @@ class StreetController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="street_new", methods={"GET","POST"})
+     * @Route("-new", name="street_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
     {
@@ -49,7 +49,7 @@ class StreetController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="street_show", methods={"GET"})
+     * @Route("-{id}", name="street_show", methods={"GET"})
      */
     public function show(Street $street): Response
     {
@@ -59,7 +59,7 @@ class StreetController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="street_edit", methods={"GET","POST"})
+     * @Route("-{id}/edit", name="street_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Street $street): Response
     {

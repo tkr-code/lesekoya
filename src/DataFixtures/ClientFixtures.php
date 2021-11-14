@@ -23,33 +23,35 @@ class ClientFixtures extends Fixture
             [
 
                'first_name' => 'Pepin','last_name' => 'Ngoulou',
-               'email' => 'client3@store.com','roles' => ["ROLE_CLIENT"],
+               'email' => 'client1@mail.com','roles' => ["ROLE_CLIENT"],
                'password' => 'clientstore','is_verified' => '1'
             ],
             [
 
                'first_name' => 'Mamadou','last_name' => 'Dieme',
-               'email' => 'client2@store.com','roles' => ["ROLE_CLIENT"],
+               'email' => 'client2@mail.com','roles' => ["ROLE_CLIENT"],
                'password' => 'clientstore','is_verified' => '0'
             ],
             
         ];
-        // foreach ($clients as $value) {
-        //     $user = new User();
-        //     $user->isVerified($value['is_verified']);
-        //     $personne = new Personne();
-        //     $personne->setFirstName($value['first_name'])
-        //     ->setLastName($value['last_name']);
-        //     $user->setEmail($value['email']);
-        //     $user->setPassword($this->passwordEncoder->hashPassword($user,$value['password']))
-        //     ->setRoles($value['roles'])
-        //     ->setPersonne($personne);
-        //     $client = new Client();
-        //     $client->setUser($user);
-        
-        //     $manager->persist($client);
-        // }
+        foreach ($clients as $value) {
+            $user = new User();
+            $user->isVerified(true);
+            $personne = new Personne();
+            $personne->setFirstName($value['first_name'])
+            ->setLastName($value['last_name']);
+            $user->setPhoneNumber('781278288');
+            $user->setEmail($value['email']);
+            $user->setPassword($this->passwordEncoder->hashPassword($user,'password'))
+            ->setRoles($value['roles'])
+            ->setPersonne($personne);
+            $client = new Client();
+            $this->addReference('client_'.$value['email'],$user);
+            // $client->setUser($this->getReference('client_'.$value['email']));
+            $user->setClient($client);
+            $manager->persist($user);
+        }
 
-        // $manager->flush();
+        $manager->flush();
     }
 }

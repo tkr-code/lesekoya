@@ -39,7 +39,7 @@ class UserFixtures extends Fixture
             array('id' => '10','first_name' => 'client 4','last_name' => 'name 4','phone_number' => '781258288','street' => 'Wakam','company' => 'pmd developer','city' => 'Dakar','postal_code' => '11000','created_at' => '2021-08-24 15:38:43','updated_at' => NULL,'country_code' => 'SN','province_code' => 'DKR','province_name' => 'Dakar','user_id' => '7'),
             array('id' => '11','first_name' => 'prenom 4','last_name' => 'nom 4','phone_number' => '781278288','street' => 'Sacre coeur','company' => 'pmd developer','city' => 'dakar','postal_code' => '11000','created_at' => '2021-08-25 19:32:16','updated_at' => NULL,'country_code' => 'sn','province_code' => 'dkr','province_name' => 'dakar','user_id' => '8')
         );
-        foreach ($users as $value) {
+        foreach ($users as $key => $value) {
             $user = new User();
             $personne = new Personne();
             $personne->setFirstName($value['first_name'])
@@ -49,8 +49,9 @@ class UserFixtures extends Fixture
             $user->setPassword($this->passwordEncoder->hashPassword($user,'password'))
             ->setRoles($value['roles'])
             ->setPersonne($personne);
-        
             $this->em->persist($user);
+
+            $this->addReference('user_'.$key,$user);
         }
         $this->em->flush();
     }
