@@ -6,8 +6,5 @@
     <h1>Edit ParentCategory</h1>
 
     {{ include('admin/parent_category/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('admin_parent_category_index') }}">back to list</a>
-
-    {{ include('admin/parent_category/_delete_form.html.twig') }}
+    {# {{ include('admin/parent_category/_delete_form.html.twig') }} #}
 {% endblock %}

@@ -1,12 +1,18 @@
-{% extends 'base.html.twig' %}
+{% extends 'leSekoya/base.html.twig' %}
 
 {% block title %}Reset your password{% endblock %}
 
 {% block body %}
-    <h1>Reset your password</h1>
+<nav class="breadcrumb">
+   <a class="breadcrumb-item" href="/">{{'Home'|trans}}</a>
+   <span class="breadcrumb-item active">{{'Reset'|trans}}</span>
+</nav>
+<div class="container my-5">
+        <h1>Reset your password</h1>
 
     {{ form_start(resetForm) }}
         {{ form_row(resetForm.plainPassword) }}
         <button class="btn btn-primary">Reset password</button>
     {{ form_end(resetForm) }}
+</div>
 {% endblock %}

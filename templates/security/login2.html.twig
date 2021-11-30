@@ -50,8 +50,10 @@
 							</div>
 							<div class="col-md-12 form-group">
 								<div class="creat_account">
-									<input type="checkbox" id="f-option2" name="selector">
-									<label for="f-option2">{{'Keep me logged in'|trans}}</label>
+									<input type="checkbox" id="remember_me" name="_remember_me" checked/>
+									<label for="remember_me">{{'Keep me logged in'|trans}}</label>
+									{# <input type="checkbox" id="f-option2" name="selector"> #}
+									{# <label for="f-option2"></label> #}
 								</div>
 								<div class="creat_account">
                                     <input type="checkbox" id="f-option3" name="_remember_me"> 
@@ -65,7 +67,7 @@
                             
                             <div class="col-md-12 form-group">
 								<button type="submit" value="submit" class="button button-login w-100">{{'Log In'|trans}}</button>
-								<a href="#">{{'Forgot Password'|trans}}?</a>
+								<a href="{{ path('app_forgot_password_request') }}">{{'Forgot Password'|trans}}?</a>
 							</div>
                             
                         </form>

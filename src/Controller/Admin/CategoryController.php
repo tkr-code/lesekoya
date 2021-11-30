@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Entity\ParentCategory;
 use App\Form\CategoryParentType;
 use App\Form\CategoryType;
+use App\Form\ParentCategoryType;
 use App\Repository\CategoryRepository;
 use App\Repository\ParentCategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -36,7 +37,7 @@ class CategoryController extends AbstractController
         }
         
         $parentCategorie = new ParentCategory();
-        $formParent = $this->createForm(CategoryParentType::class,$parentCategorie)
+        $formParent = $this->createForm(ParentCategoryType::class,$parentCategorie)
         ->handleRequest($request);
         if($formParent->isSubmitted() && $formParent->isValid()){
             $entityManager->persist($parentCategorie);

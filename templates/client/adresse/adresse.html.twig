@@ -1,6 +1,6 @@
 {% extends 'lesekoya/base.html.twig' %}
 
-{% block title %}Edit profil{% endblock %}
+{% block title %}Edit adress{% endblock %}
 
 {% block body %}
 <ol class="breadcrumb">
@@ -17,11 +17,27 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <p class="p-0 m-0 ">Edit Client</p>
+                            <p class="p-0 m-0 ">Edit adress</p>
                         </div>
                         <div class="card-body">
-                            {{ include('client/_form.html.twig', {'button_label': 'Update'}) }}
-    {# {{ include('client/_delete_form.html.twig') }} #}
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                        </table>
+                        
+                        {% for item in client.adresses %}
+                            <p>
+                                {{item}}
+                            </p>
+                        {% endfor %}
+
+    {# {{ include('client/_form.html.twig', {'button_label': 'Update'}) }} #}
+
                         </div>
                     </div>
                 </div>

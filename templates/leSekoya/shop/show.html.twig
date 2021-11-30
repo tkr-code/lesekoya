@@ -15,7 +15,7 @@
 		<div class="row s_product_inner">
 			<div class="col-lg-6">
 				<div class="owl-carousel owl-theme s_Product_carousel">
-					{% for item in article.images|slice(0,1) %}
+					{% for item in article.images %}
 					<div class="single-prd-item">
 						<img class="img-fluid" src="{{ asset('img/article/' ~ item.name|default('vide.png') ) }}" alt="{{ article.title }}">
 					</div>
@@ -27,8 +27,8 @@
 					<h3>{{ article.title }}</h3>
 					<h2>{{ article.formatterPrice }} {{ site.current_name}} </h2>
 					<ul class="list">
-						<li><a class="active" href="#"><span>Category</span> : {{ article.category.title }}</a></li>
-						<li><a href="#"><span>Availibility</span> : {{ article.quantity }} In Stock</a></li>
+						<li><a class="active" href="#"><span>{{'Category'|trans}}</span> : {{ article.category.title }}</a></li>
+						<li><a href="#"><span>{{'Availibility'|trans}}</span> : {{ article.quantity }} {{'In Stock'|trans}}</a></li>
 					</ul>
 					<p>{{ article.description|nl2br }}</p>
 					<div class="row">
@@ -80,11 +80,11 @@
 			</li>
 			<li class="nav-item">
 				<a class="nav-link" id="comment-tab" data-toggle="tab" href="#comment" role="tab"
-					aria-controls="comment" aria-selected="false">Comments</a>
+					aria-controls="comment" aria-selected="false">{{'Comments'|trans}}</a>
 			</li>
 			<li class="nav-item">
 				<a class="nav-link" id="review-tab" data-toggle="tab" href="#review" role="tab" aria-controls="review"
-					aria-selected="false">Reviews</a>
+					aria-selected="false">{{'Reviews'|trans}}</a>
 			</li>
 		</ul>
 		<div class="tab-content" id="myTabContent">

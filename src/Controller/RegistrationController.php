@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\ArticleSearch;
 use App\Entity\Client;
+use App\Entity\Personne;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Form\RegistrationClientFormType;
@@ -18,6 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use App\Form\ArticleSearchType;
+use App\Service\Email\EmailService;
 
 class RegistrationController extends AbstractController
 {
@@ -31,11 +33,15 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/register", name="app_register")
      */
-    public function appRegister(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function appRegister(EmailService $emailService, Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $search = new ArticleSearch();
         $formSearch = $this->createForm(ArticleSearchType::class,$search);
         $user = new User();
+        
+        $personne  =  new Personne();
+        $personne->setFirstName('Malick')->setLastName('Tounkara');
+        $user->setPersonne($personne);
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
@@ -64,7 +70,8 @@ class RegistrationController extends AbstractController
                     ->from(new Address('contact@lesekoya.com', 'Inscription'))
                     ->to($user->getEmail())
                     ->subject('Please Confirm your Email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
+                    ->htmlTemplate('email/confirmation.html.twig')
+                    ->context($emailService->theme(1))
             );
             // do anything else you need here, like send an email
             return $this->redirectToRoute('client_index');

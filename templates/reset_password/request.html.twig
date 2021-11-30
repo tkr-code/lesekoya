@@ -1,22 +1,28 @@
-{% extends 'base.html.twig' %}
+{% extends 'leSekoya/base.html.twig' %}
 
 {% block title %}Reset your password{% endblock %}
 
 {% block body %}
-    {% for flashError in app.flashes('reset_password_error') %}
+<nav class="breadcrumb">
+   <a class="breadcrumb-item" href="/">{{'Home'|trans}}</a>
+   <span class="breadcrumb-item active">{{'Request'|trans}}</span>
+</nav>
+<div class="container my-5">
+        {% for flashError in app.flashes('reset_password_error') %}
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
-    <h1>Reset your password</h1>
+    <h3>{{'Reset your password'|trans}}</h3>
 
     {{ form_start(requestForm) }}
         {{ form_row(requestForm.email) }}
         <div>
             <small>
-                Enter your email address and we we will send you a
-                link to reset your password.
+                {{'Enter your email address and we we will send you a
+                link to reset your password.'|trans}}
             </small>
         </div>
 
-        <button class="btn btn-primary">Send password reset email</button>
+        <button class="btn btn-primary">{{'Send password reset email'|trans}}</button>
     {{ form_end(requestForm) }}
+</div>
 {% endblock %}

@@ -12,33 +12,32 @@
 <!-- info row -->
 <div class="row invoice-info">
     <div class="col-sm-4 invoice-col">
-        From
+        {{'From'|trans}}
         <address>
         <strong>{{ app_name }}, Inc.</strong><br>
         imeuble ipg liberte 4, chambre 2E<br>
         Dakar, 11000<br>
         Phone: 78 127 82 88 ( whastapp) <br>
-        Email: {{ app_name}}@store.com
+        Email: {{ site.email}}
         </address>
     </div>
 <!-- /.col -->
 <div class="col-sm-4 invoice-col">
-    To
+    {{'To'|trans}}
     <address>
     <strong>{{ order.user.personne.firstName ~ ' ' ~ order.user.personne.lastName }}</strong><br>
     {{ 'sacre coeur' }}<br>
     {{ 'Dakar' }}{{ ', ' ~ 'Sn' }} {{ '11000' }}<br>
-    Phone: {{ '78 127 82 88' }}<br>
-    Email: {{ order.user.email }}
+    {{'Phone'|trans}}: {{ '78 127 82 88' }}<br>
+    {{'Email'|trans}}: {{ order.user.email }}
     </address>
 </div>
 <!-- /.col -->
 <div class="col-sm-4 invoice-col">
-    <b>Invoice #{{ order.number }}</b><br>
+    <b>{{'Invoice'|trans}} #{{ order.number }}</b><br>
     <br>
-    <b>Order ID:</b> #{{ order.id}} <br>
-    <b>Payment Due:</b> {{ order.paymentDue | date('d/m/Y') }} <br>
-    {# <b>Account:</b> 968-34567 #}
+    <b>{{'Order'|trans}} ID:</b> #{{ order.id}} <br>
+    <b>{{'Payment Due'|trans}}:</b> {{ order.paymentDue | date('d/m/Y') }} <br>
 </div>
 <!-- /.col -->
 </div>
@@ -65,14 +64,6 @@
         <td>{{ item.UnitsTotal | number_format(2,'.',' ') }} XOF</td>
     </tr>
     {% endfor %}
-    {# <tr>
-        <td>1</td>
-        <td>Need for Speed IV</td>
-        <td>247-925-726</td>
-        <td>Wes Anderson umami biodiesel</td>
-        <td>$50.00</td>
-    </tr> #}
-    
     </tbody>
     </table>
 </div>
@@ -96,27 +87,21 @@
 </div>
 <!-- /.col -->
 <div class="col-6">
-    <p class="lead">Amount Due {{ order.paymentDue| date('d/m/Y') }}</p>
+    <p class="lead">{{'Amount Due'|trans}} {{ order.paymentDue| date('d/m/Y') }}</p>
 
     <div class="table-responsive">
     <table class="table">
         <tr>
         <th style="width:50%">Subtotal:</th>
-        <td>{{ order.itemsTotal | number_format(2,'.',' ') }} XOF</td>
+        <td>{{ order.itemsTotal | number_format(2,'.',' ') }} {{ site.current }} </td>
         </tr>
-        {# <tr>
-        <th>Tax (9.3%)</th>
-        <td>$10.34</td>
-        </tr> #}
-        {% if order.shipping != null %}
         <tr>
-            <th>Shipping:</th>
-            <td>{{ order.shipping.amount| number_format(2,'.',' ') }} XOF </td>
+            <th>{{'Shipping'|trans}}:</th>
+            <td>{{ (order.deliverySpace)? order.deliverySpace.street.shippingAmount.amount:'0' |number_format(2,'.',' ') }} {{ site.current }} </td>
         </tr>
-        {% endif %}
         <tr>
         <th>Total:</th>
-        <td>{{ order.total| number_format(2,'.',' ') }} XOF </td>
+        <td>{{ order.total| number_format(2,'.',' ') }} {{ site.current }} </td>
         </tr>
     </table>
     </div>

@@ -1,11 +1,66 @@
-<h1>Hi! Please confirm your email!</h1>
+{% extends "email/base.html.twig" %}
+{% block body %}
+{# <tr style="padding-top:0;">
+    <td align="center" valign="top">
+        <!-- FLEXIBLE CONTAINER // -->
+        <table border="0" cellpadding="30" cellspacing="0" width="500" class="flexibleContainer">
+            <tr>
+                <td style="padding-top:5;" align="center" valign="top" width="500" class="flexibleContainerCell">
 
-<p>
-    Please confirm your email address by clicking the following link: <br><br>
-    <a href="{{ signedUrl }}">Confirm my Email</a>.
-    This link will expire in {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
-</p>
+                    <!-- CONTENT TABLE // -->
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" class="emailButton"
+                        style="background-color:#ffffff ;">
+                        <tr>
+                            <td align="center" valign="middle" class="buttonContent"
+                                style="color:#5F5F5F;text-decoration:none;font-family:Helvetica,Arial,sans-serif;font-size:20px;line-height:135%;text-align:justify">
+                                <p>
+                                    Please confirm your email address by clicking the following link:
+                                    <br><br>
+                                    <a href="{{ signedUrl }}">Confirm my Email</a>.
+                                    This link will expire in {{
+                                    expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                    <!-- // CONTENT TABLE -->
+                </td>
+            </tr>
+        </table>
+        <!-- // FLEXIBLE CONTAINER -->
+    </td>
+</tr> #}
+{# <tr style="padding-top:0;">
+    <td align="center" valign="top">
+        <!-- FLEXIBLE CONTAINER // -->
+        <table border="0" cellpadding="30" cellspacing="0" width="500" class="flexibleContainer">
+            <tr>
+                <td style="padding-top:5;" align="center" valign="top" width="500" class="flexibleContainerCell">
 
+                    <!-- CONTENT TABLE // -->
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" class="emailButton"
+                        style="background-color:#ffffff ;">
+                        <tr>
+                            <td align="center" valign="middle" class="buttonContent"
+                                style="color:#5F5F5F;text-decoration:none;font-family:Helvetica,Arial,sans-serif;font-size:20px;line-height:135%;text-align:justify">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, nihil id. Atque ut
+                                perspiciatis sed nostrum omnis! Provident ratione nam dolor earum nemo nesciunt! Sit,
+                                tempora dolores. Tempore, quos dolor!
+                            </td>
+                        </tr>
+                    </table>
+                    <!-- // CONTENT TABLE -->
+
+                </td>
+            </tr>
+        </table>
+        <!-- // FLEXIBLE CONTAINER -->
+    </td>
+</tr> #}
+{% endblock %}
+{# {% block inscription %}
 <p>
     Cheers!
 </p>
+{% endblock %} #}
+{% block btn_path %}{% endblock %}

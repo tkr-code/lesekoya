@@ -1,2 +1,5 @@
-<p>Montant de la livraison</p>
-<p class="h5">{{ street.shippingAmount.amount|number_format(2,'.',' ') }} {{ site.current }}</p> 
+<p class="h6">Montant de la livraison: 
+    <span class="text-danger font-weight-bold">
+        {{ street.shippingAmount.amount|number_format(2,'.',' ') }} {{ site.current }}
+    </span>
+</p> 

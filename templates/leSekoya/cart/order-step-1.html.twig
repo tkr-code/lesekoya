@@ -111,11 +111,7 @@
           </div>
       </div>
     </form>
-<<<<<<< HEAD
-    {% if is_granted('ROLE_CLIENT') %}
-=======
     {% if not is_granted('ROLE_CLIENT') %}
->>>>>>> dev
     <div class="container mb-5">
         {% include ("registration/_form.html.twig") %}
     </div>

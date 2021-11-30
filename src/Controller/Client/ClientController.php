@@ -12,6 +12,7 @@ use App\Entity\DeliverySpace;
 use App\Entity\Shipping;
 use App\Form\ArticleSearchType;
 use App\Form\Payment1Type;
+use App\Form\UserPasswordType;
 use App\Repository\OrderRepository;
 use App\Service\Order\OrderService;
 use App\Repository\ClientRepository;
@@ -25,6 +26,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
  * @Route("/customer")
@@ -66,16 +68,15 @@ class ClientController extends AbstractController
     {
 
         // nouvelle commande
-        // dd($request->request);
         $order = new Order();
+        
         //rue de livraion
         $street = $session->get('shipping');
-        $street = $streetRepository->find($street->getId());
+        // $street = $streetRepository->find($street->getId());
         $order->setState('in progress');
         $order->setNumber($orderService->voiceNumber());
         $order->setPaymentDue(new \DateTime('+ 6 day') );
         $user  = $this->getUser();
-        $adresses = $user->getAdresses();
         $order->setUser($user);
         $panier = $session->get('panier');
         $total = 0;
@@ -97,8 +98,8 @@ class ClientController extends AbstractController
         
         $payment = new Payment();
         $payment->setAmount($order->getTotal());
-        $payment->setState('in progress');
-        $method = $paymentMethodRepository->find($id_methodPayment);
+        $payment->setState('In progress');
+        $method = $paymentMethodRepository->find($request->request->get('method'));
         $payment->setPaymentMethod($method);
         // livraison
         $shipping = new Shipping();
@@ -119,11 +120,11 @@ class ClientController extends AbstractController
         $deliverySpace->setClient($user->getClient());
         
         $order->setPayment($payment);
-        $order->setShipping($shipping);
+        // $order->setShipping($shipping);
         $order->setDeliverySpace($deliverySpace);
         
-        // dd($order);
         $order->setDeliverySpace($deliverySpace);
+        // dd($order);
         // dump($request);
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($order);
@@ -177,12 +178,95 @@ class ClientController extends AbstractController
     {
         $search = new ArticleSearch();
         $form = $this->createForm(ArticleSearchType::class,$search);
-        return $this->renderForm('client/index.html.twig', [
+        return $this->renderForm('client/compte/index.html.twig', [
             'clients' => $clientRepository->findAll(),
             'form'=>$form,
             'parent_page'=>'Client'
         ]);
     }
+    /**
+     * @Route("/adresse", name="client_adress_index", methods={"GET","POST"})
+     */
+    public function AdressIndex(Request $request): Response
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(ClientType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash('success','Informations modifiées');
+            return $this->redirectToRoute('client_index', [], Response::HTTP_SEE_OTHER);
+        }
+        // dd($user);
+        return $this->renderForm('client/adresse/index.html.twig', [
+            'client' => $user,
+            'form' => $form,
+        ]);
+    }
+    /**
+     * @Route("/edit-adress", name="client_edit_adress", methods={"GET","POST"})
+     */
+    public function editAdress(Request $request): Response
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(ClientType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash('success','Informations modifiées');
+            return $this->redirectToRoute('client_index', [], Response::HTTP_SEE_OTHER);
+        }
+        // dd($user);
+        return $this->renderForm('client/adresse.html.twig', [
+            'client' => $user,
+            'form' => $form,
+        ]);
+    }
+    /**
+     * @Route("/edit", name="client_edit", methods={"GET","POST"})
+     */
+    public function edit(Request $request): Response
+    {
+        $user = $this->getUser();
+        // dd($client);
+        $form = $this->createForm(ClientType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash('success','Informations modifiées');
+            return $this->redirectToRoute('client_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('client/edit.html.twig', [
+            'client' => $user,
+            'form' => $form,
+        ]);
+    }
+    /**
+     * @Route("/edit-password", name="client_edit_password", methods={"GET","POST"})
+     */
+    public function editPassword(Request $request, UserPasswordHasherInterface $userPasswordHasherInterface): Response
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(UserPasswordType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->setPassword($userPasswordHasherInterface->hashPassword($user,$user->getPassword()));
+            $this->getDoctrine()->getManager()->flush($user);
+            $this->addFlash('success','Informations modifiées');
+            return $this->redirectToRoute('app_logout', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('client/edit-password.html.twig', [
+            'client' => $user,
+            'form' => $form,
+        ]);
+    }
+
 
     /**
      * @Route("/new", name="client_new", methods={"GET","POST"})
@@ -214,26 +298,6 @@ class ClientController extends AbstractController
     {
         return $this->render('client/show.html.twig', [
             'client' => $client,
-        ]);
-    }
-
-    /**
-     * @Route("/{id}/edit", name="client_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, Client $client): Response
-    {
-        $form = $this->createForm(ClientType::class, $client);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('client_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('client/edit.html.twig', [
-            'client' => $client,
-            'form' => $form,
         ]);
     }
 

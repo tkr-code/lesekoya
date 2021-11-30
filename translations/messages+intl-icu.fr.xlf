@@ -411,7 +411,7 @@
       </trans-unit>
       <trans-unit id="YrNJlJR" resname="Quick Links">
         <source>Quick Links</source>
-        <target>__Quick Links</target>
+        <target>Lines rapides</target>
       </trans-unit>
       <trans-unit id="wYmEDPf" resname="Log in">
         <source>Log in</source>
@@ -430,7 +430,7 @@
         <target>La boutique est amusante</target>
       </trans-unit>
       <trans-unit id="oK_jKqm" resname="Browse Our Premium Product">
-        <source>Browse Our Product</source>
+        <source>Browse Our Premium Product</source>
         <target>Parcourir nos produit</target>
       </trans-unit>
       <trans-unit id="7dv399u" resname="Us which over of signs divide dominion deep fill bring they're meat beho upon own earth without&#10;              morning&#10;              over third. Their male dry. They are great appear whose land fly grass.">
@@ -472,6 +472,66 @@
       <trans-unit id="RsyWeyy" resname="Categorys">
         <source>Categorys</source>
         <target>Categories</target>
+      </trans-unit>
+      <trans-unit id="IYGXaTQ" resname="From">
+        <source>From</source>
+        <target>De</target>
+      </trans-unit>
+      <trans-unit id="9LBu9tP" resname="To">
+        <source>To</source>
+        <target>A</target>
+      </trans-unit>
+      <trans-unit id="Y9zriAC" resname="Phone">
+        <source>Phone</source>
+        <target>__Phone</target>
+      </trans-unit>
+      <trans-unit id="lpzL089" resname="Email">
+        <source>Email</source>
+        <target>Email</target>
+      </trans-unit>
+      <trans-unit id="Y3WMdqi" resname="Payment Due">
+        <source>Payment Due</source>
+        <target>__Payment Due</target>
+      </trans-unit>
+      <trans-unit id="oTX5MgC" resname="Amount Due">
+        <source>Amount Due</source>
+        <target>__Amount Due</target>
+      </trans-unit>
+      <trans-unit id="rVdRQw4" resname="Shipping">
+        <source>Shipping</source>
+        <target>Livraison</target>
+      </trans-unit>
+      <trans-unit id="ZOPLDkl" resname="Buy">
+        <source>Buy</source>
+        <target>Acheter</target>
+      </trans-unit>
+      <trans-unit id="rlPOqCK" resname="Postal code">
+        <source>Postal code</source>
+        <target>Code Postal</target>
+      </trans-unit>
+      <trans-unit id=".jrA1Dx" resname="Order Details">
+        <source>Order Details</source>
+        <target>__Order Details</target>
+      </trans-unit>
+      <trans-unit id="_574lBd" resname="Product">
+        <source>Product</source>
+        <target>Produict</target>
+      </trans-unit>
+      <trans-unit id="giurjUG" resname="Quantity">
+        <source>Quantity</source>
+        <target>Quantité</target>
+      </trans-unit>
+      <trans-unit id="bS1ZrtR" resname="Cart">
+        <source>Cart</source>
+        <target>Panier</target>
+      </trans-unit>
+      <trans-unit id=".eMXJOP" resname="My buys">
+        <source>My buys</source>
+        <target>Mes achats</target>
+      </trans-unit>
+      <trans-unit id="Abfh2Cy" resname="Dashbord">
+        <source>Dashbord</source>
+        <target>Tableau de board</target>
       </trans-unit>
     </body>
   </file>

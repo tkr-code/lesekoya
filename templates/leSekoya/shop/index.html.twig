@@ -80,7 +80,18 @@
           <nav class="categories">
             <ul>
               {% for item in category_parents %}
-              <li class="dropdown">
+              <li class="mobile">
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ item.name }} ({{item.categorys|length}}) <span>&rsaquo;</span></a>
+                <ul class="dropdown-menu">
+                {% for item in item.categorys %}
+                  <li class="nav-item">
+                    {# <a  href="/admin/">Tableau de board</a> #}
+                    <a class="nav-link" href="?category={{ item.id }}">{{ item.title }} ({{item.articles|length}})</a>
+                  </li>
+                  {% endfor %}
+                </ul>
+              </li>
+              <li class="dropdown desktop">
                 <a href="#">{{ item.name }} ({{item.categorys|length}}) <span>&rsaquo;</span></a>
                 <ul>
                   {% for item in item.categorys %}

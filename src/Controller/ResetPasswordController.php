@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\ChangePasswordFormType;
 use App\Form\ResetPasswordRequestFormType;
+use App\Service\Email\EmailService;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -26,10 +27,12 @@ class ResetPasswordController extends AbstractController
     use ResetPasswordControllerTrait;
 
     private $resetPasswordHelper;
+    private $emailService;
 
-    public function __construct(ResetPasswordHelperInterface $resetPasswordHelper)
+    public function __construct(ResetPasswordHelperInterface $resetPasswordHelper,EmailService $emailService)
     {
         $this->resetPasswordHelper = $resetPasswordHelper;
+        $this->emailService = $emailService;
     }
 
     /**
@@ -123,7 +126,7 @@ class ResetPasswordController extends AbstractController
             // The session is cleaned up after the password has been changed.
             $this->cleanSessionAfterReset();
 
-            return $this->redirectToRoute('login');
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('reset_password/reset.html.twig', [
@@ -156,13 +159,20 @@ class ResetPasswordController extends AbstractController
 
             return $this->redirectToRoute('app_check_email');
         }
+       $email_options= $this->emailService->theme(2);
 
         $email = (new TemplatedEmail())
             ->from(new Address('malick.tounkara.1@gmail.com', 'store2.test'))
             ->to($user->getEmail())
             ->subject('Your password reset request')
-            ->htmlTemplate('reset_password/email.html.twig')
+            ->htmlTemplate('email/reset-password.html.twig')
             ->context([
+                'theme'=>$email_options['theme'],
+                'message'=>$email_options['message'],
+                'btn'=>[
+                    'path'=>$email_options['btn']['path'],
+                    'text'=>$email_options['btn']['text']
+                ],
                 'resetToken' => $resetToken,
             ])
         ;

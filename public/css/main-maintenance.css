@@ -250,10 +250,10 @@ Primary use:
 /*---------------------------------------------*/
 .bg-g1 {
   background: #01796F;
-  background: -webkit-linear-gradient(bottom, #f77062, #fe5196);
-  background: -o-linear-gradient(bottom, #f77062, #fe5196);
-  background: -moz-linear-gradient(bottom, #f77062, #fe5196);
-  background: linear-gradient(bottom, #f77062, #fe5196);
+  background: -webkit-linear-gradient(bottom, #0a123e, #000);
+  background: -o-linear-gradient(bottom,  #0a123e, #000);
+  background: -moz-linear-gradient(bottom,  #0a123e, #000);
+  background: linear-gradient(bottom,  #0a123e, #000);
 }
 
 

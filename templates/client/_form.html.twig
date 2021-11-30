@@ -1,4 +1,8 @@
 {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    <div class="btn-group">
+        <a class="btn btn-dark text-white" href="{{ path('client_index') }}">{{'back'|trans}}</a>
+        
+        <button class="btn btn-success">{{ button_label|default('Save') }}</button>
+    </div>
 {{ form_end(form) }}

@@ -1,0 +1,68 @@
+{% extends 'lesekoya/base.html.twig' %}
+{% import "macros/search.html.twig" as search %}
+{% import "macros/alertes.html.twig" as alertes %}
+
+{% block title %}personnal information | {{app_name}} {% endblock %}
+
+{% block body %}
+<ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ path('home') }}">{{'Home'|trans}}</a></li>
+    <li class="breadcrumb-item"><a href="{{ path('client_index') }}">{{'Client'|trans}}</a></li>
+    <li class="breadcrumb-item active">{{'My account'|trans}}</li>
+</ol>
+<section>
+    <div class="container-fluid">
+    {% for item in app.flashes('success') %}
+        {{ alertes.alert(item)}}
+    {% endfor %}
+        <div class="row my-5">
+                {% include "client/nav.html.twig" %}
+            <div class="col-md-8 col-12 div-primary">
+                <div class="card card-primary border-0">
+                    <div class="card-header bg-white">
+                        <p class="p-0 m-0 h4">{{ 'My account'|trans }}</p>    
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <p class="p-0 m-0 ">Personal information </p>
+                                    </div>
+                                    <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6 col-12">
+                                            <p class="card-text">{{ app.user.personne.fullName }} <a href="{{ path('client_edit') }}"><i class="text-success fas fa-pencil-alt    "></i></a></p>
+                                            <p class="text-muted ">{{ app.user.email }} <a href="#"><i class="text-success fas fa-pencil-alt    "></i></a></p>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <p class="card-text">{{ app.user.adresse|default('Aucune adresse trouvé') }} <a href="{{ path('client_edit') }}"><i class="text-success fas fa-pencil-alt    "></i></a></p>
+                                            <p>{{app.user.phoneNumber }} <a href="{{ path('client_edit') }}"><i class="text-success fas fa-pencil-alt"></i></a></p>
+                                        </div>
+                                    </div>
+                                        <p>
+                                            <a href="{{ path('client_edit_password') }}" class="text-info 2rem">
+                                            {{ 'Change password'|trans }} 
+                                            </a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function(){
+            $('.my-account').addClass('active')
+        })
+    </script>
+{% endblock %}

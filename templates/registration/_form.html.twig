@@ -19,7 +19,6 @@
                 </div>
                 <div class="col-md-6 form-group">
                     {{form_row(registrationForm.email)}}
-                    {# {{form_errors(registrationForm.email)}} #}
                 </div>
                 <div class="form-group col-6">
                     {{ form_row(registrationForm.password)}}
@@ -29,8 +28,11 @@
                 </div>
                 <div class="col-md-12 form-group">
                     <div class="creat_account">
-                        {{ form_row(registrationForm.agreeTerms) }}
+                        {{ form_row(registrationForm.agreeTerms) }} 
                     </div>
+                </div>
+                <div class="col-md-12">
+                    <p class="w-100">En créant mon compte je reconnais avoir lu et compris les Conditions Générales d‘Utilisation, puis je confirme être âgé d’au moins 18 ans.</p>
                 </div>
                 <div class="col-md-6 mx-auto form-group">
                     <button type="submit" value="submit" class="button button-register w-100">Register</button>

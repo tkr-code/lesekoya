@@ -208,15 +208,12 @@
                 <dt class="col-sm-4">{{'State Order'|trans}}</dt>
                 <dd class="col-sm-8">{{ order.state }}</dd>
                 <dt class="col-sm-4">{{'Shipping state'|trans }}</dt>
-<<<<<<< HEAD
                 <dd class="col-sm-8">{{ '' }}</dd>
                 <dt class="col-sm-4">{{'Shipping amount'|trans }}</dt>
                 <dd class="col-sm-8">{{ order.total|number_format(2,'.',' ') }} XOF</dd>
-=======
                 <dd class="col-sm-8">{{ 'shipping state' }}</dd>
                 <dt class="col-sm-4">{{'Shipping amount'|trans }}</dt>
                 <dd class="col-sm-8">{{ 'shipping'|number_format(2,'.',' ') }} XOF</dd>
->>>>>>> dev
             </dl>
             </div>
             <!-- /.card-body -->
@@ -257,11 +254,7 @@
             <div class="card-body">
             <dl class="row">
             <div class="col-sm-12">            
-<<<<<<< HEAD
                 <a href="{{ path('order_adress_edit',{ order_id: order.id , id: order.id }) }}">
-=======
-                {# <a href="{{ path('order_adress_edit',{ order_id: order.id , id: order.shippingAdress.id }) }}">
->>>>>>> dev
                     Manage adresses <i class="fa fa-user"></i> 
                 </a> #}
             </div>
@@ -281,11 +274,7 @@
                 <dd class="col-sm-8"></dd>
                 
                 <dt class="col-sm-4">Adress</dt>
-<<<<<<< HEAD
                 <dd class="col-sm-8">{{ '' }}</dd>
-=======
-                {# <dd class="col-sm-8">{{ order.shippingAdress.postalCode ~ ' ' ~ order.shippingAdress.city }}</dd> #}
->>>>>>> dev
             </dl>
             </div>
             <!-- /.card-body -->

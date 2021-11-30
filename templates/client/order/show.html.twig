@@ -5,16 +5,16 @@
 {# {% extends 'base.html.twig' %} #}
 {% extends 'lesekoya/base.html.twig' %}
 
-{% block title %} Facture {{ app_name }} - {{ order.user.personne.firstName ~ ' ' ~ order.user.personne.lastName }} {% endblock %}
+{% block title %} Facture #{{ order.number }} {% endblock %}
 
 
 {% block body %}
 <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{{ path('home') }}">Home</a></li>
-    <li class="breadcrumb-item"><a href="{{ path('client_order') }}">Mes commandes</a></li>
-    <li class="breadcrumb-item active">Cart</li>
+    <li class="breadcrumb-item"><a href="{{ path('home') }}">{{'Home'|trans}}</a></li>
+    <li class="breadcrumb-item"><a href="{{ path('client_order') }}">{{'My orders|trans'}}</a></li>
+    <li class="breadcrumb-item active">{{'Order'|trans}}</li>
 </ol>
-<div class="container">
+<div class="container-fluid">
   <div class="row my-5">
      {% include "client/nav.html.twig" %}
     <div class="col-lg-9 div-primary">
@@ -26,7 +26,7 @@
           <div class="row no-print">
               <div class="col-12">
                   <a 
-                      href="{{ path('order_print',{ id : order.id }) }}" 
+                      href="{{ path('order_print_client',{ id : order.id }) }}" 
                       rel="noopener" 
                       target="_blank"
                       class="btn btn-default"><i class="fas fa-print"></i> Print

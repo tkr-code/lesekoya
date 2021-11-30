@@ -164,11 +164,11 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Route("/order/print/{id}", name="order_print", methods={"GET"})
+     * @Route("/admin/order/print/{id}", name="order_print", methods={"GET"})
+     * @Route("/customer/order/print/{id}", name="order_print_client", methods={"GET"})
      */
     public function invoice(Order $order): Response
     {
-        dump($order);
         return $this->render('admin/order/print.html.twig', [
             'order' => $order,
         ]);
