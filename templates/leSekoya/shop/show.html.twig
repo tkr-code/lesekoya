@@ -1,13 +1,22 @@
 {% extends "leSekoya/base.html.twig" %}
 {% block title %}{{ article.title }} {% endblock %}
+{% block javascripts %}
+<script>
+	function myFunction() {
+		var copyText = window.location.href;
+		navigator.clipboard.writeText(copyText);
+		/* Alert the copied text */
+		alert("Url copié: " + copyText);
+}
+</script>
+{% endblock %}
 {% block body %}
-
 <nav class="breadcrumb">
 	<a class="breadcrumb-item" href="/">{{'Home'|trans}}</a>
 	<a class="breadcrumb-item" href="{{ path('articles') }}">{{'Shop'|trans}}</a>
 	<a class="breadcrumb-item" href="{{ path('articles',{category: article.category.parentCategory.name }) }}">{{ article.category.parentCategory.name	}}</a>
 	<a class="breadcrumb-item" href="{{ path('articles',{category: article.category.id }) }}">{{ article.category.title	}}</a>
-	<span class="breadcrumb-item active">{{'Shop'|trans}}</span>
+	<span class="breadcrumb-item active">{{ article.title }}</span>
 </nav>
 <!--================Single Product Area =================-->
 <div class="product_image_area">
@@ -17,7 +26,11 @@
 				<div class="owl-carousel owl-theme s_Product_carousel">
 					{% for item in article.images %}
 					<div class="single-prd-item">
-						<img class="img-fluid" src="{{ asset('img/article/' ~ item.name|default('vide.png') ) }}" alt="{{ article.title }}">
+						<img class="img-fluid" src="{{ asset('img/article/' ~ item.name ) }}" alt="{{ article.title }}">
+					</div>
+					{% else %}
+					<div class="single-prd-item">
+						<img class="img-fluid" src="{{ asset('img/article/vide.png') }}" alt="{{ article.title }}">
 					</div>
 					{% endfor %}
 				</div>
@@ -52,9 +65,7 @@
 						<a class="icon_btn" href="#">
 							<i class="fa fa-heart" aria-hidden="true"></i>
 						</a>
-						<a class="icon_btn" href="#">
-							<i class="fas fa-copy    "></i>
-						</a>
+						<button onclick="myFunction()" class="icon_btn"><i class="fas fa-copy    "></i></button>
 						<a class="icon_btn" href="#">
 							<i class="fa fa-share" aria-hidden="true"></i>
 						</a>

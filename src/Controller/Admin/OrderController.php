@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\ArticleBuy;
 use App\Entity\Order;
 use App\Form\OrderType;
 use App\Entity\OrderItem;
@@ -27,6 +28,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class OrderController extends AbstractController
 {
     private $urlGenerator;
+    private $parent_page = 'Commande';
     public function __construct(UrlGeneratorInterface $urlGeneratorInterface)
     {
         $this->urlGenerator= $urlGeneratorInterface;
@@ -68,7 +70,7 @@ class OrderController extends AbstractController
             'ordersInProgress'=>$orderRepository->findState('in progress'),
             'ordersWaiting'=>$orderRepository->findState('waiting'),
             'ordersCanceled'=>$orderRepository->findState('canceled'),
-            'parent_page'=>'List'
+            'parent_page'=>$this->parent_page
         ]);
     }
 
@@ -145,6 +147,7 @@ class OrderController extends AbstractController
         return $this->renderForm('admin/order/new.html.twig', [
             'order' => $order,
             'form' => $form,
+            'parent_page'=>$this->parent_page
         ]);
     }
 
@@ -160,6 +163,7 @@ class OrderController extends AbstractController
 
         return $this->render('admin/order/show.html.twig', [
             'order' => $order,
+            'parent_page'=>$this->parent_page
         ]);
     }
 
@@ -171,6 +175,7 @@ class OrderController extends AbstractController
     {
         return $this->render('admin/order/print.html.twig', [
             'order' => $order,
+            'parent_page'=>$this->parent_page
         ]);
     }
 
@@ -225,18 +230,27 @@ class OrderController extends AbstractController
         ]);
         $form->handleRequest($request);
         
-        if ($form->isSubmitted() && $form->isValid()) {            
-            
-            if($order->getState() == 'completed')
+        if ($form->isSubmitted() && $form->isValid()) {         
+            if ($order->getIsImmuable()) //Si la commande est modifiable
             {
-                $payment->setState('completed');
-                $order->setPayment($payment);
-                $order->setCheckoutCompletedAt(new \DateTime());
+                if($order->getState() == 'completed')
+                {
+                    $payment->setState('completed');
+                    $order->setPayment($payment);
+                    $order->setCheckoutCompletedAt(new \DateTime());
+                    foreach ($order->getOrderItem()->getValues() as $key => $value) {
+                        $articleBuy =new ArticleBuy();
+                        $articleBuy->setClient($order->getUser()->getClient());
+                        $articleBuy->setArticle($value->getArticle());
+                        $articleBuy->setPrice($value->getUnitPrice());
+                        $articleBuy->setQuantity($value->getQuantity());
+                        $this->getDoctrine()->getManager()->persist($articleBuy);
+                    }
+                }
+                $order->setIsImmuable(false);
             }
-            // dd('oups');
-            //
+
             $this->getDoctrine()->getManager()->flush();
-            // return $this->redirectToRoute('order_index', [], Response::HTTP_SEE_OTHER);
             $this->addFlash('success','Order modified');
             return $this->redirectToRoute('order_edit', ['id'=>$order->getId()], Response::HTTP_SEE_OTHER);       
         }

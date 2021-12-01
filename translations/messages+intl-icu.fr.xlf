@@ -415,7 +415,7 @@
       </trans-unit>
       <trans-unit id="wYmEDPf" resname="Log in">
         <source>Log in</source>
-        <target>Se conncter</target>
+        <target>Se connecter</target>
       </trans-unit>
       <trans-unit id="mLZwY8_" resname="Contact Us">
         <source>Contact Us</source>
@@ -483,7 +483,7 @@
       </trans-unit>
       <trans-unit id="Y9zriAC" resname="Phone">
         <source>Phone</source>
-        <target>__Phone</target>
+        <target>Téléphone</target>
       </trans-unit>
       <trans-unit id="lpzL089" resname="Email">
         <source>Email</source>
@@ -491,11 +491,11 @@
       </trans-unit>
       <trans-unit id="Y3WMdqi" resname="Payment Due">
         <source>Payment Due</source>
-        <target>__Payment Due</target>
+        <target>Date limite</target>
       </trans-unit>
       <trans-unit id="oTX5MgC" resname="Amount Due">
         <source>Amount Due</source>
-        <target>__Amount Due</target>
+        <target>Montant à payer avant </target>
       </trans-unit>
       <trans-unit id="rVdRQw4" resname="Shipping">
         <source>Shipping</source>
