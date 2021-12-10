@@ -45,7 +45,8 @@ class UserFixtures extends Fixture
             $personne->setFirstName($value['first_name'])
             ->setLastName($value['last_name']);
             $user->setEmail($value['email']);
-            $user->setPhoneNumber('781278288');
+            $user->setPhoneNumber('781278288')
+            ->setAdresse('');
             $user->setPassword($this->passwordEncoder->hashPassword($user,'password'))
             ->setRoles($value['roles'])
             ->setPersonne($personne);

@@ -40,7 +40,8 @@ class ClientFixtures extends Fixture
             $personne = new Personne();
             $personne->setFirstName($value['first_name'])
             ->setLastName($value['last_name']);
-            $user->setPhoneNumber('781278288');
+            $user->setPhoneNumber('781278288')
+            ->setAdresse('Sacre coeur 2, 11000');
             $user->setEmail($value['email']);
             $user->setPassword($this->passwordEncoder->hashPassword($user,'password'))
             ->setRoles($value['roles'])
