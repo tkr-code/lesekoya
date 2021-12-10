@@ -19,9 +19,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class Article
 {
     const etats =[
-        0=>'Top',
-        1=>'Tendance',
-        2=>'Populaire'
+        'Top'=>'Top',
+        'Tendance'=>'Tendance',
+        'Populaire'=>'Populaire',
+        'Meilleurs ventes'=>'Meilleurs ventes'
     ];
     /**
      * @ORM\Id

@@ -1,0 +1,23 @@
+{% macro etat(etat) %}
+    {% if etat == 'Activer' %}
+        <span class="badge badge-success">Activer</span>
+        {% elseif etat == 'Désactiver' %}
+        <span class="badge badge-warning">Désactiver</span>
+    {% endif %}
+{% endmacro %}
+
+{% macro order(etat) %}
+    {% if etat == 'completed' %}
+        <span class="badge badge-success">{{etat}}</span>
+        {% elseif etat == 'Désactiver' %}
+        <span class="badge badge-warning">{{etat}}</span>
+        {% elseif etat == 'in progress' %}
+        <span class="badge badge-primary">{{etat}}</span>
+        {% elseif etat == 'waiting' %}
+        <span class="badge badge-light">{{etat}}</span>
+        {% elseif etat == 'canceled' %}
+        <span class="badge badge-danger">{{etat}}</span>
+        {% else %}
+        <span class="badge">{{etat}}</span>
+    {% endif %}
+{% endmacro %}

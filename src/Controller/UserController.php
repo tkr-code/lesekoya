@@ -2,14 +2,19 @@
 
 namespace App\Controller;
 
+use App\Entity\Personne;
 use App\Entity\User;
 use App\Form\User1Type;
 use App\Repository\UserRepository;
+use App\Service\Email\EmailService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Mime\Address;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Mailer\MailerInterface;
 
 /**
  * @Route("admin/user")
@@ -29,22 +34,40 @@ class UserController extends AbstractController
     /**
      * @Route("/new", name="user_new", methods={"GET","POST"})
      */
-    public function new(Request $request, UserPasswordHasherInterface $userPasswordHasherInterface): Response
+    public function new(MailerInterface $mailerInterface, EmailService $emailService, Request $request, UserPasswordHasherInterface $userPasswordHasherInterface): Response
     {
         $user = new User();
+        $personne = new Personne();
+        $personne->setFirstName('Malick')->setLastName('Tounkara');
+        $user->setPersonne($personne);
+        $user->setEmail('email@leseokya.com')
+        ->setAdresse('sacre coeur 3')
+        ->setPassword('password')
+        ->setPhoneNumber('772495592')
+        ->isVerified(true);
         $form = $this->createForm(User1Type::class, $user);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setPassword($userPasswordHasherInterface->hashPassword($user,$user->getPassword()));
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
-
+            if($form->get('sendEmail')->getData()){
+               $email = (new TemplatedEmail())
+                 ->from(new Address('contact@lesekoya.com', 'Création de compte'))
+                    ->to($user->getEmail())
+                    ->subject('Confirmation de compte')
+                    ->htmlTemplate('email/new-user.html.twig')
+                    ->context([
+                        'theme'=>$emailService->theme(5),
+                        'user'=>$user,
+                        'password'=>$form->get('password')->getData()
+                    ]);
+                    $mailerInterface->send($email);
+            }
+            $this->addFlash('success','Le compte à été créé');
             return $this->redirectToRoute('user_index', [], Response::HTTP_SEE_OTHER);
         }
-        // dd($form);
-
         return $this->renderForm('admin/user/new.html.twig', [
             'user' => $user,
             'form' => $form,

@@ -82,7 +82,8 @@ class ArticleController extends AbstractController
             'articles' => $pagination,
             'form'=>$form,
             'category'=>$categoryRepository->findAll(),
-            'category_parents'=>$parentCategoryRepository->etat(true)
+            'category_parents'=>$parentCategoryRepository->etat(true),
+            'top_articles'=>$articleRepository->findBy(['enabled'=>true,'etat'=>'top'],null,12),
         ]);
     }
 

@@ -1,4 +1,7 @@
 {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button class="btn btn-primary btn-lg">{{ button_label|default('Save') }} <i class="fas fa-save"></i> </button>
+     <div class="btn-group">
+        <a class="btn btn-dark" href="{{ path('profile_index') }}"><i class="fas fa-arrow-alt-circle-left"></i> {{'back'|trans}}</a>
+        <button class="btn btn-primary"><i class="fas fa-save"></i> {{ button_label|default('Save') }}</button>
+    </div>
 {{ form_end(form) }}

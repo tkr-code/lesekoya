@@ -59,12 +59,6 @@
                 {{ articlesOff| length }}
               </span></a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" id="tab-article-top" data-toggle="pill" href="#article-top" role="tab"
-              aria-controls="article-top" aria-selected="false">Top |<span class="font-weight-bold">
-                {{ articlesTop| length }}
-              </span></a>
-          </li>
 
         </ul>
       </div>
@@ -83,10 +77,6 @@
             aria-labelledby="custom-tabs-three-profile-tab">
             <p>Liste des articles desactiver, ils ne sont pas visible par les internautes.</p>
             {{ include ("admin/article/_datatable.html.twig",{id:'2',articles: articlesOff}) }}
-          </div>
-          <div class="tab-pane fade" id="article-top" role="tabpanel" aria-labelledby="tab-article-top">
-            <p>Liste des articles visible dans les sections top produit</p>
-            {{ include ("admin/article/_datatable.html.twig",{id:'3',articles: articlesTop}) }}
           </div>
         </div>
       {{ link.back(path('admin'),'Back to dashboard')}}

@@ -15,9 +15,8 @@
         {{'From'|trans}}
         <address>
         <strong>{{ app_name }}, Inc.</strong><br>
-        imeuble ipg liberte 4, chambre 2E<br>
-        Dakar, 11000<br>
-        Phone: 78 127 82 88 ( whastapp) <br>
+        {{ site.ville}}, {{ site.adresse}} {{ site.code_postal }}<br>
+        Phone: {{ site.phone_number_1 }} ( whastapp) <br>
         Email: {{ site.email}}
         </address>
     </div>
@@ -26,9 +25,8 @@
     {{'To'|trans}}
     <address>
     <strong>{{ order.user.personne.firstName ~ ' ' ~ order.user.personne.lastName }}</strong><br>
-    {{ 'sacre coeur' }}<br>
-    {{ 'Dakar' }}{{ ', ' ~ 'Sn' }} {{ '11000' }}<br>
-    {{'Phone'|trans}}: {{ '78 127 82 88' }}<br>
+    {{ order.user.adresse }}<br>
+    {{'Phone'|trans}}: {{ order.user.phoneNumber }}<br>
     {{'Email'|trans}}: {{ order.user.email }}
     </address>
 </div>

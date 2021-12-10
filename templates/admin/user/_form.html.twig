@@ -1,6 +1,10 @@
 {% import "macros/link.html.twig" as link %}
 
-{{ form_start(form) }}
+{{ form_start(form,{
+    attr:{
+        'novalidate':'novalidate'
+    }
+}) }}
 <div class="row">
     <div class="col-lg-6">
         <div class="row">
@@ -16,6 +20,9 @@
             <div class="col-md-6 col-12">
                 {{ form_row(form.roles)}}
             </div>
+            <div class="col-md-12 col-12">
+                {{ form_row(form.adresse)}}
+            </div>
             <div class="col-md-6 col-12">
                 {{ form_row(form.password)}}
             </div>
@@ -24,6 +31,9 @@
             </div>
             <div class="col-md-6 col-12">
                 {{ form_row(form.isVerified)}}
+            </div>
+            <div class="col-md-6 col-12">
+                {{ form_row(form.sendEmail)}}
             </div>
         </div>
         <div class="btn-group">

@@ -64,10 +64,11 @@ class ProfileController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="profile_edit", methods={"GET","POST"})
+     * @Route("-edit", name="profile_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, User $user): Response
+    public function edit(Request $request): Response
     {
+        $user = $this->getUser();
         $resetForm = $this->createForm(ChangePasswordFormType::class);
         
         $form = $this->createForm(ProfileType::class, $user,[]);
@@ -90,13 +91,34 @@ class ProfileController extends AbstractController
             $user->setPersonne($personne);
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success','profil modify');
-            return $this->redirectToRoute('profile_index', ['tab'=>'settings'], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('profile_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('admin/profile/edit.html.twig', [
             'user' => $user,
             'form' => $form,
             'resetForm'=>$resetForm
+        ]);
+    }
+    /**
+     * @Route("-edit-password", name="profile_edit_password", methods={"GET","POST"})
+     */
+    public function editPassword(Request $request): Response
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(ChangePasswordFormType::class);        
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $personne = $user->getPersonne();
+            $user->setPersonne($personne);
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash('success','Profil modify');
+            return $this->redirectToRoute('profile_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('admin/profile/edit-email.html.twig', [
+            'form' => $form,
         ]);
     }
 

@@ -18,8 +18,8 @@ class EmailService
         $cle= '';
         $site = 'Gaboma annonce';
         $introduction = 'Site de petites annonces.';
-        $link_site = 'https://gaboma-annonce.com';
-        $link_img = $link_site.'/public/img/icons/gaboma-icon.png';
+        $link_site = 'https://lesekoya.com';
+        $link_img = $link_site.'/public/img/icons/favicon.png';
         $message = '';
         $link_contrat = $link_site."/public/doc/condition-d'utilisation-gaboma-annonce.pdf";
         $button_link = $link_site;
@@ -30,7 +30,7 @@ class EmailService
           case '1':
             // inscription verification ou desinscription
               $introduction = '';
-              $button_link = $link_site.'/publications';
+              $button_link = null;
               $button_text = 'Nos catégories';
               $titre =$this->translator->trans('Hi! Please confirm your email!');
               $message = 'Votre compte leSekoya est en attente de confirmation.';
@@ -38,7 +38,7 @@ class EmailService
           case '2':
             // mot de passeoublier
             $introduction = '';
-            $button_link = $link_site.'/modifier-le-mot-de-passe-'.$id_user.'-tkr'.$cle.'-gaboma-annonce';
+            $button_link = null;
             $button_text = 'Modifier votre mot de passe';
               $titre = 'Veuillez modifier votre mot de passe';
               $message = 'Étiez-vous à l’origine de la modfication de votre compte leSekoya ? Si oui, voici le lien de modification.';
@@ -46,10 +46,26 @@ class EmailService
           case '3':
             // modifier l'email
             $introduction = '';
-            $button_link = $link_site.'/modifier-email-'.$id_user.'-tkr'.$cle.'-gaboma-annonce';
+            $button_link = null;
             $button_text = 'Modifier votre e-mail';
               $titre = 'Veuillez modifier e-mail';
               $message = 'Étiez-vous à l’origine de la modfication de votre compte gaboma annonce ? Si oui, voici le lien de modification.';
+            break;
+          case '4':
+            // nouvell commande
+            $introduction = '';
+            $button_link = null;
+            $button_text = null;
+              $titre = 'Avis de facture';
+              $message = 'Une facture à été générée';
+            break;
+          case '5':
+            // confirmaion user
+            $introduction = '';
+            $button_link ='app_login' ;
+            $button_text = 'Se connecter';
+              $titre = "Avis de création d'un compte utilisateur";
+              $message = 'Un nouveau compte a été crée.';
             break;
 
           default:
@@ -58,9 +74,7 @@ class EmailService
         }
         return 
         [
-            'theme'=>[
-                'name'=>$titre
-            ],
+            'name'=>$titre,
             'message'=>$message,
             'btn'=>[
                 'path'=>$button_link,

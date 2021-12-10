@@ -71,7 +71,9 @@ class RegistrationController extends AbstractController
                     ->to($user->getEmail())
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('email/confirmation.html.twig')
-                    ->context($emailService->theme(1))
+                    ->context([
+                        'theme'=>$emailService->theme(1)
+                        ])
             );
             // do anything else you need here, like send an email
             return $this->redirectToRoute('client_index');

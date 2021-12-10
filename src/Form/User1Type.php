@@ -5,11 +5,13 @@ namespace App\Form;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -26,21 +28,18 @@ class User1Type extends AbstractType
                     'placeholder'=>'Email'
                 ]
             ])
+            ->add('adresse',TextType::class)
             ->add('roles',ChoiceType::class,[
                 'attr'=>[
                     'placeholder'=>'Roles'
                 ],
-                'choices'=>[
-                    'Administrateur'=>'ROLE_ADMIN',
-                    'Editeur'=>'ROLE_EDITOR',
-                    'Client'=>'ROLE_CLIENT',
-                    'Utilisateur'=>'ROLE_USER'
-                ],
+                'choices'=>User::roles,
                 'multiple'=>true
             ])
             ->add('password',PasswordType::class,[
                 'attr'=>[
-                    'placeholder'=>'Mot de passe'
+                    'placeholder'=>'Mot de passe',
+                    'value'=>'sekoya'.rand(0,900)
                 ]
             ])
 
@@ -50,6 +49,10 @@ class User1Type extends AbstractType
                 ]
             ])
             ->add('isVerified')
+            ->add('sendEmail',CheckboxType::class,[
+                'mapped'=>false,
+                'label'=>'Envoyez un email pour modifier le mot de passe ?'
+            ])
         ;
     }
 

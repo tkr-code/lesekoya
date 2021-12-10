@@ -18,6 +18,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    const roles=[
+        'Administrateur'=>'ROLE_ADMIN',
+        'Editeur'=>'ROLE_EDITOR',
+        // 'Client'=>'ROLE_CLIENT',
+        'Utilisateur'=>'ROLE_USER'
+    ];
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -38,6 +44,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @var string The hashed password
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
      * @ORM\Column(type="string")
      */
     private $password;
@@ -104,6 +112,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
+     * @Assert\NotNull()
      */
     private $phone_number;
 
@@ -119,6 +128,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotNull
      */
     private $adresse;
 

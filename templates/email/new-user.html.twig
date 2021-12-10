@@ -1,0 +1,11 @@
+{% extends "email/base.html.twig" %}
+{% block title %}Nouveau compte utilisateur{% endblock %}
+{% block body %}
+    <p>Bonjour {{ user.personne.fullName }}</p>
+    <p>
+        Les identifiants de votre compte utilisateur LESEKOYA <br>
+       Email:<b> {{user.email}}</b> <br>
+       Mot de passe:<b> {{ password }} </b>
+    </p>
+    <p>Cliquez sur le boutton ci-dessous pour vous connecter</p>
+{% endblock %}

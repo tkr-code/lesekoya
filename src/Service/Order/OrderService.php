@@ -94,7 +94,7 @@ class OrderService{
      */
     public function total(Order $order)
     {
-       $order->setTotal($this->subTotal($order) );
+       $order->setTotal($this->subTotal($order) + $order->getAdjustmentsTotal() );
 
         return $order;
     }

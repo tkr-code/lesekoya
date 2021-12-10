@@ -13,3 +13,10 @@
     <a class="btn btn-primary" href="{{ path }} "> {{ text|default('Create') }}</a>
 {% endmacro %}
 
+{% macro pencil(path) %}
+    <a 
+        href="{{ path|default('#') }}">
+        <i class="fas fa-pencil-alt text-success"></i>
+    </a>
+{% endmacro %}
+

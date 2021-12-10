@@ -159,20 +159,13 @@ class ResetPasswordController extends AbstractController
 
             return $this->redirectToRoute('app_check_email');
         }
-       $email_options= $this->emailService->theme(2);
-
         $email = (new TemplatedEmail())
             ->from(new Address('malick.tounkara.1@gmail.com', 'store2.test'))
             ->to($user->getEmail())
             ->subject('Your password reset request')
             ->htmlTemplate('email/reset-password.html.twig')
             ->context([
-                'theme'=>$email_options['theme'],
-                'message'=>$email_options['message'],
-                'btn'=>[
-                    'path'=>$email_options['btn']['path'],
-                    'text'=>$email_options['btn']['text']
-                ],
+                'theme'=> $this->emailService->theme(2),
                 'resetToken' => $resetToken,
             ])
         ;

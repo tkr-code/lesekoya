@@ -606,7 +606,7 @@
                                                                         <p
                                                                             style="font-family: Arial, Helvetica, sans-serif;font-size:12px;font-weight:normal">
 
-                                                                            {{ message }}
+                                                                            {{ theme.message }}
                                                                         </p>
                                                                     </div>
                                                                 </td>
@@ -662,6 +662,7 @@
                                             <!-- // FLEXIBLE CONTAINER -->
                                         </td>
                                     </tr>
+                                    {% if theme.btn.text %}
                                     <tr style="padding-top:0;">
                                         <td align="center" valign="top">
                                             <!-- FLEXIBLE CONTAINER // -->
@@ -678,8 +679,8 @@
                                                                 <td align="center" valign="middle" class="buttonContent"
                                                                     style="margin-top: 15px; padding-top:15px;padding-bottom:15px;padding-right:15px;padding-left:15px;">
                                                                     <a style="color:#FFFFFF;text-decoration:none;font-family:Helvetica,Arial,sans-serif;font-size:20px;line-height:135%;"
-                                                                        href="{% block btn_path %}{{ btn.path}}{% endblock %}" target="_blank">
-                                                                        {% block btn_text %}{{ btn.text }}{% endblock %} </a>
+                                                                        href="{% block btn_path %}{{ theme.btn.path ? url(theme.btn.path): '#' }}{% endblock %}" target="_blank">
+                                                                        {% block btn_text %}{{ theme.btn.text }}{% endblock %} </a>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -691,6 +692,7 @@
                                             <!-- // FLEXIBLE CONTAINER -->
                                         </td>
                                     </tr>
+                                    {% endif %}
                                 </table>
                                 <!-- // CENTERING TABLE -->
                             </td>
