@@ -29,7 +29,7 @@
           </div>
           <h3 class="profile-username text-center">{{app.user.personne.lastName | title}} {{app.user.personne.firstname | title }} <a href="{{ path('profile_edit') }}"><i class="fas fa-pencil-alt text-success"></i></a> </h3>
           <hr>
-          <p>{{app.user.email}} {{link.pencil(path('profile_edit_email'))}} <br>
+          <p>{{app.user.email}} {{link.pencil(path('profile_edit_password'))}} <br>
             Modifier le mot de passe {{link.pencil()}}
           </p>
         </div>
