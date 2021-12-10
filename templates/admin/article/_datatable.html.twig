@@ -2,9 +2,10 @@
     <thead>
         <tr>
             <th>Nom</th>
-            <th>Catégorie</th>
             <th>Quantite</th>
             <th>Prix</th>
+            <th>Catégorie</th>
+            <th>Status</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -12,13 +13,20 @@
         {% for item in articles %}
         <tr>
             <td>
+                {% for item in item.images|slice(0,1) %}
+                    <img src="{{ asset('img/article/' ~ item.name) }}" width="50px" alt="">
+                    {% else %}
+                    <img src="{{ asset('img/article/vide.png') }}" width="50px" alt="">
+                {% endfor %}
                 <a class="c-1" href="{{ path('article_show',{id: item.id} ) }}">
-                    #{{ item.id}} {{ item.title}} </br>
-                    {{ item.description}}
+                    #{{ item.id}} {{ item.title}} 
                 </a>
+                <a class="c-1" href="{{ path('article_edit',{id: item.id} ) }}">
+                <i class="fas fa-pencil-alt   text-success "></i>
+                </a>
+                    </br>
+                    {{ item.description}}
             </td>
-            <td>{{ item.category.title }}</td>
-
             <td>
                 En stock: {{ item.quantity }} </br>
                 Réel: {{ item.qtyReel }}
@@ -26,6 +34,8 @@
             <td>
                 Achat: {{ item.formatterBuying}} </br>
                 De vente: {{ item.formatterPrice}}</td>
+            <td>{{ item.category.title }}</td>
+            <td>{{item.etat }}</td>
             <td>
                 <div class="btn-group">
                     <button type="button" class="btn btn-default">Action</button>

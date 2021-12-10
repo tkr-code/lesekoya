@@ -1,14 +1,16 @@
 {% extends 'lesekoya/base.html.twig' %}
 
-{% block title %}Hello EmailController!{% endblock %}
+{% block title %}Hello !{% endblock %}
 
 {% block body %}
 <div class="container my-5">
-    <h1>Visualistion des emails</h1>
+    <h1>Visualisation des emails</h1>
     <div class="list-group">
         <a href="{{ path('email_register') }}" class="list-group-item list-group-item-action">Inscription</a>
         <a href="#" class="list-group-item list-group-item-action ">Desinscription</a>
-        <a href="#" class="list-group-item list-group-item-action ">Mot de passe oublié</a>
+        <a href="{{ path('email_reset_password') }}" class="list-group-item list-group-item-action ">Mot de passe oublié</a>
+        <a href="{{ path('email_order') }}" class="list-group-item list-group-item-action ">Facture</a>
+        <a href="{{ path('email_new_user') }}" class="list-group-item list-group-item-action ">Nouvelle utulisateur</a>
     </div>
 </div>
 {% endblock %}

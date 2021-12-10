@@ -20,27 +20,47 @@ use App\Repository\ArticleRepository;
 use App\Repository\PaymentMethodRepository;
 use App\Repository\StreetRepository;
 use App\Service\Cart\CartService;
+use App\Service\Email\EmailService;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Mime\Address;
 
 /**
  * @Route("/customer")
  */
 class ClientController extends AbstractController
 {
+    private $emailService;
+    public function __construct(EmailService $emailService)
+    {
+        $this->emailService = $emailService;
+    }
     /**
      * confirmation
      * @Route("/confirmation/order/{id}", name="client_confirmation")
      * @return Response
      */
-    public function confirmation($id, OrderRepository $orderRepository):Response
+    public function confirmation($id, OrderRepository $orderRepository, MailerInterface $mailer):Response
     {
         $order =$orderRepository->find($id);
+        $email = (new TemplatedEmail())
+            ->from(new Address('malick.tounkara.1@gmail.com', 'store2.test'))
+            ->to($order->getUser()->getEmail())
+            ->subject('lesekoya - Avis de facture')
+            ->htmlTemplate('email/order.html.twig')
+            ->context([
+                'theme'=> $this->emailService->theme(4),
+                'order' => $order,
+            ])
+            ;
+            $mailer->send($email);
         return $this->renderForm('client/confirmation.html.twig',[
             'order'=>$order
         ]);

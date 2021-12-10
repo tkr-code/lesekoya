@@ -37,13 +37,25 @@ class HomeController extends AbstractController
                 'name'=>'Liste des articles | admin '
             ]
         ];
+        // dd(
+        //     $articleRepository->findBy([
+        //         'etat'=>'Top',
+        //         'enabled'=>true
+        //     ],null,12)
+        // );
 
         //   return  $this->renderForm("main/home/index.html.twig", [
       return  $this->render("leSekoya/home/index.html.twig", [
             'pages'=>$pages,
             'searchForm'=>$form,
-            'top_articles'=>$articleRepository->findEtat('top'),
-            'rand_articles'=>$articleRepository->findRand()
+            'articles'=>[
+                'rand'=>$articleRepository->findRand(),
+                'tendances'=>$articleRepository->findEtat('top'),
+                'top'=>$articleRepository->findBy([
+                    'etat'=>'Top',
+                    'enabled'=>true
+                ])
+            ]
         ]);
     }
 }

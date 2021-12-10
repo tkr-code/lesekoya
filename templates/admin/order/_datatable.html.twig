@@ -7,7 +7,6 @@
             <th>Date</th>
             <th>Livraison</th>
             <th>Total</th>
-            <th>actions</th>
         </tr>
     </thead>
     <tbody>
@@ -15,6 +14,13 @@
         <tr>
             <td>#{{ order.id }}
             {{ order.user.personne.firstname ~ ' ' ~ order.user.personne.lastname ~ ' ' }}
+            {% if order.state != 'completed' %}
+                <a 
+                    data-toggle="tooltip"
+                    data-placement="bottom"
+                    title="Edit Order"
+                    class="ml-1 mr-1" href="{{ path('order_edit', {'id': order.id}) }}"> <i class="fas fa-pencil-alt text-success"></i></a>
+            {% endif %}
              <a 
                 class="float-right"
                 data-toggle="tooltip"
@@ -36,15 +42,6 @@
 
             </td>
             <td>{{ order.total | number_format(2,'.',' ') }} XOF</td>
-            <td>
-            {% if order.state != 'completed' %}
-                <a 
-                    data-toggle="tooltip"
-                    data-placement="bottom"
-                    title="Edit Order"
-                    class="ml-1 mr-1" href="{{ path('order_edit', {'id': order.id}) }}"> <i class="fas fa-pencil-alt text-success"></i></a>
-            {% endif %}
-            </td>
         </tr>
     {% else %}
         <tr>

@@ -95,7 +95,7 @@ img.zoom {
   }
 </style>
 
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="{{ app.request.attributes.get('_route') == 'admin' ?  'hold-transition sidebar-mini layout-fixed' : 'sidebar-mini sidebar-collapse' }}">
   <div class="wrapper">
 
     <!-- Preloader -->

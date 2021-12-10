@@ -1,4 +1,5 @@
 twig:
+    cache: false
     default_path: '%kernel.project_dir%/templates'
     form_themes: ['bootstrap_4_layout.html.twig'] # accepte plusieurs thèmes
     globals: 
@@ -15,9 +16,14 @@ twig:
             phone_1: '+221781278288'
             phone_number_2: '+221 77 000 00 00'
             phone_2: '+221770000000'
-            link: "https://leseoya.com"
+            link: "https://localhost:8000"
             mission_text: 'text à definir'
             user_empty: 'empty.png'
+            orange_money: '+221 78 127 82 88'
+            code_postal: '11300'
+            adresse: 'Liberte 4'
+            ville: 'Dakar'
+
 when@test:
     twig:
         strict_variables: true

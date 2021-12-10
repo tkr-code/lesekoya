@@ -104,7 +104,11 @@
                                                 {% endif %}
                                             </td>
                                             <td>{{ item.user.email }}</td>
-                                            <td><span class="badge badge-success">{{ item.state }}</span></td>
+                                            <td>
+                                                {% import "/macros/etats.html.twig" as etats %}
+                                                {{ etats.order(item.state) }}
+                                                {# <span class="badge badge-success">{{ item.state }}</span> #}
+                                            </td>
                                             <td>{{ item.createdAt|date_format_fr }}</td>
                                         </tr>
                                         {% else %}

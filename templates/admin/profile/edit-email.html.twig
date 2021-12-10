@@ -2,12 +2,12 @@
 
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}Edit User | {{ app_name}} {% endblock %}
+{% block title %}Edit email User | {{app_name}} {% endblock %}
 
 {% block breadcrumb %}
     {{ utils.breadcrumb('Edit Profile',[
         {
-            path:'profile_index',
+            path:path('profile_index'),
             name:'Profile'
         }
     ])}}

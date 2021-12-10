@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\EqualTo;
@@ -89,6 +90,12 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('personne',PersonneType::class,[
                 'label'=>false
+            ])
+            ->add('adresse',TextType::class,[
+                'label'=>false,
+                'attr'=>[
+                    'placeholder'=>'Adresse, code postal'
+                ],
             ])
             // ->add('adresses',Adress1Type::class,[
             //     'label'=>false,

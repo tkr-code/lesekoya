@@ -204,7 +204,6 @@ class OrderController extends AbstractController
             $orderService->orderItemAdd($orderItem, $order);
             
             $order->setItemsTotal($orderService->subTotal($order));
-            
 
             $orderItemPost =  $orderItemRepository->findOneBy([
                         'produit_name'=>$orderItem->getArticle()->getTitle(),
@@ -229,6 +228,7 @@ class OrderController extends AbstractController
             'user'=>$order->getUser()
         ]);
         $form->handleRequest($request);
+        $orderService->calculOrder($order);
         
         if ($form->isSubmitted() && $form->isValid()) {         
             if ($order->getIsImmuable()) //Si la commande est modifiable
@@ -239,7 +239,7 @@ class OrderController extends AbstractController
                     $order->setPayment($payment);
                     $order->setCheckoutCompletedAt(new \DateTime());
                     foreach ($order->getOrderItem()->getValues() as $key => $value) {
-                        $articleBuy =new ArticleBuy();
+                        $articleBuy = new ArticleBuy();
                         $articleBuy->setClient($order->getUser()->getClient());
                         $articleBuy->setArticle($value->getArticle());
                         $articleBuy->setPrice($value->getUnitPrice());
@@ -249,14 +249,11 @@ class OrderController extends AbstractController
                 }
                 $order->setIsImmuable(false);
             }
-
+            $orderService->calculOrder($order);
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success','Order modified');
             return $this->redirectToRoute('order_edit', ['id'=>$order->getId()], Response::HTTP_SEE_OTHER);       
         }
-
-        $orderService->calculOrder($order);
-
         $payment = $order->getPayment();
         $payment->setAmount($order->getTotal());
 

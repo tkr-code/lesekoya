@@ -52,7 +52,7 @@ class ArticleType extends AbstractType
                 ]
             ])
             ->add('etat',ChoiceType::class,[
-                'choices'=>$this->getEtats(),
+                'choices'=>Article::etats,
                 'required'=>false,
                 'attr'=>[
                     'class'=>'select2'
@@ -78,16 +78,6 @@ class ArticleType extends AbstractType
                 ]
                 ])
         ;
-    }
-
-    public function getEtats(){
-       $choices = Article::etats;
-       $outpout =[];
-       foreach($choices as $k => $v)
-       {
-           $outpout[$v]= $k;
-       }
-       return $outpout;
     }
     public function configureOptions(OptionsResolver $resolver)
     {
