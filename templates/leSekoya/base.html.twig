@@ -19,8 +19,8 @@
   {% block head %}{% endblock %}
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
-
 <body>
+<div class="wrapper">
   <!--================ Start Header Menu Area =================-->
   <header class="header_area">
     <div class="main_menu">
@@ -214,11 +214,12 @@
     </div>
   </footer>
   <!--================ End footer Area  =================-->
+</div>
 
 
   <script src="{{ asset('vendor/jquery/jquery-3.2.1.min.js') }}"></script>
   <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-  <script src="{{ asset('vendor/skrollr.min.js') }}"></script>
+  {# <!--script src="{{ asset('vendor/skrollr.min.js') }}"></script--> #}
   <script src="{{ asset('vendor/owl-carousel/owl.carousel.min.js') }}"></script>
   <script src="{{ asset('vendor/nice-select/jquery.nice-select.min.js') }}"></script>
   <script src="{{ asset('vendor/jquery.ajaxchimp.min.js') }}"></script>
@@ -236,6 +237,7 @@
     })
   </script>
   {% block javascripts %}{% endblock %}
+
 </body>
 
 </html>

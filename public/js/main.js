@@ -2,9 +2,9 @@ $(function() {
   "use strict";
 
   //------- Parallax -------//
-  skrollr.init({
-    forceHeight: false
-  });
+  // skrollr.init({
+  //   forceHeight: false
+  // });
 
   //------- Active Nice Select --------//
   $('select_nice').niceSelect();

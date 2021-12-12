@@ -8,6 +8,10 @@ body {
  font-weight:400;
  line-height:1.667
 }
+  .wrapper {
+    overflow: hidden;
+  }
+
  
     .bg-1 {
       background: #01796F;
@@ -661,7 +665,7 @@ a {
  }
  .header_area .navbar-collapse {
   max-height:340px;
-  overflow-y:scroll
+  overflow-y:scroll !important
  }
  .header_area .navbar .nav .nav-item.submenu ul .nav-item .nav-link {
   padding:0px 15px

@@ -28,15 +28,18 @@ class ArticleFixtures extends Fixture implements DependentFixtureInterface
                 [
                     [
                         'title' => 'Hp probook','price' => '150000',
-                        'buy' => '120000'
+                        'buy' => '120000',
+                        'etat'=>'Top'
                     ],
                     [
                         'title' => 'Dell Lattitude','price' => '200000',
-                        'buy' => '150000'
+                        'buy' => '150000',
+                        'etat'=>'Top'
                     ],
                     [
                         'title' => 'Mac probook','price' => '300000',
-                        'buy' => '200000'
+                        'buy' => '200000',
+                        'etat'=>'Top'
                     ],
                 ]
             ],
@@ -46,11 +49,45 @@ class ArticleFixtures extends Fixture implements DependentFixtureInterface
                 [
                     [
                         'title' => 'Clé Usb 32 go','price' => '10000',
-                        'buy' => '6000'
+                        'buy' => '6000',
+                        'etat'=>'Top'
                     ],
                     [
                         'title' => 'Clé Usb 4 go','price' => '4000',
-                        'buy' => '3000'
+                        'buy' => '3000',
+                        'etat'=>'Top'
+                    ]
+                ]
+            ],
+            [
+                'cat'=>'Samsung',
+                'articles'=>
+                [
+                    [
+                        'title' => 'Galaxy S6 edge','price' => '30000',
+                        'buy' => '250000',
+                        'etat'=>'Top'
+                    ],
+                    [
+                        'title' => 'J 6 2020','price' => '120000',
+                        'buy' => '100000',
+                        'etat'=>'Top'
+                    ]
+                ]
+            ],
+            [
+                'cat'=>'Iphone',
+                'articles'=>
+                [
+                    [
+                        'title' => 'Iphone 13','price' => '900000',
+                        'buy' => '700000',
+                        'etat'=>'Top'
+                    ],
+                    [
+                        'title' => 'Airpod','price' => '40000',
+                        'buy' => '30000',
+                        'etat'=>'Top'
                     ]
                 ]
             ],
@@ -65,6 +102,7 @@ class ArticleFixtures extends Fixture implements DependentFixtureInterface
                 ->setBuyingPrice($value['buy'])
                 ->setPrice($value['price'])
                 ->setEnabled(true)
+                ->setEtat($value['etat'])
                 ->setDescription('Lorem ipsum, dolor sit amet consectetur adipisicing elit. Recusandae consequatur dicta,')
                 ->setQuantity(10)
                 ->setQtyReel(10);
