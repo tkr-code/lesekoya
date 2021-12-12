@@ -29,17 +29,17 @@ class ArticleFixtures extends Fixture implements DependentFixtureInterface
                     [
                         'title' => 'Hp probook','price' => '150000',
                         'buy' => '120000',
-                        'etat'=>'Top'
+                        'etat'=>'Tendance'
                     ],
                     [
                         'title' => 'Dell Lattitude','price' => '200000',
                         'buy' => '150000',
-                        'etat'=>'Top'
+                        'etat'=>'Tendance'
                     ],
                     [
                         'title' => 'Mac probook','price' => '300000',
                         'buy' => '200000',
-                        'etat'=>'Top'
+                        'etat'=>'Tendance'
                     ],
                 ]
             ],
@@ -71,7 +71,7 @@ class ArticleFixtures extends Fixture implements DependentFixtureInterface
                     [
                         'title' => 'J 6 2020','price' => '120000',
                         'buy' => '100000',
-                        'etat'=>'Top'
+                        'etat'=>"Tendance"
                     ]
                 ]
             ],
@@ -87,7 +87,7 @@ class ArticleFixtures extends Fixture implements DependentFixtureInterface
                     [
                         'title' => 'Airpod','price' => '40000',
                         'buy' => '30000',
-                        'etat'=>'Top'
+                        'etat'=>'Tendance'
                     ]
                 ]
             ],

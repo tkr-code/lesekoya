@@ -15,6 +15,7 @@ class AppFixtures extends Fixture
             $shippingAmount = new ShippingAmount();
             $shippingAmount->setAmount($montant);
             $manager->persist($shippingAmount);
+            $this->addReference('ref_shipping_amount_'.$montant,$shippingAmount);
             $montant = $montant +100;
         }
         $manager->flush();

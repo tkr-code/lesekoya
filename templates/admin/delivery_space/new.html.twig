@@ -1,11 +1,14 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/base.html.twig' %}
 
-{% block title %}New DeliverySpace{% endblock %}
+{% block title %}New Delivery Space{% endblock %}
 
 {% block body %}
-    <h1>Create new DeliverySpace</h1>
-
-    {{ include('delivery_space/_form.html.twig') }}
-
-    <a href="{{ path('delivery_space_index') }}">back to list</a>
+<div class="card card-outline card-success">
+    <div class="card-header">
+        <h3>Create new Delivery Space</3>
+    </div>
+    <div class="card-body">
+        {{ include('admin/delivery_space/_form.html.twig') }}
+    </div>
+</div>
 {% endblock %}

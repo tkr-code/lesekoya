@@ -125,7 +125,7 @@ class NavExtension extends AbstractExtension
                         ],
                         [
                             'name'=>'Lieu de livraison',
-                            'path'=>'delivery_space_index'
+                            'path'=>'admin_delivery_space_index'
                         ]       
                     ]
                 ]

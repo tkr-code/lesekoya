@@ -14,9 +14,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('delivery_space_index') }}">back to list</a>
+    <a href="{{ path('admin_delivery_space_index') }}">back to list</a>
 
-    <a href="{{ path('delivery_space_edit', {'id': delivery_space.id}) }}">edit</a>
+    <a href="{{ path('admin_delivery_space_edit', {'id': delivery_space.id}) }}">edit</a>
 
-    {{ include('delivery_space/_delete_form.html.twig') }}
+    {{ include('admin_delivery_space/_delete_form.html.twig') }}
 {% endblock %}

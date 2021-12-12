@@ -16,41 +16,20 @@ use App\Repository\UserRepository;
 class HomeController extends AbstractController
 {
     /**
-     * @Route("/",  name="home"
-     * )
+     * @Route("/",  name="home")
      */
     public function home(Request $request, ArticleRepository $articleRepository): Response
     {
         $search = new ArticleSearch();
         $form = $this->createForm(ArticleSearchType::class,$search)->handleRequest($request);
-        $pages =[
-            [
-                'path'=>'home',
-                'name'=>'Home'
-            ],
-            [
-                'path'=>'articles',
-                'name'=>'Tous nos articles'
-            ],
-            [
-                'path'=>'article_index',
-                'name'=>'Liste des articles | admin '
-            ]
-        ];
-        // dd(
-        //     $articleRepository->findBy([
-        //         'etat'=>'Top',
-        //         'enabled'=>true
-        //     ],null,12)
-        // );
-
-        //   return  $this->renderForm("main/home/index.html.twig", [
-      return  $this->render("leSekoya/home/index.html.twig", [
-            'pages'=>$pages,
-            'searchForm'=>$form,
+      return  $this->renderForm("leSekoya/home/index.html.twig", [
+            'form'=>$form,
             'articles'=>[
                 'rand'=>$articleRepository->findRand(),
-                'tendances'=>$articleRepository->findEtat('top'),
+                'tendances'=>$articleRepository->findBy([
+                    'etat'=>'Tendance',
+                    'enabled'=>true
+                ]),
                 'top'=>$articleRepository->findBy([
                     'etat'=>'Top',
                     'enabled'=>true

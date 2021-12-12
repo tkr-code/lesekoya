@@ -37,8 +37,10 @@ class CitiesFixtures extends Fixture
                     $city = new City();
                     $city->setName($cityName);
                     $country->addCity($city);
+                    $this->addReference($cityName,$city);
                 }
             }
+            $this->addReference($country->getName(),$country);
             $manager->persist($country);
         }
         $manager->flush();

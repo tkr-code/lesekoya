@@ -1,4 +1,7 @@
 {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    <div class="btn-group">
+        <button class="btn btn-{{ button_label|default('primary') ? 'primary':'success'}}">{{ button_label|default('Save') }}</button>
+        <a class="btn btn-dark" href="{{ path('admin_delivery_space_index') }}">back to list</a>
+    </div>
 {{ form_end(form) }}
