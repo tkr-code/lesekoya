@@ -22,8 +22,8 @@ class ArticleSearchType extends AbstractType
                 'label'=>false,
                 'attr'=>[
                     'id'=>'searchBox',
-                    'class'=>'form-primary rounded s text-lowercase',
-                    'placeholder'=>'Enter one or more keywords'
+                    'class'=>'form-primary rounded s',
+                    'placeholder'=>'Recherche'
                 ],
                 'required'=>false
             ])
@@ -31,7 +31,7 @@ class ArticleSearchType extends AbstractType
                 'required'=>false,
                 'label'=>false,
                 'attr'=>[
-                    'placeholder'=>'Maximum budget',
+                    'placeholder'=>'Prix Max',
                     'class'=>'form-primary'
                 ]
             ])
@@ -39,7 +39,7 @@ class ArticleSearchType extends AbstractType
                 'required'=>false,
                 'label'=>false,
                 'attr'=>[
-                    'placeholder'=>'Minimum budget',
+                    'placeholder'=>'Prix Min',
                     'class'=>'form-primary'
                 ]
             ])

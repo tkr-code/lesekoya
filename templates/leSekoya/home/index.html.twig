@@ -1,4 +1,5 @@
 {% extends "leSekoya/base.html.twig" %}
+{% import "macros/search.html.twig" as search %}
 {% block title %}{{'Home'|trans}}{% endblock %}
 {% block body %}
 <main class="site-main">
@@ -55,6 +56,22 @@
   </section>
   <!--================ Hero Carousel end =================-->
 
+  <!-- ================ trending product section start ================= -->
+  <section class="section-margin calc-60px">
+    <div class="container">
+      <div class="section-intro pb-60px">
+        <p>Tous nos produits</p>
+        <h2>Recherche <span class="section-intro__style">Rapide</span></h2>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+                {{ search.search(form) }}
+
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ================ trending product section end ================= -->
   <!-- ================ trending product section start ================= -->
   <section class="section-margin calc-60px">
     <div class="container">

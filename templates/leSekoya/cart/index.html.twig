@@ -216,7 +216,7 @@
                       {% endif %}
                       {% if not is_granted('ROLE_CLIENT') %}
                       <div class="col-lg-12">
-                        <p class="h4">Connecter vous ou creer un compte pour commander</p>
+                        <p class="h4">Connecter vous ou creer un compte pour commander <a href="{{path('app_login')}}"><b>ici</b></a></p>
                       </div>
                       {% endif %}
                     </div>

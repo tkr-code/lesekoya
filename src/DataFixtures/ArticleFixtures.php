@@ -64,7 +64,17 @@ class ArticleFixtures extends Fixture implements DependentFixtureInterface
                 'articles'=>
                 [
                     [
-                        'title' => 'Galaxy S6 edge','price' => '30000',
+                        'title' => 'Galaxy S6 edge','price' => '300000',
+                        'buy' => '250000',
+                        'etat'=>'Top'
+                    ],
+                    [
+                        'title' => 'Galaxy S7 edge','price' => '400000',
+                        'buy' => '250000',
+                        'etat'=>'Top'
+                    ],
+                    [
+                        'title' => 'Galaxy S5','price' => '190000',
                         'buy' => '250000',
                         'etat'=>'Top'
                     ],
@@ -81,6 +91,21 @@ class ArticleFixtures extends Fixture implements DependentFixtureInterface
                 [
                     [
                         'title' => 'Iphone 13','price' => '900000',
+                        'buy' => '700000',
+                        'etat'=>'Top'
+                    ],
+                    [
+                        'title' => 'Iphone 12','price' => '760000',
+                        'buy' => '700000',
+                        'etat'=>'Top'
+                    ],
+                    [
+                        'title' => 'Iphone 11','price' => '800000',
+                        'buy' => '700000',
+                        'etat'=>'Top'
+                    ],
+                    [
+                        'title' => 'Iphone 8','price' => '400000',
                         'buy' => '700000',
                         'etat'=>'Top'
                     ],

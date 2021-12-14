@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Cocur\Slugify\Slugify;
 use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -68,6 +69,10 @@ class Category
     public function getTitle(): ?string
     {
         return $this->title;
+    }
+    public function getSlug()
+    {
+        return str_replace(' ','-',$this->title);
     }
 
     public function setTitle(string $title): self

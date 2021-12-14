@@ -67,6 +67,14 @@ class EmailService
               $titre = "Avis de création d'un compte utilisateur";
               $message = 'Un nouveau compte a été crée.';
             break;
+          case '6':
+            // contact
+            $introduction = '';
+            $button_link =null ;
+            $button_text = null;
+              $titre = "Message visiteur";
+              $message = 'Un nouveau message a été crée.';
+            break;
 
           default:
             // code...

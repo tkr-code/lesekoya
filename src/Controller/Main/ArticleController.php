@@ -8,6 +8,7 @@ use App\Form\ArticleSearchType;
 use App\Repository\ArticleRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\ParentCategoryRepository;
+use Cocur\Slugify\Slugify;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +20,7 @@ class ArticleController extends AbstractController
     /**
      * @Route("boutique/{category}/{slug}/{id}", name="articles_show", requirements={"slug": "[a-z0-9\-]*"} )
      */
-    public function show(Article $article,string $category, string $slug, Request $request): Response
+    public function show(Article $article,string $category, string $slug, Request $request, ArticleRepository $articleRepository): Response
     {
         if($slug !== $article->getSlug() || $category !== $article->getCategory()->getTitle() ){
             return $this->redirectToRoute('articles_show',
@@ -52,18 +53,20 @@ class ArticleController extends AbstractController
         // }
         return $this->renderForm('leSekoya/shop/show.html.twig', [
             'article'=>$article,
-            // 'comment' => $comment,
+            'articles'=>$articleRepository->findBy(['enabled'=>true,'etat'=>'top'],null,12),
             'form' => $form,
         ]);
     }
     /**
      * @Route("/boutique", name="articles")
+     * @Route("/boutique/{parent}", name="articles_parent")
+     * @Route("/boutique/{parent}/{category}", name="articles_category")
      */
-    public function index(ParentCategoryRepository $parentCategoryRepository, Request $request, PaginatorInterface $paginator, ArticleRepository $articleRepository, CategoryRepository $categoryRepository): Response
+    public function index(string $parent = null, string $category = null, ParentCategoryRepository $parentCategoryRepository, Request $request, PaginatorInterface $paginator, ArticleRepository $articleRepository, CategoryRepository $categoryRepository): Response
     {
-        $id_category = $request->query->get('category');
+        $category = str_replace('-',' ',$category);
         $search = new ArticleSearch();
-        $search->setCategory($id_category);
+        $search->setCategory($category);
         $form = $this->createForm(ArticleSearchType::class,$search)->handleRequest($request);
         $pagination = $paginator->paginate(
             $articleRepository->search(
@@ -81,6 +84,10 @@ class ArticleController extends AbstractController
         return $this->renderForm('leSekoya/shop/index.html.twig', [
             'articles' => $pagination,
             'form'=>$form,
+            'breadcrumb'=>[
+                'parent'=>ucfirst($parent),
+                'category'=>ucfirst($category)
+            ],
             'category'=>$categoryRepository->findAll(),
             'category_parents'=>$parentCategoryRepository->etat(true),
             'top_articles'=>$articleRepository->findBy(['enabled'=>true,'etat'=>'top'],null,12),

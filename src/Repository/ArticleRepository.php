@@ -46,8 +46,8 @@ class ArticleRepository extends ServiceEntityRepository
         }
         if($category != null){
             $query->leftJoin('p.category', 'c');
-            $query->andWhere('c.id = :id')
-            ->setParameter('id',$category);
+            $query->andWhere('c.title = :title')
+            ->setParameter('title',$category);
         } 
         return $query->getQuery();
     }

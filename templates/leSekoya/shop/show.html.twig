@@ -234,7 +234,7 @@
 							<div class="review_item">
 								<div class="media">
 									<div class="d-flex">
-										<img src="img/product/review-1.png" alt="">
+										<img src="{{ asset('img/product/review-1.png') }}" alt="">
 									</div>
 									<div class="media-body">
 										<h4>Blake Ruiz</h4>
@@ -342,7 +342,12 @@
 			<p>Popular Item in the market</p>
 			<h2>Top <span class="section-intro__style">Product</span></h2>
 		</div>
-		    {# {% include "leSekoya/shop/_top_article.html.twig" %} #}
+			<div class="owl-carousel owl-theme" id="bestSellerCarousel">
+		{% for item in articles %}
+        {# {{ include ('leSekoya/shop/_article.html.twig',{class:'col-xl-3'}) }} #}
+		    {% include "leSekoya/shop/_article.html.twig" %}
+        {% endfor %}
+		</div>
 	</div>
 </section>
 <!--================ end related Product area =================-->

@@ -136,7 +136,7 @@ class CartController extends AbstractController
     public function remove($id, CartService $cartService)
     {
         $cartService->remove($id);
-        $this->addFlash('success','Le produit retiré du panier');
+        $this->addFlash('success','Le produit a été retiré du panier');
         return $this->redirectToRoute('cart_index');
     }
     /**

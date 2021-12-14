@@ -29,6 +29,19 @@ class EmailController extends AbstractController
         ]);
     }
     /**
+     * @Route("/email/contact", name="email_contact")
+     */
+    public function contact(): Response
+    {
+        return $this->render('email/contact.html.twig', [
+            'theme'=>$this->emailService->theme(6),
+            'name'=>'Malick tounkara',
+            'phone'=>'781278288',
+            'mail'=>'malick@gmail.com',
+            'message'=>'Vous faites des logicies ?'
+        ]);
+    }
+    /**
      * @Route("/email/order", name="email_order")
      */
     public function order(OrderRepository $orderRepository): Response

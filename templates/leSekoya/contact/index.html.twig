@@ -1,13 +1,20 @@
 {% extends 'lesekoya/base.html.twig' %}
+{% import "macros/alertes.html.twig" as alertes %}
 
 {% block title %}Hello ContactController!{% endblock %}
 
 {% block body %}
-
+<nav class="breadcrumb">
+  <a class="breadcrumb-item" href="/">{{'Home'|trans}}</a>
+  <span class="breadcrumb-item active">{{'Contact'|trans}}</span>
+</nav>
+{% for item in app.flashes('success') %}
+  {{ alertes.alert(item,'success')}}
+{% endfor %}
 <!-- ================ contact section start ================= -->
   <section class="section-margin--small">
     <div class="container">
-      <div class="d-none d-sm-block mb-5 pb-4">
+      {# <div class="d-none d-sm-block mb-5 pb-4">
         <div id="map" style="height: 420px;"></div>
         <script>
           function initMap() {
@@ -33,7 +40,7 @@
         </script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpfS1oRGreGSBU5HHjMmQ3o5NLw7VdJ6I&callback=initMap"></script>
         
-      </div>
+      </div> #}
       
       <div class="row">
         <div class="col-md-4 col-lg-3 mb-4 mb-md-0">
