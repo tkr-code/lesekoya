@@ -23,13 +23,13 @@ class ClientFixtures extends Fixture
             [
 
                'first_name' => 'Pepin','last_name' => 'Ngoulou',
-               'email' => 'client1@mail.com','roles' => ["ROLE_CLIENT"],
+               'email' => 'client@mail.com','roles' => ["ROLE_CLIENT"],
                'password' => 'clientstore','is_verified' => '1'
             ],
             [
 
                'first_name' => 'Mamadou','last_name' => 'Dieme',
-               'email' => 'client2@mail.com','roles' => ["ROLE_CLIENT"],
+               'email' => 'client1@mail.com','roles' => ["ROLE_CLIENT"],
                'password' => 'clientstore','is_verified' => '0'
             ],
             
