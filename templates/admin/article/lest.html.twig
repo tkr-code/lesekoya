@@ -1,0 +1,271 @@
+{% import "macros/table.html.twig" as table %}
+{% import "macros/head.html.twig" as head %}
+{% import "macros/foot.html.twig" as foot %}
+{% import "macros/breadcrumb.html.twig" as utils %}
+{% import "macros/alertes.html.twig" as alertes %}
+{% import "macros/button.html.twig" as btn %}
+
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}New Article{% endblock %}
+
+{% block head %}
+<!-- summernote -->
+<link rel="stylesheet" href="{{ asset('vendor/summernote/summernote-bs4.min.css') }}">
+<!-- datatable -->
+<link rel="stylesheet" href="{{ asset('vendor/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+{% endblock %}
+{% block stylesheets %}
+{% endblock %}
+
+{% block breadcrumb %}
+{{ utils.breadcrumb('new',[
+{
+path:path('article_index'),
+name:'Manage Articles'
+}
+])}}
+{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-outline card-primary">
+            <div class="card-header">
+                <h4>Ajouter un nouveau produit</h4>
+            </div>
+            <div class="card-body">
+                <form id="form_produit" name="article" method="post" novalidate="novalidate"
+                    enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label for="article_title" class="required">Nom du produit</label>
+                                <input type="text" id="article_title" name="title" required="required"
+                                    placeholder="Entrer le nom du produit" aria-describedby="article_title_help"
+                                    class="form-control">
+                                <small id="article_title_help" class="form-text text-muted">
+                                    the product is unique and greater than 3 characters
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="form-group"><label for="article_description"
+                                    class="required">Description</label><textarea id="article_description"
+                                    name="article[description]" required="required"
+                                    placeholder="The descripsion greater 10 characters" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="article_buyingPrice" class="required">Prix d'achat</label>
+                                <input type="text" id="article_buyingPrice" name="article[buyingPrice]"
+                                    required="required" placeholder="The price must be greater than zero"
+                                    aria-describedby="article_buyingPrice_help" class="form-control">
+                                <small id="article_buyingPrice_help" class="form-text text-muted">
+                                    The price must be greater than zero
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="article_price" class="required">Prix de vente</label>
+                                <input type="number" id="article_price" name="article[price]" required="required"
+                                    placeholder="The price must be greater than zero"
+                                    aria-describedby="article_price_help" class="form-control">
+                                <small id="article_price_help" class="form-text text-muted">
+                                    The price must be greater than zero
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label for="article_quantity" class="required">Quantité en stock</label>
+                                <input type="number" id="article_quantity_en_stock" name="article[quantity]"
+                                    required="required" placeholder="The quantity must be greater than zero"
+                                    aria-describedby="article_quantity_help" class="form-control">
+                                <small id="article_quantity_help" class="form-text text-muted">
+                                    The quantity must be greater than zero
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label for="article_quantity" class="required">Quantité minimal</label>
+                                <input type="number" id="article_quantity" name="article[quantity]" required="required"
+                                    placeholder="The quantity must be greater than zero"
+                                    aria-describedby="article_quantity_help" class="form-control">
+                                <small id="article_quantity_help" class="form-text text-muted">
+                                    The quantity must be greater than zero
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="required" for="article_category">Catégorie</label>
+                                <select id="article_category" name="article[category]" class="form-control"
+                                    data-select2-id="article_category" tabindex="-1" aria-hidden="true">
+                                    <option value="171" data-select2-id="2">Ordinateurs</option>
+                                    <option value="172">Claviers et Souris</option>
+                                    <option value="173">Clé usb</option>
+                                    <option value="174">Cable Hdmi</option>
+                                    <option value="175">Accessoires</option>
+                                    <option value="176">Imprimante et accessoires</option>
+                                    <option value="177">Mémoire</option>
+                                    <option value="178">Reseaux</option>
+                                    <option value="179">Ecran PC</option>
+                                    <option value="180">Ordinateur de Bureau</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="required" for="article_category">Marque</label>
+                                <select id="article_category" name="article[category]" class="form-control"
+                                    data-select2-id="article_category" tabindex="-1" aria-hidden="true">
+                                    <option value="171" data-select2-id="2">Hp</option>
+                                    <option value="172">Dell</option>
+                                    <option value="173">Asus</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group"><label class="" for="article_etat">Etat</label>
+                                <select id="article_etat" name="article[etat]" class="select2 form-control"
+                                    data-select2-id="article_etat" tabindex="-1" aria-hidden="true">
+                                    <option value="" data-select2-id="4"></option>
+                                    <option value="Top">Top</option>
+                                    <option value="Tendance">Tendance</option>
+                                    <option value="Populaire">Populaire</option>
+                                    <option value="Meilleurs ventes">Meilleurs ventes</option>
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group"><label class="" for="article_etat">Label</label>
+                                <select id="article_etat" name="article[etat]" class="select2 form-control"
+                                    data-select2-id="article_etat" tabindex="-1" aria-hidden="true">
+                                    <option value="New">New</option>
+                                    <option value="Top">Top</option>
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <div class="custom-file"><input type="file" id="article_images" name="article[images][]"
+                                        multiple="multiple" class="custom-file-input" lang="fr"><label
+                                        for="article_images" class="custom-file-label"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <div class="form-check"> <input type="checkbox" id="article_enabled"
+                                        name="article[enabled]" required="required" class="form-check-input" value="1">
+                                    <label class="form-check-label required" for="article_enabled">Activer</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <hr>
+                            <h4>Caracteristique</h4>
+                            <div id="error"></div>
+                            <table class="table" id="table_option">
+                                <thead>
+                                    <tr>
+                                        <th>Nom</th>
+                                        <th>Valeur</th>
+                                        <th>
+                                            <div class="btn btn-success js-add-option"><i class="fas fa-plus"></i></div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                        <div class="gallery"></div>
+                        <div class="col-lg-12">
+                            <div class="btn-group">
+                                <button class="btn btn-primary"><i class="fas fa-save"></i> Save</button>
+                                <button type="submit" id="article_saveAndAdd" name="article[saveAndAdd]"
+                                    class="btn btn-info btn">Save and Add</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+                <hr>
+                <a class="btn btn-dark" href="{{ path('article_index') }}"><i class="fa fa-arrow-circle-left"
+                        aria-hidden="true"></i> back to list</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+
+    </div>
+</div>
+{% endblock %}
+{% block foot %}
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    $(document).ready(function () {
+
+        //AJOUTER UNE OPTIONN
+        $(document).on('click', '.js-add-option', function (e) {
+            e.preventDefault()
+            let option = '';
+            option += '<tr>'
+            option += '<td><input type="text"  name="option_name[]" required="required" placeholder="" class="item_option_name form-control"> </span><span></td>'
+            option += '<td><input type="text"  name="option_content[]" required="required" placeholder="" class=" item_option_content form-control"> </span><span> </td>'
+            option += '<td><button type="button" class="btn btn-danger js-remove-option"><i class="fas fa-minus"></i></button></td>'
+            option += '</tr>'
+            $('#table_option').append(option).animate('heigth')
+        })
+
+        // SUPPRIMER UNE OPTION
+        $(document).on('click', '.js-remove-option', function () {
+            $(this).closest('tr').remove()
+        })
+
+        //ENVOYER LE FORMULAIRE D'AJOUT
+        $(document).on('submit', function (e) {
+            e.preventDefault()
+            let title = $('#article_title').val()
+            if(title == ''){
+                alert("Rensegner le nom")
+                return 
+            }
+            return
+            let error = ''
+            let count = 1
+            $('.item_option_name').each(function () {
+                if ($(this).val() == '') {
+                    error += "<p>Entrer le nom de la colonne " + count + "</p>"
+                    return
+                }
+                count++
+            })
+
+            $('.item_option_content').each(function () {
+                if ($(this).val() == '') {
+                    error += "<p>Entrer la valeur la colonne " + count + "</p>"
+                    return
+                }
+                count++
+            })
+            if (error == '') {
+
+                alert('ok')
+            } else {
+                $('#error').html('<div class="alert alert-danger">' + error + '</div>')
+            }
+
+        })
+    })
+</script>
+{% endblock %}

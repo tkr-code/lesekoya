@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class CartController extends AbstractController
 {
@@ -34,12 +35,23 @@ class CartController extends AbstractController
     }
     /**
      * checkout
+     * @Route("/store/checkout", name="checkout_store")
+     * @return void
+     */
+    public function checkoutStore():Response
+    {
+        return $this->render('leSekoya/cart/checkout.html.twig',[
+
+        ]);
+    }
+    /**
+     * checkout
      * @Route("/checkout", name="checkout")
      * @return void
      */
     public function checkout():Response
     {
-        return $this->render('lesekoya/cart/checkout.html.twig',[
+        return $this->render('lest/cart/checkout.html.twig',[
 
         ]);
     }
@@ -72,7 +84,7 @@ class CartController extends AbstractController
         //on recupere la methode de paiment
         // on recupere le total du panier
         //on gener la nouvelle commande avec le prix de la livraion
-        return $this->renderForm('lesekoya/cart/order-step-1.html.twig',[
+        return $this->renderForm('lest/cart/order-step-1.html.twig',[
             'items'=>$this->cartService->getFullCart(),
             'subtotal'=>$this->cartService->getTotal(),
             'street'=>$street,
@@ -93,7 +105,37 @@ class CartController extends AbstractController
         $formPayment = $this->createForm(Payment1Type::class,$payment);
         if ($request->request->count() > 0) {
             $cartService->addPost($request->request->get('article_id'),$request->request->get('qty'));
-            $this->addFlash('success','panier modiifer');
+            $this->addFlash('success',"Le produit a été ajouté au panier.");
+            return $this->redirectToRoute('cart_index');
+        }
+
+        $deliverySpace = new DeliverySpace();
+        $formDeliverySpace = $this->createForm(DeliverySpaceType::class, $deliverySpace);
+        $formDeliverySpace->handleRequest($request);
+        return $this->renderForm($this->getParameter('template').'/cart/index.html.twig',[
+            'items'=>$cartService->getFullCart(),
+            'total'=>$cartService->getTotal(),
+            'form'=>$form,
+            'cities'=>$cityRepository->findbyCountryName(),
+            'streets'=>$streetRepository->findbyCity(),
+            'form_payment'=>$formPayment,
+            'form_delivery_space'=>$formDeliverySpace,
+            'methodPayment'=>$paymentMethodRepository->findAll()
+
+        ]);
+    }
+    /**
+     * @Route("store/cart", name="store_cart_index")
+     */
+    public function indexStore( PaymentMethodRepository $paymentMethodRepository, ArticleRepository $articleRepository,StreetRepository $streetRepository, CartService $cartService, Request $request, CityRepository $cityRepository): Response
+    {
+        $search = new ArticleSearch();
+        $form = $this->createForm(ArticleSearchType::class,$search);
+        $payment = new Payment();
+        $formPayment = $this->createForm(Payment1Type::class,$payment);
+        if ($request->request->count() > 0) {
+            $cartService->addPost($request->request->get('article_id'),$request->request->get('qty'));
+            $this->addFlash('success',"Le produit a été modifié avec succès.");
             return $this->redirectToRoute('cart_index');
         }
 
@@ -108,7 +150,6 @@ class CartController extends AbstractController
             'streets'=>$streetRepository->findbyCity(),
             'form_payment'=>$formPayment,
             'form_delivery_space'=>$formDeliverySpace,
-            'rand_articles'=>$articleRepository->findRand(),
             'methodPayment'=>$paymentMethodRepository->findAll()
 
         ]);
@@ -121,6 +162,20 @@ class CartController extends AbstractController
     {
         $cartService->add($id);
         return $this->redirectToRoute('cart_index');
+    }
+    /**
+     * @Route("cart/add-ajax", name="cart_add_ajax", methods={"GET","POST"})
+     */
+    public function addAjax(CartService $cartService, Request $request)
+    {
+        $id =  $request->get('id');
+        if(!empty($id)){
+            $cartService->add($id);
+            return new JsonResponse(true);
+        }
+        else{
+            return new JsonResponse(false);
+        }
     }
     /**
      * @Route("/cart/shipping/add/{id}", name="shipping_add")
@@ -145,8 +200,23 @@ class CartController extends AbstractController
     public function delete($id, CartService $cartService)
     {
         $cartService->delete($id);
-        $this->addFlash('success','Le produit retiré du panier');
+        $this->addFlash('success','Le produit a été retiré du panier');
         return $this->redirectToRoute('cart_index');
+    }
+
+    /**
+     * @Route("/cart/delete-ajax", name="cart_delete_ajax", methods="POST")
+     */
+    public function deleteAjax(Request $request, CartService $cartService)
+    {
+        $id =  $request->get('id');
+        if(!empty($id)){
+            $cartService->delete($id);
+            return new JsonResponse(true);
+        }
+        else{
+            return new JsonResponse(false);
+        }
     }
 
     /**
@@ -156,5 +226,17 @@ class CartController extends AbstractController
     {
         $cartService->clear();
         return $this->redirectToRoute('cart_index');
+    }
+
+    /**
+     * RECHARGE LE PANIER EN AJAX
+     * @Route("/cart/load", name="cart_load")
+     */
+    public function loadCart(){
+        $reponse = [
+            'count'=>$this->render('lest/cart/ajax/count.html.twig')->getContent(),
+            'cart'=>$this->render('lest/cart/ajax/load.html.twig')->getContent()
+        ];
+        return new JsonResponse($reponse);
     }
 }

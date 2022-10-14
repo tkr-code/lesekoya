@@ -1,0 +1,79 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Listes des Gérants {% endblock %}
+{% import "macros/breadcrumb.html.twig" as utils %}
+{% import "macros/action.html.twig" as action %}
+{% import "macros/dataTable.html.twig" as dataTable %}
+{% import "macros/link.html.twig" as link %}
+{% block breadcrumb %}
+{{ utils.breadcrumb('Listes des gerants',[])}}
+{% endblock %}
+{% block head %}
+{{ dataTable.css() }}
+{% endblock %}
+
+{% block javascripts %}
+{{ dataTable.script('#datatable_1') }}
+{% endblock %}
+
+{% block foot %}
+{{ dataTable.js()}}
+{% endblock %}
+{% block body %}
+{% include "includes/_alerte.html.twig" %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-outline card-primary">
+            <div class="card-header">
+                <div class="card-title">Listes des gérants |
+                    <span class="badge-info badge">
+                        {{ gerants|length }}
+                    </span>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="btn-group">
+                    <a class="btn btn-primary" href="{{ path('gerant_new') }}">Ajouter un gérant
+                        <i class="fa fa-plus"></i>
+                    </a>
+                </div>
+                <hr>
+                <table id="datatable_1" class="table">
+                    <thead>
+                        <tr>
+                            <th>Gerant</th>
+                            <th>Email</th>
+                            <th>Téléphone</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in gerants %}
+                        <tr {{ (item.status=='Delete' )? 'class="text-danger"' : '' }}>
+                            <td>#{{ item.id }}
+                                {{ item.personne.firstname ~ ' ' ~ item.personne.lastname |capitalize }}
+                            </td>
+                            <td>
+                                {{ item.email|explode_email }}
+                            </td>
+                            <td>{{ item.phoneNumber|phone_format }}</td>
+                            <td>{{ item.status }}</td>
+                            <td>
+                                {{ action.gerant(item)}}
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="6">no records found</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <hr>
+                {{ link.back(path('admin'), 'back to dashboard') }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

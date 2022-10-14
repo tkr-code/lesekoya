@@ -28,13 +28,13 @@ class User1Type extends AbstractType
                     'placeholder'=>'Email'
                 ]
             ])
-            ->add('adresse',TextType::class)
             ->add('roles',ChoiceType::class,[
                 'attr'=>[
                     'placeholder'=>'Roles'
                 ],
                 'choices'=>User::roles,
-                'multiple'=>true
+                'multiple'=>true,
+                'required'=>true
             ])
             ->add('password',PasswordType::class,[
                 'attr'=>[
@@ -48,7 +48,6 @@ class User1Type extends AbstractType
                     'placeholder'=>'Téléphone'
                 ]
             ])
-            ->add('isVerified')
             ->add('sendEmail',CheckboxType::class,[
                 'mapped'=>false,
                 'label'=>'Envoyez un email pour modifier le mot de passe ?'

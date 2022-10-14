@@ -1,0 +1,10 @@
+# config/packages/dev/mailer.yaml
+framework:
+    # mailer:
+    #     envelope:
+    #         sender: 'contact@lest.sn'
+    #         recipients: ['contact@lest.sn', 'malick.tounkara.1@gmail.com']
+    #     headers:
+    #         From: 'Lest <contact@lest.sn>'
+    #         Bcc: 'baz@example.com'
+    #         X-Custom-Header: 'foobar'

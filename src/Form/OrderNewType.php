@@ -9,6 +9,7 @@ use App\Entity\Order;
 use App\Entity\Payment;
 use App\Entity\PaymentMethod;
 use App\Entity\Shipping;
+use App\Entity\Street;
 use App\Entity\User;
 use App\Repository\ArticleRepository;
 use App\Repository\OrderRepository;
@@ -65,23 +66,24 @@ class OrderNewType extends AbstractType
             // ->add('paymentDue',DateType::class)
             // // ->add('items_total')
             // // ->add('adjustments_total')
-            ->add('delivery_space',EntityType::class,[
-                'class'=>DeliverySpace::class,
+            ->add('street',EntityType::class,[
+                'class'=>Street::class,
+                'label'=>'Lieu de livraison',
+                'required'=>true,
                 'attr'=>[
                     'value'=>0
                 ],
-                'choice_label'=>function($deliverySpace){
-                    return $deliverySpace->getStreet()->getName().' Montant: '.$deliverySpace->getStreet()->getshippingAmount()->getAmount()." XOF";
+                // 'mapped'=>false,s
+                'choice_label'=>function($street){
+                    return $street->getName()." Montant:". $street->getShippingAmount()->getAmount() ." XOF";
                 }
             ])
-            // ->add('shipping_adress',EntityType::class,[
-            //     'class'=>Adress::class
-            // ])
             ->add('user',EntityType::class,[
                 'class'=>User::class,
                 'query_builder'=> function(EntityRepository $entityRepository){
                     return $entityRepository->createQueryBuilder('p')
-                    ->where('p.id <> 1 ');
+                    ->where('p.roles LIKE :roles')
+                    ->setParameter('roles', '%ROLE_CLIENT%');
                 },
                 'choice_label'=>'email'
             ])

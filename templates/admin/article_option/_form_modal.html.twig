@@ -1,0 +1,13 @@
+
+    <div class="form-group">
+        <label for="nom_edit">Nom</label>
+        <input type="text" class="form-control" value="{{ option.title }}" id="nom_edit" placeholder="Nom">
+        <small id="help_edit_nom" class="text-danger"></small>
+    </div>
+    <div class="form-group">
+        <label for="valeur_edit">Valeur</label>
+        <input type="text" class="form-control" id="valeur_edit" value="{{ option.content }}" placeholder="Valeur">
+        <small id="help_valeur_edit" class="text-danger"></small>
+    </div>
+    <button id="btn-edit-artice-option" type="submit" data-path="{{ path('article_option_edit_ajax',{id:option.id}) }}" class="btn btn-primary">Modifier
+    </button>

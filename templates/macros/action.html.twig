@@ -1,0 +1,40 @@
+{% macro order(order) %}
+{% if is_granted('ROLE_ADMIN') %}
+<a href="{{ path('order_edit',{id:order.id}) }}">
+	<i class="fas text-success fa-pencil-alt "></i>
+</a>
+{% endif %}
+{% if order.state == 'waiting' or order.state == 'in progress' %}
+<a data-toggle="tooltip" data-placement="bottom" data-page="{{ app.request.get('_route') }}" data-id="{{order.id}}"
+	title="Annuller la commande" href="{{ path('main_edit_order_state',{id:order.id}) }}"
+	class="text-danger js-order-canceled">{{'Cancel'|trans}}</a>
+{% endif %}
+{% endmacro %}
+
+{% macro client(client) %}
+{% import "macros/link.html.twig" as link %}
+{{ link.pencil(path('admin_client_edit', {'id': client.user.id}),)}}
+{{ link.show(path('admin_client_show', {'id': client.user.id}), {class:'js-client-view'}) }}
+{% endmacro %}
+{% macro gerant(gerant) %}
+{% import "macros/link.html.twig" as link %}
+{{ link.pencil(path('gerant_edit', {'id': gerant.id}),)}}
+{# {{ link.show(path('gerant_show', {'id': gerant.id}), {class:'js-client-view'}) }} #}
+{% endmacro %}
+
+{% macro categorie(categorie) %}
+{% import "macros/link.html.twig" as link %}
+{{ link.pencil(path('category_edit', {'id': categorie.id}),)}}
+{% endmacro %}
+
+{% macro brand(brand) %}
+{% import "macros/link.html.twig" as link %}
+{{ link.pencil(path('admin_brand_edit', {'id': brand.id})) }}
+{# {{ link.show(path('admin_brand_edit', {'id': brand.id})) }} #}
+{% endmacro %}
+
+{% macro street(street) %}
+{% import "macros/link.html.twig" as link %}
+{{ link.pencil(path('street_edit', {'id': street.id}),)}}
+{# {{ link.show(path('street_show', {'id': street.id})) }} #}
+{% endmacro %}

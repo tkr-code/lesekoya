@@ -1,0 +1,13 @@
+{% if brands is not empty %}
+	<div class="form-group">
+		<label for="">Marque</label>
+		<select name="brand" class="custom-select select2">
+			<option selected value=""></option>
+			{% for item in brands %}
+				<option value="{{ item.id }}">{{ item.name }}</option>
+			{% endfor %}
+		</select>
+	</div>
+	{% else %}
+		<p class="text-center">Cette categorie n'est lie a aucune marque !</p>
+{% endif %}

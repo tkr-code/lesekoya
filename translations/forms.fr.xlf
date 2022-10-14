@@ -85,6 +85,14 @@
         <source>Year</source>
         <target>année</target>
       </trans-unit>
+      <trans-unit id="MG8bsgZ" resname="Phone number">
+        <source>Phone number</source>
+        <target>Numéro de téléphone</target>
+      </trans-unit>
+      <trans-unit id="588_9PF" resname="Password">
+        <source>Password</source>
+        <target>Mot de passe</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

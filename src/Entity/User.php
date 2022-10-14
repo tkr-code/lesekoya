@@ -19,10 +19,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     const roles=[
-        'Administrateur'=>'ROLE_ADMIN',
-        'Editeur'=>'ROLE_EDITOR',
+        // 'Administrateur'=>'ROLE_ADMIN',
+        'Gérant'=>'ROLE_EDITOR',
         // 'Client'=>'ROLE_CLIENT',
-        'Utilisateur'=>'ROLE_USER'
+        // 'Utilisateur'=>'ROLE_USER'
+    ];
+    const status=[
+        'Activer'=>'Activer',
+        'Désactiver'=>'Désactiver',
+        'Delete'=>'Delete'
     ];
     /**
      * @ORM\Id
@@ -38,6 +43,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $email;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\Column(type="json")
      */
     private $roles = [];
@@ -57,17 +63,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $password_verify;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $isVerified = false;
-
-    /**
-     * @Assert\Valid
-     * @ORM\OneToOne(targetEntity=Personne::class, cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $personne;
 
     /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="user", orphanRemoval=true)
@@ -80,11 +75,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $orders;
 
     /**
-     * @ORM\OneToMany(targetEntity=Adress::class, mappedBy="user", cascade={"persist"})
-     */
-    private $adresses;
-
-    /**
+     * @Assert\Valid
      * @ORM\OneToOne(targetEntity=Client::class, mappedBy="user", cascade={"persist", "remove"})
      */
     private $client;
@@ -116,6 +107,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $phone_number;
 
+        /**
+     * 
+     * @ORM\OneToMany(targetEntity=Phone::class, mappedBy="user")
+     */
+    private $phones;
+
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
@@ -127,18 +124,46 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $is_active = true;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotNull
+     * @Assert\Valid
+     * @ORM\OneToOne(targetEntity=Adresse::class, inversedBy="user", cascade={"persist", "remove"})
      */
     private $adresse;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $cle;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $status;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $is_verified;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $first_name;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $last_name;
 
     public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->orders = new ArrayCollection();
-        $this->adresses = new ArrayCollection();
         $this->created_at = new \DateTime();
         $this->favoris = new ArrayCollection();
+        $this->phones = new ArrayCollection();
+        $this->status = 'Activer';
+        $this->is_verified = false;
+
     }
 
     public function getId(): ?int
@@ -230,29 +255,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function isVerified(): bool
-    {
-        return $this->isVerified;
-    }
-
-    public function setIsVerified(bool $isVerified): self
-    {
-        $this->isVerified = $isVerified;
-
-        return $this;
-    }
-
-    public function getPersonne(): ?Personne
-    {
-        return $this->personne;
-    }
-
-    public function setPersonne(Personne $personne): self
-    {
-        $this->personne = $personne;
-
-        return $this;
-    }
 
     /**
      * @return Collection|Comment[]
@@ -315,40 +317,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
-    public function getIsVerified(): ?bool
-    {
-        return $this->isVerified;
-    }
-
-    /**
-     * @return Collection|Adress[]
-     */
-    public function getAdresses(): Collection
-    {
-        return $this->adresses;
-    }
-
-    public function addAdress(Adress $adress): self
-    {
-        if (!$this->adresses->contains($adress)) {
-            $this->adresses[] = $adress;
-            $adress->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAdress(Adress $adress): self
-    {
-        if ($this->adresses->removeElement($adress)) {
-            // set the owning side to null (unless already changed)
-            if ($adress->getUser() === $this) {
-                $adress->setUser(null);
-            }
-        }
-
-        return $this;
-    }
 
     public function getClient(): ?Client
     {
@@ -457,12 +425,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getLastLoginAt(): ?\DateTimeInterface
+    public function getLastLoginAt(): ?\DateTime
     {
         return $this->last_login_at;
     }
 
-    public function setLastLoginAt(?\DateTimeInterface $last_login_at): self
+    public function setLastLoginAt(?\DateTime $last_login_at): self
     {
         $this->last_login_at = $last_login_at;
 
@@ -481,14 +449,109 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getAdresse(): ?string
+    public function getAdresse(): ?Adresse
     {
         return $this->adresse;
     }
 
-    public function setAdresse(string $adresse): self
+    public function setAdresse(?Adresse $adresse): self
     {
         $this->adresse = $adresse;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Phone[]
+     */
+    public function getPhones(): Collection
+    {
+        return $this->phones;
+    }
+
+    public function addPhone(Phone $phone): self
+    {
+        if (!$this->phones->contains($phone)) {
+            $this->phones[] = $phone;
+            $phone->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePhone(Phone $phone): self
+    {
+        if ($this->phones->removeElement($phone)) {
+            // set the owning side to null (unless already changed)
+            if ($phone->getUser() === $this) {
+                $phone->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCle(): ?string
+    {
+        return $this->cle;
+    }
+
+    public function setCle(string $cle): self
+    {
+        $this->cle = $cle;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getIsVerified(): ?bool
+    {
+        return $this->is_verified;
+    }
+
+    public function setIsVerified(bool $is_verified): self
+    {
+        $this->is_verified = $is_verified;
+
+        return $this;
+    }
+
+
+    public function getFullName(): ?string
+    {
+        return $this->first_name. ' ' . $this->last_name;
+    }
+    public function getFirstName(): ?string
+    {
+        return $this->first_name;
+    }
+
+    public function setFirstName(string $first_name): self
+    {
+        $this->first_name = $first_name;
+
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->last_name;
+    }
+
+    public function setLastName(string $last_name): self
+    {
+        $this->last_name = $last_name;
 
         return $this;
     }

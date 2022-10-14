@@ -68,6 +68,11 @@ class OrderItem
      */
     private $article;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $reduction;
+
 
     public function getId(): ?int
     {
@@ -178,6 +183,18 @@ class OrderItem
     public function setArticle(?Article $article): self
     {
         $this->article = $article;
+
+        return $this;
+    }
+
+    public function getReduction(): ?int
+    {
+        return $this->reduction;
+    }
+
+    public function setReduction(?int $reduction): self
+    {
+        $this->reduction = $reduction;
 
         return $this;
     }

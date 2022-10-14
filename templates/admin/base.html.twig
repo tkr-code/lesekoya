@@ -1,106 +1,56 @@
 {% import "macros/navs.html.twig" as nav %}
 {% import "macros/breadcrumb.html.twig" as breadcrumb %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="">
 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}{% endblock %} | {{ app_name }}</title>
+  <title>
+    {% block title %}{% endblock %}
+    |
+    {{ app_name }}</title>
+
+  <link rel="shortcut icon" href="{{ asset('img/' ~ site.path_logo) }}" type="image/png">
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}">
-  <!-- Select2 -->
-  <link rel="stylesheet" href="{{ asset('vendor/select2/css/select2.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('vendor/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
-    <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- select2 -->
+  <link rel="stylesheet" href="{{ asset('vendor/select2/css/select2.min.css')}}">
+  <link rel="stylesheet" href="{{ asset('vendor/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
+  <!-- Sweetalert 2 -->
+  <link rel="stylesheet" href="{{ asset('vendor/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="{{ asset('vendor/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
+
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ asset('css/adminlte.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
   {% block head %}{% endblock %}
 
 </head>
-<style>
-.a1{
-  color:#000000eb !important;
-}
-.a1:hover{
-  color:#01796F !important;
-}
-#demo {
-  height:100%;
-  position:relative;
-  overflow:hidden;
-}
 
-
-.green{
-  background-color:#6fb936;
-}
-        .thumb{
-            margin-bottom: 30px;
-        }
-        
-        .page-top{
-            margin-top:85px;
-        }
-
-   
-img.zoom {
-    width: 100%;
-    height: 200px;
-    border-radius:5px;
-    object-fit:cover;
-    -webkit-transition: all .3s ease-in-out;
-    -moz-transition: all .3s ease-in-out;
-    -o-transition: all .3s ease-in-out;
-    -ms-transition: all .3s ease-in-out;
-}
-        
- 
-.transition {
-    -webkit-transform: scale(1.2); 
-    -moz-transform: scale(1.2);
-    -o-transform: scale(1.2);
-    transform: scale(1.2);
-}
-    .modal-header {
-   
-     border-bottom: none;
-}
-    .modal-title {
-        color:#000;
-    }
-    .modal-footer{
-      display:none;  
-    }
-
-  #js-editor {
-    display: none;
-  }
-
-  .gallery img {
-    width: 100px;
-  }
-  .c-1{
-    color: #000!important;
-  }
-  .c-1:hover{
-    color:  #0069d9!important;
-  }
-</style>
-
-<body class="{{ app.request.attributes.get('_route') == 'admin' ?  'hold-transition sidebar-mini layout-fixed' : 'sidebar-mini sidebar-collapse' }}">
+<body
+  class="{{ app.request.attributes.get('_route') == 'admin' ? 'hold-transition sidebar-mini layout-fixed' : 'sidebar-mini sidebar-collapse' }}">
+  <div class="js-loader js-loader-hide">
+    <div class="text-center js-loader-content">
+      <div class="spinner-border d-inline-block" style="width: 3rem; height: 3rem;" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <p class="js-loader-text">Chargement...</p>
+    </div>
+  </div>
   <div class="wrapper">
 
     <!-- Preloader -->
-    <div class="preloader flex-column justify-content-center align-items-center">
-      <img class="animation__shake" src="{{ asset('img/AdminLTELogo.png') }}" alt="{{ app_name }}" height="60"
+    <div class="preloader bg-white flex-column justify-content-center align-items-center">
+      <img class="animation__shake" src="{{ asset('img/' ~ site.path_logo) }}" alt="{{ app_name }}" height="60"
         width="60">
     </div>
 
@@ -109,122 +59,24 @@ img.zoom {
       <!-- Left navbar links -->
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+          <a class="nav-link" data-widget="pushmenu" href="/" role="button">
+            <i class="fas fa-bars"></i>
+          </a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
           <a href="/" class="nav-link">{{'Home'|trans}}</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="{{ path('articles') }}" class="nav-link">{{'Store'|trans}}</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="{{ path('contact') }}" class="nav-link">{{'Contact'|trans}}</a>
         </li>
       </ul>
 
       <!-- Right navbar links -->
       <ul class="navbar-nav ml-auto">
-        <!-- Navbar Search -->
-        <li class="nav-item">
-          <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-            <i class="fas fa-search"></i>
-          </a>
-          <div class="navbar-search-block">
-            <form class="form-inline">
-              <div class="input-group input-group-sm">
-                <input class="form-control form-control-navbar" type="search" placeholder="{{'Search'|trans}}" aria-label="Search">
-                <div class="input-group-append">
-                  <button class="btn btn-navbar" type="submit">
-                    <i class="fas fa-search"></i>
-                  </button>
-                  <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                    <i class="fas fa-times"></i>
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </li>
 
-        <!-- Messages Dropdown Menu -->
-        <li class="nav-item dropdown">
-          <a class="nav-link" data-toggle="dropdown" href="#">
-            <i class="far fa-comments"></i>
-            <span class="badge badge-danger navbar-badge">3</span>
-          </a>
-          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-            <a href="#" class="dropdown-item">
-              <!-- Message Start -->
-              <div class="media">
-                <img src="dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-                <div class="media-body">
-                  <h3 class="dropdown-item-title">
-                    Brad Diesel
-                    <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                  </h3>
-                  <p class="text-sm">Call me whenever you can...</p>
-                  <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                </div>
-              </div>
-              <!-- Message End -->
-            </a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item">
-              <!-- Message Start -->
-              <div class="media">
-                <img src="img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                <div class="media-body">
-                  <h3 class="dropdown-item-title">
-                    John Pierce
-                    <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                  </h3>
-                  <p class="text-sm">I got your message bro</p>
-                  <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                </div>
-              </div>
-              <!-- Message End -->
-            </a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item">
-              <!-- Message Start -->
-              <div class="media">
-                <img src="dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                <div class="media-body">
-                  <h3 class="dropdown-item-title">
-                    Nora Silvester
-                    <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-                  </h3>
-                  <p class="text-sm">The subject goes here</p>
-                  <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                </div>
-              </div>
-              <!-- Message End -->
-            </a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-          </div>
-        </li>
-        <!-- Notifications Dropdown Menu -->
-        <li class="nav-item dropdown">
-          <a class="nav-link" data-toggle="dropdown" href="#">
-            <i class="far fa-bell"></i>
-            <span class="badge badge-warning navbar-badge">15</span>
-          </a>
-          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-            <span class="dropdown-item dropdown-header">15 Notifications</span>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item">
-              <i class="fas fa-envelope mr-2"></i> 4 new messages
-              <span class="float-right text-muted text-sm">3 mins</span>
-            </a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item">
-              <i class="fas fa-users mr-2"></i> 8 friend requests
-              <span class="float-right text-muted text-sm">12 hours</span>
-            </a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item">
-              <i class="fas fa-file mr-2"></i> 3 new reports
-              <span class="float-right text-muted text-sm">2 days</span>
-            </a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-          </div>
-        </li>
         <li class="nav-item">
           <a class="nav-link" data-widget="fullscreen" href="#" role="button">
             <i class="fas fa-expand-arrows-alt"></i>
@@ -242,8 +94,8 @@ img.zoom {
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
-      <a href="index3.html" class="brand-link">
-        <img src="{{ asset('img/AdminLTELogo.png') }}" alt="{{ app_name }}" class="brand-image img-circle elevation-3"
+      <a href="" class="brand-link">
+        <img src="{{ asset('img/' ~ site.path_logo) }}" alt="{{ app_name }}" class="brand-image  img-circle elevation-3"
           style="opacity: .8">
         <span class="brand-text font-weight-light">{{ app_name }}</span>
       </a>
@@ -257,7 +109,7 @@ img.zoom {
               class="img-circle elevation-2" alt="User Image">
           </div>
           <div class="info">
-            <a href="{{ path('profile_index') }}" class="d-block">{{ app.user.personne.FullName|default('No name')
+            <a href="{{ path('profile_index') }}" class="d-block">{{ app.user.FullName|default('No name')
               }}</a>
           </div>
         </div>
@@ -277,18 +129,19 @@ img.zoom {
         <!-- Sidebar Menu -->
         <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-            <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-            {{ nav.list(navs.getNavs.dashboard,'',parent_page|default('')) }}
-            {% if is_granted('ROLE_USER') %}
-              {{ nav.list(navs.getNavs.user,'',parent_page|default('')) }}
+            {{ nav.list(navs.getNavs.navs,parent_page|default('')) }}
+            {% if is_granted('ROLE_EDITOR') %}
+            {{ nav.list(navs.getNavs.editor,parent_page|default('')) }}
             {% endif %}
-
             {% if is_granted('ROLE_ADMIN') %}
-              {{ nav.list(navs.getNavs.admin,'',parent_page|default('')) }}
+            {{ nav.list(navs.getNavs.admin,parent_page|default('')) }}
             {% endif %}
-
-            {{ nav.li({path:'app_logout',name:'log out',icon:'fas fa-power-off'}) }}
+            <li class="nav-item">
+              <a id="btn-logout" href="#" type="button" class="nav-link  ">
+                <i class="fas fa-power-off nav-icon"></i>
+                <p>{{'Log out'|trans}}</p>
+              </a>
+            </li>
           </ul>
         </nav>
         <!-- /.sidebar-menu -->
@@ -304,19 +157,23 @@ img.zoom {
 
       <!-- Main content -->
       <section class="content">
-        <div class="container-fluid">
-          {% block body %}{% endblock %}
-        </div><!-- /.container-fluid -->
+        <div class="container-fluid"> {% block body %}{% endblock %}
+        </div>
+        <!-- /.container-fluid -->
       </section>
       <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
+
+    {% block modal %}{% endblock %}
     {% block footer %}
     <footer class="main-footer">
-      <strong>Copyright &copy; 2021 <a href="{{ site.link }}">{{ app_name}}.io</a>.</strong>
-      All rights reserved.
+      <strong>Copyright &copy; 2022
+        <a href="{{ site.link }}">{{ app_name}}.sn</a>.</strong>
+      {{'All rights reserved'|trans}}.
       <div class="float-right d-none d-sm-inline-block">
-        <b>Version</b> 3.1.0
+        <b>Version</b>
+        {{ site.version}}
       </div>
     </footer>
     {% endblock %}
@@ -346,29 +203,376 @@ img.zoom {
   <script src="{{ asset('vendor/select2/js/select2.full.min.js') }}"></script>
   <!-- overlayScrollbars -->
   <script src="{{ asset('vendor/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
+  <!-- Sweetalert2 -->
+  <script src="{{ asset('vendor/sweetalert2/sweetalert2.all.min.js') }}"></script>
   <!-- AdminLTE App -->
 
   <!-- PAGE PLUGINS -->
   <!-- jQuery Mapael -->
-  <script src="{{ asset('vendor/jquery-mousewheel/jquery.mousewheel.js') }}"></script>
+  <script src="{{ asset('vendor/jquery-mousewheel/jquery.mousewheel.js') }}"> </script>
   <script src="{{ asset('vendor/raphael/raphael.min.js') }}"></script>
   <script src="{{ asset('vendor/jquery-mapael/jquery.mapael.min.js') }}"></script>
   <script src="{{ asset('vendor/jquery-mapael/maps/usa_states.min.js') }}"></script>
   <!-- ChartJS -->
   <script src="{{ asset('vendor/chart.js/Chart.min.js') }}"></script>
+  <script src="{{ asset('js/admin.js') }}"></script>
+
   <script>
-    $(document).ready(function () {
-      //Initialize Select2 Elements
+    $(document).ready(function () { // Initialize Select2 Elements
+      $(".alert").fadeTo(10000, 500).slideUp(500, function () {
+        $(".alert").slideUp(500);
+      });
+      
+      // Modal monant de livrauisn
+      $(document).on('click', '#btn-modal-shipping', function (e) {
+        e.preventDefault()
+        $('#modal-default').modal('show')
+        $('#modal-default .modal-title').html('Modifier la livraison')
+        let href = $(this).data('path')
+        alert('ok')
+        // $.ajax({
+        //   url: href,
+        //   method: 'POST',
+        //   type: 'json',
+        //   data: {
+        //     modal: 'state'
+        //   },
+        //   beforeSend: function () {
+        //     $('.modal-loader').css('display', 'flex')
+        //   },
+        //   success: function (data) {
+        //     $('#modal-default .modal-body').html(data.content)
+        //     $('.modal-loader').css('display', 'none')
+        //   },
+        //   error: function () {
+        //     $('.modal-loader').css('display', 'none')
+        //     alert('Chargement impossible')
+        //   }
+        // })
+      })
+      // Modal status
+      $(document).on('click', '#btn-modal-state', function (e) {
+        e.preventDefault()
+        $('#modal-default').modal('show')
+        let href = $(this).data('path')
+        $.ajax({
+          url: href,
+          method: 'POST',
+          type: 'json',
+          data: {
+            modal: 'state'
+          },
+          beforeSend: function () {
+            $('.modal-loader').css('display', 'flex')
+          },
+          success: function (data) {
+            $('#modal-default .modal-title').html('Modifier le status')
+            $('#modal-default .modal-body').html(data.content)
+            $('.modal-loader').css('display', 'none')
+          },
+          error: function () {
+            $('.modal-loader').css('display', 'none')
+            alert('Chargement impossible')
+          }
+        })
+      })
       $('select').select2({
         theme: 'bootstrap4'
       })
+
+      const id = "{{ article.id|default(0) }}"
+      //AJOUTER UNE OPTIONN
+      $(document).on('submit', '#add-option-form', function (e) {
+        e.preventDefault()
+        let nom = $('#nom').val()
+        let valeur = $('#valeur').val()
+        if (nom == '') {
+          let text = 'Veuillez remplir le champ nom !'
+          Swal.fire(
+            'Oups',
+            text,
+            'error'
+          )
+          $('#help_nom').text(text)
+          return
+        }
+        if (valeur == '') {
+          let text = 'Veuillez remplir le champ valeur !'
+          Swal.fire(
+            'Oups',
+            text,
+            'error'
+          )
+          $('#help_valeur').text(text)
+          return
+        }
+        $.ajax({
+          url: "{{ path('article_new_add_option_ajax')}}",
+          method: 'post',
+          type: 'json',
+          data: {
+            id_article: id,
+            nom: nom,
+            valeur: valeur
+          },
+          beforeSend: function () {
+            $('.js-loader-text').text('Ajout dans la liste des caractéristiques en cour ...')
+            $('.js-loader').css('display', 'flex')
+          },
+          success: function (data) {
+            if (data.reponse) {
+              loadArticleOption()
+              $('#help_nom').text('')
+              $('#nom').val('')
+              $('#valeur').val('')
+              $('#modal-add-option').modal('hide')
+              swal.fire({
+                title: 'Bien joué',
+                icon: 'success',
+                text: 'La caractéristique a été ajouté au produit',
+                showConfirmButton: false,
+                timer: 1700
+              })
+            }
+            else {
+              $('#help_nom').text(data.error)
+              $('#error').text(data.error)
+              swal.fire({
+                title: 'Oups !',
+                icon: 'error',
+                text: data.error,
+                showConfirmButton: false,
+                timer: 1700
+              })
+            }
+            $('.js-loader').css('display', 'none')
+          },
+          error: function () {
+            swalError()
+          }
+        })
+      })
+
+      //MODIFIER L'OPTION DE L'ARTICLE
+      $(document).on('click', '#btn-edit-artice-option', function (e) {
+        e.preventDefault()
+        let href = $(this).data('path')
+        let nom = $('#nom_edit').val()
+        let valeur = $('#valeur_edit').val()
+        if (nom == '') {
+          let text = 'Veuillez remplir le champ nom !'
+          Swal.fire(
+            'Oups',
+            text,
+            'error'
+          )
+          $('#help_nom_edit').text(text)
+          return
+        }
+        if (valeur == '') {
+          let text = 'Veuillez remplir le champ valeur !'
+          Swal.fire(
+            'Oups',
+            text,
+            'error'
+          )
+          $('#help_valeur_edit').text(text)
+          return
+        }
+        $.ajax({
+          url: href,
+          method: 'post',
+          type: 'json',
+          data: {
+            edit_article_option: 'edit_article_option',
+            title: nom,
+            content: valeur
+          },
+          beforeSend: function () {
+            $('.js-loader-text').text('Modification en cour ...')
+            $('.js-loader').css('display', 'flex')
+          },
+          success: function (data) {
+            if (data) {
+              loadArticleOption()
+              $('#help_nom_edit').text('')
+              $('#nom_edit').val('')
+              $('#valeur_edit').val('')
+              $('#modal-default').modal('hide')
+              swal.fire({
+                title: 'Bien joué',
+                icon: 'success',
+                text: 'La caractéristique a été modifié.',
+                showConfirmButton: false,
+                timer: 1700
+              })
+            }
+            else {
+              // $('#help_nom').text(data.error)
+              $('#error').text('Une erreur a été détecté !')
+              swal.fire({
+                title: 'Oups !',
+                icon: 'error',
+                text: 'Une erreur a été détecté !',
+                showConfirmButton: false,
+                timer: 1700
+              })
+            }
+            $('.js-loader').css('display', 'none')
+          },
+          error: function () {
+            swalError()
+          }
+        })
+      })
+      //CHARGE LA MODAL DE L'OPTION DE L'ARTICLE
+      $(document).on('click', '.btn-edit-modal-option', function (e) {
+        e.preventDefault()
+        $('#modal-default').modal('show')
+        $('#modal-default .modal-title').html('Modifier la caractéristique.')
+        let href = $(this).data('path')
+        $.ajax({
+          url: href,
+          method: 'POST',
+          type: 'json',
+          data: {},
+          beforeSend: function () {
+            $('.modal-loader').css('display', 'flex')
+          },
+          success: function (data) {
+            $('#modal-default .modal-body').html(data)
+            $('.modal-loader').css('display', 'none')
+          },
+          error: function () {
+            $('.modal-loader').css('display', 'none')
+            alert('Chargement impossible')
+          }
+        })
+      })
+      // SUPPRIMER UNE OPTION
+      $(document).on('click', '.js-remove-option', function () {
+        let id_option = $(this).data('id')
+        let token = $(this).data('token')
+        Swal.fire({
+          title: 'Est vous sur ?',
+          icon: 'question',
+          showCancelButton: true,
+          text: 'Cette caractéristique sera supprimée.',
+          confirmButtonText: 'Oui, Supprimer',
+          confirmButtonColor: '#d33',
+        }).then((result) => {
+
+          if (result.isConfirmed) {
+            $.ajax({
+              url: '/admin/article-option/' + id_option + '/delete/' + id + '/article',
+              method: 'post',
+              type: 'json',
+              beforeSend: function () {
+                $('.js-loader-text').text('Suppression de la liste des caractéristiques en cour ...')
+                $('.js-loader').css('display', 'flex')
+              },
+              data: {
+                _token: token,
+                ajax: true
+              },
+              success: function (data) {
+                if (data.reponse) {
+                  loadArticleOption()
+                  swal.fire({
+                    title: 'Bien joué',
+                    icon: 'success',
+                    text: 'La caractéristique a été supprimé du produit',
+                    showConfirmButton: false,
+                    timer: 1700
+                  })
+                }
+                $('.js-loader').css('display', 'none')
+              },
+              error: function () {
+                swalError()
+              }
+            })
+          }
+        })
+      })
+
+      // Used to format phone number
+      function phoneFormatter() {
+        $(document).on('blur', '.phone', function () {
+          var number = $(this).val().replace(/[^\d]/g, '')
+          if (number.length == 9) {
+            number = number.replace(/(\d{2})(\d{3})(\d{2})(\d{2})/, "$1 $2 $3 $4");
+          } else if (number.length == 11) {
+            number = number.replace(/(\d{2})(\d{3})(\d{3})(\d{2})/, "($1) $2 $3 $4");
+          } else if (number.length == 12) {
+            number = number.replace(/(\d{3})(\d{2})(\d{3})(\d{2})(\d{2})/, "($1) $2 $3 $4 $5");
+          }
+          $(this).val(number)
+        });
+      };
+      $(phoneFormatter)
+
+
+
+      //CHARGER LES OPTIONS
+      function loadArticleOption() {
+        $.ajax({
+          url: '/admin/article-option/article-option-table-tr/' + id,
+          method: 'post',
+          type: 'json',
+          beforeSend: function () {
+            $('.js-loader-text').text('Actualisation de la liste des caractéristiques en cour ...')
+            $('.js-loader').css('display', 'flex')
+          },
+          success: function (data) {
+            $('#table_option tbody').html(data)
+            $('.js-loader').css('display', 'none')
+          }
+        })
+      }
+
+      function swalError(text = 'Une erreur est servenue.') {
+        swal.fire({
+          title: 'Oups !',
+          icon: 'error',
+          text: text,
+          showConfirmButton: false,
+          timer: 1700
+        })
+      }
+    })
+  </script>
+  <script>
+    $(document).ready(function () {
+
+      var imagesPreview = function (input, placeToInsertImagePreview) {
+        if (input.files) {
+          var filesAmount = input.files.length;
+          for (i = 0; i < filesAmount; i++) {
+            var reader = new FileReader();
+            reader.onload = function (event) {
+              $($.parseHTML('<img>')).attr('src', event.target.result).appendTo(placeToInsertImagePreview);
+            }
+            reader.readAsDataURL(input.files[i]);
+          }
+        }
+      };
+
+      $('#article_images').on('change', function () {
+        imagesPreview(this, 'div.gallery');
+      });
+      $('#article_edit_images').on('change', function () {
+        imagesPreview(this, 'div.gallery');
+      });
+
+      $('#gestions').addClass(' menu-is-opening menu-open')
+      $('.gestions').addClass('active')
+      $('.gestion-article').addClass('active')
     })
   </script>
   {% block foot %}{% endblock %}
 
-  {% block javascripts %}
-
-  {% endblock %}
+  {% block javascripts %}{% endblock %}
 </body>
 
 </html>

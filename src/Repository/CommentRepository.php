@@ -2,7 +2,9 @@
 
 namespace App\Repository;
 
+use App\Entity\Article;
 use App\Entity\Comment;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -18,7 +20,34 @@ class CommentRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Comment::class);
     }
+    public function findQuery(){
+        return $this->createQueryBuilder('o');
+    }
 
+    public function rating(Article $article){
+        $somme = 0;
+        $comments =$this->findBy(['article'=>$article->getId()]);
+        $nbrComment = count($comments);
+        foreach ($comments as $value) {
+            $somme +=(int) $value->getRating();
+        }
+        if($somme){
+            return $somme / $nbrComment;
+        }else{
+         return 0;   
+        }
+    }
+
+    public function isComment(User $user,Article $article ){
+        if($this->findOneBy([
+            'user'=>$user->getId(),
+            'article'=>$article->getId()
+        ])){
+            return true;
+        }else{
+            return false;
+        }
+    }
     // /**
     //  * @return Comment[] Returns an array of Comment objects
     //  */

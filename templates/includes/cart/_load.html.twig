@@ -1,0 +1,63 @@
+<a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+	<div class="icon">
+		<i class="icon-shopping-cart"></i>
+		<span class="cart-count">
+			{{ app.request.session.get('panier') |length }}
+		</span>
+	</div>
+	<p>{{'Cart'|trans}}</p>
+</a>
+
+<div class="dropdown-menu dropdown-menu-right">
+	<div class="dropdown-cart-products">
+		{% for cart in cartAll() %}
+			<div class="product">
+				<div class="product-cart-details">
+					<h4 class="product-title">
+						<a href="{{ path('articles') }}">{{cart.article.title}}</a>
+					</h4>
+
+					<span class="cart-product-info">
+						<span class="cart-product-qty">{{ cart.quantite }}</span>
+						x
+						{{ cart.article.newPrice|number_format(0,'.',' ') }}
+						{{ site.current_name}}
+					</span>
+				</div>
+				<!-- End .product-cart-details -->
+				<figure class="product-image-container">
+					<a href="{{ path('articles') }}" class="product-image">
+						{% for img in cart.article.images|slice(0,1) %}
+							<img src="{{ asset('img/article/' ~ img.name) }}" alt="product">
+						{% else %}
+							<img src="{{ asset('img/vide.png') }}" alt="{{ cart.article.title }}">
+						{% endfor %}
+					</a>
+				</figure>
+				<a href="{{ path('cart_delete',{id:cart.article.id}) }}" data-id="{{ cart.article.id }}" class="btn-remove js-delete-cart" title="Remove Product">
+					<i class="icon-close"></i>
+				</a>
+			</div>
+		{% else %}
+			<div class="text-center">
+				<h5>{{'Empty cart'|trans }}</h5>
+				<h6>Ajouter au moins un article au panier</h6>
+			</div>
+			<!-- End .product -->
+		{% endfor %}
+	</div>
+	<!-- End .cart-product -->
+
+	<div class="dropdown-cart-total">
+		<span>Total</span>
+
+		<span class="cart-total-price">{{ cartTotal()|number_format(0,'', ' ') }}
+			{{  site.current_name}}</span>
+	</div>
+	<!-- End .dropdown-cart-total -->
+
+	<div class="dropdown-cart-action">
+		<a href="{{ path('cart_index') }}" class="btn btn-primary">{{'View Cart'|trans}}</a>
+	</div>
+	<!-- End .dropdown-cart-total -->
+</div>

@@ -27,7 +27,7 @@
 <script src="{{ asset('vendor/datatables-buttons/js/buttons.print.min.js') }}"></script>
 <script src="{{ asset('vendor/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
 {% endmacro %}
-{% macro script(id) %}
+{% macro script(id,desc = 0) %}
     <!-- DataTable script {{id}} -->
   <script>
    $(document).ready(function(){
@@ -36,9 +36,9 @@
       "responsive": true, 
       "lengthChange": false, 
       "autoWidth": false,
-      "order":[[3,"desc"]],
+      "order":[[{{desc}},"desc"]],
       "buttons": 
-        ["csv", "excel", "pdf", "print","colvis"]
+        ["excel", "pdf", "print","colvis"]
     }).buttons().container().appendTo('{{id}}_wrapper .col-md-6:eq(0)');
    })
   </script>

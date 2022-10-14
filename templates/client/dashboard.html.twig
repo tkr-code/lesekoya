@@ -1,0 +1,344 @@
+{% extends "lest/base.html.twig" %}
+{% import "macros/head.html.twig" as head %}
+{% import "macros/foot.html.twig" as foot %}
+{% import "macros/table.html.twig" as table %}
+{% import "macros/dataTable.html.twig" as dataTable %}
+{% import "macros/modal.html.twig" as modal %}
+
+
+{% block head %}
+	{{ dataTable.css() }}
+{% endblock %}
+
+{% block foot %}
+	{{ dataTable.js()}}
+{% endblock %}
+
+{% block javascripts %}
+	{{ dataTable.script('#datatable_1') }}
+	{{ dataTable.script('#datatable_2') }}
+	{{ dataTable.script('#datatable_3') }}
+	{{ dataTable.script('#datatable_4') }}
+	{{ dataTable.script('#datatable_5') }}
+	<script src="{{ asset('js/order/order.js') }}"></script>
+	<script src="{{ asset('js/client/delete.js') }}"></script>
+	<script src="{{ asset('js/admin.js') }}"></script>
+
+{% endblock %}
+
+{% block main %}
+	<style>
+		.modal-dialog{max-width:850px
+		}
+
+		#modal-order-view{padding:0 10px
+		}
+
+		.table td{padding-top:1rem;padding-bottom:1rem
+		}
+		label.required{color:#666;font-weight:300;font-size:1.4rem;margin:0 0 1.1rem
+		}
+	</style>
+	<main class="main">
+		<nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+			<div class="container">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item">
+						<a href="{{ path('home') }}">{{'Home'|trans}}</a>
+					</li>
+					<li class="breadcrumb-item">
+						<a href="{{ path('articles') }}">{{'Shop'|trans}}</a>
+					</li>
+					<li class="breadcrumb-item active" aria-current="page">{{'My Account'|trans}}</li>
+				</ol>
+			</div>
+			<!-- End .container -->
+		</nav>
+		<!-- End .breadcrumb-nav -->
+
+		<div class="page-content">
+			<div class="dashboard">
+				<div class="container-fluid">
+					{% include "includes/_alerte.html.twig" %}
+					<div class="row">
+						<aside class="col-md-3 col-lg-2">
+							<ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
+								<li class="nav-item">
+									<a class="nav-link {{ app.request.query.get('tab') == null ? 'active':'' }}" id="tab-dashboard-link" data-toggle="tab" href="#tab-dashboard" role="tab" aria-controls="tab-dashboard" aria-selected="true">{{'Dashboard'|trans}}</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link {{ app.request.query.get('tab') == 'orders' ? 'active':'' }} " id="tab-orders-link" data-toggle="tab" href="#tab-orders" role="tab" aria-controls="tab-orders" aria-selected="false">Commandes</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link {{ app.request.query.get('tab') == 'buy' ? 'active':'' }}" id="tab-downloads-link" data-toggle="tab" href="#tab-downloads" role="tab" aria-controls="tab-downloads" aria-selected="false">Mes achats</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link {{ app.request.query.get('tab') == 'details' ? 'active':'' }}" id="tab-account-link" data-toggle="tab" href="#tab-account" role="tab" aria-controls="tab-account" aria-selected="false">Details du compte</a>
+								</li>
+								<li class="nav-item">
+									<a id="btn-logout" class="nav-link" href="{{ path('app_logout') }}">{{'Sign Out'|trans}}</a>
+								</li>
+							</ul>
+						</aside>
+						<!-- End .col-lg-3 -->
+
+						<div class="col-md-9 col-lg-10 col-12">
+							<div class="tab-content">
+								<div class="tab-pane fade {{ app.request.query.get('tab') == null ? 'show active':'' }}" id="tab-dashboard" role="tabpanel" aria-labelledby="tab-dashboard-link">
+									<p>Hello
+										<span class="font-weight-normal text-dark">{{ app.user.personne.fullName
+										}}</span>
+										<br>
+										À partir du tableau de bord de votre compte, vous pouvez afficher
+										<a href="#tab-orders" class="tab-trigger-link link-underline">vos commandes
+																																																						récentes</a>, gérer vos
+										<a href="#tab-address" class="tab-trigger-link">adresses de livraison et de
+																																																						facturation</a>,
+										<a href="#tab-account" class="tab-trigger-link">et modifier votre mot de passe et
+																																																						les détails de votre compte.</a>.
+									</p>
+								</div>
+								<!-- .End .tab-pane -->
+
+								<div class="tab-pane fade {{ app.request.query.get('tab') == 'orders' ? 'show active':'' }}" id="tab-orders" role="tabpanel" aria-labelledby="tab-orders-link">
+									{% include "lest/order/_order.html.twig" %}
+								</div>
+								<!-- .End .tab-pane -->
+
+								<div class="tab-pane fade {{ app.request.query.get('tab') == 'buy' ? 'show active':'' }}" id="tab-downloads" role="tabpanel" aria-labelledby="tab-downloads-link">
+									<div class="col-lg-12 mb-3 div-primary">
+										<div class="card card-primary border-0">
+											<div class="card-header bg-white">{{'My buys'|trans}}</div>
+											<div class="card-body">
+												<div class="row">
+													<div class="col-lg-12">
+														<table id="table-1" class="table">
+															<thead>
+																<tr>
+																	<th>Produit</th>
+																	<th>Prix et Quantité</th>
+																	<th>
+																		Total</th>
+																</tr>
+															</thead>
+															<tbody>
+																{% for item in app.user.client.articleBuys %}
+																	<tr>
+																		<td>
+																			{% for item in item.article.images|slice(0,1) %}
+																				<img src="{{ asset('img/article/' ~ item.name ) }}" width="40">
+																			{% else %}
+																				<img src="{{ asset('img/vide.png') }}" width="40">
+																			{% endfor %}
+																			<a href="{{ path('articles_show', { category: item.article.category.title|lower, slug: item.article.slug, id: item.article.id}) }}">
+																				{{ item.article.title }}
+																			</a>
+																		</td>
+																		<td>
+																			{{ item.article.price|number_format(0,'.',' ') }}
+																			x
+																			{{item.quantity}}
+																		</td>
+																		<td>
+																			{{item.quantity * item.price }}
+																		</td>
+																	</tr>
+																{% endfor %}
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+											<!-- /.card -->
+										</div>
+									</div>
+									<a href="{{ path('articles') }}" class="btn btn-outline-primary-2">
+										<span>{{'GO SHOP'|trans}}</span>
+										<i class="icon-long-arrow-right"></i>
+									</a>
+								</div>
+								<!-- .End .tab-pane -->
+
+								<div class="tab-pane fade" id="tab-address" role="tabpanel" aria-labelledby="tab-address-link">
+									<p>{{'The following addresses will be used on the checkout page by default.'|trans}}</p>
+
+									<div class="row">
+										<div class="col-lg-6">
+											<div class="card card-dashboard">
+												<div class="card-body">
+													<h3 class="card-title">{{'Billing Address'|trans}}</h3>
+													<!-- End .card-title -->
+
+													<p>{{ app.user.personne.lastName }}<br>
+														{{ app.user.personne.firstName }}
+														<br>
+														{% if app.user.adresse is not null %}
+
+
+															{{ app.user.adresse.city }},
+															{{app.user.adresse.rue ~ ' ' ~ app.user.adresse.codePostal }}<br>
+															{{ app.user.adresse.tel }}<br>
+														{% endif %}
+														{{ app.user.email }}<br>
+														<a href="#">Edit
+															<i class="icon-edit"></i>
+														</a>
+													</p>
+												</div>
+												<!-- End .card-body -->
+											</div>
+											<!-- End .card-dashboard -->
+										</div>
+										<!-- End .col-lg-6 -->
+
+										<div class="col-lg-6">
+											<div class="card card-dashboard">
+												<div class="card-body">
+													<h3 class="card-title">{{'Shipping Address'|trans}}</h3>
+													<!-- End .card-title -->
+
+													<p>{{'You have not set up this type of address yet.'|trans}}<br>
+														<a href="#">Edit
+															<i class="icon-edit"></i>
+														</a>
+													</p>
+												</div>
+												<!-- End .card-body -->
+											</div>
+											<!-- End .card-dashboard -->
+										</div>
+										<!-- End .col-lg-6 -->
+									</div>
+									<!-- End .row -->
+								</div>
+								<!-- .End .tab-pane -->
+
+								<div class="tab-pane fade {{ app.request.query.get('tab') == 'details' ? 'show active':'' }}" id="tab-account" role="tabpanel" aria-labelledby="tab-account-link">
+									<div class="row">
+										<div class="col-md-12">
+											<div class="accordion accordion-rounded" id="accordion-5">
+												<div class="card card-box card-sm bg-light">
+													<div class="card-header" id="heading5-1">
+														<h2 class="card-title">
+															<a role="button" data-toggle="collapse" href="#collapse5-1" aria-expanded="false" aria-controls="collapse5-1" class="collapsed">
+																Mes informations
+															</a>
+														</h2>
+													</div>
+													<!-- End .card-header -->
+													<div id="collapse5-1" class="collapse show  {{ ( app.request.get('customer_detail') or app.request.query.get('tab') == 'details' ) ? 'show':'' }} " aria-labelledby="heading5-1" data-parent="#accordion-5" style="">
+														<div class="card-body">
+															{{ form_start(formDetail) }}
+															<div class="row">
+																<div class="col-sm-6">
+																	<label>First Name *</label>
+																	{{ form_row(formDetail.personne.firstName)}}
+																</div>
+																<!-- End .col-sm-6 -->
+
+																<div class="col-sm-6">
+																	<label>Last Name *</label>
+																	{{ form_widget(formDetail.personne.lastName)}}
+																</div>
+																<!-- End .col-sm-6 -->
+																<div class="col-sm-6">
+																	<label>Telephone *</label>
+																	{{ form_widget(formDetail.phone_number)}}
+																</div>
+																<!-- End .col-sm-6 -->
+															</div>
+															<!-- End .row -->
+
+															<button type="submit" class="btn btn-outline-primary-2">
+																<span>{{'SAVE CHANGES'|trans}}</span>
+																<i class="icon-long-arrow-right"></i>
+															</button>
+															{{ form_end(formDetail) }}
+														</div>
+														<!-- End .card-body -->
+													</div>
+													<!-- End .collapse -->
+												</div>
+												<!-- End .card -->
+												<div class="card card-box card-sm bg-light">
+													<div class="card-header" id="heading5-2">
+														<h2 class="card-title">
+															<a class="collapsed" role="button" data-toggle="collapse" href="#collapse5-2" aria-expanded="false" aria-controls="collapse5-2">
+																Modifier le mot de passe
+															</a>
+														</h2>
+													</div>
+													<!-- End .card-header -->
+													<div id="collapse5-2" class="collapse {{ app.request.get('customer_reset_password') ? 'show':'' }}" aria-labelledby="heading5-2" data-parent="#accordion-5" style="">
+														<div class="card-body">
+															{{ form_start(formReset) }}
+															<div class="row">
+																{# <div class="col-sm-12">
+																	{{ form_row(formReset.current)}}
+																</div> #}
+																<div class="col-sm-12">
+																	{{ form_row(formReset.new)}}
+																</div>
+															</div>
+
+															{{ form_widget(formReset) }}
+															<button type="submit" class="btn btn-outline-primary-2">
+																<span>SAVE CHANGES</span>
+																<i class="icon-long-arrow-right"></i>
+															</button>
+															{{ form_end(formReset) }}
+
+														</div>
+														<!-- End .card-body -->
+													</div>
+													<!-- End .collapse -->
+												</div>
+												<!-- End .card -->
+												<div class="card card-box card-sm bg-light">
+													<div class="card-header" id="heading5-3">
+														<h2 class="card-title">
+															<a class="collapsed" role="button" data-toggle="collapse" href="#collapse5-3" aria-expanded="false" aria-controls="collapse5-3">
+																Supprimer mon compte
+															</a>
+														</h2>
+													</div>
+													<!-- End .card-header -->
+													<div id="collapse5-3" class="collapse {{ app.request.get('customer_reset_password') ? 'show':'' }}" aria-labelledby="heading5-3" data-parent="#accordion-5" style="">
+														<div class="card-body">
+															<p>Après la suppression de votre compte lest toutes vos informations ne pourront plus être restaurées</p>
+															<p class="text-delete text-danger"></p>
+															<div class="btn-delete-compte">
+																<a href="{{ path('js_client_user_delete', {'id': app.user.client.id, key:app.user.cle}) }}" data-token="{{ csrf_token('delete' ~ app.user.client.id) }}" class="js-user-delete btn btn-danger my-3">
+																	Supprimer mon compte</a>
+
+															</div>
+															<p class="count"></p>
+															<!-- End .card-body -->
+														</div>
+														<!-- End .collapse -->
+													</div>
+													<!-- End .card -->
+
+												</div>
+												<!-- End .accordion -->
+											</div>
+											<!-- End .col-md-6 -->
+
+										</div>
+									</div>
+									<!-- .End .tab-pane -->
+								</div>
+							</div>
+							<!-- End .col-lg-9 -->
+						</div>
+						<!-- End .row -->
+					</div>
+					<!-- End .container -->
+				</div>
+				<!-- End .dashboard -->
+			</div>
+			<!-- End .page-content -->
+		</main>
+
+		{{ modal.orderView() }}
+	{% endblock %}

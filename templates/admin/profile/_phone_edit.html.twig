@@ -1,0 +1,9 @@
+<div class="form-group">
+    <input id="tel-phone" type="text" value="{{ phone.valeur }}" placeholder="Entrer le numero" class="form-control phone">
+    <small id="help-tel-phone" class="text-danger"></small>
+</div>
+<div class="form-group">
+	<label>Numero whatsapp ?</label>
+	<input type="checkbox" checked id="isWhatsapp"></div>
+    <hr>
+<button id="btn-update-phone" data-id="{{ phone.id }}" token="{{ csrf_token('update-phone-item') }}" class="btn btn-success">Modifier</button>

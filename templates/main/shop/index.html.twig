@@ -1,0 +1,125 @@
+{% extends "main/base.html.twig" %}
+{% block title %}Tous les articles{% endblock %}
+{% block Breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ path('home') }}">{{'Home'|trans}}</a></li>
+        <li class="breadcrumb-item"><a href="{{ path('articles') }}">Boutiques</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Data</li>
+    </ol>
+</nav>
+{% endblock %}
+{% block body %}
+<style>
+    .article-card {
+        width: 200px;
+        /* height: 300px; */
+    }
+
+    .article-card-img {
+        width: 200px;
+        height: 200px;
+        background-color: red;
+    }
+
+    .article-card-img img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .article-card p {
+        padding: 0;
+        margin: 0;
+    }
+
+    .article-title,
+    .article-price {
+        text-align: center;
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    .article-price {
+        color: brown;
+    }
+
+    .btn-default {
+        background: green;
+        color: #fff;
+        font-size: 12px;
+        width: 100%;
+    }
+
+    .article-vote {
+        text-align: center;
+    }
+</style>
+<div class="container bg-white">
+    <div class="row py-5">
+        <div class="col-md-3"></div>
+        <div class="col-md-9">
+            <div class="row">
+                <div class="col-md-12">
+                    <form method="get">
+                        <p class="h4">Filtre: </p>
+                        <div class="form-row">
+                            <div class="form-group col-md-2 col-12">
+                                <input type="number" id="minPrice" value="{{ app.request.get('minPrice') }}"
+                                    width="100px" name="minPrice" placeholder="Prix Min" class="form-control">
+                            </div>
+                            <div class="form-group col-md-2 col-12">
+                                <input type="number" id="maxPrice" value="{{ app.request.get('maxPrice') }}"
+                                    width="100px" name="maxPrice" placeholder="Prix Max" class="form-control">
+                            </div>
+                            <div class="form-group col-md-3 col-12">
+                                <select class="custom-select" name="brand" id="brand">
+                                    <option value="">Toutes les Marques</option>
+                                    {% for item in brands %}
+                                    <option {{ app.request.get('brand')==item.name ? 'selected' :'' }}
+                                        value="{{ item.name }}">{{ item.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group col-md-2 col-12">
+                                <select class="custom-select" name="etat" id="brand">
+                                    <option value="">Tous les états</option>
+                                    <option {{ app.request.get('etat')=='Neuf' ? 'selected' :'' }} value="Neuf">
+                                        Neuf</option>
+                                    <option {{ app.request.get('etat')=='Reconditionné' ? 'selected' :'' }}
+                                        value="Reconditionné">Reconditionné</option>
+                                    <option {{ app.request.get('etat')=='Occasion' ? 'selected' :'' }} value="Occasion">
+                                        Occasion</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-2 col-12">
+                                <button type="submit" width="90px" class="btn btn-primary">Appliquer</button>
+                            </div>
+                        </div>
+                        <a href="{{ path('articles') }}" class="active">Annuler les filtres</a>
+                    </form>
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                        {% for item in articles %}
+                        <div class="col-md-4">
+                            {% include "main/shop/_article_item.html.twig" %}
+                        </div>
+                        {% else %}
+                        <div class=" text-center mt-5">
+                            <p class="h3">Aucun résulat associé à la recherche ou au filtre:</p>
+                            <ul>
+                                <li>Vérifiez l'hortographe des termes de la recherche</li>
+                                <li>Essayez d'autres mots</li>
+                            </ul>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <nav aria-label="Page navigation">
+                        {{ knp_pagination_render(articles) }}
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

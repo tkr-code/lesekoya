@@ -5,10 +5,13 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     article_images_directory: '%kernel.project_dir%/public/img/article'
+    public_path: '%kernel.project_dir%/public'
+    order_pdf_directory: '%kernel.project_dir%/public/pdf/order'
     user_images_directory: '%kernel.project_dir%/public/img/user'
     maitenance_file_path: '%kernel.project_dir%/public/.maintenance'
     app.locales: [en, fr]
     locale: fr
+    template: 'lesekoya'
 services:
     # default configuration for services in *this* file
     _defaults:

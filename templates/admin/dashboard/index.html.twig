@@ -1,0 +1,343 @@
+{% import "macros/breadcrumb.html.twig" as utils %}
+{% import "macros/cards.html.twig" as cards %}
+{% import "macros/modal.html.twig" as modal %}
+
+{% block modal %}
+{{ modal.default() }}
+{{ modal.orderView() }}
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript">
+    //Modifier l'etat
+    $(document).on('click', '#order-edit-etat', function (e) {
+        e.preventDefault()
+        let etat = $('#js-order-etat').val()
+        let href = $(this).data('path')
+        let token = $(this).data('token')
+        $.ajax({
+            url: href,
+            method: 'POST',
+            type: 'json',
+            beforeSend: function () {
+                $('.js-loader-text').text('Modification en cour ...')
+                $('.js-loader').css('display', 'flex')
+            },
+            data: {
+                _token: token,
+                state: etat
+            },
+            success: function (data) {
+                $('.js-loader').css('display', 'none')
+                if (data) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Les modifications ont été enregistrée.',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    $('#modal-default').modal('hide')
+                    //load home order
+                    loadOrderEditHome()
+                } else {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Une erreur est survenu.',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+            },
+            error: function () {
+                $('.js-loader').css('display', 'none')
+            }
+        })
+    })
+
+    //Charger les derniere commande
+    function loadOrderEditHome() {
+        let href = "/editor-order-get-home"
+        $.ajax({
+            url: href,
+            method: 'POST',
+            type: 'json',
+            data: {
+                load: 'order-home'
+            },
+            beforeSend: function () {
+                $('.js-loader-text').text('Actualisation en cour ...')
+                $('.js-loader').css('display', 'flex')
+            },
+            success: function (data) {
+                $('.js-loader').css('display', 'none')
+                $('#editor-order-get-home').html(data.content)
+            },
+            error: function () {
+                $('.js-loader').css('display', 'none')
+                alert('Une erreur est survenue. code : 001')
+            }
+        })
+    }
+</script>
+{% endblock %}
+
+{% extends 'admin/base.html.twig' %}
+
+{% block title %} {{'Dashboard'|trans}} 1 {% endblock %}
+
+{% block breadcrumb %}
+{{ utils.breadcrumb('Dashboard'|trans) }}
+{% endblock %}
+
+{% block body %}
+{% include "includes/_alerte.html.twig" %}
+<div class="container-fluid">
+    <!-- Info boxes -->
+    <div class="row">
+        <div class="col-12 col-sm-6 col-md-3">
+            {{ cards.infoBox({
+            name:'Product Online'|trans,
+            path:path('article_index'),
+            bg:'bg-info',
+            count:productOnline|default('0'),
+            icon:"fas fa-store-alt"
+            }) }}
+        </div>
+        <!-- /.col -->
+        <div class="col-12 col-sm-6 col-md-3">
+            {{ cards.infoBox({
+            name:'Client'|trans,
+            path:path('admin_client_index'),
+            bg:'bg-danger',
+            count:clients|length|default('0'),
+            icon:'fas fa-users'
+            }) }}
+        </div>
+        <!-- /.col -->
+
+        <!-- fix for small devices only -->
+        <div class="clearfix hidden-md-up"></div>
+
+        <div class="col-12 col-sm-6 col-md-3">
+            {{ cards.infoBox({
+            name:'Order in progress'|trans,
+            path:path('order_index'),
+            bg:'bg-success',
+            count:orderInProgress|length|default('0'),
+            icon:'fas fa-shopping-cart'
+            }) }}
+        </div>
+        {% if is_granted('ROLE_ADMIN') %}
+        <div class="col-12 col-sm-6 col-md-3">
+            {{ cards.infoBox({
+            name:'Gérants',
+            path:path('gerant_index'),
+            bg:'bg-warning',
+            count:gerants|length,
+            icon:'fas fa-user-secret'
+            }) }}
+        </div>
+        {% endif %}
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-12 my-2">
+            <div class="btn-group">
+                <a href="{{ path('article_new') }}" class="btn btn-primary mx-1">Ajouter un produit</a>
+                {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('admin_brand_new') }}" class="btn btn-primary mx-1">Ajouter une marque</a>
+                <a href="{{ path('category_index') }}" class="btn btn-primary mx-1">Ajouter une catégorie</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Main row -->
+    <div class="row">
+        <!-- Left col -->
+        <div class="col-md-8">
+            <!-- /.card -->
+            <div class="row">
+                <div class="col-md-12">
+
+                    <!-- TABLE: LATEST ORDERS -->
+                    <div class="card">
+                        <div class="card-header border-transparent">
+                            <h3 class="card-title">{{'Latest Orders'|trans}}</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body p-0">
+                            <a href="{{ path('admin') }}" class="btn btn-primary m-3">Actualiser</a>
+                            <div class="table-responsive" id="editor-order-get-home">
+                                {% include "admin/order/_order_home.html.twig" %}
+                            </div>
+                            <!-- /.table-responsive -->
+                        </div>
+                        <!-- /.card-body -->
+                        {% if lastOrder %}
+                        
+                        <div class="card-footer clearfix">
+                            <a href="{{ path('order_new') }}" class="btn btn-sm btn-info float-left">{{'Place New
+                                Order'|trans}}</a>
+                                <a href="{{ path('order_index') }}" class="btn btn-sm btn-secondary float-right">
+                                    Toutes les commandes</a>
+                                </div>
+                            {% endif %}
+                        <!-- /.card-footer -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.col -->
+
+        <div class="col-md-4">
+            <!-- Info Boxes Style 2 -->
+            <div class="info-box mb-3 bg-warning">
+                <span class="info-box-icon"><i class="fas fa-tag"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Inventaires</span>
+                    <span class="info-box-number">{{ allArticle }}</span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+            <div class="info-box mb-3 bg-success">
+                <span class="info-box-icon">
+                    <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                </span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">{{'Orders'|trans}}</span>
+                    <span class="info-box-number">{{orders|default('0') }}</span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+
+            <!-- PRODUCT LIST -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">{{'Recently Added Products'|trans}}</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body p-0">
+                    <ul class="products-list product-list-in-card pl-2 pr-2">
+                        {% for item in recentlys %}
+                        <li class="item">
+                            <div class="product-img">
+                                {% for item in item.images|slice(0,1) %}
+                                <img src="{{ asset('img/article/' ~ item.name ) }}" alt="Product Image"
+                                    class="img-size-50">
+                                {% else %}
+                                <img src="{{ asset('img/vide.png') }}" alt="Product Image" class="img-size-50">
+                                {% endfor %}
+                            </div>
+                            <div class="product-info">
+                                <a href="{{ path('article_show',{id:item.id}) }} " class="product-title a1">{{
+                                    item.title
+                                    }}
+                                    <span class="badge badge-warning float-right">{{ item.price|number_format(0,'',' ')
+                                        }}</span></a>
+                                <span class="product-description">
+                                    {{ item.description }}
+                                </span>
+                            </div>
+                        </li>
+                        <!-- /.item -->
+                        {% endfor %}
+                    </ul>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer text-center">
+                    <a href="{{ path('article_index') }}" class="uppercase">Tous les produits</a>
+                </div>
+                <!-- /.card-footer -->
+            </div>
+            <!-- /.card -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</div>
+<!--/. container-fluid -->
+
+{% endblock %}
+
+{% block foot %}
+<!-- ChartJS -->
+<script src="{{ asset('vendor/chart.js/Chart.min.js') }}"></script>
+<script src="{{ asset('js/order/order.js') }}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{{ asset('js/demo.js') }}"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+{#
+<script src="{{ asset('js/pages/dashboard.js') }}"></script> #}
+<script>
+    var salesChartCanvas = document.getElementById('revenue-chart-canvas').getContext('2d')
+    var salesChartData = {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        datasets: [
+            {
+                label: 'Digital Goods',
+                backgroundColor: 'rgba(60,141,188,0.9)',
+                borderColor: 'rgba(60,141,188,0.8)',
+                pointRadius: false,
+                pointColor: '#3b8bba',
+                pointStrokeColor: 'rgba(60,141,188,1)',
+                pointHighlightFill: '#fff',
+                pointHighlightStroke: 'rgba(60,141,188,1)',
+                data: [28, 48, 40, 19, 86, 27, 90]
+            },
+            {
+                label: 'Electronics',
+                backgroundColor: 'rgba(210, 214, 222, 1)',
+                borderColor: 'rgba(210, 214, 222, 1)',
+                pointRadius: false,
+                pointColor: 'rgba(210, 214, 222, 1)',
+                pointStrokeColor: '#c1c7d1',
+                pointHighlightFill: '#fff',
+                pointHighlightStroke: 'rgba(220,220,220,1)',
+                data: [65, 59, 80, 81, 56, 55, 40]
+            }
+        ]
+    }
+    var salesChartOptions = {
+        maintainAspectRatio: false,
+        responsive: true,
+        legend: {
+            display: false
+        },
+        scales: {
+            xAxes: [{
+                gridLines: {
+                    display: false
+                }
+            }],
+            yAxes: [{
+                gridLines: {
+                    display: false
+                }
+            }]
+        }
+    }
+    var salesChart = new Chart(salesChartCanvas, { // lgtm[js/unused-local-variable]
+        type: 'line',
+        data: salesChartData,
+        options: salesChartOptions
+    })
+</script>
+{% endblock %}

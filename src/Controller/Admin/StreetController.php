@@ -26,7 +26,7 @@ class StreetController extends AbstractController
     }
 
     /**
-     * @Route("-new", name="street_new", methods={"GET","POST"})
+     * @Route("/new", name="street_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
     {
@@ -38,6 +38,7 @@ class StreetController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($street);
             $entityManager->flush();
+            $this->addFlash('success','Un lieu de livraison a été ajouté');
 
             return $this->redirectToRoute('street_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -59,7 +60,7 @@ class StreetController extends AbstractController
     }
 
     /**
-     * @Route("-{id}/edit", name="street_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="street_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Street $street): Response
     {
@@ -68,7 +69,7 @@ class StreetController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
+            $this->addFlash('success','Enregistrement modifié');
             return $this->redirectToRoute('street_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -87,6 +88,7 @@ class StreetController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($street);
             $entityManager->flush();
+            $this->addFlash('success','Enregistrement supprimé');
         }
 
         return $this->redirectToRoute('street_index', [], Response::HTTP_SEE_OTHER);

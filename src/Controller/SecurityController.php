@@ -8,7 +8,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use App\Entity\ArticleSearch;
+use App\Entity\User;
 use App\Form\ArticleSearchType;
+use App\Form\RegistrationFormType;
+use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 
 class SecurityController extends AbstractController
 {
@@ -20,19 +25,24 @@ class SecurityController extends AbstractController
         if ($this->getUser()) {
             return $this->redirectToRoute('home');
         }
-        $search = new ArticleSearch();
-        $formSearch = $this->createForm(ArticleSearchType::class,$search);
+        // $search = new ArticleSearch();
+        // $formSearch = $this->createForm(ArticleSearchType::class,$search);
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('security/login2.html.twig', [
+        // FORM DE CREATION DE COMPTE
+        $user = new User();
+        $registrationForm = $this->createForm(RegistrationFormType::class,$user);
+
+        return $this->renderForm('security/index.html.twig', [
             'last_username' => $lastUsername, 
             'error' => $error,
             'users'=>$userRepository->findAll(),
-            'form'=>$formSearch->createView()
+            // 'form'=>$formSearch,
+            'registrationForm'=>$registrationForm
         ]);
     }
 

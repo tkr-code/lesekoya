@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use Cocur\Slugify\Slugify;
 use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -15,6 +16,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *  fields="title",
  *  message="Cette categorie existe "
  * )
+ * @ApiResource()
  */
 class Category
 {
@@ -37,7 +39,6 @@ class Category
     private $title;
 
 
-
     /**
      * @ORM\OneToMany(targetEntity=Article::class, mappedBy="category", orphanRemoval=true)
      */
@@ -52,6 +53,7 @@ class Category
      * @ORM\ManyToOne(targetEntity=ParentCategory::class, inversedBy="categorys")
      */
     private $parentCategory;
+
 
 
     public function __construct()
@@ -72,7 +74,9 @@ class Category
     }
     public function getSlug()
     {
-        return str_replace(' ','-',$this->title);
+        $Slugify = new Slugify();
+        
+        return $Slugify->slugify($this->title);
     }
 
     public function setTitle(string $title): self
@@ -143,4 +147,5 @@ class Category
 
         return $this;
     }
+
 }

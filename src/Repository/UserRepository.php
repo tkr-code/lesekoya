@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Article;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -24,7 +25,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     
     /**
      * @param string $role
-     *
      * @return array
      */
     public function findByRole($role)
@@ -33,10 +33,19 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $qb->select('u')
             ->from($this->_entityName, 'u')
             ->where('u.roles LIKE :roles')
-            // ->orderBy('u.last_login_at','ASC')
             ->setParameter('roles', '%"'.$role.'"%');
-
         return $qb->getQuery()->getResult();
+    }
+    public function findAllUsers()
+    {
+        $tableau = [];
+        foreach ($this->findAll() as $value) {
+            if(!in_array('ROLE_ADMIN',$value->getRoles()))
+            {
+                array_push($tableau,$value);
+            }
+        }
+        return $tableau;
     }
 
     /**

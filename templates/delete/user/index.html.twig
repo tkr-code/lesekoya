@@ -1,0 +1,64 @@
+{% extends "lest/base.html.twig" %}
+{% block main %}
+<main class="main">
+	<!-- End .page-header -->
+	<nav aria-label="breadcrumb" class="breadcrumb-nav">
+		<div class="container">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item">
+					<a href="{{ path('home') }}">{{'Home'|trans}}</a>
+				</li>
+				<li class="breadcrumb-item active" aria-current="page">Supprimer mon compte</li>
+			</ol>
+		</div>
+		<!-- End .container -->
+	</nav>
+	<!-- End .breadcrumb-nav -->
+	<style>
+		.gestion-user {
+			color: #777;
+			font-weight: 400;
+			font-size: 1.8rem;
+			line-height: 1.5;
+			letter-spacing: -0.025em;
+			padding-top: 8.5rem;
+			background-size: cover;
+			background-position: center center;
+			background-repeat: no-repeat;
+			min-height: 480px;
+			background-color: #fdfdfd
+		}
+	</style>
+	<div class="gestion-user text-center">
+		<div class="container">
+			{% if user.user.status != 'Delete' %}
+			{% if is_granted('ROLE_EDITOR') %}
+			<a href="/">Retour a la page d'accueil dans
+				<span class="count"></span>
+			</a>
+			{% else %}
+			<h1 class="error-title">Supprimer mon compte</h1>
+			<p>Après la suppression de votre compte lest toutes vos informations ne pourront plus être restaurées</p>
+			{% if is_valide %}
+			<p class="text-danger my-3">La clé de vérificcation a expiré</p>
+			{% else %}
+			<p class="text-delete text-danger"></p>
+			<div class="btn-delete-compte">
+				<a href="{{ path('js_client_user_delete', {'id': user.id, key:user.user.cle}) }}"
+					data-token="{{ csrf_token('delete' ~ user.id) }}" class="js-user-delete btn btn-danger my-3">
+					Supprimer mon compte</a>
+				{% endif %}
+			</div>
+			{% endif %}
+			{% else %}
+			<p class="">Merci de crrer un compte ou vous connecter</p>
+			<p>
+				{% endif %}
+			<p class="count"></p>
+		</div>
+	</div>
+</main>
+{% endblock %}
+{% block javascripts %}
+<script src="{{ asset('js/client/delete.js') }}"></script>
+{% endblock %}

@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Article;
 use App\Entity\ArticleOption;
 use App\Form\ArticleOptionType;
 use App\Repository\ArticleOptionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,6 +25,27 @@ class ArticleOptionController extends AbstractController
         return $this->render('article_option/index.html.twig', [
             'article_options' => $articleOptionRepository->findAll(),
         ]);
+    }
+    /**
+     * @Route("/article-option-table-tr/{id}", name="article_option_table_tr", methods={"POST"})
+     */
+    public function tableTr(Article $article): Response
+    {
+        return new JsonResponse([$this->render('includes/article/article_option/table_tr.html.twig', [
+                'article' => $article,
+                ])->getContent()
+            ]);
+    }
+
+     /**
+     * @Route("/article-option-get/{id}", name="article_option_edit_get", methods={"GET","POST"})
+     */
+    public function ArticleOptionGet(ArticleOption $articleOption): Response
+    {
+        return new JsonResponse([$this->render('admin/article_option/_form_modal.html.twig', [
+                'option' => $articleOption,
+                ])->getContent()
+            ]);
     }
 
     /**
@@ -59,6 +82,19 @@ class ArticleOptionController extends AbstractController
     }
 
     /**
+     * @Route("/{id}/edit", name="article_option_edit_ajax", methods={"GET","POST"})
+     */
+    public function editOptionAjax(Request $request, ArticleOption $articleOption): Response
+    {
+        if($request->request->get('edit_article_option') == "edit_article_option" ){
+            $articleOption->setTitle($request->request->get('title'))->setContent($request->request->get('content'));
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            return new JsonResponse(true);
+        }
+        return new JsonResponse(false);
+    }
+    /**
      * @Route("/{id}/edit/{idArticle}/article", name="article_option_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, ArticleOption $articleOption,$idArticle): Response
@@ -87,8 +123,12 @@ class ArticleOptionController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($articleOption);
             $entityManager->flush();
+            if($request->request->get('ajax')){
+                return new JsonResponse([
+                    'reponse'=>true,
+                    ]);
+            }
         }
-
         return $this->redirectToRoute('article_edit', ['id'=>$idArticle], Response::HTTP_SEE_OTHER);
     }
 }

@@ -8,9 +8,12 @@ use App\Entity\Payment;
 use App\Form\ClientType;
 use App\Entity\OrderItem;
 use App\Entity\ArticleSearch;
+use App\Entity\Comment;
 use App\Entity\DeliverySpace;
 use App\Entity\Shipping;
 use App\Form\ArticleSearchType;
+use App\Form\CustomerDetailType;
+use App\Form\CustomerResetPasswordType;
 use App\Form\Payment1Type;
 use App\Form\UserPasswordType;
 use App\Repository\OrderRepository;
@@ -21,6 +24,7 @@ use App\Repository\PaymentMethodRepository;
 use App\Repository\StreetRepository;
 use App\Service\Cart\CartService;
 use App\Service\Email\EmailService;
+use App\Service\Pdf\PdfService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,6 +32,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Mime\Address;
@@ -38,6 +43,7 @@ use Symfony\Component\Mime\Address;
 class ClientController extends AbstractController
 {
     private $emailService;
+    private $parent_page = 'Client';
     public function __construct(EmailService $emailService)
     {
         $this->emailService = $emailService;
@@ -47,22 +53,10 @@ class ClientController extends AbstractController
      * @Route("/confirmation/order/{id}", name="client_confirmation")
      * @return Response
      */
-    public function confirmation($id, OrderRepository $orderRepository, MailerInterface $mailer):Response
+    public function confirmation(Order $order): Response
     {
-        $order =$orderRepository->find($id);
-        $email = (new TemplatedEmail())
-            ->from(new Address('malick.tounkara.1@gmail.com', 'store2.test'))
-            ->to($order->getUser()->getEmail())
-            ->subject('lesekoya - Avis de facture')
-            ->htmlTemplate('email/order.html.twig')
-            ->context([
-                'theme'=> $this->emailService->theme(4),
-                'order' => $order,
-            ])
-            ;
-            $mailer->send($email);
-        return $this->renderForm('client/confirmation.html.twig',[
-            'order'=>$order
+        return $this->renderForm('client/confirmation.html.twig', [
+            'order' => $order
         ]);
     }
     /**
@@ -71,63 +65,66 @@ class ClientController extends AbstractController
     public function orderClientShipping(CartService $cartService): Response
     {
         $search = new ArticleSearch();
-        $form = $this->createForm(ArticleSearchType::class,$search);
+        $form = $this->createForm(ArticleSearchType::class, $search);
         $payment = new Payment();
-        $formPayment = $this->createForm(Payment1Type::class,$payment);
-        return $this->renderForm('client/adress.html.twig',[
-            'form'=>$form,
-            'items'=>$cartService->getFullCart(),
-            'total'=>$cartService->getTotal(),
-            'formPayment'=>$formPayment
+        $formPayment = $this->createForm(Payment1Type::class, $payment);
+        return $this->renderForm('client/adress.html.twig', [
+            'form' => $form,
+            'items' => $cartService->getFullCart(),
+            'total' => $cartService->getTotal(),
+            'formPayment' => $formPayment
         ]);
     }
-        /**
+    /**
      * @Route("/order/new-order", name="order_client_new", methods={"POST"})
      */
-    public function newOrder(OrderRepository $orderRepository, StreetRepository $streetRepository, EntityManagerInterface $entityManagerInterface, PaymentMethodRepository $paymentMethodRepository, ArticleRepository $articleRepository, Request $request, OrderService $orderService, SessionInterface $session): Response
+    public function newOrder(PdfService $pdfService, MailerInterface $mailer, OrderRepository $orderRepository, StreetRepository $streetRepository, EntityManagerInterface $entityManagerInterface, PaymentMethodRepository $paymentMethodRepository, ArticleRepository $articleRepository, Request $request, OrderService $orderService, SessionInterface $session): Response
     {
 
         // nouvelle commande
         $order = new Order();
-        
+        $order->setNumber(1);
+
         //rue de livraion
         $street = $session->get('shipping');
         // $street = $streetRepository->find($street->getId());
-        $order->setState('in progress');
-        $order->setNumber($orderService->voiceNumber());
-        $order->setPaymentDue(new \DateTime('+ 6 day') );
+        $order->setState('waiting');
+        $order->setPaymentDue(new \DateTime('+ 6 day'));
         $user  = $this->getUser();
         $order->setUser($user);
         $panier = $session->get('panier');
         $total = 0;
         foreach ($panier as $key => $value) {
-           $article = $articleRepository->find($key);
-           $orderItem = new OrderItem();
-           $orderItem->setProduitName($article->getTitle());
-           $orderItem->setQuantity($value);
-           $orderItem->setUnitPrice($article->getPrice());
-           $orderItem->setUnitsTotal($orderItem->getUnitPrice() * $orderItem->getQuantity());
-           $orderItem->setTotal($orderItem->getUnitsTotal() + $orderItem->getAdjustmentsTotal() );
-           $total += $orderItem->getTotal();
-           $orderItem->setArticle($article);
-           $order->addOrderItem($orderItem);
+            $article = $articleRepository->find($key);
+            $orderItem = new OrderItem();
+            $orderItem->setReduction($article->getReduction());
+            $orderItem->setProduitName($article->getTitle());
+            $orderItem->setQuantity($value);
+            $orderItem->setUnitPrice($article->getNewPrice());
+            $orderItem->setUnitsTotal($orderItem->getUnitPrice() * $orderItem->getQuantity());
+            $orderItem->setTotal($orderItem->getUnitsTotal() + $orderItem->getAdjustmentsTotal());
+            $total += $orderItem->getTotal();
+            $orderItem->setArticle($article);
+            $order->addOrderItem($orderItem);
         }
         $order->setItemsTotal($total);
         // $order->setAdjustmentsTotal($order->getShipping());
         $order->setTotal($order->getItemsTotal());
-        
+
         $payment = new Payment();
         $payment->setAmount($order->getTotal());
         $payment->setState('In progress');
-        $method = $paymentMethodRepository->find($request->request->get('method'));
+        $method = $paymentMethodRepository->findOneBy(['name' => 'Payement à la livraison']);
         $payment->setPaymentMethod($method);
         // livraison
         $shipping = new Shipping();
         //montant de la livraison
         $shippingAmount = $street->getShippingAmount()->getAmount();
         $shipping->setAmount($shippingAmount);
+        $order->setShipping($shippingAmount);
+        $order->setShippingState('Waiting');
         $order->setAdjustmentsTotal($shippingAmount);
-        $order->setTotal($order->getTotal()+ $order->getAdjustmentsTotal());
+        $order->setTotal($order->getTotal() + $order->getAdjustmentsTotal());
         //statut de la livraison
         $shipping->setState('In progress');
 
@@ -138,20 +135,24 @@ class ClientController extends AbstractController
         $deliverySpace->setStreet($street);
         //client 
         $deliverySpace->setClient($user->getClient());
-        
+
         $order->setPayment($payment);
-        // $order->setShipping($shipping);
         $order->setDeliverySpace($deliverySpace);
         
-        $order->setDeliverySpace($deliverySpace);
-        // dd($order);
-        // dump($request);
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($order);
         $entityManager->flush();
-        $this->addFlash('success','Order created');
-        $session->set('panier',[]);
-        return $this->redirectToRoute('client_confirmation', ['id'=>$order->getId()], Response::HTTP_SEE_OTHER);
+        $order->setNumber($orderService->voiceNumber($order->getId()));
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Merci. Votre commande a été reçu.');
+        $session->set('panier', []);
+        $user = $this->getUser();
+        
+        $mailer->send($orderService->orderSendToEmail($order)); // envoi la commande par email
+        $mailer->send($orderService->orderSendNotification($order));//mail de notification d'une commande en attente
+        
+        return $this->redirectToRoute('client_confirmation', ['id' => $order->getId()], Response::HTTP_SEE_OTHER);
     }
     /**
      * @Route("/order/{id}", name="client_order_show", methods={"GET"})
@@ -159,18 +160,36 @@ class ClientController extends AbstractController
     public function ordershow(Order $order): Response
     {
         $search = new ArticleSearch();
-        $form = $this->createForm(ArticleSearchType::class,$search);
+        $form = $this->createForm(ArticleSearchType::class, $search);
         return $this->renderForm('client/order/show.html.twig', [
             'order' => $order,
-            'form'=>$form
+            'form' => $form
         ]);
+    }
+
+    /**
+     * @Route("/order-ajax-show", name="client_order_show_ajax", methods={"POST"})
+     */
+    public function ordershowAjax(Request $request, OrderRepository $orderRepository): Response
+    {
+        $id = $request->request->get('id');
+        $reponse = [
+            'reponse' => false
+        ];
+        if (!empty($id)) {
+            $reponse = [
+                'content' => $this->render('admin/order/_order.html.twig', ['order' => $orderRepository->find($id)])->getContent(),
+                'reponse' => true,
+            ];
+        }
+        return new JsonResponse($reponse);
     }
     /**
      * buy
      * @Route("/buy", name="client_buy")
      * @return void
      */
-    public function buy():Response
+    public function buy(): Response
     {
         return $this->render('client/buy/index.html.twig');
     }
@@ -180,28 +199,51 @@ class ClientController extends AbstractController
     public function clientOrder(OrderRepository $orderRepository): Response
     {
         $search = new ArticleSearch();
-        $form = $this->createForm(ArticleSearchType::class,$search);
+        $form = $this->createForm(ArticleSearchType::class, $search);
         $user = $this->getUser();
         return $this->renderForm('client/order/index.html.twig', [
-            'form'=>$form,
-            'orders'=>$orderRepository->findClient($user->getId()),
-            'ordersWaiting'=>$orderRepository->findClientState($user->getId(),'waiting'),
-            'ordersInProgress'=>$orderRepository->findClientState($user->getId()),
-            'ordersCanceled'=>$orderRepository->findClientState($user->getId(),'canceled'),
-            'ordersCompleted'=>$orderRepository->findClientState($user->getId(),'completed'),
+            'form' => $form,
+            'orders' => $orderRepository->findClient($user->getId()),
+            'ordersWaiting' => $orderRepository->findClientState($user->getId(), 'waiting'),
+            'ordersInProgress' => $orderRepository->findClientState($user->getId()),
+            'ordersCanceled' => $orderRepository->findClientState($user->getId(), 'canceled'),
+            'ordersCompleted' => $orderRepository->findClientState($user->getId(), 'completed'),
         ]);
     }
+
     /**
-     * @Route("/", name="client_index", methods={"GET"})
+     * @Route("/", name="client_index", methods={"GET","POST"})
      */
-    public function index(ClientRepository $clientRepository): Response
+    public function index(Request $request, OrderRepository $orderRepository, ClientRepository $clientRepository, UserPasswordHasherInterface $userPasswordHasherInterface): Response
     {
-        $search = new ArticleSearch();
-        $form = $this->createForm(ArticleSearchType::class,$search);
-        return $this->renderForm('client/compte/index.html.twig', [
+        $user = $this->getUser();
+        $em = $this->getDoctrine()->getManager();
+        //DETAIL FORM
+        $form = $this->createForm(CustomerDetailType::class,$user);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $em->flush();
+            $this->addFlash('success','Vos informations ont été modifié.');
+            return $this->redirectToRoute('client_index',['tab'=>'details']);
+        }
+        // END DETAIL FORM
+
+        //MODIFIER LE MOT DE PASSE CLIENT
+        $formReset = $this->createForm(CustomerResetPasswordType::class,$user);
+        $formReset->handleRequest($request);
+        if($formReset->isSubmitted() && $formReset->isValid()){
+            
+            $user->setPassword($userPasswordHasherInterface->hashPassword($user,$formReset->get('new')->getData()));
+            $em->flush();
+            $this->addFlash('success','Le mot de passe a été modifié.');
+            return $this->redirectToRoute('client_index',['tab'=>'details','account'=>'informations']);
+        }
+        // END MODIFIER LE MOT DE PASSE CLIENT
+        return $this->renderForm('client/dashboard.html.twig', [
             'clients' => $clientRepository->findAll(),
-            'form'=>$form,
-            'parent_page'=>'Client'
+            'formDetail' => $form,
+            'parent_page' => $this->parent_page,
+            'formReset'=>$formReset
         ]);
     }
     /**
@@ -215,7 +257,7 @@ class ClientController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-            $this->addFlash('success','Informations modifiées');
+            $this->addFlash('success', 'Informations modifiées');
             return $this->redirectToRoute('client_index', [], Response::HTTP_SEE_OTHER);
         }
         // dd($user);
@@ -235,7 +277,7 @@ class ClientController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-            $this->addFlash('success','Informations modifiées');
+            $this->addFlash('success', 'Informations modifiées');
             return $this->redirectToRoute('client_index', [], Response::HTTP_SEE_OTHER);
         }
         // dd($user);
@@ -256,7 +298,7 @@ class ClientController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-            $this->addFlash('success','Informations modifiées');
+            $this->addFlash('success', 'Informations modifiées');
             return $this->redirectToRoute('client_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -275,9 +317,9 @@ class ClientController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setPassword($userPasswordHasherInterface->hashPassword($user,$user->getPassword()));
+            $user->setPassword($userPasswordHasherInterface->hashPassword($user, $user->getPassword()));
             $this->getDoctrine()->getManager()->flush($user);
-            $this->addFlash('success','Informations modifiées');
+            $this->addFlash('success', 'Informations modifiées');
             return $this->redirectToRoute('app_logout', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -286,7 +328,6 @@ class ClientController extends AbstractController
             'form' => $form,
         ]);
     }
-
 
     /**
      * @Route("/new", name="client_new", methods={"GET","POST"})
@@ -326,7 +367,7 @@ class ClientController extends AbstractController
      */
     public function delete(Request $request, Client $client): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$client->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $client->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($client);
             $entityManager->flush();
@@ -334,6 +375,4 @@ class ClientController extends AbstractController
 
         return $this->redirectToRoute('client_index', [], Response::HTTP_SEE_OTHER);
     }
-
-
 }

@@ -5,67 +5,63 @@
 {% import "macros/alertes.html.twig" as alerte %}
 {% import "macros/button.html.twig" as btn %}
 {% import "macros/link.html.twig" as link %}
+{% import "macros/dataTable.html.twig" as dataTable %}
 
 {% extends 'admin/base.html.twig' %}
 
-{% block stylesheets %}
-{{ head.dataTable() }}
+{% block head %}
+	{{ dataTable.css() }}
 {% endblock %}
 
 {% block breadcrumb %}
-{{ utils.breadcrumb('Manage delivery space'|trans) }}
+	{{ utils.breadcrumb('Manage delivery space'|trans) }}
 {% endblock %}
 
-{% block title %}{{'DeliverySpace'|trans}}{% endblock %}
+{% block title %}
+	{{'DeliverySpace'|trans}}
+{% endblock %}
 
 {% block body %}
-{% for item in app.flashes('success') %}
-{{ alerte.alert(item,'success')}}
-{% endfor %}
-<div class="card card-outline card-primary">
-    <div class="card-header">
-        <h3>{{'Delivery Space'|trans}}</h3>
-    </div>
-    <div class="card-body">
-        <a class="btn-primary btn my-3" href="{{ path('admin_delivery_space_new') }}">Create new</a>
-        <table id="table-1" class="table">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for delivery_space in delivery_spaces %}
-                <tr>
-                    <td>{{ delivery_space.id }}</td>
-                    <td>
-                        <a href="{{ path('admin_delivery_space_show', {'id': delivery_space.id}) }}">show</a>
-                        <a href="{{ path('admin_delivery_space_edit', {'id': delivery_space.id}) }}">edit</a>
-                    </td>
-                </tr>
-                {% else %}
-                <tr>
-                    <td colspan="2">no records found</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
+	{% for item in app.flashes('success') %}
+		{{ alerte.alert(item,'success')}}
+	{% endfor %}
+	<div class="card card-outline card-primary">
+		<div class="card-header">
+			<h3>{{'Delivery Space'|trans}}</h3>
+		</div>
+		<div class="card-body">
+			<a class="btn-primary btn my-3" href="{{ path('admin_delivery_space_new') }}">Create new</a>
+			<table id="datatable_1" class="table">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Rue</th>
+						<th>actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for delivery_space in delivery_spaces %}
+						<tr>
+							<td>{{ delivery_space.id }}</td>
+							<td>{{ delivery_space.street.name }}</td>
+                            <td>
+								<a href="{{ path('admin_delivery_space_show', {'id': delivery_space.id}) }}">show</a>
+								<a href="{{ path('admin_delivery_space_edit', {'id': delivery_space.id}) }}">edit</a>
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="2">no records found</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
 {% endblock %}
 {% block javascripts %}
-{{ table.jsDataTable('datatable_1') }}
-{# {{table.jsDataTable('datatable_2') }} #}
-<script>
-    $(document).ready(function () {
-        //nivagation 
-        $('#gestions').addClass(' menu-is-opening menu-open')
-        $('.gestions').addClass('active')
-        $('.gestion-customer').addClass('active')
-    })
-</script>
+	{{ dataTable.script('#datatable_1') }}
 {% endblock %}
 {% block foot %}
-{{ foot.dataTable()}}
+	{{ dataTable.js()}}
 {% endblock %}

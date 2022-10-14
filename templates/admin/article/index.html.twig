@@ -5,11 +5,11 @@
 {% import "macros/link.html.twig" as link %}
 
 
-{% block title %}Manage articles {% endblock %}
+{% block title %}Listes des articles {% endblock %}
 
 
 {% block breadcrumb %}
-{{ utils.breadcrumb('Manage articles')}}
+{{ utils.breadcrumb('Listes des articles')}}
 {% endblock %}
 
 {% block head %}
@@ -25,12 +25,132 @@
 {{ dataTable.script('#datatable_1') }}
 {{ dataTable.script('#datatable_2') }}
 <script>
-  $(document).ready(function () {
-    //nivagation 
-    $('#gestions').addClass(' menu-is-opening menu-open')
-    $('.gestions').addClass('active')
-    $('.gestion-article').addClass('active')
-  })
+	$(document).ready(function () {
+		//desactive un article
+		$(document).on('click', '.btn-desactiver', function (e) {
+			e.preventDefault()
+			let href = $(this).data('path')
+			Swal.fire({
+				title: 'Etes vous sur ?',
+				text: "Vous allez desactiver ce produit !",
+				icon: 'question',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Oui, Desactiver',
+				cancelButtonText: 'Fermer'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					$.ajax({
+						url: href,
+						method: 'POST',
+						type: 'json',
+						data: {
+							edit: 'enabled_false',
+						},
+						beforeSend: function () {
+							$('.js-loader-text').text('Désactivation en cour ...')
+							$('.js-loader').css('display', 'flex')
+						},
+						success: function (data) {
+							$('.js-loader').css('display', 'none')
+							if (data) {
+								Swal.fire({
+									title: 'Modification enregistrée',
+									icon: 'success',
+									timer: 1500,
+									showConfirmButton: false
+								})
+								loadArticles()
+							} else {
+								$('.js-loader').css('display', 'none')
+								alert('Une erreur est survenue. code : 002')
+							}
+						},
+						error: function () {
+							$('.js-loader').css('display', 'none')
+							alert('Une erreur est survenue. code : 001')
+						}
+					})
+				}
+			})
+		})
+		//active un article
+		$(document).on('click', '.btn-activer', function (e) {
+			e.preventDefault()
+			let href = $(this).data('path')
+			Swal.fire({
+				title: 'Etes vous sur ?',
+				text: "Vous allez activer ce produit !",
+				icon: 'question',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Oui, Activer',
+				cancelButtonText: 'Fermer'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					$.ajax({
+						url: href,
+						method: 'POST',
+						type: 'json',
+						data: {
+							edit: 'enabled_true',
+						},
+						beforeSend: function () {
+							$('.js-loader-text').text('Activation en cour ...')
+							$('.js-loader').css('display', 'flex')
+						},
+						success: function (data) {
+							$('.js-loader').css('display', 'none')
+							if (data) {
+								Swal.fire({
+									title: 'Modification enregistrée',
+									icon: 'success',
+									timer: 1500,
+									showConfirmButton: false
+								})
+								loadArticles()
+							} else {
+								$('.js-loader').css('display', 'none')
+								alert('Une erreur est survenue. code : 002')
+							}
+						},
+						error: function () {
+							$('.js-loader').css('display', 'none')
+							alert('Une erreur est survenue. code : 001')
+						}
+					})
+				}
+			})
+		})
+
+		//charge les articles
+		function loadArticles() {
+			$.ajax({
+				url: "/admin/article/load",
+				method: 'POST',
+				type: 'json',
+				data: {
+					load: 'articles',
+				},
+				beforeSend: function () {
+					$('.js-loader-text').text('Actualisation en cour ...')
+					$('.js-loader').css('display', 'flex')
+				},
+				success: function (data) {
+					if (data.reponse) {
+						$('#load-articles').html(data.content)
+					}
+					$('.js-loader').css('display', 'none')
+				},
+				error: function () {
+					$('.js-loader').css('display', 'none')
+					alert('Une erreur est survenue. code : 001')
+				}
+			})
+		}
+	})
 </script>
 {% endblock %}
 
@@ -39,50 +159,7 @@
 {% for item in app.flashes('success') %}
 {{ alerte.alert(item,'success')}}
 {% endfor %}
-
-<div class="row">
-  <div class="col-12 col-sm-12">
-    <div class="card card-primary card-outline card-tabs">
-      <div class="card-header p-0 pt-1 border-bottom-0">
-        <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
-          <li class="nav-item">
-            <a class="nav-link active" id="custom-tabs-three-home-tab" data-toggle="pill" href="#custom-tabs-three-home"
-              role="tab" aria-controls="custom-tabs-three-home" aria-selected="true">En ligne |<span
-                class="font-weight-bold">
-                {{ articlesOn| length }}
-              </span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill" href="#custom-tabs-three-profile"
-              role="tab" aria-controls="custom-tabs-three-profile" aria-selected="false">Desactiver |<span
-                class="font-weight-bold">
-                {{ articlesOff| length }}
-              </span></a>
-          </li>
-
-        </ul>
-      </div>
-      <div class="card-body">
-        <div class="btn-group">
-          {{ link.add(path('article_new'),'Create article' )}}
-        </div>
-        <div class="tab-content" id="custom-tabs-three-tabContent">
-          <div class="tab-pane fade show active" id="custom-tabs-three-home" role="tabpanel"
-            aria-labelledby="custom-tabs-three-home-tab">
-            <p> <i class="fa fa-info" aria-hidden="true"></i> Liste des articles visible par les internautes.
-            </p>
-            {{ include ("admin/article/_datatable.html.twig",{id:'1',articles: articlesOn}) }}
-          </div>
-          <div class="tab-pane fade" id="custom-tabs-three-profile" role="tabpanel"
-            aria-labelledby="custom-tabs-three-profile-tab">
-            <p>Liste des articles desactiver, ils ne sont pas visible par les internautes.</p>
-            {{ include ("admin/article/_datatable.html.twig",{id:'2',articles: articlesOff}) }}
-          </div>
-        </div>
-      {{ link.back(path('admin'),'Back to dashboard')}}
-
-      </div>
-    </div>
-  </div>
+<div id="load-articles">
+	{% include "admin/article/_load_articles.html.twig" %}
 </div>
 {% endblock %}

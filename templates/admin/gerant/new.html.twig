@@ -1,0 +1,23 @@
+{% extends 'admin/base.html.twig' %}
+{% import "macros/breadcrumb.html.twig" as breadcrumb %}
+{% block title %}New Gerant{% endblock %}
+{% block breadcrumb %}
+    {{ breadcrumb.breadcrumb('Ajouter un gérant'|trans,[
+        {
+            path:path('gerant_index'),
+            name:'Listes des gérants'
+        }
+    ])}}
+{% endblock %}
+{% block body %}
+<div class="card card-outline card-primary">
+    <div class="card-header">
+        <div class="card-titl">
+            Créer un nouveau agent
+        </div>
+    </div>
+    <div class="card-body">
+        {{ include('admin/gerant/_form.html.twig') }}
+    </div>
+</div>
+{% endblock %}

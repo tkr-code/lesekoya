@@ -1,0 +1,88 @@
+{% import "macros/table.html.twig" as table %}
+{% import "macros/head.html.twig" as head %}
+{% import "macros/foot.html.twig" as foot %}
+{% import "macros/breadcrumb.html.twig" as utils %}
+{% import "macros/alertes.html.twig" as alertes %}
+{% import "macros/button.html.twig" as btn %}
+
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}New Article
+{% endblock %}
+
+{% block head %}
+	<!-- summernote -->
+	<link
+	rel="stylesheet" href="{{ asset('vendor/summernote/summernote-bs4.min.css') }}">
+	<!-- datatable -->
+	<link rel="stylesheet" href="{{ asset('vendor/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+{% endblock %}
+{% block stylesheets %}
+	{{ head.dataTable() }}
+{% endblock %}
+
+{% block breadcrumb %}
+	{{ utils.breadcrumb('Ajouter des caracteristiques',[
+        {
+            path:path('article_index'),
+            name:'Manage Articles'
+        }
+    ])}}
+{% endblock %}
+
+{% block body %}
+	{% for item in app.flashes('success') %}
+		{{ alertes.alert(item,'success')}}
+	{% endfor %}
+	<div class="row">
+		<div class="col-md-12">
+			<div class="card card-outline card-primary">
+				<div class="card-header">
+					<h4>Ajouter des Caracteristiques</h4>
+				</div>
+				<div class="card-body">
+					<div class="row">
+						<div class="col-6 col-md-4 col-lg-4 col-xl-3 article-65">
+							<div class="product product-7 text-center">
+								<figure class="product-media">
+									{% for item in article.images | slice(0,1) %}
+										<img src="{{ asset('img/article/' ~ item.name ) }}" width="200px" alt="Product Image">
+									{% else %}
+										<img src="{{ asset('img/vide.png') }}" width="200px" alt="Product Image">
+									{% endfor %}
+									<div class="product-action-vertical"></div>
+									<!-- End .product-action -->
+								</figure>
+								<!-- End .product-media -->
+
+								<div class="product-body">
+									<div class="product-cat">
+										{{ article.category.title}}
+									</div>
+									<!-- End .product-cat -->
+									<h3 class="product-title">
+										{{ article.title }}
+									</h3>
+									<!-- End .product-title -->
+									<div class="product-price">
+										{{ article.price |number_format(0,'',' ') }}
+										F cfa
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-8">
+							{% include "includes/article/article_option/table.html.twig" %}
+						</div>
+					</div>
+					<a href="{{ path('article_index') }}" class="btn btn-success">Terminer</a>
+					<a href="{{ path('article_new') }}" class="btn btn-success">Terminer et ajouter un produit</a>
+				</div>
+
+			</div>
+		</div>
+	</div>
+{% endblock %}
+{% block modal %}
+	{% include "includes/article/article_option/modal_add_option.html.twig" %}
+{% endblock %}

@@ -15,7 +15,8 @@ class LoginController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
+        //     $this->addFlash('success','Vous etes déja connecté');
+        //     return $this->redirectToRoute('articles');
         // }
 
         // get the login error if there is one

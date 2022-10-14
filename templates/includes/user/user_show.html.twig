@@ -1,0 +1,70 @@
+{% import "macros/role.html.twig" as roles %}
+{% import "macros/link.html.twig" as link %}
+
+<div class="row">
+	<div class="col-md-3" style="min-height: 200px;">
+		<div class="text-center">
+			<img class="profile-user-img img-fluid img-circle" src="{{ asset('img/user/' ~ user.personne.avatar|default('empty.png') ) }}" alt="{{ user.personne.firstName ~ ' ' ~ user.personne.lastName }}">
+		</div>
+		<h3 class="profile-username text-center">{{ user.personne.fullName }}</h3>
+	</div>
+	<div class="col-md-8">
+		<div class="row">
+			<div class="col-md-4 col-12">
+				<strong>
+					<i class="fas fa-user mr-1"></i>
+					compte</strong>
+				<p class="text-muted">
+					{% for item in user.roles %}
+						{{ roles.role(item)}}
+					{% endfor %}
+				</p>
+			</div>
+			<div class="col-md-4 col-12">
+				<strong>
+					<i class="fas fa-book mr-1"></i>
+					Email</strong>
+				<p class="text-muted">
+					{{user.email|explode_email}}
+				</p>
+			</div>
+			<div class="col-md-4 col-12">
+				<strong>
+					<i class="fas fa-map-marker-alt mr-1"></i>
+					Adresse</strong>
+				<p class="text-muted">
+					{% if  user.adresse is not null %}
+						{{ user.adresse.rue}}
+						,
+						{{ user.adresse.city }}
+						{{ user.adresse.pays}}
+					{% else %}
+						Cliquer sur modifier pour définir votre adresse.
+						{{ link.pencil(path('admin_client_edit', {'id': user.id}))}}
+					{% endif %}
+				</p>
+			</div>
+			<div class="col-md-4 col-12">
+				<strong>
+					<i class="fas fa-phone mr-1"></i>
+					Téléphone</strong>
+				<p class="text-muted">
+					{% for item in user.phones %}
+						{{ item.valeur}}
+						{% if not loop.last %}
+							{{ ' |'}}
+						{% endif %}
+					{% endfor %}
+				</p>
+			</div>
+			<div class="col-md-4 col-12">
+				<strong>
+					<i class="fas fa-phone mr-1"></i>
+					Nombre de commande enregistrer</strong>
+				<p class="text-muted">
+					{{ user.orders|length }}
+				</p>
+			</div>
+		</div>
+	</div>
+</div>

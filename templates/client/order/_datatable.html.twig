@@ -15,11 +15,14 @@
         <tr>
             <td>#{{ order.id }}
              <a 
-                class="float-right"
+                data-id="{{order.id}}"
+                class="float-right px-1 js-order-view"
                 data-toggle="tooltip"
                 data-placement="bottom"
                 title="Look"
-                href="{{ path('client_order_show', {'id': order.id}) }}"><i class="fa fa-eye text-dark"></i></a>
+                href="{{ path('main_order_show', {'id': order.id}) }}">
+                <i class="fa fa-eye text-dark"></i>
+                </a>
                 
             </td>
             <td>{{ order.number }}</td>
@@ -33,7 +36,7 @@
             </td>
             <td>
                 {% if order.state == 'waiting' or order.state == 'in progress' %}
-                <a data-toggle="tooltip" data-placement="bottom" title="Annuller la commande" href="#" class="text-danger">Cancel</a>
+                <a data-toggle="tooltip" data-placement="bottom" data-id="{{order.id}}" title="Annuller la commande" href="#" class="text-danger js-order-canceled">Cancel</a>
                 {% endif %}
             </td>
         </tr>

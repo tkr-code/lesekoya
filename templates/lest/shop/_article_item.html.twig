@@ -1,0 +1,105 @@
+<div class="product product-7 text-center">
+	<figure class="product-media">
+		{% if item.quantity <= 0 %} <span class="product-label label-out bg-danger">{{'Out of Stock'|trans}}</span>
+			{% endif %}
+
+			{% import "macros/etats.html.twig" as etats %}
+			{{ etats.articleLabel(item.label) }}
+			{% if item.reduction > 0 %}
+			<span class="product-label mt-3 label-out bg-danger">-{{ item.reduction}}%</span>
+			{% endif %}
+			<a href="{{ path('articles_show', { category: item.category.slug|lower, slug: item.slug, id: item.id}) }}">
+				{% for item in item.images|slice(0,1) %}
+				<img class="product-image" src="{{ asset('img/article/' ~ item.name ) }}" alt="{{ item.name }}">
+				{% else %}
+				<img src="{{ asset('img/vide.png')}}" alt="Product image" class="product-image">
+				{% endfor %}
+			</a>
+
+			<div class="product-action-vertical">
+				{% if app.user %}
+				{% if not isToFavoris(app.user, item) %}
+				<a href="{{ path('favoris_add',{id:item.id}) }}" data-id="{{ item.id }}"
+					class="btn-product-icon btn-wishlist js-favoris js-add-favoris btn-expandable">
+					<span>{{'add to wishlist'|trans}}</span>
+				</a>
+				{% else %}
+				<a href="{{ path('favoris_remove',{id:item.id}) }}" data-id="{{ item.id }}"
+					class="btn-product-icon btn-wishlist js-favoris  bg-danger js-remove-favoris btn-expandable">
+					<span class="bg-danger text-white">{{'remove to wishlist'|trans}}</span>
+				</a>
+				{% endif %}
+				{% else %}
+				<a href="#" class="btn-product-icon btn-wishlist js-favoris-login btn-expandable">
+					<span>{{'add to wishlist'|trans}}</span>
+				</a>
+				{% endif %}
+			</div>
+			<!-- End .product-action-vertical -->
+
+			<div class="product-action">
+				{% if item.quantity > 0 %}
+				<a href="{{ path('cart_add',{ id: item.id }) }}" class="btn-product js-btn-add btn-cart"
+					data-id="{{item.id}}">
+					<span>{{'add to cart'|trans}}</span>
+				</a>
+				{% endif %}
+			</div>
+			<!-- End .product-action -->
+	</figure>
+	<!-- End .product-media -->
+
+	<div class="product-body">
+		<div class="product-cat">
+			<a href="{{ path('articles_category',{category: item.category.slug|lower }) }}">{{ item.category.title
+				}}</a>
+		</div>
+		<!-- End .product-cat -->
+		<h3 class="product-title">
+			<a href="{{ path('articles_show', { category: item.category.slug, slug: item.slug, id: item.id}) }}">
+				{{ item.title }}
+			</a>
+		</h3>
+		<!-- End .product-title -->
+		<div class="product-price">
+			{% if item.reduction > 0 %}
+			{{ item.newPrice|number_format(0,'', ' ')}}
+			{{ site.current_name }}
+			<span class="old-price ml-1">
+				{{ item.price|number_format(0,'',' ') }}
+				{{ site.current_name }}
+			</span>
+			{% else %}
+			{{ item.newPrice|number_format(0,'',' ')}}
+			{{ site.current_name }}
+			{% endif %}
+		</div>
+		<!-- End .product-price -->
+		<div class="ratings-container">
+			<div class="ratings">
+				<div class="ratings-val" style="width: {{ rating(item) }}%"></div>
+				<!-- End .ratings-val -->
+			</div>
+			<!-- End .ratings -->
+			<span class="ratings-text">
+				({{ item.comments|length}} <i class="fas fa-comment"></i>)
+			</span>
+		</div>
+		<!-- End .rating-container -->
+
+		<div class="product-nav product-nav-thumbs">
+			{% for item in item.images|slice(1,4) %}
+			<a type="button" href="#" {{ loop.index==0 ? 'class="active"' :'' }}>
+				<img src="{{ asset('img/article/' ~ item.name ) }}" alt="">
+			</a>
+			{% endfor %}
+		</div>
+		<!-- End .product-nav -->
+	</div>
+	{% if is_granted('ROLE_EDITOR') %}
+	<a href="{{ path('article_edit',{id: item.id} ) }}" class="p-2 text-success">
+		<i class="fas fa-pencil-alt text-success"></i> Modifier
+	</a>
+	{% endif %}
+	<!-- End .product-body -->
+</div>

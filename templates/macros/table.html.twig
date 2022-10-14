@@ -6,19 +6,3 @@
         <th>Action</th>
     </tr>
 {% endmacro %}
-
-{% macro jsDataTable(id) %}
-  <script>
-   $(document).ready(function(){
-      // Datatable
-     $('#{{ id }}').DataTable({
-      "responsive": true, 
-      "lengthChange": false, 
-      "autoWidth": false,
-      "order":[[3,"desc"]],
-      "buttons": 
-        ["csv", "excel", "pdf", "print","colvis"]
-    }).buttons().container().appendTo('#{{id}}_wrapper .col-md-6:eq(0)');
-   })
-  </script>
-{% endmacro %}

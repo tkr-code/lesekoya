@@ -1,0 +1,161 @@
+{% extends "pdf/base.html.twig" %}
+{% block body %}
+<style>
+table{
+	width:100%;
+	margin: 10px 0;
+}
+.table{
+	width:100%;
+	border-collapse:collapse;
+	margin: 10px 0;
+}
+.table td,th{
+	border:1px solid;
+	padding:5px
+}
+.table-th{
+	text-align: right
+}
+.bold{
+	font-weight:bold
+}
+
+</style>
+	<!-- title row -->
+	<div class="row">
+		<div class="col-10">
+			<h4>
+				<small class="float-right">Date:
+					{{ order.createdAt| date_format_fr|capitalize }}
+				</small>
+			</h4>
+		</div>
+		<!-- /.col -->
+	</div>
+	<table>
+		<tr>
+			<td>
+				{{'From'|trans}}
+				<address>
+					<strong>{{ app_name }}, Inc.</strong><br>
+					{{ site.ville}},
+					{{ site.adresse}}
+					{{ site.code_postal }}<br>
+					Phone:
+					{{ site.phone_number_1 }}
+					( whastapp)
+					<br>
+					Email:
+					{{ site.email}}
+				</address>
+			</td>
+			<td>
+				{{'To'|trans}}
+				<address>
+					<strong>{{ order.user.personne.firstName ~ ' ' ~ order.user.personne.lastName }}</strong><br>
+					{% if order.user.adresse is not null %}
+						{{ order.user.adresse.rue ~ ' ' ~ order.user.adresse.city ~ ' ' ~ order.user.adresse.pays }}
+					{% endif %}
+					<br>
+					{{'Phone'|trans}}:
+					{{ order.user.phoneNumber }}<br>
+					{{'Email'|trans}}:
+					{{ order.user.email|explode_email }}
+				</address>
+			</td>
+			<td>
+				<b>{{'Invoice'|trans}}
+				#{{ order.number }}</b><br>
+				<br>
+				<b>
+					ID:</b>
+				#{{ order.id}}
+				<br>
+				<b>Limite:</b>
+				{{ order.paymentDue | date_format_fr|capitalize }}
+			<td>
+		</tr>
+	</table>
+	</div>
+	<!-- /.row -->
+
+	<!-- Table row -->
+	<div class="row">
+		<div class="col-12 table-responsive">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Qty</th>
+						<th>{{'Product'|trans}}</th>
+						<th>{{'price'|trans}}</th>
+						<th>{{'Subtotal'|trans}}</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for item in order.orderItem %}
+						<tr>
+							<td width="3%">{{ item.quantity }}</td>
+							<td>{{ item.produitName }}</td>
+							<td>{{ item.unitPrice|number_format(0,'.',' ') }}
+								{{ site.current_name }}
+							</td>
+							<td>{{ item.UnitsTotal |number_format(0,'.',' ') }}
+								{{ site.current_name }}</td>
+						</tr>
+					{% endfor %}
+					<tr>
+						<th class="table-th"  colspan="3">{{'Subtotal'|trans}}:</th>
+						<th class="table-th">{{ order.itemsTotal | number_format(0,'.',' ') }}
+							{{ site.current_name }}
+						</th>
+					</tr>
+					<tr>
+						<th class="table-th" colspan="3">{{'Shipping'|trans}}:</th>
+						<th class="table-th">{{ (order.deliverySpace)? order.deliverySpace.street.shippingAmount.amount| number_format(0,'.',' ') :'0' |number_format(0,'.',' ') }}
+							{{ site.current_name }}
+						</th>
+					</tr>
+					<tr>
+						<th class="table-th"  colspan="3">{{'Total'|trans}}:</th>
+						<th class="table-th">{{ order.total| number_format(0,'.',' ') }}
+							{{ site.current_name }}
+						</th>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- /.col -->
+	</div>
+	<!-- /.row -->
+
+	<div class="row">
+		<!-- accepted payments column -->
+		
+		<div class="col-6">
+			<p class="bold">Status de la commande:</p>
+			{% import "macros/etats.html.twig" as etats %}
+			{{ etats.order(order.state) }}
+			</p>
+		</div>
+		<div class="col-6">
+			<p class="bold">{{'Payment Methods'|trans}}:</p>
+			{{ order.payment.paymentMethod.name }}
+				<p class="text-muted well well-sm shadow-none" style="margin-top: 10px;"> {{ order.payment.paymentMethod.description }}
+			</p>
+		</div>
+		<hr>
+		<!-- /.col -->
+		<div class="col-6">
+			<p> <span class="bold">Lieu de livraison:</span> {{ (order.deliverySpace)? order.deliverySpace.street.name : 'Lieu indisponible' }}</p>
+			<p class="lead">{{'Amount Due'|trans}}
+				{{ order.paymentDue| date_format_fr }}</p>
+		</div>
+		<hr>
+		<div class="col-6">
+			<p>Nous vous remercions de votre confiance.<br>Cordialement</p>
+		</div>
+		<!-- /.col -->
+	</div>
+	<!-- /.row -->
+{% endblock %}

@@ -3,26 +3,36 @@ twig:
     default_path: '%kernel.project_dir%/templates'
     form_themes: ['bootstrap_4_layout.html.twig'] # accepte plusieurs thèmes
     globals: 
-        app_name: 'LeSekoya'
+        app_name: 'Lesekoya'
         locales: '%app.locales%'
         search_form: '@App\Twig\SearchExtension'
         navs: '@App\Twig\NavExtension'
-        site: 
-            name: 'leSekoya'
-            email: 'leseoya@gmail.com'
-            current_name: 'F cfa'
+        categories: '@App\Twig\CategoryExtention'
+        parentCategorys: '@App\Twig\CategoryParentExtention'
+        gg_recaptcha_site_key: '%env(GOOGLE_RECAPTCHA_SITE_KEY)%'
+        site:
+            base: lesekoya
+            version: '1.0' 
+            name: 'store'
+            email: 'contact@store.sn'
+            path_logo: 'lest-logo.png'
+            current_name: 'F CFA'
             current: 'XOF'
-            phone_number_1: '+221 78 127 82 88'
-            phone_1: '+221781278288'
-            phone_number_2: '+221 77 000 00 00'
-            phone_2: '+221770000000'
-            link: "https://localhost:8000"
+            tel_1: '221778010646'
+            phone_number_1: '221778010646'
+            phone_number_2: '221762015161'
+            phone_1: '221778010646'
+            phone_2: '221762015161'
+            link: "https://lest.sn"
             mission_text: 'text à definir'
             user_empty: 'empty.png'
-            orange_money: '+221 78 127 82 88'
-            code_postal: '11300'
-            adresse: 'Liberte 4'
+            orange_money: '+221 77 801 06 46'
+            code_postal: 'DK 11300'
+            adresse: 'Sacre coeur 2'
             ville: 'Dakar'
+            pays: 'Sénégal'
+            whatsapp: "https://api.whatsapp.com/send?phone=221778010646&text=Salut, je vous contacte depuis votre site lest.sn"
+            facebook: 'https://www.facebook.com/Les-Spécialistes-de-la-Technologie-LEST-575426226469195/'
 
 when@test:
     twig:

@@ -26,12 +26,14 @@ class PersonneType extends AbstractType
                 'label'=>false,
                 'attr'=>[
                     'placeholder'=>$this->translator->trans('First name'),
+                    'class'=>'capitalize'
                 ]
             ])
             ->add('lastName',TextType::class,[
                 'label'=>false,
                 'attr'=>[
                     'placeholder'=>$this->translator->trans('Name'),
+                    'class'=>'capitalize'
                 ]
             ])
         ;

@@ -10,134 +10,47 @@
 {% block title %}New Article{% endblock %}
 
 {% block head %}
-      <!-- summernote -->
-  <link rel="stylesheet" href="{{ asset('vendor/summernote/summernote-bs4.min.css') }}">
-  <!-- datatable -->
-  <link rel="stylesheet" href="{{ asset('vendor/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+<!-- datatable -->
+<link rel="stylesheet" href="{{ asset('vendor/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
 {% endblock %}
 {% block stylesheets %}
-  {{ head.dataTable() }}
+{{ head.dataTable() }}
 {% endblock %}
 
 {% block breadcrumb %}
-    {{ utils.breadcrumb(action_text,[
-        {
-            path:path('article_index'),
-            name:'Manage Articles'
-        }
-    ])}}
+{{ utils.breadcrumb('Ajouter un produit',[
+{
+path:path('article_index'),
+name:'Manage Articles'
+}
+])}}
 {% endblock %}
 
 {% block body %}
 {% for item in app.flashes('success') %}
-  {{ alertes.alert(item,'success')}}
+{{ alertes.alert(item,'success')}}
 {% endfor %}
 <div class="row">
     <div class="col-md-12">
         <div class="card card-outline card-primary">
             <div class="card-header">
-                <h4>{{ action_text }}</h4>
+                <h4>{{ 'Ajouter un produit' }}</h4>
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-8">
-                        {{ include('admin/article/_form.html.twig',{button_label:action}) }}
+                    <div class="col-md-9">
+                        {{ include('admin/article/_form.html.twig',{button_label:'AJouter un produit'}) }}
                     </div>
                     <div class="col-md-3">
-                    
+                        {% include "includes/article/aides.html.twig" %}
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    {% if app.request.attributes.get('_route') == 'article_edit' %}
-    <div class="col-md-6">
-        <div class="row">
-            {% if app.request.attributes.get('_route') == 'article_edit' %}
-            <div class="col-md-12">
-                <div class="card card-outline card-dark">
-                    <div class="card-header">
-                        <h4>Article option</h4>
-                    </div>
-                    <div class="card-body">
-                        <table id="datatable_1" class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Title</th>
-                                    <th>Content</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {% for item in article.options %}
-                                <tr>
-                                    <td>{{ item.title }}</td>
-                                    <td>{{ item.content }}</td>
-                                    <td>
-                                        <a class="btn btn-success " href="{{ path('article_option_edit', {'id': item.id,idArticle: article.id }) }}"><i class="fas fa-pencil-alt"></i></a>
-                                        <form method="post" class="d-inline-block" action="{{ path('article_option_delete', {'id': item.id, idArticle: article.id }) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
-                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ item.id) }}">
-                                            <button class="btn btn-danger"><i class="fas fa-trash-alt    "></i></button>
-                                            
-                                        </form>
-                                    </td>
-                                </tr>
-                            {% else %}
-                                <h3>L'article n'as pas d'option</h3>
-                            {% endfor %}
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>Title</th>
-                                    <th>Content</th>
-                                    <th>Action</th>
-                                </tr>
-                            </tfoot>
-                        </table>
-                        {{ include ('/admin/article_option/_form.html.twig') }}
-                    </div>
-                </div>
-            </div>
-            {% endif %}
-        </div>
-    </div>
-    {% endif %}
 </div>
 {% endblock %}
 {% block foot %}
-    <!-- Summernote -->
-    <script src="{{ asset('vendor/summernote/summernote-bs4.min.js') }}"></script>
-    <script src="{{ asset('js/image.js') }}"></script>
-    
-    {{ foot.dataTable()}}
-{% endblock %}
 
-{% block javascripts %}
-    {{ table.jsDataTable('datatable_1') }} 
-
-  <script>
-   $(document).ready(function(){
-       
-        var imagesPreview = function(input, placeToInsertImagePreview) {
-        if (input.files) {
-            var filesAmount = input.files.length;
-            for (i = 0; i < filesAmount; i++) {
-                var reader = new FileReader();
-                reader.onload = function(event) {
-                    $($.parseHTML('<img>')).attr('src', event.target.result).appendTo(placeToInsertImagePreview);
-                }
-                reader.readAsDataURL(input.files[i]);
-            }
-        }
-    };
-
-    $('#article_images').on('change', function() {
-        imagesPreview(this, 'div.gallery');
-    });
-
-     $('#gestions').addClass(' menu-is-opening menu-open')
-     $('.gestions').addClass('active')
-     $('.gestion-article').addClass('active')
-   })
-  </script>
+<script src="{{ asset('js/image.js') }}"></script>
 {% endblock %}

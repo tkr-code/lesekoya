@@ -4,3 +4,6 @@ maildev --hide-extensions STARTTLS
 composer dump-env prod
 
 composer install --no-dev --optimize-autoloader
+
+//flex DNS resolver 
+composer update symfony/flex --no-plugins --no-scripts

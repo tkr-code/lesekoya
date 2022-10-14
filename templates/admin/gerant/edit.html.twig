@@ -1,0 +1,80 @@
+{% import "macros/table.html.twig" as table %}
+{% import "macros/head.html.twig" as head %}
+{% import "macros/foot.html.twig" as foot %}
+{% import "macros/breadcrumb.html.twig" as utils %}
+{% import "macros/alertes.html.twig" as alerte %}
+{% import "macros/button.html.twig" as btn %}
+{% import "macros/link.html.twig" as link %}
+
+{% extends 'admin/base.html.twig' %}
+
+
+{% block stylesheets %}
+	{{ head.dataTable() }}
+{% endblock %}
+
+{% block breadcrumb %}
+	{{ utils.breadcrumb('Modifier un gérant',[
+        {
+            path:path('gerant_index'),
+            name:'Listes des gérants'
+        }
+    ])}}
+{% endblock %}
+{% block title %}
+	{{'Edit User'|trans}}
+{% endblock %}
+
+{% block body %}
+	<div class="row">
+		<div class="col-md-8">
+			<div class="card card-outline card-primary">
+				<div class="card-header">
+					<div class="card-title">
+						Modifier un gérant
+					</div>
+				</div>
+				<div class="card-body">
+					{{ form_start(form,{attr:{'novalidate':'novalidate'}}) }}
+					<div class="row">
+						<div class="col-md-6 col-12">
+							{{ form_row(form.personne.firstName)}}
+						</div>
+						<div class="col-md-6 col-12">
+							{{ form_row(form.personne.lastName)}}
+						</div>
+						<div class="col-md-6 col-12">
+							{{ form_row(form.email)}}
+						</div>
+						<div class="col-md-6 col-12">
+							{{ form_row(form.phone_number)}}
+						</div>
+						<div class="col-md-6 col-12">
+							{{ form_row(form.status)}}
+						</div>
+					</div>
+						<button class="btn btn-success">{{ button_label|default('Save') }}</button>
+					{{ form_end(form) }}
+					<hr>
+						{{ link.back(path('gerant_index')) }}
+
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="card card-outline card-danger">
+				<div class="card-header">
+					<div class="card-title">
+						{{'Edit password'|trans}}
+					</div>
+				</div>
+				<div class="card-body">
+				{{ form_start(formPassword)}}
+				{{ form_widget(formPassword)}}
+				<button class="btn btn-success">{{ button_label|default('Save') }}</button>
+				{{ form_end(formPassword)}}
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

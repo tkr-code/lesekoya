@@ -50,6 +50,17 @@ class ContactType extends AbstractType
                 ],
                 'required'=>true,
             ])
+            ->add('object',TextType::class,[
+                'label'=>false,
+                'attr'=>[
+                    'placeholder'=>'Objet (obligatoire)'
+                ],
+                'constraints' => [
+                    new NotBlank(),
+                    new Length(['min' => 3]),
+                ],
+                'required'=>true,
+            ])
             ->add('message',TextareaType::class,[
                 'label'=>false,
                 'attr'=>[

@@ -1,0 +1,9 @@
+<div class="order-date-limite">
+	<div class="row">
+		<div class="form-group col-12">
+			<label for="js-order-date-limite">Date limite de paiment</label>
+			<input type="date" id="js-order-date-limite" value="{{ order.paymentDue| date('Y-m-d') }}" class="form-control">
+		</div>
+	</div>
+	<button class="btn btn-success" data-token="{{ csrf_token('edit' ~ order.id) }}" data-path="{{ path('editor_order_edit',{id:order.id}) }}" id="order-edit-date-limite">Appliquer</button>
+</div>

@@ -1,119 +1,66 @@
-$(function() {
-  "use strict";
+jQuery(document).ready(function($) {
+	'use strict';
 
-  //------- Parallax -------//
-  // skrollr.init({
-  //   forceHeight: false
-  // });
+	$('.demo-filter a').on('click', function(e) {
+		e.preventDefault();
+		var filter = $(this).attr('href').replace('#', '');
+		$('.demos').isotope({ filter: '.' + filter });
+		$(this).addClass('active').siblings().removeClass('active');
+	});
 
-  //------- Active Nice Select --------//
-  $('select_nice').niceSelect();
+	$('.molla-lz').lazyload({
+		effect: 'fadeIn',
+		effect_speed: 400,
+		appearEffect: '',
+		appear: function(elements_left, settings) {
+			
+		},
+		load: function(elements_left, settings) {
+			$(this).removeClass('molla-lz').css('padding-top', '');
+		}
+	});
 
-  //------- hero carousel -------//
-  $(".hero-carousel").owlCarousel({
-    items:3,
-    margin: 10,
-    autoplay:false,
-    autoplayTimeout: 5000,
-    loop:true,
-    nav:false,
-    dots:false,
-    responsive:{
-      0:{
-        items:1
-      },
-      600:{
-        items: 2
-      },
-      810:{
-        items:3
-      }
-    }
-  });
+	// Mobile Menu Toggle - Show & Hide
+	$('.mobile-menu-toggler').on('click', function (e) {
+		$('body').toggleClass('mmenu-active');
+		$(this).toggleClass('active');
+		e.preventDefault();
+	});
 
-  //------- Best Seller Carousel -------//
-  if($('.owl-carousel').length > 0){
-    $('#bestSellerCarousel').owlCarousel({
-      loop:true,
-      margin:30,
-      nav:true,
-      navText: ["<i class='ti-arrow-left'></i>","<i class='ti-arrow-right'></i>"],
-      dots: false,
-      responsive:{
-        0:{
-          items:1
-        },
-        600:{
-          items: 2
-        },
-        900:{
-          items:3
-        },
-        1130:{
-          items:4
-        }
-      }
-    })
-  }
+	$('.mobile-menu-overlay, .mobile-menu-close').on('click', function (e) {
+		$('body').removeClass('mmenu-active');
+		$('.menu-toggler').removeClass('active');
+		e.preventDefault();
+	});
 
-  //------- single product area carousel -------//
-  $(".s_Product_carousel").owlCarousel({
-    items:1,
-    autoplay:false,
-    autoplayTimeout: 5000,
-    loop:true,
-    nav:false,
-    dots:false
-  });
+	$('.goto-demos').on('click', function(e) {
+		e.preventDefault();
+		$('html, body').animate({scrollTop: $('.row.demos').offset().top}, 600);
+	});
 
-  //------- mailchimp --------//  
-	function mailChimp() {
-		$('#mc_embed_signup').find('form').ajaxChimp();
-	}
-  mailChimp();
-  
-  //------- fixed navbar --------//  
-  $(window).scroll(function(){
-    var sticky = $('.header_area'),
-    scroll = $(window).scrollTop();
+	$('.goto-features').on('click', function(e) {
+		e.preventDefault();
+		$('html, body').animate({scrollTop: $('.section-features').offset().top}, 800);
+	});
 
-    if (scroll >= 100) sticky.addClass('fixed');
-    else sticky.removeClass('fixed');
-  });
+	$('.goto-elements').on('click', function(e) {
+		e.preventDefault();
+		$('html, body').animate({scrollTop: $('.section-elements').offset().top}, 1000);
+	});
 
-  //------- Price Range slider -------//
-  if(document.getElementById("price-range")){
-  
-    var nonLinearSlider = document.getElementById('price-range');
-    
-    noUiSlider.create(nonLinearSlider, {
-        connect: true,
-        behaviour: 'tap',
-        start: [ 500, 4000 ],
-        range: {
-            // Starting at 500, step the value by 500,
-            // until 4000 is reached. From there, step by 1000.
-            'min': [ 0 ],
-            '10%': [ 500, 500 ],
-            '50%': [ 4000, 1000 ],
-            'max': [ 10000 ]
-        }
-    });
-  
-  
-    var nodes = [
-        document.getElementById('lower-value'), // 0
-        document.getElementById('upper-value')  // 1
-    ];
-  
-    // Display the slider value and how far the handle moved
-    // from the left edge of the slider.
-    nonLinearSlider.noUiSlider.on('update', function ( values, handle, unencoded, isTap, positions ) {
-        nodes[handle].innerHTML = values[handle];
-    });
-  
-  }
-  
+	$('.goto-support').on('click', function(e) {
+		e.preventDefault();
+		$('html, body').animate({scrollTop: $('.section-support').offset().top}, 1200);
+	});
 });
 
-
+jQuery(window).on('load', function() {
+	jQuery('.demos').isotope({
+		filter: '.homepages',
+		initLayout: true,
+		itemSelector: '.iso-item',
+		layoutMode: 'masonry'
+	}).on('layoutComplete', function(e) {
+		jQuery(window).trigger('scroll');
+	});
+});

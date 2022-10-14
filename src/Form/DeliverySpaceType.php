@@ -21,9 +21,8 @@ class DeliverySpaceType extends AbstractType
             ])
             ->add('client',EntityType::class,[
                 'class'=>Client::class,
-                // 'choice_label'=>'user.personne.firstname'
                 'choice_label'=>function ($client){
-                    return $client->getUser()->getPersonne()->getFirstName().' '.$client->getUser()->getPersonne()->getLastName().' '.$client->getUser()->getEmail();
+                    return $client->getUser()->getFullName().' '.$client->getUser()->getFullName().' '.$client->getUser()->getEmail();
                 }
             ])
         ;

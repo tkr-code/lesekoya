@@ -5,9 +5,9 @@
 {% block title %}{{ article.title }}{% endblock %}
 
 {% block breadcrumb %}
-{{ utils.breadcrumb('View Article',[
+{{ utils.breadcrumb('View Article'|trans,[
 {
-path:'article_index',
+path:path('article_index'),
 name:'Manage Articles'
 }
 ])}}
@@ -37,25 +37,16 @@ name:'Manage Articles'
             <div class="col-12 col-sm-6">
                 <h3 class="my-3">{{ article.title }}</h3>
                 <p>{{ article.description }}</p>
-                <div class="mt-4 product-share">
-                    <a href="#" class="text-gray">
-                        <i class="fab fa-facebook-square fa-2x"></i>
-                    </a>
-                    <a href="#" class="text-gray">
-                        <i class="fab fa-twitter-square fa-2x"></i>
-                    </a>
-                    <a href="#" class="text-gray">
-                        <i class="fas fa-envelope-square fa-2x"></i>
-                    </a>
-                    <a href="#" class="text-gray">
-                        <i class="fas fa-rss-square fa-2x"></i>
-                    </a>
-                </div>
                 <div class="mt-4">
                     <a href="{{ path('article_edit',{ id: article.id }) }}" class="btn btn-success btn-lg btn-flat">
                         Editer
                         <i class="fas fa-pencil-alt"></i>
                     </a>
+                    <a href="{{ path('article_new_copy',{ id: article.id }) }}" class="btn btn-copy btn-info btn-lg btn-flat">
+                        Copier
+                        <i class="fas fa-copy"></i>
+                    </a>
+                    <p>Nb: La copie ne concerne pas les Images, la quantité et l'état.</p>
                 </div>
                 <table class="table table-responsive">
                     <tbody>
@@ -68,9 +59,13 @@ name:'Manage Articles'
                             <td>{{ article.formatterBuying}}</td>
                         </tr>
                         <tr>
-
                             <td scope="row">Categorie</td>
-                            <td>{{ article.category.parentCategory ? article.category.parentCategory.name ~ ' - ' : '' }} {{ article.category.title }}</td>
+                            <td>{{ article.category.parentCategory ? article.category.parentCategory.name ~ ' - ' : ''
+                                }} {{ article.category.title }}</td>
+                        </tr>
+                        <tr>
+                            <td scope="row">Marque</td>
+                            <td>{{ article.brand ? article.brand.name : 'Non définie' }}</td>
                         </tr>
                         <tr>
                             <td scope="row">Quantity</td>
@@ -101,25 +96,7 @@ name:'Manage Articles'
                 </table>
 
             </div>
-
         </div>
-        <div class="row mt-4">
-            <nav class="w-100">
-                <div class="nav nav-tabs" id="product-tab" role="tablist">
-                    <a class="nav-item nav-link" id="product-comments-tab" data-toggle="tab" href="#product-comments"
-                        role="tab" aria-controls="product-comments" aria-selected="false">Comments</a>
-                    <a class="nav-item nav-link" id="product-rating-tab" data-toggle="tab" href="#product-rating"
-                        role="tab" aria-controls="product-rating" aria-selected="false">Rating</a>
-                </div>
-            </nav>
-            <div class="tab-content p-3" id="nav-tabContent">
-                <div class="tab-pane fade" id="product-comments" role="tabpanel" aria-labelledby="product-comments-tab">
-                    comments </div>
-                <div class="tab-pane fade" id="product-rating" role="tabpanel" aria-labelledby="product-rating-tab">
-                    rating </div>
-            </div>
-        </div>
-        <hr>
         <div class="row">
             <div class="col-md-12">
                 <h4>Specificity of the article</h4>

@@ -11,6 +11,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Comment
 {
+    const LABEL=[
+        'Mauvais'=>'Mauvais',
+        'Passable'=>'Passable',
+        'Bien'=>'Bien',
+        'Très bien'=>'Très bien',
+    ];
     public function __construct()
     {
         $this->created_at = new \DateTime();
@@ -48,6 +54,16 @@ class Comment
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $rating;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $label;
 
 
 
@@ -101,6 +117,30 @@ class Comment
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getRating(): ?int
+    {
+        return $this->rating;
+    }
+
+    public function setRating(int $rating): self
+    {
+        $this->rating = $rating;
+
+        return $this;
+    }
+
+    public function getLabel(): ?string
+    {
+        return $this->label;
+    }
+
+    public function setLabel(?string $label): self
+    {
+        $this->label = $label;
 
         return $this;
     }

@@ -1,7 +1,8 @@
-{% extends "email/base.html.twig" %}
+{% extends "email/base1.html.twig" %}
 {% block body %}
 <h1>Nouveau message</h1>
 <p>De: {{ mail }}</p>
+<p>Objet: {{ object }}</p>
 <p><b>Nom:</b> {{ name }}</p>
 <p><b>Numéro de téléphone:</b> {{ phone }}</p>
 <p> <b>Message:</b> {{ message }} </p>

@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class ArticleSearchType extends AbstractType
 {
@@ -40,6 +41,22 @@ class ArticleSearchType extends AbstractType
                 'label'=>false,
                 'attr'=>[
                     'placeholder'=>'Prix Min',
+                    'class'=>'form-primary'
+                ]
+            ])
+            ->add('brand',TextType::class,[
+                'required'=>false,
+                'label'=>false,
+                'attr'=>[
+                    'placeholder'=>'Marque',
+                    'class'=>'form-primary'
+                ]
+            ])
+            ->add('etat',TextType::class,[
+                'required'=>false,
+                'label'=>false,
+                'attr'=>[
+                    'placeholder'=>'Etat',
                     'class'=>'form-primary'
                 ]
             ])

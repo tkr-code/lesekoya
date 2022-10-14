@@ -4,145 +4,113 @@
 {% import "macros/alertes.html.twig" as alerte %}
 {% import "macros/dataTable.html.twig" as dataTable %}
 
-{% block title %}Category {% endblock %}
+{% block title %}Category
+{% endblock %}
+
+{% block breadcrumb %}
+{{ utils.breadcrumb('Liste des catégories',[{path:path('category_index'),name:'Liste des catégories'}])}}
+{% endblock %}
 
 {% block head %}
-{{ dataTable.css() }}
+	{{ dataTable.css() }}
 {% endblock %}
 
 {% block foot %}
-{{ dataTable.js() }}
+	{{ dataTable.js() }}
 {% endblock %}
 
 {% block javascripts %}
-{{ dataTable.script('#table-1')}}
-<script>
-  $(document).ready(function () {
-    //nivagation
-
-    // edit category
-    // $(document).on('click','.js-edit',function(e){
-    //   e.preventDefault()
-    //   let id  = $(this).attr('id')
-    //   // $('.modal-title').val('Edit category')
-
-    //   $.ajax({
-    //     url: $(this).attr('href'),
-    //     method:"POST",
-    //     data:{
-    //       id_category : id
-    //     },
-    //     dataType:"json",
-    //     success:function(data) {
-
-    //       $('#title').val(data.category.title)
-    //       $('#modal-add').modal('show')
-    //       // console.log(data);
-    //     }
-    //   })
-    //   // alert(id_category)
-    // })
-  })
-</script>
+	{{ dataTable.script('#table-1')}}
+	<script>
+		$(document).ready(function () { // navagation
+})
+	</script>
 {% endblock %}
-{% block breadcrumb %}
-{{ utils.breadcrumb('Manage categories')}}
-{% endblock %}
+
 
 {% block body %}
 
-{% for item in app.flashes('success') %}
-{{ alerte.alert(item,'success')}}
-{% endfor %}
+	{% for item in app.flashes('success') %}
+		{{ alerte.alert(item,'success')}}
+	{% endfor %}
+	<div class="row">
+		<div class="col-md-8 col-12">
+			<div class="card card-primary card-outline card-tabs">
+				<div class="card-header">
+					<div class="card-title">Liste des catégories |
+						<span class="badge badge-primary">
+							{{ categories|length}}</span>
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="col-md-12">
+						<table id="table-1" class="table table-bordered">
+							<thead>
+								<th>Nom</th>
+								<th>Actions</th>
+							</thead>
+							<tbody>
+								{% for item in categories %}
+									<tr>
+										<td>{{ item.title}}</td>
+										{# <td>{{ item.parentCategory.name|default()}}</td> #}
+										<td>
+                    {% import "macros/action.html.twig" as action %}
+                    {{ action.categorie(item) }}
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="card card-primary card-outline">
+				<div class="card-header">
+					<div class="card-title">Ajouter une  categorie</div>
+				</div>
+				<div class="card-body">
+					{{ include('admin/category/_form.html.twig') }}
+				</div>
+			</div>
+		</div>
+	</div>
 
-<div class="row">
-  <div class="col-md-6">
-    <div class="card card-primary card-outline">
-      <div class="card-header">
-        <p>Create category</p>
-      </div>
-      <div class="card-body">
-        {{ include('admin/category/_form.html.twig') }}
-      </div>
-    </div>
-  </div>
-  <div class="col-md-6">
-    <div class="card card-primary card-outline">
-      <div class="card-header">
-        <p>Create parent category</p>
-      </div>
-      <div class="card-body">
-        {{ include('admin/category/_form_parent.html.twig') }}
-      </div>
-    </div>
-  </div>
-  <div class="col-md-12 col-12">
-    <div class="card card-primary card-outline card-tabs">
-      <div class="card-header">
-        <p>Manage categories</p>
-      </div>
-      <div class="card-body">
-        <div class="col-md-12">
-          <table id="table-1" class="table table-bordered">
-            <thead>
-              <th>Nom</th>
-              <th>Parent</th>
-              <th>Actions</th>
-            </thead>
-            <tbody>
-              {% for item in categories %}
-              <tr>
-                <td>{{ item.title}}</td>
-                <td>{{ item.parentCategory.name|default()}}</td>
-                <td>
-                  <div class="btn-group">
-                    <a href="{{ path('category_edit', {'id': item.id}) }}" id="{{ item.id }}" class="btn js-edit"><i
-                        class="fas fa-edit text-success"></i>
-                    </a>
-                  </div>
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal -->
-{# <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-add">
-  Launch Large Modal
-</button> #}
-<div class="modal fade" id="modal-add" style="display: none;" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Large Modal</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Nom</label>
-              <input type="text" name="category" id="title" class="form-control" placeholder="Categorie">
-              {# <small id="helpId" class="text-muted">Help text</small> #}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer justify-content-between">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-    <!-- /.modal-content -->
-  </div>
-  <!-- /.modal-dialog -->
-</div>
-<!-- ./Modal -->
+	<!-- Modal -->
+	{# <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-add">
+	  Launch Large Modal
+	</button> #}
+	<div class="modal fade" id="modal-add" style="display: none;" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Large Modal</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Nom</label>
+								<input
+								type="text" name="category" id="title" class="form-control" placeholder="Categorie">
+							{# <small id="helpId" class="text-muted">Help text</small> #}
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer justify-content-between">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary">Save changes</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- ./Modal -->
 {% endblock %}

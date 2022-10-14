@@ -1,0 +1,9 @@
+<div class="order-date">
+	<div class="row">
+		<div class="form-group col-12">
+			<label for="js-order-date-create">Date emission</label>
+			<input type="date" id="js-order-date-create" value="{{ order.createdAt| date('Y-m-d') }}" class="form-control">
+		</div>
+	</div>
+	<button class="btn btn-success" data-path="{{ path('editor_order_edit',{id:order.id}) }}" id="order-edit-date-create">Appliquer</button>
+</div>

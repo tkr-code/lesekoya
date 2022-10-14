@@ -1,135 +1,28 @@
 {% import "macros/breadcrumb.html.twig" as utils %}
-
 {% extends 'admin/base.html.twig' %}
-
-{% block title %}New Order | {{ app_name }} {% endblock %}
-
-{% block stylesheets %}
-    <!-- bs-stepper -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bs-stepper/dist/css/bs-stepper.min.css">
-    {# <link rel="stylesheet" href="{{ asset('adminlte/plugins/bs-stepper/css/bs-stepper.min.css') }}"> #}
+{% block title %}New Order |
+	{{ app_name }}
 {% endblock %}
-
 {% block breadcrumb %}
-    {{ utils.breadcrumb('Add Order',[
-        {
-            path:'order_index',
-            name:'Manage orders'
-        },
-        {
-            path:'order_new',
-            name:'Add order'
-        }
-    ])}}
+	{{ utils.breadcrumb('Ajouter une commande',[ { path:path('order_index'), name:'Listes des commandes' } ])}}
 {% endblock %}
-
 {% block body %}
-<div class="row">
-    <div class="col-md-12">
-        <div class="card card-default">
-            <div class="card-header">
-            <h3 class="card-title">bs-stepper</h3>
-            </div>
-
-            {{ form_start(form,{
-                        'attr':{
-                            'novalidate':'novalidate'
-                        }
-                    }) }}
-            <div class="card-body p-0">
-            <div class="bs-stepper linear">
-                <div class="bs-stepper-header" role="tablist">
-                <!-- your steps here -->
-                <div class="step active" data-target="#user-part">
-                    <button type="button" class="step-trigger" role="tab" aria-controls="user-part" id="user-part-trigger" aria-selected="true">
-                    <span class="bs-stepper-circle">1</span>
-                    <span class="bs-stepper-label">User and Order information</span>
-                    </button>
-                </div>
-                <div class="line"></div>
-                    <div class="step" data-target="#payment-part">
-                        <button type="button" class="step-trigger" role="tab" aria-controls="payment-part" id="payment-part-trigger" aria-selected="false" disabled="disabled">
-                        <span class="bs-stepper-circle">2</span>
-                        <span class="bs-stepper-label">Payment</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="bs-stepper-content">
-                    <!-- your steps content here -->
-                    <div id="user-part" class="content active dstepper-block" role="tabpanel" aria-labelledby="user-part-trigger">
-                            {# {{ form_widget(form) }} #}
-                            {# <button class="btn btn-primary btn-lg">{{ button_label|default('Save') }}</button> #}
-                        <div class="row">
-                            <div class="form-row col-8">
-                                <div class="form-group col-md-12">
-                                    {{ form_row(form.user)}}
-                                </div>
-                                {# <div class="form-group col-md-6">
-                                    {{ form_row(form.number)}}
-                                </div> #}
-                                {# <div class="form-group col-md-6">
-                                    {{ form_row(form.state)}}
-                                </div> #}
-                                <div class="form-group col-md-12">
-                                    {{ form_row(form.note)}}
-                                </div>
-                            </div>
-                        </div>
-                        
-                        
-                        <button type="button" class="btn btn-primary" onclick="stepper.next()">Next</button>
-                    </div>
-                    <!-- ./User-->
-                     <!-- payment -->
-                    <div id="payment-part" class="content" role="tabpanel" aria-labelledby="payment-part-trigger">
-                        <div class="form-group">
-                            {{ form_row(form.delivery_space)}}
-                        </div>
-                        <div class="form-group">
-                            {{ form_row(form.payment)}}
-                        </div>
-                        <button type="button" class="btn btn-primary" onclick="stepper.previous()">Previous</button>
-                        
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-                    <!-- ./payment -->
-                </div>
-            </div>
-            </div>
-            {{ form_end(form) }}
-            <!-- /.card-body -->
-            <div class="card-footer">
-                <a class="btn btn-dark" href="{{ path('order_index') }}">back to list <i class="fas fa-arrow-alt-circle-left    "></i> </a>
-            </div>
-        </div>
-    </div>
-</div>
-{% endblock %}
-
-{% block foot %}
-    <!-- bs-stepper -->
-    <script src="https://cdn.jsdelivr.net/npm/bs-stepper/dist/js/bs-stepper.min.js"></script>
-    {# // <script src="{{ asset('adminlte/plugins/bs-stepper/js/bs-stepper.min.js') }}"></script> #}
-{% endblock %}
-
-{% block javascripts %}
-    <script>
-        // $(document).ready(function(){
-        //       // BS-Stepper Init
-        //     document.addEventListener('DOMContentLoaded', function () {
-        //         window.stepper = new Stepper(document.querySelector('.bs-stepper'))
-        //     })
-            
-        // })
-          // BS-Stepper Init
-  document.addEventListener('DOMContentLoaded', function () {
-    window.stepper = new Stepper(document.querySelector('.bs-stepper'))
-  })
-
-        $(document).ready(function () {
-            var stepper = new Stepper($('.bs-stepper')[0])
-            // alert('o')
-        })
-    </script>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="card card-outline card-primary">
+				<div class="card-body">
+					{{ form_start(form,{ 'attr':{ 'novalidate':'novalidate' } }) }}
+					{{ form_row(form.user)}}
+					{{ form_row(form.note)}}
+					{{ form_row(form.street)}}
+					{{ form_row(form.payment)}}
+					<button type="submit" class="btn btn-primary">Submit</button>
+					{{ form_end(form) }}
+                    {% import "macros/link.html.twig" as link %}
+                    <hr>
+                    {{ link.back(path('order_index'),'Back to client list') }}
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}

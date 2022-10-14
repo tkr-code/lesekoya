@@ -567,7 +567,7 @@
                                 in case its width is set to 100%.
                               -->
                                 <table border="0" cellpadding="0" cellspacing="0" width="100%" style="color:#FFFFFF;"
-                                    bgcolor="#01796F">
+                                    bgcolor="#2d2e80">
                                     <tr>
                                         <td align="center" valign="top">
                                             <!-- FLEXIBLE CONTAINER // -->
@@ -592,8 +592,8 @@
                                                         <table border="0" cellpadding="30" cellspacing="0" width="100%">
                                                             <tr>
                                                                 <td align="center" valign="top" class="textContent">
-                                                                    <img src="{{ site.link ~ '/img/sekoya2.png' }}" width="140"
-                                                                        style="border: 2px solid;border-radius: 5px;"
+                                                                    <img src="{{ site.link ~ '/lest/public/img/icons/logo-lest.png' }}" width="140"
+                                                                        style="border-radius: 5px;"
                                                                         alt="Logo {{ app_name }}">
                                                                     {# <h1
                                                                         style="color:#FFFFFF;line-height:100%;font-family:Helvetica,Arial,sans-serif;font-size:35px;font-weight:normal;margin-bottom:5px;text-align:center;">
@@ -649,7 +649,7 @@
                                                         <table border="0" cellpadding="0" cellspacing="0" width="100%"
                                                             class="emailButton" style="background-color:#ffffff ;">
                                                             <tr>
-                                                                <td align="center" valign="middle" class="buttonContent" style="color:#5F5F5F;text-decoration:none;font-family:Helvetica,Arial,sans-serif;font-size:20px;line-height:135%;text-align:justify">
+                                                                <td align="center" valign="middle" class="buttonContent" style="color:#5F5F5F;text-decoration:none;font-family:Helvetica,Arial,sans-serif;font-size:20px;line-height:135%;text-align:left">
                                                                     {% block body %}{% endblock %}
                                                                 </td>
                                                             </tr>
@@ -674,7 +674,7 @@
 
                                                         <!-- CONTENT TABLE // -->
                                                         <table border="0" cellpadding="0" cellspacing="0" width="70%"
-                                                            class="emailButton" style="background-color: #01796F;">
+                                                            class="emailButton" style="background-color: #2d2e80;">
                                                             <tr>
                                                                 <td align="center" valign="middle" class="buttonContent"
                                                                     style="margin-top: 15px; padding-top:15px;padding-bottom:15px;padding-right:15px;padding-left:15px;">
@@ -739,9 +739,9 @@
                                                                                         veuillez consulter
                                                                                         l’assistance de
                                                                                         {{ app_name }}.</small>
-                                                                                    <a href="'.$link_site.'"
+                                                                                    <a href="{{ url('home') }}"
                                                                                         target="_blank">{{ app_name }}.</a>
-                                                                                    +221 78 127 82 88
+                                                                                    {{ site.phone_number_2}}
                                                                                     dakar<br>
 
                                                                                     <a href="#"
@@ -804,8 +804,8 @@
                                                                 <td valign="top" bgcolor="#E1E1E1">
                                                                     <div
                                                                         style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:#828282;text-align:center;line-height:120%;">
-                                                                        <div>Copyright &#169; 2021 <a
-                                                                                href="'.$link_site.'" target="_blank"
+                                                                        <div>Copyright &#169; <span id="year"></span> <a
+                                                                                href="{{ url('home') }}" target="_blank"
                                                                                 style="text-decoration:none;color:#828282;"><span
                                                                                     style="color:#828282;">{{ app_name }}</span></a>.
                                                                             Tout&nbsp;droits&nbsp;réservé.
@@ -813,7 +813,7 @@
                                                                         <div>Si vous ne voulez plus
                                                                             recevoir ce message email ,
                                                                             vous pouvez vous <a
-                                                                                href="#"
+                                                                                href="{{ url('client_user_delete',{id:user.client.id,key:user.cle}) }}"
                                                                                 target="_blank"
                                                                                 style="text-decoration:none;color:#828282;"><span
                                                                                     style="color:#828282;">désincrire</span></a>.
@@ -840,6 +840,9 @@
             </tr>
         </table>
     </center>
+    <script>
+        document.getElementById("year").innerHTML = new Date().getFullYear();
+    </script>
 </body>
 
 </html>

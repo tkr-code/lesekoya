@@ -1,0 +1,20 @@
+<div class="products mb-3">
+	<div class="row justify-content-center">
+		{% for item in articles %}
+			{% include "lest/shop/_article.html.twig" %}
+		{% else %}
+			<div class=" text-center mt-5">
+				<p class="h3">Aucun résulat associé à la recherche ou au filtre:</p>
+				<ul>
+					<li>Vérifiez l'hortographe des termes de la recherche</li>
+					<li>Essayez d'autres mots</li>
+				</ul>
+			</div>
+		{% endfor %}
+	</div>
+	<!-- End .row -->
+</div>
+<!-- End .products -->
+<nav aria-label="Page navigation">
+	{{ knp_pagination_render(articles) }}
+</nav>

@@ -17,8 +17,8 @@
         {% set  type = 'danger' %}
     {% endif %}
 
-    {% if state == 'waiting' %}
-        {% set  type = 'default' %}
+    {% if state == 'waiting' or state == 'shipping' %}
+        {% set  type = 'primary' %}
     {% endif %}
 
     {% if state == 'in progress' %}

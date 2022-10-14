@@ -1,79 +1,27 @@
 {% extends "base.html.twig" %}
 {% import "macros/search.html.twig" as search %}
-{% block title %}Malick{% endblock %}
-
-{% block body %}
-    {{ search.search(searchForm) }}
-    <h1> {% trans %}Home page{% endtrans %} </h1>
-    <div>
-        <ul>
-        {% for page in pages %}
-            <li><a href="{{ path(page.path)}}">{{page.name}}</a></li>
-        {% endfor %}
-        </ul>
-    </div>
+{% block title %} Home{% endblock %}
+{% block Breadcrumb %}
+<nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
     <div class="container">
-            <div class="slider single-item">
-        <div>
-            <h3>1</h3>
-        </div>
-        <div>
-            <h3>2</h3>
-        </div>
-        <div>
-            <h3>3</h3>
-        </div>
-        <div>
-            <h3>4</h3>
-        </div>
-        <div>
-            <h3>5</h3>
-        </div>
-        <div>
-            <h3>6</h3>
-        </div>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{{ path('home') }}">{{'Home'|trans}}</a>
+            </li>
+            {% if app.request.get('_route') == 'articles_category' %}
+            <li class="breadcrumb-item">
+                <a href="{{ path('articles') }}">{{'Shop'|capitalize|trans}}</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">{{ app.request.get('category') |trans}}</li>
+            {% endif %}
+            {% if app.request.get('_route') == 'articles' %}
+            <li class="breadcrumb-item active" aria-current="page">{{'Shop'|trans}}</li>
+            {% endif %}
+        </ol>
     </div>
-    </div>
-
-    <div class="row">
-        {# {% for item in lastProduit %}
-            {{ include('pages/produit/_produit.html.twig') }}
-        {% endfor %} #}
-    </div>
+    <!-- End .container -->
+</nav>
 {% endblock %}
-{% block javascripts %}
-<script>
-    $(document).ready(function(){
-// $('.single-item').slick();
-        $(".single-item").slick({
-            // normal options...
-            infinite: false,
+{% block body %}
 
-            // the magic
-            responsive: [{
-
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 3,
-                    infinite: true
-                }
-
-                }, {
-
-                breakpoint: 600,
-                settings: {
-                    slidesToShow: 2,
-                    dots: true
-                }
-
-                }, {
-
-                breakpoint: 300,
-                settings: "unslick" // destroys slick
-
-                }]
-            });
-
-    })
-</script>
 {% endblock %}

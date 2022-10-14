@@ -48,7 +48,9 @@
                                             {% else %}
                                             <img src="{{ asset('img/vide.png') }}" width="40">
                                             {% endfor %}
-                                            {{ item.article.title }}
+                                            <a href="{{ path('articles_show', { category: item.category.title|lower, slug: item.slug, id: item.id}) }}">
+                                                {{ item.article.title }}
+                                            </a>
                                         </td>
                                         <td>
                                             {{ item.article.price|number_format(0,'.',' ') }} * {{item.quantity}}

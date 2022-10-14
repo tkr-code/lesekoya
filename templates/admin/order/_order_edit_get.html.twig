@@ -1,0 +1,171 @@
+{% import ('macros/ribbon.html.twig') as ribbon %}
+<div class="row">
+	<div class="col-md-12">
+		{{ ribbon.ribbon(order.state)}}
+		<div class="card">
+			<div
+				class="card-body">
+				<!-- title row -->
+				<div class="row">
+					<div class="col-10">
+						<h4>
+							<img src="{{ asset('img/lest-logo.png') }}" alt="" width="60px">
+							<small class="float-right">Date:
+								{{ order.createdAt| date_format_fr|capitalize }}
+								<a href="#" data-path="{{ path('editor_order_edit_get',{id:order.id}) }}" id="btn-modal-date-create" title="Modifier">
+									<i class="fas fa-pencil-alt text-success"></i>
+								</a>
+							</small>
+						</h4>
+					</div>
+					<!-- /.col -->
+				</div>
+				<!-- info row -->
+				<div class="row invoice-info">
+					<div class="col-sm-4 invoice-col">
+						{{'From'|trans}}
+						<address>
+							<strong>{{ app_name }}, Inc.</strong><br>
+							{{ site.ville}},
+							{{ site.adresse}}
+							{{ site.code_postal }}<br>
+							Phone:
+							{{ site.phone_number_1 }}
+							( whastapp)
+							<br>
+							Email:
+							{{ site.email}}
+						</address>
+					</div>
+					<!-- /.col -->
+					<div class="col-sm-4 invoice-col">
+						{{'To'|trans}}
+						<address>
+							<strong>{{ order.user.fullName }}</strong><br>
+							{% if order.user.adresse is not null %}
+								{{ order.user.adresse.rue ~ ' ' ~ order.user.adresse.city ~ ' ' ~
+                                                    order.user.adresse.pays }}
+							{% endif %}
+
+							<br>
+							{{'Phone'|trans}}:
+							{{ order.user.phoneNumber }}<br>
+							{{'Email'|trans}}:
+							{{ order.user.email|explode_email }}
+						</address>
+					</div>
+					<!-- /.col -->
+					<div class="col-sm-4 invoice-col">
+						<b>{{'Invoice'|trans}}
+							#{{ order.number }}</b><br>
+						<br>
+						<b>{{'Order'|trans}}
+							ID:</b>
+						#{{ order.id}}
+						<br>
+						<b>Date limite de paiement:</b>
+						<a href="#" data-path="{{ path('editor_order_edit_get',{id:order.id}) }}" id="btn-modal-date-limite" title="Modifier">
+							<i class="fas fa-pencil-alt text-success"></i>
+						</a>
+						{{ order.paymentDue | date('d/m/Y') }}
+
+						<br>
+					</div>
+					<!-- /.col -->
+				</div>
+				<!-- /.row -->
+				<!-- Table row -->
+				<div class="row">
+					<div class="col-12 table-responsive">
+						<table class="table tabele-bordered">
+							<thead>
+								<tr>
+									<th>Qty</th>
+									<th>{{'Product'|trans}}</th>
+									<th>{{'price'|trans}}</th>
+									<th>{{'Subtotal'|trans}}</th>
+									<th>Action
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for item in order.orderItem %}
+									<tr>
+										<td width="10%">{{ item.quantity }}
+											<a href="#" data-path="{{ path('editor_order_item_edit_get',{id:item.id}) }}" class="btn-modal-qty ml-2" title="Modifier">
+												<i class="fas fa-pencil-alt text-success"></i>
+											</a>
+										</td>
+										<td>{{ item.produitName }}</td>
+										<td>{{ item.unitPrice|number_format(0,'.',' ') }}
+											{{ site.current_name }}
+										</td>
+										<td>{{ item.UnitsTotal |number_format(0,'.',' ') }}
+											{{ site.current_name }}</td>
+										<td>
+											<button class="btn btn-delete-order-item" data-path="{{ path('order_item_delete', {'id': item.id}) }}" data-token="{{ csrf_token('delete' ~ item.id) }}">
+												<i class="text-danger fa fa-trash-alt"></i>
+											</button>
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<!-- /.col -->
+				</div>
+				<!-- /.row -->
+				<hr>
+
+				<div
+					class="row">
+					<!-- accepted payments column -->
+					<div class="col-6">
+						<p class="lead">{{'Payment Methods'|trans}}:</p>
+						{{ order.payment.paymentMethod.name }}
+						{# <img src="{{ asset('adminlte/dist/img/credit/visa.png') }}" alt="Visa"> #}
+						{# <img src="{{ asset('adminlte/dist/img/credit/mastercard.png') }}" alt="Mastercard">
+						                                                <img src="{{ asset('adminlte/dist/img/credit/american-express.png') }}" alt="American Express">
+						                                                <img src="{{ asset('adminlte/dist/img/credit/paypal2.png') }}" alt="Paypal"> #}
+
+							<p class="text-muted well well-sm shadow-none" style="margin-top: 10px;"> {{ order.payment.paymentMethod.description }}
+						</p>
+					</div>
+					<!-- /.col -->
+					<div class="col-6">
+						<p class="lead">{{'Amount Due'|trans}}
+							{{ order.paymentDue| date_format_fr }}</p>
+
+						<div class="table-responsive">
+							<table class="table">
+								<tr>
+									<th style="width:50%">{{'Subtotal'|trans}}:</th>
+									<td>{{ order.itemsTotal | number_format(0,'.',' ') }}
+										{{ site.current_name }}
+									</td>
+								</tr>
+								<tr>
+									<th>{{'Shipping'|trans}}:</th>
+									<td>{{ (order.deliverySpace)?  '(' ~ order.deliverySpace.street.name ~ ') ' ~ order.shipping| number_format(0,'.',' ') :'0' |number_format(0,'.',' ') }}
+										{{ site.current_name }}
+									</td>
+								</tr>
+								<tr>
+									<th>{{'Total'|trans}}:</th>
+									<td>{{ order.total| number_format(0,'.',' ') }}
+										{{ site.current_name }}
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+					<div class="col-6">
+						<p>Nous vous remercions de votre confiance.<br>Cordialement</p>
+					</div>
+					<!-- /.col -->
+				</div>
+				<!-- /.row -->
+			</div>
+		</div>
+	</div>
+</div>

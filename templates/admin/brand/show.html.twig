@@ -1,0 +1,29 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Brand{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-outline card-primary">
+            <div class="card-header">
+                <div class="card-title">{{ brand.name }}</div>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tbody>
+                        {# {% for item in brand.categories %}
+                        <tr>
+                            <td>{{ item.title }}</td>
+                        </tr>
+                        {% endfor %} #}
+                    </tbody>
+                </table>
+                <a href="{{ path('admin_brand_index') }}">back to list</a>
+                <a href="{{ path('admin_brand_edit', {'id': brand.id}) }}">edit</a>
+                {{ include('admin/brand/_delete_form.html.twig') }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

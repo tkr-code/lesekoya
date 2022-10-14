@@ -26,13 +26,14 @@ class Client
     private $id;
 
     /**
+     * @Assert\Valid
      * @ORM\OneToOne(targetEntity=User::class, inversedBy="client", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity=DeliverySpace::class, mappedBy="client")
+     * @ORM\OneToMany(targetEntity=DeliverySpace::class, mappedBy="client", cascade={"persist", "remove"})
      */
     private $deliverySpaces;
 
@@ -40,6 +41,7 @@ class Client
      * @ORM\OneToMany(targetEntity=ArticleBuy::class, mappedBy="client", orphanRemoval=true)
      */
     private $articleBuys;
+
 
     public function __construct()
     {

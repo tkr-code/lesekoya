@@ -5,13 +5,11 @@
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
-/public/e-store/
 /public/adminlte/
-/public/aroma/
-/public/img/user/
 /migrations/
 /var/
 /vendor/
+/version_1/
 /list de produit
 ###< symfony/framework-bundle ###
 
@@ -28,3 +26,10 @@
 ###> liip/imagine-bundle ###
 /public/media/cache/
 ###< liip/imagine-bundle ###
+
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/public/build/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###

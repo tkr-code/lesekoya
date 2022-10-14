@@ -3,12 +3,12 @@
 
 {% extends 'admin/base.html.twig' %}
 
-{% block title %} Facture {{ app_name }} - {{ order.user.personne.firstName ~ ' ' ~ order.user.personne.lastName }} {% endblock %}
+{% block title %} Facture {{ app_name }} - {{ order.user.fullName }} {% endblock %}
 
 {% block breadcrumb %}
     {{ utils.breadcrumb('Invoice',[
         {
-            path:'order_index',
+            path:path('order_index'),
             name:'Manage Order'
         }
     ])}}

@@ -1,5 +1,11 @@
-<p class="h6">Montant de la livraison: 
-    <span class="text-danger font-weight-bold">
-        {{ street.shippingAmount.amount|number_format(2,'.',' ') }} {{ site.current }}
+{% if street %}
+    <p>Montant de la livraison:</p>
+<p class="text-center">
+    <span class="text-danger text-center font-weight-bold">
+        {{ street ? street.shippingAmount.amount|number_format(0,'.',' ') : '0' }} {{ site.current_name }}
     </span>
-</p> 
+</p>
+{% else %}
+    <p>Choissisez un lieu de livraison </p>
+{% endif %}
+ 

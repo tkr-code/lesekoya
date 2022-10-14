@@ -22,17 +22,12 @@ class OrderType extends AbstractType
     {
        $user =  $options['user'];
         $builder
-            ->add('created_at',DateType::class,[
-                'label'=>'Date'
-            ])
-            ->add('state',ChoiceType::class,[
-                'choices'=>[
-                    'Canceled'=>'canceled',
-                    'Waiting'=>'waiting',
-                    'in progress'=>'in progress',
-                    'Completed'=>'completed'
-                ]
-            ])
+            // ->add('created_at',DateType::class,[
+            //     'label'=>'Date'
+            // ])
+            // ->add('state',ChoiceType::class,[
+            //     'choices'=>Order::status
+            // ])
             ->add('note',TextareaType::class)            
         ;
     }

@@ -1,0 +1,11 @@
+-- Message de reussite
+    L'enrigtrement a été éffectué fait avec succès.
+    Modification réussie
+
+-- Messaage de suppression
+    Vous allez supprimmer X, cette action est irreversible.
+    L'enrigtrement a été supprimé fait avec succès.
+
+-- Message d'envoi email
+
+-- Message d'erreur

@@ -1,0 +1,23 @@
+{% extends 'admin/base.html.twig' %}
+{% import "macros/link.html.twig" as link %}
+{% block title %}Edit Brand{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <div class="card-title">Modifier une marque</div>
+            </div>
+            <div class="card-body">
+                {{ include('admin/brand/_form.html.twig', {'button_label': 'Update'}) }}
+            </div>
+        </div>
+    </div>
+</div>
+{{ link.back(path('admin_brand_index')) }}
+{% if is_granted('ROLE_ADMIN') %}
+<hr>
+    {{ include('admin/brand/_delete_form.html.twig') }}
+    {% endif %}
+{% endblock %}

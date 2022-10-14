@@ -1,0 +1,24 @@
+{% extends 'admin/base.html.twig' %}
+{% import "macros/link.html.twig" as link %}
+{% import "macros/breadcrumb.html.twig" as utils %}
+
+{% block title %}New Coupon de reduction{% endblock %}
+{% block breadcrumb %}
+{{ utils.breadcrumb('Lite des coupons',[{path:path('admin_coupon_index'),name:'Créer un coupon'}])}}
+{% endblock %}
+{% block body %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <p>Créer un coupon</p>
+            </div>
+            <div class="card-body">
+                {{ include('admin/coupon/_form.html.twig') }}
+                <hr>
+                {{ link.back(path('admin_coupon_index')) }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -20,11 +20,11 @@ class CategoryType extends AbstractType
                     'placeholder'=>'Enter category'
                 ],
             ])
-            ->add('parent_category',EntityType::class,[
-                'class'=>ParentCategory::class,
-                'required'=>false,
-                'choice_label'=>'name'
-            ])
+            // ->add('parent_category',EntityType::class,[
+            //     'class'=>ParentCategory::class,
+            //     'required'=>false,
+            //     'choice_label'=>'name'
+            // ])
             ->add('is_active')
         ;
     }

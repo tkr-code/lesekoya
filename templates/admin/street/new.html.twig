@@ -1,21 +1,21 @@
 {% extends 'admin/base.html.twig' %}
-
-{% block title %}New Street{% endblock %}
+{% import "macros/link.html.twig" as link %}
+{% block title %}New Street
+{% endblock %}
 
 {% block body %}
-<div class="row">
-    <div class="col-lg-12">
-        <div class="card">
-            <div class="card-header">
-                <h3>Create new Street</h3>
-            </div>
-            <div class="card-body">
-                {{ include('admin/street/_form.html.twig') }}
-            </div>
-            <div class="card-footer">
-                <a href="{{ path('street_index') }}">back to list</a>
-            </div>
-        </div>
-    </div>
-</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="card card-outline card-primary">
+				<div class="card-header">
+					<div class="card-title">Create new Street</div>
+				</div>
+				<div class="card-body">
+					{{ include('admin/street/_form.html.twig') }}
+                    <hr>
+				{{ link.back(path('street_index'),'back to list') }}
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}

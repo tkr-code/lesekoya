@@ -3,10 +3,17 @@
 namespace App\Controller\Main;
 
 use App\Entity\Article;
+use App\Entity\ArticleFiltre;
 use App\Entity\ArticleSearch;
+use App\Entity\Comment;
+use App\Form\ArticleFiltreType;
 use App\Form\ArticleSearchType;
+use App\Form\CommentType;
+use App\Repository\ArticleBuyRepository;
 use App\Repository\ArticleRepository;
+use App\Repository\BrandRepository;
 use App\Repository\CategoryRepository;
+use App\Repository\CommentRepository;
 use App\Repository\ParentCategoryRepository;
 use Cocur\Slugify\Slugify;
 use Knp\Component\Pager\PaginatorInterface;
@@ -20,74 +27,116 @@ class ArticleController extends AbstractController
     /**
      * @Route("boutique/{category}/{slug}/{id}", name="articles_show", requirements={"slug": "[a-z0-9\-]*"} )
      */
-    public function show(Article $article,string $category, string $slug, Request $request, ArticleRepository $articleRepository): Response
+    public function show( PaginatorInterface $paginatorInterface, CommentRepository $commentRepository, ArticleBuyRepository $articleBuyRepository, Article $article,string $category, string $slug, Request $request, ArticleRepository $articleRepository): Response
     {
-        if($slug !== $article->getSlug() || $category !== $article->getCategory()->getTitle() ){
+        if (!$article) {
+            throw $this->createNotFoundException(
+                'No product found for id '
+            );
+        }
+        if($slug !== $article->getSlug() || $category !== $article->getCategory()->getSlug() ){
             return $this->redirectToRoute('articles_show',
                 [
-                    'category'=>$article->getCategory()->getTitle(),
+                    'category'=>$article->getCategory()->getSlug(),
                     'slug'=>$article->getSlug(),
                     'id'=>$article->getId()
                 ],301);
         }
         $search = new ArticleSearch();
         $form = $this->createForm(ArticleSearchType::class,$search);
-        // $comment = new Comment();
-        // $comment->setProduit($produit);
         
-        // $comment->setAdmin($this->getUser());
-        // $form = $this->createForm(CommentType::class, $comment);
-        // $form->handleRequest($request);
+        $comment = new Comment();
+        $comment->setArticle($article);
+        
+        $formComment = $this->createForm(CommentType::class, $comment);
+        $formComment->handleRequest($request);
+        
+        if ($formComment->isSubmitted() && $formComment->isValid()) {
+            if(!empty($this->getUser())){
+                $comment->setUser($this->getUser());
+            }else{
+                return $this->redirectToRoute('app_login');
+            }
+            $ratting = $request->request->get('rating');
+            $comment->setRating($ratting);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($comment);
+            $entityManager->flush();
+            $this->addFlash('success','Le commentaire a été enregistré');
+            return $this->redirectToRoute('articles_show',
+                [
+                    'category'=>$article->getCategory()->getSlug(),
+                    'slug'=>$article->getSlug(),
+                    'id'=>$article->getId()
+                ],Response::HTTP_SEE_OTHER);
+        }
+        $user = $this->getUser();
 
-        // if ($form->isSubmitted() && $form->isValid()) {
-        //     $entityManager = $this->getDoctrine()->getManager();
-        //     $entityManager->persist($comment);
-        //     $entityManager->flush();
-        //     $this->addFlash('success','Commentaire enregistré');
-        //     return $this->redirectToRoute('articles_show',
-        //         [
-        //             'category'=>$category,
-        //             'slug'=>$slug,
-        //             'id'=>$produit->getId()
-        //         ], Response::HTTP_SEE_OTHER);
-        // }
-        return $this->renderForm('leSekoya/shop/show.html.twig', [
+
+        $isBuy = $isComment = false;
+        if($user){
+            $client = $user->getClient();
+            if($client)
+            {               
+                $isBuy = $articleBuyRepository->isBuy($client,$article);
+            }
+            $isComment = $commentRepository->isComment($user,$article);
+        }
+
+        $pagination = $paginatorInterface->paginate(
+            $articleRepository->showPagination(),
+            $request->query->getInt('page',1),
+            1
+        );
+
+        return $this->renderForm('main/shop/show.html.twig', [
             'article'=>$article,
             'articles'=>$articleRepository->findBy(['enabled'=>true,'etat'=>'top'],null,12),
             'form' => $form,
+            'formComment' => $formComment,
+            'is_buy'=>$isBuy,
+            'is_comment'=>$isComment,
+            'propositions'=>$articleRepository->findAll(),
+            'article_rand'=>$articleRepository->findRand(20,$article)
         ]);
     }
     /**
      * @Route("/boutique", name="articles")
-     * @Route("/boutique/{parent}", name="articles_parent")
-     * @Route("/boutique/{parent}/{category}", name="articles_category")
+     * "/boutique/{parent}", name="articles_parent"
+     * @Route("/boutique/{category}", name="articles_category")
      */
-    public function index(string $parent = null, string $category = null, ParentCategoryRepository $parentCategoryRepository, Request $request, PaginatorInterface $paginator, ArticleRepository $articleRepository, CategoryRepository $categoryRepository): Response
+    public function index(string $parent = null, string $category = null, 
+        ParentCategoryRepository $parentCategoryRepository, Request $request, PaginatorInterface $paginator, 
+        ArticleRepository $articleRepository, CategoryRepository $categoryRepository, BrandRepository $brandRepository): Response
     {
         $category = str_replace('-',' ',$category);
         $search = new ArticleSearch();
         $search->setCategory($category);
+
         $form = $this->createForm(ArticleSearchType::class,$search)->handleRequest($request);
         $pagination = $paginator->paginate(
             $articleRepository->search(
                 $search->getMots(),
                 $search->getCategory(),
                 $search->getMinPrice(),
-                $search->getMaxPrice()
+                $search->getMaxPrice(),
+                $search->getBrand(),
+                $search->getEtat()
             ),
             $request->query->getInt('page',1),
             12
         );
-        // return $this->renderForm('main/article/index_1.html.twig', [
-        // return $this->renderForm('main/article/index.html.twig', [
-            // dd($categoryRepository->parents());
-        return $this->renderForm('leSekoya/shop/index.html.twig', [
+        return $this->renderForm($this->getParameter('template').'/shop/index.html.twig', [
             'articles' => $pagination,
             'form'=>$form,
+            'brands'=> $brandRepository->findAll(),
             'breadcrumb'=>[
                 'parent'=>ucfirst($parent),
                 'category'=>ucfirst($category)
             ],
+            'categorie'=>$categoryRepository->findOneBy([
+                'title'=>$category
+            ]),
             'category'=>$categoryRepository->findAll(),
             'category_parents'=>$parentCategoryRepository->etat(true),
             'top_articles'=>$articleRepository->findBy(['enabled'=>true,'etat'=>'top'],null,12),

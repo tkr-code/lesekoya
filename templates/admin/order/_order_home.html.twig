@@ -1,0 +1,48 @@
+<table class="table m-0">
+	<thead>
+		<tr>
+			<th>{{'number'|trans}}</th>
+			<th>{{'Customer'|trans}}</th>
+			<th>{{'Status'|trans}}</th>
+			<th>Crée le</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for item in lastOrder %}
+		<tr {{ (item.user.status=='Delete' )? 'class="text-danger"' : '' }}>
+			<td>{{ item.number }}
+				<a class="text-dark js-order-view" title="Voir" href="{{ path('main_order_show',{id:item.id}) }}">
+					<i class="fa fa-eye float-right" aria-hidden="true"></i>
+				</a>
+				{% if item.user.status != 'Delete' %}
+				{% if is_granted('ROLE_ADMIN') %}
+				<a type="button" title="Modifier la commande" class="ml-2" href="{{ path('order_edit',{id:item.id}) }}">
+					<i class="fas text-success fa-pencil-alt "></i>
+				</a>
+				{% endif %}
+				{% endif %}
+			</td>
+			<td>{{ item.user.email |explode_email }}</td>
+			<td>
+				{% import "/macros/etats.html.twig" as etats %}
+				{{ etats.order(item.state) }}
+				{% if item.user.status != 'Delete' %}
+				{% if item.state != 'completed' %}
+				<a type="button" href="#" class="ml-2 text-success float-right"
+					data-path="{{ path('editor_order_edit_get',{id:item.id}) }}" type="button" id="btn-modal-state"
+					title="Modifier le status">
+					<i class="fas fa-pencil-alt"></i>
+				</a>
+				{% endif %}
+				{% endif %}
+			</td>
+			<td>{{ item.createdAt|date_format_min_fr }}</td>
+		</tr>
+		{% else %}
+		<tr>
+			<td colspan="4" width="100%" class="text-center">Aucune commande enregistrée</td>
+		</tr>
+		{% endfor %}
+
+	</tbody>
+</table>

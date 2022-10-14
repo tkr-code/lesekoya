@@ -45,6 +45,7 @@ class Street
      */
     private $deliverySpaces;
 
+
     public function __construct()
     {
         $this->deliverySpaces = new ArrayCollection();

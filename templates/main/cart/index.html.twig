@@ -1,155 +1,427 @@
-{% import "macros/search.html.twig" as search %}
+{% extends "main/base.html.twig" %}
 
-{% extends 'base.html.twig' %}
+{% if app.request.session.get('shipping') %}
+{% set delivery = app.request.session.get('shipping') %}
+{% endif %}
 
-
-{% block title %}Hello CardController!{% endblock %}
+{% block title %}{{'Cart'|trans}}
+{% endblock %}
 
 {% block body %}
-{{ search.search(form) }}
+<style>
+    .product-col {
+        width: 280px;
+    }
+    .product-media{
+        width: 100px;
+    }
+</style>
 
-<ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{{ path('articles') }}">Tous les articles</a></li>
-    <li class="breadcrumb-item active">Cart</li>
-</ol>
+<!-- End .page-header -->
+<nav aria-label="breadcrumb" class="breadcrumb-nav">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{{ path('home') }}">{{'Home'|trans}}</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ path('articles') }}">{{'Shop'|trans}}</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">{{'Shopping Cart'|trans}}</li>
+        </ol>
+    </div>
+    <!-- End .container -->
+</nav>
+<!-- End .breadcrumb-nav -->
 
-{% for item in app.flashes('success') %}
-  <div class="alert alert-success">
-      <p>{{item}}</p>
-  </div>
-{% endfor %}
+<div class="page-content">
+    <div class="cart">
+        <div class="container bg-white rounded p-3">
+            {% include "includes/_alerte.html.twig" %}
+            {% if app.request.session.get('panier') %}
+            <div class="row">
+                <div class="col-lg-9">
+                    <table class="table table-cart table-mobile">
+                        <thead>
+                            <tr>
+                                <th>{{'Product'|trans}}</th>
+                                {# <th>{{'Price'|trans}}</th> #}
+                                <th>{{'Quantity'|trans}}</th>
+                                <th>Total</th>
+                                <th></th>
+                            </tr>
+                        </thead>
 
-<div class="container">
-  <div class="row">
-    <div class="col-lg-8">
-    {% if app.request.session.get('panier') %}
-    
-      <div class="card">
-        <div class="card-header">
-          <h3>Cart</h3>
-        </div>
-        <div class="card-body">
-          <table class="table">
-            <thead>
-              <th>X</th>
-              <th>Image</th>
-              <th>Name</th>
-              <th>Quantity</th>
-              <th>Price</th>
-              <th>Subtotal</th>
-            </thead>              
-            <tbody>
-            {% for key, item in items %}
-              <tr>
-                <td>
-                  <a href="{{ path('cart_delete',{id: item.article.id} ) }}" class="btn-sm"><i class="fa fa-window-close text-danger" aria-hidden="true"></i></a>
-                </td>
-                <td><img src="{{ asset('img/vide.png') }}" width="80px" alt=""> </td>
-                <td>{{ item.article.title}} </td>
-                <td>
-                    <form class="form-row" action="" method="post">
-                      <div class="form-group col-6">
-                      <input type="hidden" name="article_id" value="{{ item.article.id }}">
-                        <input type="number" class="form-control" min="1" max="{{ item.article.quantity }}" name="qty" value="{{ item.quantite }}" >
-                        <small id="helpId" class="text-muted">Stock: {{ item.article.quantity  }} </small>
-                      </div>
-                      <div class="form-group col-2">
-                        <button type="submit" class="btn btn-success ml-1">
-                          Appliquer
-                        </button>
-                      </div>
+                        <tbody>
+                            {% for item in items %}
+                            <tr>
+                                <td class="product-col">
+                                    <div class="product">
+                                        <figure class="product-media">
+                                            <a href="#">
+                                                {% for img in item.article.images|slice(0,1) %}
+                                                <img src="{{ asset('img/article/' ~ img.name) }}"
+                                                    alt="{{ item.article.title }}">
+                                                {% else %}
+                                                <img src="{{ asset('img/vide.png') }}" alt="{{ item.article.title }}">
+                                                {% endfor %}
+                                            </a>
+                                        </figure>
+
+                                        <h3 class="product-title">
+                                            <a href="#">{{ item.article.title }}</a> <br>
+                                            {% if item.article.reduction > 0 %}
+                                            <span class="new-price">{{ item.article.newPrice| number_format(0,'.',' ')
+                                                }}
+                                            </span>
+                                            <span class="old-price">{{ item.article.formatterPrice }}</span>
+                                            {% else %}
+                                            <span class="new-price">{{ item.article.newPrice| number_format(0,'.',' ')
+                                                }}
+                                            </span>
+                                            {% endif %}
+                                            {{ site.current_name }}
+                                        </h3>
+                                        <!-- End .product-title -->
+                                    </div>
+                                    <!-- End .product -->
+
+                                </td>
+                                {# <td class="price-col">
+                                    {% if item.article.reduction > 0 %}
+                                    <span class="new-price">{{ item.article.newPrice| number_format(0,'.',' ') }}
+                                    </span>
+                                    <span class="old-price">{{ item.article.formatterPrice }}</span>
+                                    {% else %}
+                                    <span class="new-price">{{ item.article.newPrice| number_format(0,'.',' ') }}
+                                    </span>
+                                    {% endif %}
+
+                                    {{ site.current}}
+                                </td> #}
+                                <td class="quantity-col">
+                                    <form class="form-row" action="" method="post">
+                                        <div class="form-group col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-7 col-7">
+                                                    <input type="hidden" name="article_id"
+                                                        value="{{ item.article.id }}">
+                                                    <input type="number" class="form-control" min="1"
+                                                        max="{{ item.article.quantity }}" name="qty"
+                                                        value="{{ item.quantite }}">
+                                                    <small id="helpId" class="text-muted">En Stock:
+                                                        {{ item.article.quantity }}
+                                                    </small>
+                                                </div>
+                                                <div class="col-5 col-md-5">
+                                                    <button type="submit" title="Appliquer"
+                                                        class="text-center btn btn-success mt-1">
+                                                        <i class="icon-refresh"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </td>
+
+                                <td class="total-col">{{ (item.article.newPrice * item.quantite) |
+                                    number_format(0,'.',' ') ~ ' ' ~ site.current_name }}
+                                </td>
+                                <td class="remove-col">
+                                    <a href="{{ path('cart_delete',{id:item.article.id}) }}" class="btn-remove">
+                                        <i class="icon-close text-danger"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                        </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                    <!-- End .table table-wishlist -->
+
+                    {# <div class="cart-bottom">
+                        <div class="cart-discount">
+                            <form action="#">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" required="" placeholder="coupon code">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-primary-2" type="submit">
+                                            <i class="icon-long-arrow-right"></i>
+                                        </button>
+                                    </div>
+                                    <!-- .End .input-group-append -->
+                                </div>
+                                <!-- End .input-group -->
+                            </form>
+                        </div>
+                        <!-- End .cart-discount -->
+
+                        <a href="#" class="btn btn-outline-dark-2">
+                            <span>UPDATE CART</span>
+                            <i class="icon-refresh"></i>
+                        </a>
+                    </div> #}
+                    <!-- End .cart-bottom -->
+                </div>
+                <!-- End .col-lg-9 -->
+                <aside class="col-lg-3">
+                    <form action="{{ path('order_client_new') }}" id="form_order_client_new" method="post">
+                        <div class="summary summary-cart">
+                            <h3 class="summary-title">{{'Cart Total'|trans}}</h3>
+                            <!-- End .summary-title -->
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p class="h6 mt-3">Lieu de livraison</p>
+                                    {% if app.request.session.get('shipping') %}
+                                    <div class="shipping_box">
+                                        <div class="form-group">
+                                            <div id="loader-select-street" class="text-center loader">
+                                                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                                            </div>
+                                            <div id="js-select-street">
+                                                <select required class="custom-select select-street" id="streets"
+                                                    name="street">
+                                                    <option value="0">Choisir le lieu de livraison
+                                                    </option>
+                                                    <option selected value="{{ delivery.id }}">{{
+                                                        delivery.name }}</option>
+                                                    {% for item in streets %}
+                                                    <option value="{{ item.id }}">{{ item.name }}
+                                                    </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="card border-0">
+                                            <div id="loader-street-amount" class="text-center loader">
+                                                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                                            </div>
+                                            <div class="card-body  js-amount">
+                                                <p>Montant de la livraison:</p>
+                                                <p class="text-center">
+                                                    <span class="text-danger font-weight-bold">
+                                                        {{
+                                                        delivery.shippingAmount.amount|number_format(2,'.','
+                                                        ') }}
+                                                        {{ site.current_name
+                                                        }}
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% else %}
+                                    <div class="shipping_box">
+                                        {# <div class="form-group loader-city">
+                                            <select class="custom-select" name="city" id="select-city">
+                                                {% for item in cities %}
+                                                <option name="city" value="{{ item.id}}">{{ item.name }}
+                                                </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div> #}
+                                        <div class="form-group">
+                                            <div id="loader-select-street" class="text-center loader">
+                                                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                                            </div>
+                                            <div id="js-select-street">
+                                                <select required class="custom-select select-street" id="streets"
+                                                    name="street">
+                                                    <option value="0">Choisir le lieu de livraison
+                                                    </option>
+                                                    {% for item in streets %}
+                                                    <option value="{{ item.id }}">{{ item.name }}
+                                                    </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="card border-0">
+                                            <div id="loader-street-amount" class="text-center loader">
+                                                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                                            </div>
+                                            <div class="card-body  js-amount"></div>
+                                            {# <p class="h4">Total : <span class="total"></span> </p> #}
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-lg-12">
+                                    <p class="h6 mt-3">Payement à la livraison</p>
+
+                                </div>
+                            </div>
+                            <table class="table table-summary">
+                                <tbody>
+                                    <tr class="summary-subtotal">
+                                        <td>{{'Subtotal'|trans}}:</td>
+                                        <td style="min-width:max-content">
+                                            {{ total|number_format(0,'.',' ') }}
+                                            {{ site.current_name }}
+                                        </td>
+                                    </tr>
+
+                                    <!-- End .summary-shipping-estimate -->
+                                    <tr class="summary-total">
+                                        <td>Total:</td>
+                                        <td>
+                                            {% if app.request.session.get('shipping') %}
+                                            <span class="text-danger" class="total">
+                                                {{ (total + delivery.shippingAmount.amount)|number_format(0,'.',' ')
+                                                }} {{ site.current_name }}
+                                            </span>
+                                            {% else %}
+                                            <span class="text-danger total">
+                                                {{ total|number_format(0,'.',' ' ) ~ ' ' ~ site.current_name }}
+                                            </span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <!-- End .summary-total -->
+                                </tbody>
+                            </table>
+                            <!-- End .table table-summary -->
+
+                            <button type="submit" id="btn-submit-order"
+                                class="btn btn-outline-primary-2 btn-order btn-block">COMMANDER</button>
+                        </div>
+                        <!-- End .summary -->
                     </form>
-                </td>
-                <td>
-                    {{ item.article.price|number_format(2,'.',' ') }} XOF
-                </td>
-                <td>
-                    {{ (item.article.price * item.quantite) | number_format(2,'.',' ') }} XOF
-                </td>
-              </tr>
-            {% endfor %}
-            </tbody>
-          </table>
-          <div class="row">
-            <div class="col-lg-6 offset-6 ">
-              <table class="table">
-                <tr>
-                  <td>Total :</td>
-                  <td> {{ total|number_format(2,'.',' ') }} XOF</td>
-                </tr>
-              </table>
-                <div class="btn-group">
-                  {% if app.session.get('panier') != [] %}
-                  {% if is_granted('ROLE_CLIENT') %}
-                    <a href="{{ path('order_client_shipping') }}" class="btn btn-lg ml-1 rounded btn-primary" type="submit">
-                      Commander
+                    <a href="{{ path('articles') }}" class="btn btn-outline-dark-2 btn-block mb-3">
+                        <span>CONTINUEZ VOS COURSES</span>
+                        <i class="icon-refresh"></i>
                     </a>
-                    {% else %}
-                    <a href="{{ path('app_login') }}" class="btn btn-lg ml-1 rounded btn-primary" type="submit">
-                      Commander
-                    </a>
-                  {% endif %}
-
-                  <a href="{{ path('cart_clear') }}" class="btn-danger btn-lg ml-1">
-                    Clear <i class="fa fa-trash" aria-hidden="true"></i>
-                  </a>
-                  {% endif %}
+                </aside>
+                <!-- End .col-lg-3 -->
+            </div>
+            <!-- End .row -->
+            {% else %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <span class="btn bg-primary btn-primary p-5 rounded-circle">
+                                <i class="icon-shopping-cart" style="font-size:7rem"></i>
+                            </span>
+                            <h3>{{'Empty cart'|trans }}</h3>
+                            <p>Ajouter au moins un article au panier</p>
+                            <a href="{{ path('articles') }}" class="btn btn-primary mt-2 w-100">Tous nos produits</a>
+                        </div>
+                    </div>
                 </div>
             </div>
-          </div>
+            {% endif %}
         </div>
-      </div> 
-    {% else %}
-      <div class="card">
-        <div class="card-body text-center">
-            <a class="btn bg-primary bnt-primary p-5 rounded-circle" href="#">
-              <i class="fa fa-cart-arrow-down fa-4x" aria-hidden="true"></i>
-            </a>
-            <h3>{{'Empty cart'|trans }}</h3>
-            <a href="{{ path('articles') }}" class="btn btn-primary mt-2 w-100">View All products</a>
-        </div>
-      </div>
-    {% endif %}  
-      <div class="card">
-        <div class="card-header">
-          <h3>Ces articles vous intéresses ?</h3>
-        </div>
-        <div class="card-body">
-            
-        </div>
-      </div>
+        <!-- End .container -->
     </div>
-    <div class="col-lg-4">
-      <div class="card">
-        <div class="card-header">
-            <h3>Adress de Livraison </h3>
-        </div>
-        <div class="card-body">
-          <div class="row">
-            <div class="col-12">
-              <P>Adress de Livraison</P>
-              <div class="form-group">
-                <select class="custom-select select2" name="" id="">
-                  <option >Select one</option>
-                  <option selected value="">Dakar</option>
-                  <option value="">Bamako</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <select class="custom-select" name="" id="">
-                  <option selected>Select one</option>
-                  <option value="">Sacre coeur</option>
-                  <option value="">Liberte 6</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-12">
+    <!-- End .cart -->
+</div><!-- End .page-content -->
 
-            </div>
-          </div>
-          </div>
-        </div>
-      </div>
-    </div>
-</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    $(document).ready(function () {
+
+        function total(val = 0) {
+            let total = {{ total }} + val;
+        return total
+    }
+    {% if not is_granted('ROLE_CLIENT') %}
+    //Envoyer la comande
+    $(document).on('click', '#btn-submit-order', function (e) {
+        e.preventDefault()
+        Swal.fire({
+            title: 'Oups !',
+            text: 'Veillez vous connecter ou creer un compte.',
+            icon: 'info',
+            confirmButtonText: 'Se connecter ou creer un compte',
+        }).then((result) => {
+            $('#signin-modal').modal('show')
+        })
+    })
+
+    {% else %}
+
+    $(document).on('click', '#btn-submit-order', function (e) {
+        e.preventDefault()
+        if ($('#streets').val() == '0') {
+            Swal.fire(
+                'Oups !',
+                'Choississez un lieu de livraison',
+                'warning'
+            )
+            return
+        }
+        Swal.fire({
+            title: 'Etes vous sur ?',
+            text: 'Vous etes sur le point de confirmer une commande.',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Non',
+            confirmButtonText: 'CONFIRMER',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $('#form_order_client_new').submit()
+            }
+        })
+
+
+    })
+    {% endif %}
+
+    $(document).on('change', '#select-city', function () {
+        //on recupere l'id de la ville
+        let value = $(this).val()
+        // on envoie avec post
+        $.ajax({
+            url: "{{ path('client_shipping') }}",
+            method: 'POST',
+            dataType: 'json',
+            data: {
+                id_city: value,
+            },
+            beforeSend: function () {
+                $('#loader-select-street').show()
+                $('#js-select-street').hide()
+                $('.js-amount').hide()
+            },
+            success: function (data) {
+                $('#loader-select-street').hide()
+                $('.select-street').remove()
+                $('#js-select-street').html(data.response);
+                $('#js-select-street').show()
+            }
+        }) // ./ajax
+    })
+
+    $(document).on('change', '#streets', function () {
+        let id = $(this).val()
+        $.ajax({
+            url: "{{ path('client_shipping_amount') }}",
+            method: "POST",
+            dataType: 'json',
+            data: {
+                id_street: id,
+                total: {{ total }}
+        },
+        beforeSend: function () {
+            $('#loader-street-amount').show()
+            $('.js-amount').hide()
+
+        },
+        success: function (data) {
+            $('.js-amount').html(data.response).show()
+            $('#loader-street-amount').hide()
+            $('.total').text(data.total)
+            $('.js-show-amount').text(data.amount2)
+        }
+      })
+    })
+  })
+</script>
 {% endblock %}

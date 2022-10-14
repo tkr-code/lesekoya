@@ -1,11 +1,11 @@
+{% import "macros/etats.html.twig" as etats %}
 <table id="datatable_{{id}}" class="table table-bordered">
     <thead>
         <tr>
             <th>Nom</th>
-            <th>Quantite</th>
+            <th>Quantité</th>
             <th>Prix</th>
             <th>Catégorie</th>
-            <th>Status</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -21,11 +21,15 @@
                 <a class="c-1" href="{{ path('article_show',{id: item.id} ) }}">
                     #{{ item.id}} {{ item.title}} 
                 </a>
-                <a class="c-1" href="{{ path('article_edit',{id: item.id} ) }}">
-                <i class="fas fa-pencil-alt   text-success "></i>
-                </a>
-                    </br>
-                    {{ item.description}}
+                <p>{{ etats.articleLabel(item.label) }} 
+                {{ etats.etat(item.etat) }} 
+                    {% if item.reduction > 0 %}
+                        <span class="product-label label-out bg-danger">-{{ item.reduction}} %</span> 
+                    {% endif %} 
+                    {% if item.quantity <= 0 %}
+                        <span class="product-label label-out bg-danger">{{'Out of Stock'|trans}}</span>
+                    {% endif %}
+                </p>
             </td>
             <td>
                 En stock: {{ item.quantity }} </br>
@@ -35,48 +39,32 @@
                 Achat: {{ item.formatterBuying}} </br>
                 De vente: {{ item.formatterPrice}}</td>
             <td>{{ item.category.title }}</td>
-            <td>{{item.etat }}</td>
             <td>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default">Action</button>
-                    <button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown"
-                        aria-expanded="false">
-                        <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-                    <div class="dropdown-menu" role="menu">
-                        <a href="{{ path('article_show',{id: item.id} ) }}" class="dropdown-item">
-                            <i class="fa fa-eye text-dark" aria-hidden="true"></i> Voir
-                        </a>
-                        <a href="{{ path('article_edit',{id: item.id} ) }}" class="dropdown-item">
-                            <i class="fas fa-edit text-success"></i> Editer
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        {% if is_granted('ROLE_ADMIN') %}
-                        <form class="d-inline-block" method="post"
-                            action="{{ path('article_delete', {'id': item.id}) }}"
-                            onsubmit="return confirm('Are you sure you want to delete this item?');">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ item.id) }}">
-                            <button class="btn"><i class="fas fa-trash-alt  text-danger  "></i> Suprimmer</button>
-                        </form>
-                        {% endif %}
-                    </div>
-                </div>
-
-
-
+                <a href="{{ path('article_show',{id: item.id} ) }}"  class="p-2">
+                    <i class="fa fa-eye text-dark"></i></a>
+                <a href="{{ path('article_edit',{id: item.id} ) }}" class="p-2">
+                            <i class="fas fa-pencil-alt text-success"></i>
+                </a>
+                {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('article_new_copy',{id: item.id} ) }}" class=" btn-copy p-2">
+                            <i class="fas fa-copy text-info"></i>
+                </a>
+                <form class="d-inline-block" method="post"
+                    action="{{ path('article_delete', {'id': item.id}) }}"
+                    onsubmit="return confirm('Are you sure you want to delete this item?');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ item.id) }}">
+                    <button class="btn"><i class="fas fa-trash-alt  text-danger  "></i></button>
+                </form>
+                {% endif %}
+                {# {% if item.enabled %}
+                    <button data-path="{{path('article_edit',{id:item.id})}}"
+                    class="btn btn-desactiver">Desactiver</button>
+                    {% else %}
+                    <button data-path="{{path('article_edit',{id:item.id})}}"
+                    class="btn btn-activer">Activer</button>
+                {% endif %} #}
             </td>
         </tr>
         {% endfor %}
     </tbody>
-    {# <tfoot>
-        <tr>
-            <th>Nom</th>
-            <th>Prix d'achat</th>
-            <th>Prix</th>
-            <th>Quantité</th>
-            <th>Description</th>
-            <th>Edité </th>
-            <th>Action</th>
-        </tr>
-    </tfoot> #}
 </table>

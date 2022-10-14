@@ -1,0 +1,21 @@
+{% extends 'admin/base.html.twig' %} {% block title %}New Phone number{% endblock %} {% block body %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-outline card-primary">
+            <div class="card-header">
+                <h1>Create new Phone</h1>
+            </div>
+            <div class="card-body">
+                {{ include('admin/phone/_form.html.twig') }}
+                <hr>
+                <a href="{{ path('admin_phone_index') }}">back to list</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+{% endblock %}

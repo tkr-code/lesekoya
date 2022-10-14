@@ -60,7 +60,7 @@ class AjaxController extends AbstractController
         $street = $seesion->get('shipping');
        $id_street = $request->request->get('id_street') ? $request->request->get('id_street') : 0;
         $street = $streetRepository->find($id_street);
-        $amount = $street->getShippingAmount() ? $street->getShippingAmount()->getAmount() :'0';
+        $amount = $street  ? $street->getShippingAmount()->getAmount() :'0';
         $total = $amount + $request->request->get('total');
         $seesion->set('shipping',$street);
         $response =[

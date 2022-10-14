@@ -1,4 +1,5 @@
 {% import "macros/table.html.twig" as table %}
+{% import "macros/dataTable.html.twig" as dataTable %}
 {% import "macros/head.html.twig" as head %}
 {% import "macros/foot.html.twig" as foot %}
 {% import "macros/breadcrumb.html.twig" as utils %}
@@ -12,7 +13,7 @@
 {% block title %}Client | {{app_name}} {% endblock %}
 
 {% block stylesheets %}
-{{ head.dataTable() }}
+{{ dataTable.css() }}
 {% endblock %}
 
 {% block body %}
@@ -46,14 +47,16 @@
                         <li class="nav-item">
                             <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill"
                                 href="#order-en-attente" role="tab" aria-controls="custom-tabs-three-profile"
-                                aria-selected="false">{{'Waiting'|trans}} (<span class="font-weight-bold">
+                                aria-selected="false">
+                                {{'Waiting'|trans}} (<span class="font-weight-bold">
                                     {{ ordersWaiting| length }}
                                 </span>)</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill"
                                 href="#order-in-progress" role="tab" aria-controls="custom-tabs-three-profile"
-                                aria-selected="false">{{'In progress'|trans}} (<span class="font-weight-bold">
+                                aria-selected="false">
+                                {{'In progress'|trans}} (<span class="font-weight-bold">
                                     {{ ordersInProgress| length }}
                                 </span>)</a>
                         </li>
@@ -107,15 +110,15 @@
 {% endblock %}
 
 {% block foot %}
-{{ foot.dataTable()}}
+{{ dataTable.js()}}
 {% endblock %}
 
 {% block javascripts %}
-{{ table.jsDataTable('datatable_1') }}
-{{ table.jsDataTable('datatable_2') }}
-{{ table.jsDataTable('datatable_3') }}
-{{ table.jsDataTable('datatable_4') }}
-{{ table.jsDataTable('datatable_5') }}
+{{ dataTable.script('#datatable_1') }}
+{{ dataTable.script('#datatable_2') }}
+{{ dataTable.script('#datatable_3') }}
+{{ dataTable.script('#datatable_4') }}
+{{ dataTable.script('#datatable_5') }}
 <script>
     $(document).ready(function () {
         $('.my-orders').addClass('active')

@@ -1,18 +1,25 @@
-{% extends 'leSekoya/base.html.twig' %}
+{% extends 'lest/base.html.twig' %}
 
 {% block title %}{{'Password Reset Email Sent'|trans}}{% endblock %}
 
-{% block body %}
-<nav class="breadcrumb">
-   <a class="breadcrumb-item" href="/">{{'Home'|trans}}</a>
-   <span class="breadcrumb-item active">{{'check email'|trans}}</span>
-</nav>
+{% block main %}
+<main>
+    <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">{{'Home'|trans}}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{'check email'|trans}}</li>
+            </ol>
+        </div><!-- End .container -->
+    </nav><!-- End .breadcrumb-nav -->
     <div class="container my-5">
             <p>
         {{'If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.
         This link will expire in'|trans}} {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
     </p>
-    <p>{{"If you don't receive an email please check your spam folder or <a href='{{ path('app_forgot_password_request') }}'>try again</a>."|trans|raw}}</p>
+    <p>{{"If you don't receive an email please check your spam folder"|trans}} <a href="{{ path('app_forgot_password_request') }}" >ou recommencer</a></p>
 
     </div>
+</main>
+
 {% endblock %}

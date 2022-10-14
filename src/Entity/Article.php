@@ -4,30 +4,45 @@ namespace App\Entity;
 
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\ArticleRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
  * @ORM\Table(name="article", indexes={@ORM\Index(columns={"title","description"}, flags={"fulltext"})})
- * @UniqueEntity(
- *  fields="title"
+ * @ApiResource(
+ *  normalizationContext={"groups"={"list:article"}},
+ *  collectionOperations={"get"},
+ *  itemOperations={"get"}
  * )
  */
 class Article
 {
-    const etats =[
+    const ETATS =[
         'Top'=>'Top',
         'Tendance'=>'Tendance',
         'Populaire'=>'Populaire',
         'Meilleurs ventes'=>'Meilleurs ventes'
     ];
+    const STATUS =[
+        'Neuf'=>'Neuf',
+        'Reconditionné'=>'Reconditionné',
+        'Occasion'=>'Occasion',
+    ];
+    const LABEL =[
+        'New'=>'New',
+        'Top'=>'Top'
+    ];
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @[Groups(['conference:list', 'conference:item'])]
      */
     private $id;
 
@@ -38,6 +53,7 @@ class Article
      * )
      * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255)
+     * @Groups({"list:article"})
      */
     private $title;
     
@@ -124,12 +140,32 @@ class Article
     private $qty_reel;
 
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $label;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $reduction;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Brand::class, inversedBy="articles")
+     */
+    private $brand;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $status;
+
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
         $this->options = new ArrayCollection();
         $this->comments = new ArrayCollection();
-        $this->created_at = new \DateTime();
         $this->favori = new ArrayCollection();
         $this->articleBuys = new ArrayCollection();
     }
@@ -422,6 +458,70 @@ class Article
     public function setQtyReel(int $qty_reel): self
     {
         $this->qty_reel = $qty_reel;
+
+        return $this;
+    }
+
+
+    public function getLabel(): ?string
+    {
+        return $this->label;
+    }
+
+    public function setLabel(?string $label): self
+    {
+        $this->label = $label;
+
+        return $this;
+    }
+
+    public function getReduction(): ?int
+    {
+        return $this->reduction;
+    }
+    public function getNewPrice()
+    {
+        if($this->reduction > 0){
+           return $this->getPrice() -  (($this->getPrice() * $this->getReduction() )/100) ;
+        }
+        return $this->getPrice();
+    }
+
+    public function setReduction(?int $reduction): self
+    {
+        $this->reduction = $reduction;
+
+        return $this;
+    }
+    public static function reductions(){
+        $data[0] =0  ;
+        for ($i=1; $i < 100 ; $i++) { 
+            $reduction  = $i. ' %';
+            $data[$reduction] = $i;
+        }
+        return $data;
+    }
+
+    public function getBrand(): ?Brand
+    {
+        return $this->brand;
+    }
+
+    public function setBrand(?Brand $brand): self
+    {
+        $this->brand = $brand;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

@@ -1,97 +1,533 @@
 {% import "macros/breadcrumb.html.twig" as utils %}
-{% import "macros/image.html.twig" as image %}
+{% import "/macros/image.html.twig" as image %}
 {% import "macros/alertes.html.twig" as alerte %}
-{% import "macros/roles.html.twig" as roles %}
-{% import "macros/link.html.twig" as link %}
-
-
-{% extends "admin/base.html.twig" %}
-
-{% block title %}Profile utilisateur{% endblock %}
-
+{% import "macros/link.html.twig" as links %}
+{% import "macros/role.html.twig" as roles %}
+{% extends
+"admin/base.html.twig" %}
+{% block title %}Profile utilisateur
+{% endblock %}
 {% block breadcrumb %}
-    {{ utils.breadcrumb('Profile')}}
+{{ utils.breadcrumb('Profile',[])}}
+{% endblock %}
+{% block head %}
+
+<link rel="stylesheet" href="{{ asset('vendor/cropper/cropper.min.css') }}">
+<link rel="stylesheet" href="{{ asset('vendor/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
 {% endblock %}
 
+{% block modal %}
+<div class="modal fade" id="modal-default" style="display: none;" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="overlay modal-loader" style="display:none">
+				<i class="fas fa-2x fa-sync fa-spin"></i>
+			</div>
+			<div class="modal-header">
+				<h4 class="modal-title">Default Modal</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+			</div>
+			<div class="modal-body"></div>
+			<div class="modal-footer justify-content-between">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+{% endblock %}
 {% block body %}
-{% for item in app.flashes('success') %}
-  {{ alerte.alert(item,'success')}}
-{% endfor %}
-  <div class="row">
-    <div class="col-md-3">
-      <!-- Profile Image -->
-      <div class="card card-primary card-outline">
-        <div class="card-body box-profile">
-          <div class="text-center">
-            <img class="profile-user-img img-fluid img-circle"
-                  src="{{ asset('img/user/' ~ app.user.personne.avatar|default('empty.png') ) }}"
-                  alt="{{ app.user.personne.firstName ~ ' ' ~ app.user.personne.lastName  }}">
-          </div>
-          <h3 class="profile-username text-center">{{app.user.personne.lastName | title}} {{app.user.personne.firstname | title }} <a href="{{ path('profile_edit') }}"><i class="fas fa-pencil-alt text-success"></i></a> </h3>
-          <hr>
-          <p>{{app.user.email}} {{link.pencil(path('profile_edit_password'))}} <br>
-            Modifier le mot de passe {{link.pencil()}}
-          </p>
-        </div>
-        <!-- /.card-body -->
-      </div>
-      <!-- /.card -->
+{% include "includes/_alerte.html.twig" %}
+<div class="row">
+	<div class="col-md-3">
+		<!-- Profile Image -->
+		<div class="card card-primary card-outline">
+			<div class="card-body box-profile">
+				<div class="text-center">
+					<img class="profile-user-img img-fluid img-circle"
+						src="{{ asset('img/user/' ~ app.user.personne.avatar|default('empty.png') ) }}"
+						alt="{{ app.user.personne.firstName ~ ' ' ~ app.user.personne.lastName }}">
+				</div>
+				<h3 class="profile-username text-center">{{app.user.personne.lastName | title}}
+					{{app.user.personne.firstname | title }}</h3>
+				<button type="button" id="btn-editor" class="btn btn-success mb-3 btn-block">
+					<b>Modifier
+						<i class="fas fa-pencil-alt"></i>
+					</b>
+				</button>
+				<div id="js-editor">
+					{{ form_start(form,{ attr:{ 'novalidate':'novalidate' },action: path('profile_edit',{id: app.user.id
+					})}) }}
+					{{ form_widget(form) }}
+					<div id="show_preview" class="text-center my-3"></div>
+					<button class="btn btn-success">
+						<i class="fas fa-save"></i>
+						Update
+					</button>
+					{{ form_end(form) }}
+				</div>
+			</div>
+			<!-- /.card-body -->
+		</div>
+		<!-- /.card -->
+	</div>
+	<!-- /.col -->
+	<div class="col-md-9">
+		<div class="card">
+			<div class="card-header p-2">
+				<ul class="nav nav-pills">
+					<li class="nav-item">
+						<a class="nav-link {% if app.request.query.get('tab') is null or app.request.query.get('tab') == '' %}active{% endif %}"
+							href="#information" data-toggle="tab">Information</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#reglage" data-toggle="tab">Reglage</a>
+					</li>
+				</ul>
+			</div>
+			<!-- /.card-header -->
+			<div class="card-body">
+				<div class="tab-content">
+					<div class="{% if app.request.query.get('tab') is null or app.request.query.get('tab') == '' %}active{% endif %} tab-pane"
+						id="information">
+						<div class="row">
+							<div class="col-md-4 col-12">
+								<strong>
+									<i class="fas fa-user mr-1"></i>
+									compte</strong>
+								<p class="text-muted">
+									{% for item in app.user.roles %}
+									{{ roles.role(item)}}
+									{% endfor %}
+								</p>
+							</div>
+							<div class="col-md-4 col-12">
+								<strong>
+									<i class="fas fa-book mr-1"></i>
+									Email</strong>
+								<p class="text-muted">
+									{{app.user.email}}
+								</p>
+							</div>
+							<div class="col-md-4 col-12">
+								<strong>
+									<i class="fas fa-map-marker-alt mr-1"></i>
+									Adresse</strong>
+								<p class="text-muted">
+									{% if app.user.adresse is not null %}
+									{{ app.user.adresse.rue}},
+									{{ app.user.adresse.city }}
+									{{ app.user.adresse.pays}}
+									{% else %}
+									Cliquer sur modifier pour définir votre adresse
+									{% endif %}
+								</p>
+							</div>
+							<div class="col-md-4 col-12">
+								<strong>
+									<i class="fas fa-phone mr-1"></i>
+									Telephone</strong>
+								<div id="load-phone-list">
+									{% include "admin/profile/_phone_list.html.twig" %}
+								</div>
+								<button id="modal-add-phone" class="btn btn-primary">Ajouter un numéro</button>
+							</div>
+						</div>
+					</div>
+					<!-- /.tab-pane -->
+					<div class="tab-pane" id="reglage">
+						<div class="row">
+							<div class="col-md-6">
+								<strong>
+									<i class="fas fas-fa-user-slash mr-1"></i>
+									Modifier mon email</strong>
+								<p class="text-muted">
+									Vous pouvez changer l'adresse email de votre compte
+								</p>
+								<div class="loader-edit-email">
+									<div class="overlay">
+										<i class="fas fa-2x fa-sync-alt fa-spin"></i>
+									</div>
+								</div>
+								<div class="alert-edit-email">
+									<div class="alert alert-warning alert-dismissible fade show" role="alert">
+										<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+										<p>Vous pouvez changer le mot de passe d'un compte de messagerie aux endroits
+											suivants</p>
+									</div>
+								</div>
+								{% if is_granted('ROLE_ADMIN') %}
+								<button id="btn-edit-email" class="btn btn-primary">
+									Modifier l'email
+								</button>
+								{% endif %}
+								<hr>
+							</div>
+							<div class="col-md-6">
+								<strong>
+									<i class="fas fas-fa-user-slash mr-1"></i>
+									Modifier le mot de passe</strong>
+								<p class="text-muted">
+									Modifier le mot de passe de votre compte. Vous devez être connecté pour modifier
+									votre mot de passe.
+								</p>
 
-      <!-- About Me Box -->
-      <div class="card card-primary">
-        <div class="card-header">
-          <h3 class="card-title">About Me</h3>
-        </div>
-        <!-- /.card-header -->
-        <div class="card-body">
-          <strong><i class="fas fa-map-marker-alt mr-1"></i> Location</strong>
+								<a href="{{ path('profile_edit_password') }}" class="btn btn-primary">
+									<i class="fas fa-edit"></i>
+									Modifier le mot de passe
+								</a>
+								<hr>
+							</div>
+							{% if is_granted('ROLE_ADMIN') %}
+							<div class="col-md-6">
+								<strong>
+									<i class="fas fas-fa-user-slash mr-1"></i>
+									Supprimer mon compte</strong>
+								<p class="text-muted">
+									Supprime ton compte lest
+								</p>
+								<div class="loader-delete-account">
+									<div class="overlay">
+										<i class="fas fa-2x fa-sync-alt fa-spin"></i>
+									</div>
+								</div>
+								<div class="alert-delete-account">
+									<div class="alert alert-warning alert-dismissible fade show" role="alert">
+										<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+										<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Doloribus, qui.</p>
+									</div>
 
-          <p class="text-muted">{{ app.user.adresse|default('adresse manquante')}}</p>
+								</div>
+								<button id="btn-delete-account" class="btn btn-danger">
+									<i class="fas fa-user-slash"></i>
+									Supprimer mon compte
+								</button>
+								<hr>
+							</div>
+							{% endif %}
 
-          <hr>
 
-          <strong><i class="fas fa-pencil-alt mr-1"></i> Compte</strong>
-          <p class="text-muted">
-          {% for item in app.user.roles %}
-            <span class="tag tag-danger">{{ roles.role(item) }}  </span>
-          {% endfor %}
-          </p>
-         </div>
-        <!-- /.card-body -->
-      </div>
-      <!-- /.card -->
-    </div>
-    <!-- /.col -->
-    <div class="col-md-9">
-      <div class="card">
-        <div class="card-header p-2">
-          <ul class="nav nav-pills">
-            <li class="nav-item">
-              <a class="nav-link {% if app.request.query.get('tab') is null or app.request.query.get('tab') == '' %}active{% endif %}" href="#activity" data-toggle="tab">
-                Activity</a>
-            </li>
-          </ul>
-        </div><!-- /.card-header -->
-        <div class="card-body">
-          <div class="tab-content">
-            <div class="active tab-pane" id="activity">
-
-            </div>
-          </div>
-          <!-- /.tab-content -->
-        </div><!-- /.card-body -->
-      </div>
-      <!-- /.card -->
-    </div>
-    <!-- /.col -->
-  </div>
-  <!-- /.row -->
+						</div>
+					</div>
+					<!-- /.tab-pane -->
+					<!-- /.tab-pane -->
+				</div>
+				<!-- /.tab-content -->
+			</div>
+			<!-- /.card-body -->
+		</div>
+		<!-- /.card -->
+	</div>
+	<!-- /.col -->
+</div>
+<!-- /.row -->
 {% endblock %}
-
+{% block foot %}
+<!-- cropper -->
+<!-- <script src="{{ asset('vendor/cropper/cropper.min.js') }}"></script> -->
+{% endblock %}
 {% block javascripts %}
-  <script>
-   $(document).ready(function(){
-     $('.mon-profile').addClass('active')
-   })
-  </script>
+<script>
+	$(document).ready(function () {
+		function loadPhoneList() {
+			$.ajax({
+				url: '/main/load-phone-list',
+				method: 'POST',
+				type: 'json',
+				beforeSend: function () {
+					$('.js-loader-text').text('Actualisation en cour ...')
+					$('.js-loader').css('display', 'flex')
+				},
+				success: function (data) {
+					$('.js-loader').css('display', 'none')
+					$('#load-phone-list').html(data.content)
+				}
+			})
+
+		}
+
+		// Supprimer un numéro de téléphone
+		$(document).on('click', '.btn-delete-phone', function (e) {
+			e.preventDefault()
+			let href = $(this).attr('href')
+			let token = $(this).attr('token')
+			Swal.fire({
+				title: 'Etes vous sûr?',
+				text: "Vous etes sur le point de supprimmer un numéro !  ",
+				icon: 'question',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				cancelButtonText: 'Fermer',
+				confirmButtonText: 'Oui, je confirme!'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					$.ajax({
+						url: href,
+						method: 'POST',
+						type: 'json',
+						data: {
+							_token: token
+						},
+						beforeSend: function () {
+							$('.js-loader-text').text('Suppression en cour ...')
+							$('.js-loader').css('display', 'flex')
+						},
+						success: function (data) {
+							$('.js-loader').css('display', 'none')
+							if (data) {
+								loadPhoneList()
+								Swal.fire({
+									icon: 'success',
+									title: 'Le numéro a été supprimé',
+									showConfirmButton: false,
+									timer: 1500
+								})
+							} else {
+								alert('Une erreur est survenu.')
+							}
+
+						},
+						error: function () {
+							$('.js-loader').css('display', 'none')
+							alert('ok')
+						}
+					})
+				}
+			})
+			$('#help-tel-phone').text('')
+		})
+
+		// Modifier une numéro de téléphone
+		$(document).on('click', '#btn-update-phone', function (e) {
+			e.preventDefault()
+			let numero = $('#tel-phone').val()
+			let token = $(this).attr('token')
+			let id = $(this).data('id')
+			let isWhatsapp = $('#isWhatsapp').is(':checked') ? 'Oui' : 'Non'
+			$.ajax({
+				url: '/main/phone/' + id + '/edit',
+				method: 'POST',
+				type: 'text',
+				data: {
+					valeur: numero,
+					_token: token,
+					isWhatsapp: isWhatsapp
+				},
+				beforeSend: function () {
+					$('.js-loader-text').text('Verifiaction en cour ...')
+					$('.js-loader').css('display', 'flex')
+				},
+				success: function (data) {
+					$('.js-loader').css('display', 'none')
+					if (data.reponse) {
+						loadPhoneList()
+						Swal.fire({
+							icon: 'success',
+							title: 'Le numéro a été modifié',
+							showConfirmButton: false,
+							timer: 1500
+						})
+						$('#modal-default').modal('hide')
+						$('#modal-default .modal-body').html('')
+						$('#modal-default .modal-title').html('')
+					} else {
+						if (data.error == 2) {
+							let error_text = 'Ce numéro existe !'
+							Swal.fire({
+								icon: 'warning',
+								title: 'Oups',
+								text: error_text,
+								showConfirmButton: false,
+								timer: 1500
+							})
+							$('#help-tel-phone').text(error_text)
+						} else {
+							$('#help-tel-phone').text('')
+							alert('Une erreur est survenu')
+						}
+					}
+				},
+				error: function () {
+					$('#help-tel-phone').text('')
+					alert('Une erreur est survenu')
+					$('.js-loader').css('display', 'none')
+					alert('Erreur 1')
+				}
+			})
+		})
+
+		// open modal add
+		$(document).on('click', '#modal-add-phone', function () {
+			$('#modal-default').modal('show')
+			let body = '<div class="form-group">'
+				+ '<input id="tel-phone" type="text" placeholder="Entrer le numero" class="form-control phone">'
+				+ '<small id="help-tel-phone" class="text-danger"></small></div>' + '<div class="form-group">'
+				+ '<label>Numero whatsapp ?</label> ' + '<input type="checkbox" id="isWhatsapp"></div>'
+				+ '<button id="btn-add-phone" token="  {{ csrf_token('add-phone - item') }}" class="btn btn-primary">Ajouter</button>'
+			$('#modal-default .modal-title').html('Ajouter un numéro')
+			$('#modal-default .modal-body').html(body)
+
+		})
+		// open modal edit
+		$(document).on('click', '.modal-update-phone', function (e) {
+			e.preventDefault()
+			let href = $(this).attr('href')
+			$('#modal-default').modal('show')
+
+			$.ajax({
+				url: href,
+				method: 'POST',
+				beforeSend: function () {
+					$('.modal-loader').css('display', 'flex')
+				},
+				success: function (data) {
+					$('#modal-default .modal-title').html('Modifier un numéro')
+					$('#modal-default .modal-body').html(data.content)
+					$('.modal-loader').css('display', 'none')
+				}
+			})
+
+		})
+
+		// Ajouter une numéro de téléphone
+		$(document).on('click', '#btn-add-phone', function (e) {
+			e.preventDefault()
+			let numero = $('#tel-phone').val()
+			let token = $(this).attr('token')
+			let isWhatsapp = $('#isWhatsapp').is(':checked') ? 'Oui' : 'Non'
+			$.ajax({
+				url: '/main/phone/new',
+				method: 'POST',
+				type: 'text',
+				data: {
+					valeur: numero,
+					_token: token,
+					isWhatsapp: isWhatsapp
+				},
+				beforeSend: function () {
+					$('.js-loader-text').text('Verifiaction en cour ...')
+					$('.js-loader').css('display', 'flex')
+				},
+				success: function (data) {
+					$('.js-loader').css('display', 'none')
+					if (data.reponse) {
+						loadPhoneList()
+						Swal.fire({
+							icon: 'success',
+							title: 'Le numéro a été ajouté',
+							showConfirmButton: false,
+							timer: 1500
+						})
+						$('#modal-default').modal('hide')
+						$('#modal-default .modal-body').html('')
+						$('#modal-default .modal-title').html('')
+					} else {
+						if (data.error == 2) {
+							let error_text = 'Ce numéro existe !'
+							Swal.fire({
+								icon: 'warning',
+								title: 'Oups',
+								text: error_text,
+								showConfirmButton: false,
+								timer: 1500
+							})
+							$('#help-tel-phone').text(error_text)
+						} else {
+							$('#help-tel-phone').text('')
+							alert('Une erreur est survenu')
+						}
+					}
+				},
+				error: function () {
+					$('#help-tel-phone').text('')
+					alert('Une erreur est survenu')
+					$('.js-loader').css('display', 'none')
+					alert('Erreur 1')
+				}
+			})
+		})
+
+		// delete account start
+		$(document).on('click', '#btn-delete-account', function () {
+			Swal.fire({
+				title: 'Etes vous sûr?',
+				text: "Vous etes sur le point d'envoyer un email de suppresion de compte !  ",
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				cancelButtonText: 'Fermer',
+				confirmButtonText: 'Oui, je confirme!'
+			}).then((result) => {
+				if (result.isConfirmed) { // ajax
+					$.ajax({
+						url: "{{ path('send_delete_account') }}",
+						method: "POST",
+						dataType: 'json',
+						data: {},
+						beforeSend: function () {
+							$('.loader-delete-account').css('display', 'initial')
+							$('#btn-delete-account').css('display', 'none')
+						},
+						success: function (data) {
+
+							if (data == 'success') {
+								$('.alert-delete-account').css('display', 'initial')
+								Swal.fire({
+									icon: 'success',
+									title: 'Your work has been saved',
+									showConfirmButton: false,
+									timer: 1500
+								})
+							} else {
+								Swal.fire({
+									icon: 'warning',
+									title: 'Une érreur a été detecté',
+									text: "Veillez le notifier a un administraeur !",
+									showConfirmButton: false,
+									timer: 1500
+								})
+
+							}
+							$('.loader-delete-account').css('display', 'none')
+							$('#btn-delete-account').css('display', 'initial')
+						}
+					})
+					// ./ajax end
+				}
+			})
+		})
+		// delete account end
+
+		// send email end
+		$(document).on('click', '#btn-editor', function () {
+			$('#js-editor').animate({
+				height: 'toggle'
+			})
+		})
+		/*******lire une image avant insertion *********/
+		function previewFile(input) {
+			if (input.files && input.files[0]) {
+				var reader = new FileReader();
+				reader.onload = function (e) {
+					$('#show_preview + img').remove();
+					$('#show_preview').html('<img class="profile-user-img img-fluid img-circle" src="' + e.target.result + '" />');
+				}
+				reader.readAsDataURL(input.files[0]);
+			}
+		}
+		$("#profile_avatar").change(function () {
+			previewFile(this);
+		})
+	})
+</script>
 {% endblock %}

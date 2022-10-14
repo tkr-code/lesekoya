@@ -1,0 +1,28 @@
+{% extends 'admin/base.html.twig' %}
+{% import "macros/breadcrumb.html.twig" as utils %}
+{% import "macros/link.html.twig" as link %}
+{% block title %}New Brand{% endblock %}
+{% block breadcrumb %}
+{{ utils.breadcrumb('Ajouter une Marque',[
+{
+path:path('article_index'),
+name:'Manage Articles'
+}
+])}}
+{% endblock %}
+{% block body %}
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <div class="card-title">Ajouter une marque</div>
+            </div>
+            <div class="card-body">
+                {{ include('admin/brand/_form.html.twig') }}
+            </div>
+        </div>
+    </div>
+</div>
+{{ link.back(path('admin_brand_index')) }}
+
+{% endblock %}

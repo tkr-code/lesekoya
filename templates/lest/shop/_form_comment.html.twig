@@ -1,0 +1,27 @@
+<div class="row p-3">
+    <div class="ratings-comment col-12 col-md-12 text-center">
+        <a class="star star-1" href="#">
+            <i class="icon-star" style="font-size:3rem"></i>
+        </a>
+        <a href="#" class="star star-2">
+            <i class="icon-star" style="font-size:3rem"></i>
+        </a>
+        <a href="#" class="star star-3">
+            <i class="icon-star" style="font-size:3rem"></i>
+        </a>
+        <a href="#" class="star star-4">
+            <i class="icon-star" style="font-size:3rem"></i>
+        </a>
+        <a href="#" class="star star-5">
+            <i class="icon-star" style="font-size:3rem"></i>
+        </a>
+        <input id="rating-edit" type="hidden" name="rating" value="">
+    </div>
+    <div class="col-md-12 col-12">
+        <div class="form-group">
+            <textarea class="form-control" id="comment_content_edit" rows="3">{{ comment.content }}</textarea>
+        </div>
+        <div class="text-center">
+            <button type="submit" data-path="{{ path('comment_edit_js',{id:comment.id}) }}" id="btn-edit-comment" class="btn btn-primary">Modifier</button>'
+        </div>
+    </div></div>

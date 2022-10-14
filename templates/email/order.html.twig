@@ -1,15 +1,20 @@
 {% extends "email/base.html.twig" %}
+{% import "macros/etats.html.twig" as etats %}
 {% block title %}Facture #{{order.number}}{% endblock %}
 {% block body %}
-    <p>Bonjour {{ order.user.personne.fullName }}</p>
-    <p>
-        <b>Facture:</b> #{{order.number}} <br>
-       <b>Montant:</b> <span style="color:red;font-weight:bold">{{order.total|number_format(2,'.',' ' )}}</span> {{site.current}} <br>
-       <b>Date:</b> {{ order.createdAt| date_format_fr }}<br>
-        <b>{{'Payment Due'|trans}}:</b> {{ order.paymentDue |date_format_fr }}
-    </p>
-    <p>Remarque: <br>
-        - Si vous avez choisi comme moyent de 
-        payment Orange money ou Wave vous pouvez transferz la somme directement sur le numero <b> {{ site.orange_money}}</b>
-    </p>
+<p>Bonjour {{ order.user.personne.fullName }}</p>
+<p>Il s'agit d'une facture générée  le {{ date()|date_format_fr }}  </p>
+{% include "email/_order.html.twig" %}
+<p>
+    <b>Facture:</b> #{{order.number}} <br>
+    <b>Montant:</b> <span style="color:red;font-weight:bold">{{order.total|number_format(0,'.',' ' )}}</span>
+    {{site.current_name|upper}} <br>
+    <b>Date émission:</b> {{ order.createdAt| date_format_fr }}<br>
+    <b>Etat de la commande:</b> {{ etat }}<br>
+    <b>{{'Payment Due'|trans}}:</b> {{ order.paymentDue |date_format_fr }}
+</p>
+<p>- Payement à la livraison</p>
+<a style="color:#222" href="{{ url('track_number',{number:order.number}) }}">
+    <p>Suivre ma commande</p>
+</a>
 {% endblock %}

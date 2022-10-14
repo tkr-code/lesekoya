@@ -1,0 +1,177 @@
+.a {
+  color: #222;
+}
+
+#image {
+  display  : block;
+  max-width: 100%;
+}
+
+.loader-delete-account,
+.loader-edit-email,
+.alert-delete-account,
+.alert-edit-email {
+  display: none;
+}
+
+#js-editor {
+  display: none;
+}
+.gallery-2 {
+  background: #ccc;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 5px
+}
+.loader-delete-account,
+  .loader-edit-email,
+  .alert-delete-account,
+  .alert-edit-email {
+    display: none;
+  }
+
+  .label-new {
+    margin-top: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    background: orange;
+  }
+
+  .label-top {
+    margin-top: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    background: green;
+    color: #fff
+  }
+
+  .gallery-2 div {
+    background: #fff;
+    padding: 5px;
+  }
+
+  .btn-image-delete {
+    right: 0px
+  }
+
+  .a1 {
+    color: #000000eb !important
+  }
+
+  .a1:hover {
+    color: #01796F !important
+  }
+
+  #demo {
+    height: 100%;
+    position: relative;
+    overflow: hidden
+  }
+
+
+  .green {
+    background-color: #6fb936
+  }
+
+  .thumb {
+    margin-bottom: 30px
+  }
+
+  .page-top {
+    margin-top: 85px
+  }
+
+
+  img.zoom {
+    width: 100%;
+    height: 200px;
+    border-radius: 5px;
+    object-fit: cover;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out
+  }
+
+
+  .transition {
+    -webkit-transform: scale(1.2);
+    -moz-transform: scale(1.2);
+    -o-transform: scale(1.2);
+    transform: scale(1.2)
+  }
+
+  .modal-header {
+    border-bottom: none
+  }
+
+  .modal-title {
+    color: #000
+  }
+
+  .modal-footer {
+    display: none
+  }
+
+  #js-editor {
+    display: none
+  }
+
+  #js-loader-marque {
+    display: none
+  }
+
+  .gallery {
+    border-radius: 5px;
+    width: 100%;
+    margin: 3px;
+    background: #ccc !important;
+    padding: 5px
+  }
+
+  .gallery img {
+    width: 100px;
+    margin: 5px
+  }
+
+  .c-1 {
+    color: #000 !important
+  }
+
+  .c-1:hover {
+    color: #0069d9 !important
+  }
+
+  #error {
+    display: none
+  }
+
+  .icon-fff {
+    color: #fff
+  }
+
+  .loader {
+    display: none
+  }
+
+  .js-loader {
+    z-index: 1052;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: #97383863;
+    display: none;
+    justify-content: center;
+    align-items: center
+  }
+
+  .js-loader p {
+    text-align: center
+  }
+
+  .js-loader-content {
+    padding: 10px;
+    width: 300px;
+    background: #fff;
+    border-radius: 15px
+  }

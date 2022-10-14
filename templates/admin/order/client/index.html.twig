@@ -4,6 +4,7 @@
 {% import "macros/breadcrumb.html.twig" as utils %}
 {% import "macros/alertes.html.twig" as alerte %}
 {% import "macros/button.html.twig" as btn %}
+{% import "macros/dataTable.html.twig" as dataTable %}
 
 {% extends 'admin/base.html.twig' %}
 
@@ -135,11 +136,11 @@
 
 
 {% block javascripts %}
-{{ table.jsDataTable('datatable_1') }} 
-{{ table.jsDataTable('datatable_2') }} 
-{{ table.jsDataTable('datatable_3') }} 
-{{ table.jsDataTable('datatable_4') }} 
-{{ table.jsDataTable('datatable_5') }} 
+{{ dataTable.script('#datatable_1') }} 
+{{ dataTable.script('#datatable_2') }} 
+{{ dataTable.script('#datatable_3') }} 
+{{ dataTable.script('#datatable_4') }} 
+{{ dataTable.script('#datatable_5') }} 
 {# {{table.jsDataTable('datatable_2')  }} #}
   <script>
    $(document).ready(function(){

@@ -1,21 +1,11 @@
 {% extends "email/base.html.twig" %}
 {% block body %}
-<nav class="breadcrumb">
-   <a class="breadcrumb-item" href="/">{{'Home'|trans}}</a>
-   <span class="breadcrumb-item active">{{'Confirmation'|trans}}</span>
-</nav>
 <p>
-    {{'Please confirm your email address by clicking the following link'|trans}}:
-    <br><br>
-    {{'This link will expire in'|trans}}
-    <a style="color:#5F5F5F" href="{{ signedUrl|default('#') }}">Confirmer mon Email</a>.
-    {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
+    Si vous n'êtes pas à l'origine de la création d'un compte sur notre boutique en ligne lest
+merci de cliquer sur ce lien pour la suppression du compte :
+    {# <a style="color:#5F5F5F" href="{{ signedUrl|default('#') }}">Confirmer mon Email</a>. #}
+    {# {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}. #}
 </p>
-<p>
-    {{'Cheers!'|trans}}
-</p>
-
-
 {% endblock %}
-{% block btn_path %}{{ signedUrl|default('#') }}{% endblock %}
-{% block btn_text %} {{'Confirm my Email'|trans}} {% endblock %}
+{% block btn_path %} {{ url('client_user_delete',{id:user.client.id,key:user.cle}) }} {% endblock %}
+{% block btn_text %} Supprimer le compte {% endblock %}

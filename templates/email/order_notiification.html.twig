@@ -1,0 +1,13 @@
+{% extends "email/base1.html.twig" %}
+{% block body %}
+<p>Salut admin</p>
+<p>Il s'agit d'une commande en attente générée  le {{ date()|date_format_fr }}  </p>
+{% include "email/_order.html.twig" %}
+<p>
+    <b>Facture:</b> #{{order.number}} <br>
+    <b>Montant:</b> <span style="color:red;font-weight:bold">{{order.total|number_format(0,'.',' ' )}}</span>
+    {{site.current_name|upper}} <br>
+    <b>Date émission:</b> {{ order.createdAt| date_format_fr }}<br>
+    <b>{{'Payment Due'|trans}}:</b> {{ order.paymentDue |date_format_fr }}
+</p>
+{% endblock %}

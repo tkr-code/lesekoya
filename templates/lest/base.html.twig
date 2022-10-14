@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>
+        {% block title %}Lest Sénégal - vente de produits et accesoires informatique {% endblock %} - {{ app_name }}
+    </title>
+    <meta name="keywords" content="Boutique - e-commerce - eCommerce">
+    <meta name="description" content="{{app_name}} - eCommerce - ordinateur - Pc - Souris - Dakar - Sénégal">
+    <meta name="author" content="p-themes">
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('img/lest-logo.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('img/lest-logo.png') }}">
+    <link rel="manifest" href="{{ asset('img/icons/site.html') }}">
+    <link rel="mask-icon" href="{{ asset('imgicons/safari-pinned-tab.svg') }}" color="#666666">
+    <link rel="shortcut icon" href="{{ asset('img/lest-logo.png') }}">
+    <meta name="google-site-verification" content="OIwxd19X9wsatce4KkBDK4YVczqLqSzR-2QpHcjxLb4" />
+    <meta name="apple-mobile-web-app-title" content="Lest">
+    <meta name="application-name" content="Lest">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="theme-color" content="#ffffff">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <link rel="stylesheet" href="{{ asset('vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css') }}">
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="{{ asset('css/lest/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/owl-carousel/owl.carousel.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/magnific-popup/magnific-popup.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/fontawesome/css/all.min.css') }}">
+
+    <!-- Sweetalert 2 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ asset('vendor/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/jquery.countdown.css') }}">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="{{ asset('css/lest/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/lest/util.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/skin-lest-3.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/lest-3.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/nouislider/nouislider.css') }}">
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+    <div id="loader-app">
+        <div class="loader-app">
+            <img width="40%" src="{{ asset('img/icons/logo-lest.png') }}" class="d-block mx-auto" alt="">
+            chargement...
+        </div>
+    </div>
+    <div class="js-loader js-loader-hide">
+        <div class="text-center js-loader-content">
+            <div class="spinner-border d-inline-block" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+            <p class="js-loader-text">Chargement...</p>
+        </div>
+    </div>
+    <div class="page-wrapper">
+        {% block header %}
+        <header class="header header-intro-clearance header-3">
+            <div class="header-top">
+                <div class="container">
+                    <div class="header-left">
+                        <a href="tel:{{site.phone_1}}">
+                            <i class="icon-phone"></i> {{'Call'|trans}}: {{ site.phone_number_1 }}</a>
+                    </div>
+                    <!-- End .header-left -->
+
+                    <div class="header-right">
+                        <ul class="top-menu">
+                            <li>
+                                <a href="#">Liens</a>
+                                <ul>
+                                    {% if not is_granted('ROLE_CLIENT') %}
+                                    <li>
+                                        <a href="#signin-modal" data-toggle="modal">Identifiez-vous / Créer un
+                                            compte</a>
+                                    </li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+                        </ul>
+                        <!-- End .top-menu -->
+                    </div>
+                    <!-- End .header-right -->
+                </div>
+                <!-- End .container -->
+            </div>
+            <!-- End .header-top -->
+
+            <div class="header-middle">
+                <div class="container">
+                    <div class="header-left">
+                        <button class="mobile-menu-toggler">
+                            <span class="sr-only">{{'Toggle mobile menu'|trans}}</span>
+                            <i class="icon-bars"></i>
+                        </button>
+
+                        <a href="{{ path('home') }}" class="logo">
+                            <img src="{{ asset('img/icons/lest-jaune.png') }}" alt="Lest Logo" width="105" height="25">
+                        </a>
+                    </div>
+                    <!-- End .header-left -->
+
+                    <div class="header-center">
+                        <div class="header-search header-search-extended header-search-visible d-none d-lg-block">
+                            <a href="#" class="search-toggle" role="button">
+                                <i class="icon-search"></i>
+                            </a>
+                            <form action="{{ path('articles') }}" method="get">
+                                <div class="header-search-wrapper search-wrapper-wide">
+                                    <label for="q" class="sr-only">Search</label>
+                                    <button class="btn btn-primary" type="submit">
+                                        <i class="icon-search"></i>
+                                    </button>
+                                    <input type="search" class="form-control" name="mots" id="mots"
+                                        placeholder="{{'Search product'|trans}} ..."
+                                        value="{{ app.request.get('mots') }}" required>
+                                </div>
+                                <!-- End .header-search-wrapper -->
+                            </form>
+                        </div>
+                        <!-- End .header-search -->
+                    </div>
+
+                    <div class="header-right">
+                        <div class="wishlist">
+                            {% if is_granted('ROLE_CLIENT') %}
+                            <a href="{{ path('favoris_index') }}" title="Wishlist">
+                                <div class="icon">
+                                    <i class="icon-heart-o"></i>
+                                    <span class="wishlist-count badge">{{ app.user.favoris|length}}
+                                    </span>
+                                </div>
+                                <p>{{'Wishlist'|trans}}</p>
+                            </a>
+                            {% else %}
+                            <a href="#" class="js-favoris-login" title="Wishlist">
+                                <div class="icon">
+                                    <i class="icon-heart-o"></i>
+                                    <span class="wishlist-count badge">0</span>
+                                </div>
+                                <p>{{'Wishlist'|trans}}</p>
+                            </a>
+                            {% endif %}
+                        </div>
+                        <!-- End .compare-dropdown -->
+
+                        <div class="dropdown cart-dropdown js-cart-load">
+                            {% include "includes/cart/_load.html.twig" %}
+                            <!-- End .dropdown-menu -->
+                        </div>
+                        <!-- End .cart-dropdown -->
+                    </div>
+                    <!-- End .header-right -->
+                </div>
+                <!-- End .container -->
+            </div>
+            <!-- End .header-middle -->
+            <div class="header-bottom sticky-header">
+                <div class="container">
+                    <div class="header-left">
+                        <div class="dropdown category-dropdown">
+                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false" data-display="static"
+                                title="{{'Browse Categories'|trans}}">
+                                {{'Browse Categories'|trans}}
+                                <i class="icon-angle-down"></i>
+                            </a>
+
+                            <div class="dropdown-menu">
+                                <nav class="side-nav">
+                                    <ul class="menu-vertical sf-arrows">
+                                        <li>
+                                            <a href="{{ path('articles') }}">Tous</a>
+                                        </li>
+                                        {% for item in categories.all %}
+                                        <li>
+                                            <a href="{{path('articles_category',{category:item.slug|lower}) }}">
+                                                {{ item.title }}
+                                            </a>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                    <!-- End .menu-vertical -->
+                                </nav>
+                                <!-- End .side-nav -->
+                            </div>
+                            <!-- End .dropdown-menu -->
+                        </div>
+                        <!-- End .category-dropdown -->
+                    </div>
+                    <!-- End .header-left -->
+
+                    <div class="header-center">
+                        <nav class="main-nav">
+                            <ul class="menu sf-arrows">
+                                <li {{ app.request.get( '_route' )=='home' ? 'class="active"' : '' }}>
+                                    <a href="{{ path('home') }}">{{'Home'|trans}}</a>
+                                </li>
+                                <li {{ ( app.request.get( '_route' )=='articles' or app.request.get( '_route'
+                                    )=='articles_category' ) ? 'class="active"' : '' }}>
+                                    <a href="{{ path('articles') }}">{{'Shop'|trans}}</a>
+                                </li>
+                                <li {{ app.request.get( '_route' )=='contact' ? 'class="active"' : '' }}>
+                                    <a href="{{ path('contact') }}">{{'Contact'|trans}}</a>
+                                </li>
+                                {% if is_granted('ROLE_CLIENT') %}
+                                <li class="">
+                                    <a href="#" class="sf-with-ul">
+                                        <i class="fas fa-user-circle fa-1x"></i> {{app.user.personne.fullName}}
+                                    </a>
+                                    <ul style="display: none;">
+                                        <li>
+                                            <a href="{{ path('client_index') }}">{{'Dashboard'|trans}}</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('client_index',{tab:'orders'}) }}">Commande</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('client_index',{tab:'buy'}) }}">Mes achats</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('client_index',{tab:'details'}) }}">Details du compte</a>
+                                        </li>
+                                        <li>
+                                            <a id="btn-logout" href="#">{{'Log out'|trans}}</a>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                                {% endif %} {% if is_granted('ROLE_EDITOR') %}
+                                <li class="">
+                                    <a href="{{ path('admin') }}" class="sf-with-ul">{{'Dashboard'|trans}}</a>
+                                    <ul style="display: none;">
+                                        <li>
+                                            <a href="{{ path('order_index') }}">{{'Order'|trans}}</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('article_index') }}">{{'Products'|trans}}</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('admin_client_index') }}">{{'Customers'|trans}}</a>
+                                        </li>
+                                        <li>
+                                            <a id="btn-logout" href="#">{{'Log out'|trans}}</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                {% endif %}
+
+                            </ul>
+                            <!-- End .menu -->
+                        </nav>
+                        <!-- End .main-nav -->
+                    </div>
+                    <!-- End .header-center -->
+                </div>
+                <!-- End .container -->
+            </div>
+            <!-- End .header-bottom -->
+        </header>
+        <!-- End .header -->
+        {% endblock %}
+        {% block main %}{% endblock %}
+        <div class="container">
+            <hr class="mt-5 mb-0">
+        </div>
+        {% block footer %}
+
+        <footer class="footer">
+            <div class="footer-middle">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="widget widget-about">
+                                <img src="{{ asset('img/icons/logo.png') }}" class="footer-logo" alt="Footer Logo"
+                                    width="105" height="25">
+                                <p>
+                                    {{'Lest is a local company developing in the field of IT'|trans}}
+                                </p>
+
+                                <div class="widget-call">
+                                    <i class="icon-phone"></i> {{'Got Question? Call us'|trans}} 24/7
+                                    <a href="tel:{{ site.phone_1}}">{{ site.phone_number_1 }}</a>
+                                </div>
+                                <!-- End .widget-call -->
+                            </div>
+                            <!-- End .widget about-widget -->
+                        </div>
+                        <!-- End .col-sm-6 col-lg-3 -->
+
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="widget">
+                                <h4 class="widget-title">{{'Useful Links'|trans}}</h4>
+                                <!-- End .widget-title -->
+
+                                <ul class="widget-list">
+                                    {# <li>
+                                        <a href="#">{{'How to shop on Lest'|trans}}</a>
+                                    </li> #}
+                                    <li>
+                                        <a href="{{ path('faq') }}">{{'FAQ'|trans}}</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('contact') }}">{{'Contact us'|trans}}</a>
+                                    </li>
+                                </ul>
+                                <!-- End .widget-list -->
+                            </div>
+                            <!-- End .widget -->
+                        </div>
+                        <!-- End .col-sm-6 col-lg-3 -->
+
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="widget">
+                                <h4 class="widget-title">{{'Customer Service'|trans}}</h4>
+                                <!-- End .widget-title -->
+
+                                <ul class="widget-list">
+                                    <li>
+                                        <a target="_blank" href="{{ asset("doc/Conditions.pdf") }}">
+                                            {{'Terms and conditions'|trans}}</a>
+                                    </li>
+
+                                </ul>
+                                <!-- End .widget-list -->
+                            </div>
+                            <!-- End .widget -->
+                        </div>
+                        <!-- End .col-sm-6 col-lg-3 -->
+
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="widget">
+                                <h4 class="widget-title">{{'My Account'|trans}}</h4>
+                                <!-- End .widget-title -->
+
+                                <ul class="widget-list">
+                                    <li>
+                                        <a href="{{ path('app_register') }}">{{'Sign In'|trans}}</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('cart_index') }}">{{'View Cart'|trans}}</a>
+                                    </li>
+                                    {% if is_granted('ROLE_CLIENT') %}
+                                    <li>
+                                        <a href="{{ path('favoris_index') }}">{{'My Wishlist'|trans}}</a>
+                                    </li>
+                                    {% endif %}
+                                    <li>
+                                        <a href="{{ path('track_index') }}">{{'Track My Order'|trans}}</a>
+                                    </li>
+                                </ul>
+                                <!-- End .widget-list -->
+                            </div>
+                            <!-- End .widget -->
+                        </div>
+                        <!-- End .col-sm-6 col-lg-3 -->
+                    </div>
+                    <!-- End .row -->
+                </div>
+                <!-- End .container -->
+            </div>
+            <!-- End .footer-middle -->
+
+            <div class="footer-bottom">
+                <div class="container">
+                    <p class="footer-copyright">Copyright © <span id="year"></span> LEST.
+                        {{'All Rights Reserved'|trans}}.</p>
+                    <!-- End .footer-copyright -->
+                </div>
+                <!-- End .container -->
+            </div>
+            <!-- End .footer-bottom -->
+        </footer>
+        <!-- End .footer -->
+        {% endblock %}
+    </div>
+    <!-- End .page-wrapper -->
+    <button id="scroll-top" title="Back to Top">
+        <i class="icon-arrow-up"></i>
+    </button>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay"></div>
+    <!-- End .mobil-menu-overlay -->
+
+    <div class="mobile-menu-container">
+        <div class="mobile-menu-wrapper">
+            <span class="mobile-menu-close">
+                <i class="icon-close"></i>
+            </span>
+
+            <form action="{{ path('articles') }}" method="get" class="mobile-search">
+                <label for="mobile-search" class="sr-only">{{'Search'|trans}}</label>
+                <input type="search" class="form-control" name="mots" id="mobile-search"
+                    placeholder="{{'Search in'|trans}}..." required>
+                <button class="btn btn-primary" type="submit">
+                    <i class="icon-search"></i>
+                </button>
+            </form>
+
+            <ul class="nav nav-pills-mobile nav-border-anim" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="mobile-menu-link" data-toggle="tab" href="#mobile-menu-tab"
+                        role="tab" aria-controls="mobile-menu-tab" aria-selected="true">Menu</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="mobile-cats-link" data-toggle="tab" href="#mobile-cats-tab" role="tab"
+                        aria-controls="mobile-cats-tab" aria-selected="false">Categories</a>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="mobile-menu-tab" role="tabpanel"
+                    aria-labelledby="mobile-menu-link">
+                    <nav class="mobile-nav">
+                        <ul class="mobile-menu">
+                            <li {{ app.request.get( '_route' )=='home' ? 'class="active"' : '' }}>
+                                <a href="{{ path('home') }}">{{'Home'|trans}}</a>
+                            </li>
+                            <li {{ ( app.request.get( '_route' )=='articles' or app.request.get( '_route'
+                                )=='articles_category' ) ? 'class="active"' : '' }}>
+                                <a href="{{ path('articles') }}">{{'Shop'|trans}}</a>
+                            </li>
+                            <li {{ app.request.get( '_route' )=='contact' ? 'class="active"' : '' }}>
+                                <a href="{{ path('contact') }}">{{'Contact'|trans}}</a>
+                            </li>
+                            <li {{ ( app.request.get( '_route' )=='about' ) ? 'class="active"' : '' }}>
+                                <a href="{{ path('home') }}">{{'About'|trans}}</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <!-- End .mobile-nav -->
+                </div>
+                <!-- .End .tab-pane -->
+                <div class="tab-pane fade" id="mobile-cats-tab" role="tabpanel" aria-labelledby="mobile-cats-link">
+                    <nav class="mobile-cats-nav">
+                        <ul class="mobile-cats-menu">
+                            <li>
+                                <a class="mobile-cats-lead" href="{{ path('articles') }}">Tous</a>
+                            </li>
+                            {% for item in categories.all %}
+                            <li>
+                                <a href="{{path('articles_category',{category:item.slug}) }}" >{{ item.title }}</a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        <!-- End .mobile-cats-menu -->
+                    </nav>
+                    <!-- End .mobile-cats-nav -->
+                </div>
+                <!-- .End .tab-pane -->
+            </div>
+            <!-- End .tab-content -->
+
+            <div class="social-icons">
+                <a href="{{ site.facebook }}" class="social-icon" target="_blank" title="Facebook">
+                    <i class="icon-facebook-f"></i>
+                </a>
+            </div>
+            <!-- End .social-icons -->
+        </div>
+        <!-- End .mobile-menu-wrapper -->
+    </div>
+    <!-- End .mobile-menu-container -->
+
+    <!-- Sign in / Register Modal -->
+    <div class="modal fade" id="signin-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">
+                            <i class="icon-close"></i>
+                        </span>
+                    </button>
+
+                    <div class="form-box">
+                        <div class="form-tab">
+                            <ul class="nav nav-pills nav-fill nav-border-anim" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="signin-tab" data-toggle="tab" href="#signin"
+                                        role="tab" aria-controls="signin" aria-selected="true">{{'Sign In'|trans}}</a>
+                                </li>
+
+                            </ul>
+                            <div class="tab-content" id="tab-content-5">
+                                <div class="tab-pane fade show active" id="signin" role="tabpanel"
+                                    aria-labelledby="signin-tab">
+                                    <form action="{{ path('app_login') }}" method="post">
+                                        <div class="form-group">
+                                            <label for="singin-email">{{'Username or email address'|trans}} *</label>
+                                            <input type="email"
+                                                value="{{ last_username is defined ? last_username:'' }}" name="email"
+                                                id="inputEmail" placeholder="email" class="form-control"
+                                                autocomplete="email" required autofocus>
+                                        </div>
+                                        <!-- End .form-group -->
+
+                                        <div class="form-group">
+                                            <label for="singin-password">{{'Password'|trans}} *</label>
+                                            <input type="password" name="password" id="inputPassword"
+                                                placeholder="{{'password'|trans}}" class="form-control"
+                                                autocomplete="current-password" required>
+                                            <input type="hidden" name="_csrf_token"
+                                                value="{{ csrf_token('authenticate') }}">
+                                        </div>
+                                        <!-- End .form-group -->
+
+                                        <div class="form-footer">
+                                            <button type="submit" class="btn btn-outline-primary-2">
+                                                <span>{{'LOG IN'|trans}}</span>
+                                                <i class="icon-long-arrow-right"></i>
+                                            </button>
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input"
+                                                    id="signin-remember">
+                                                <label class="custom-control-label" for="signin-remember">
+                                                    {{'Remember Me'|trans}}</label>
+                                            </div>
+                                            <!-- End .custom-checkbox -->
+                                            <a href="{{ path('app_forgot_password_request') }}"
+                                                class="forgot-link">{{'Forgot Your Password'|trans}}?</a>
+                                        </div>
+                                        <div class="text-center">
+                                            <a href="{{ path('app_register') }}"
+                                                class="btn btn-outline-primary-2 mx-auto">
+                                                {{'Create an account'|trans}}
+                                            </a>
+                                        </div>
+                                        <!-- End .form-footer -->
+                                    </form>
+                                    {# <div class="form-choice">
+                                        <p class="text-center">{{'or sign in with'|trans}}</p>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <a href="{{ path('connect_google') }}" class="btn btn-login btn-g">
+                                                    <i class="icon-google"></i> {{'Login With Google'|trans}}
+                                                </a>
+                                            </div>
+                                            <!-- End .col-6 -->
+                                            <div class="col-sm-6">
+                                                <a href="#" class="btn btn-login btn-f">
+                                                    <i class="icon-facebook-f"></i> {{'Login With Facebook'|trans}}
+                                                </a>
+                                            </div>
+                                            <!-- End .col-6 -->
+                                        </div>
+                                        <!-- End .row -->
+                                    </div> #}
+                                    <!-- End .form-choice -->
+                                </div>
+                                <!-- .End .tab-pane -->
+                                <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
+                                    {# {% include "registration/_form.html.twig" %} #}
+                                    <form name="registration_form" method="post" action="/register"
+                                        novalidate="novalidate">
+
+                                        <div class="form-group">
+                                            <label for="registration_form_personne_firstName" class="required">{{'First
+                                                name'|trans}}
+                                                *</label><input type="text" id="registration_form_personne_firstName"
+                                                name="registration_form[personne][firstName]" required="required"
+                                                placeholder="{{'First name'|trans}}" class="form-control" value="">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="registration_form_personne_lastName" class="required">{{'Last
+                                                name'|trans}}
+                                                *</label><input type="text" id="registration_form_personne_lastName"
+                                                name="registration_form[personne][lastName]" required="required"
+                                                placeholder="Nom" class="form-control" value="Tounkara">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="registration_form_email" class="required">
+                                                Email *
+                                            </label><input type="email" id="registration_form_email"
+                                                name="registration_form[email]" required="required"
+                                                class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="registration_form_phone_number" class="required">
+                                                {{'Phone number'|trans}}
+                                                Numéro det téléphone
+                                                *
+                                            </label><input type="text" id="registration_form_phone_number"
+                                                name="registration_form[phone_number]" required="required"
+                                                placeholder="Numéro de téléphone" value="781278288"
+                                                class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="registration_form_password" class="required">
+                                                {{'Password'}} *
+                                            </label><input type="password" id="registration_form_password"
+                                                name="registration_form[password]" required="required"
+                                                autocomplete="new-password" placeholder="Mot de passe"
+                                                class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="form-check">
+                                                <input type="checkbox" id="registration_form_agreeTerms"
+                                                    name="registration_form[agreeTerms]" required="required"
+                                                    class="form-check-input" value="1">
+                                                <label class="form-check-label required"
+                                                    for="registration_form_agreeTerms">
+                                                    {{'I accept the user conditions'|trans}}
+                                                    {# J'acceptes les conditions d'utilisateurs #}
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-footer">
+                                            <button type="submit" class="btn btn-outline-primary-2">
+                                                <span>{{'SIGN UP'|trans}}</span>
+                                                <i class="icon-long-arrow-right"></i>
+                                            </button>
+                                        </div>
+                                        <div id="registration_form"><input type="hidden" id="registration_form__token"
+                                                name="registration_form[_token]"
+                                                value="{{ csrf_token('registration') }}">
+                                        </div>
+                                        <!-- End .form-footer -->
+                                        <div class="form-choice">
+                                            <p class="text-center">{{'or sign in with'|trans}}</p>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <a href="#" class="btn btn-login btn-g">
+                                                        <i class="icon-google"></i> {{'Login With Google'|trans}}
+                                                    </a>
+                                                </div>
+                                                <!-- End .col-6 -->
+                                                <div class="col-sm-6">
+                                                    <a href="#" class="btn btn-login  btn-f">
+                                                        <i class="icon-facebook-f"></i> {{'Login With Facebook'|trans}}
+                                                    </a>
+                                                </div>
+                                                <!-- End .col-6 -->
+                                            </div>
+                                            <!-- End .row -->
+                                        </div>
+                                        <!-- End .form-choice -->
+                                    </form>
+                                    <div class="form-choice">
+                                        <p class="text-center">{{'or sign in with'|trans}}</p>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <a href="#" class="btn btn-login btn-g">
+                                                    <i class="icon-google"></i> {{'Login With Google'|trans}}
+                                                </a>
+                                            </div>
+                                            <!-- End .col-6 -->
+                                            <div class="col-sm-6">
+                                                <a href="#" class="btn btn-login  btn-f">
+                                                    <i class="icon-facebook-f"></i> {{'Login With Facebook'|trans}}
+                                                </a>
+                                            </div>
+                                            <!-- End .col-6 -->
+                                        </div>
+                                        <!-- End .row -->
+                                    </div>
+                                    <!-- End .form-choice -->
+                                </div>
+                                <!-- .End .tab-pane -->
+                            </div>
+                            <!-- End .tab-content -->
+                        </div>
+                        <!-- End .form-tab -->
+                    </div>
+                    <!-- End .form-box -->
+                </div>
+                <!-- End .modal-body -->
+            </div>
+            <!-- End .modal-content -->
+        </div>
+        <!-- End .modal-dialog -->
+    </div>
+    <!-- End .modal -->
+
+    {% block modal %}{% endblock %}
+
+    <script type="application/javascript" src="{{ asset('js/lest/jquery.min.js') }}"></script>
+    <script type="application/javascript" src="{{ asset('js/lest/bootstrap.bundle.min.js') }}"></script>
+    <script type="application/javascript" src="{{ asset('js/lest/jquery.hoverIntent.min.js') }}"></script>
+    <script type="application/javascript" src="{{ asset('js/lest/jquery.waypoints.min.js') }}"></script>
+    <script type="application/javascript" src="{{ asset('js/lest/superfish.min.js') }}"></script>
+    <script type="application/javascript" src="{{ asset('js/lest/owl.carousel.min.js') }}"></script>
+    <script type="application/javascript" src="{{ asset('js/lest/bootstrap-input-spinner.js') }}"></script>
+    <script type="application/javascript" src="{{ asset('js/lest/jquery.plugin.min.js') }}"></script>
+    <script type="application/javascript" src="{{ asset('js/lest/jquery.magnific-popup.min.js') }}"></script>
+    <script type="application/javascript" src="{{ asset('js/lest/jquery.countdown.min.js') }}"></script>
+    {% block foot %}{% endblock %}
+    <!-- sweetalert2 -->
+    <script type="application/javascript" src="{{ asset('vendor/sweetalert2/sweetalert2.all.min.js') }}"></script>
+    <script type="application/javascript" src="{{asset('js/admin.js') }}"></script>
+    <!-- Main JS File -->
+    <script src="{{asset('js/lest/main.js') }}"></script>
+    <script src="{{asset('js/article.js') }}"></script>
+    <script src="{{asset('js/store.js') }}"></script>
+    <script src="{{asset('js/lest/demos/demo-3.js') }}"></script>
+    <script src="{{asset('js/util.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $(document).on('click', '#btn-product-gallery', function (e) {
+                $(this).magnificPopup({
+                    gallery: {
+                        enabled: true
+                    },
+                    type: 'image'
+                })
+
+            })
+            $('.product-gallery-show').magnificPopup({
+                gallery: {
+                    enabled: true
+                },
+                type: 'image',
+                fixedContentPos: false,
+                removalDelay: 600,
+                closeBtnInside: false
+            })
+
+        })
+    </script>
+    {% block javascripts %}{% endblock %}
+</body>
+
+</html>

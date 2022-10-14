@@ -1,0 +1,9 @@
+ <label for="">Etat</label>
+<select id="js-order-etat" name="" class="custom-select">
+	<option value="{{ order.state }}">{{ order.state }}</option>
+	{% for item in orderStatus %}
+		<option value="{{ item }}">{{ item }}</option>
+	{% endfor %}
+</select>
+<hr>
+<button class="btn btn-success" id="order-edit-etat" data-token="{{ csrf_token('edit' ~ order.id) }}" data-path="{{ path('editor_order_edit',{id:order.id}) }}">Appliquer</button>

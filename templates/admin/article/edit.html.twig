@@ -1,13 +1,160 @@
-{% extends 'base.html.twig' %}
+{% import "macros/table.html.twig" as table %}
+{% import "macros/head.html.twig" as head %}
+{% import "macros/foot.html.twig" as foot %}
+{% import "macros/breadcrumb.html.twig" as utils %}
+{% import "macros/alertes.html.twig" as alertes %}
+{% import "macros/button.html.twig" as btn %}
+{% import "macros/modal.html.twig" as modal %}
 
-{% block title %}Edit Article{% endblock %}
+{% extends 'admin/base.html.twig' %}
+{% block title %}Edit Article
+{% endblock %}
+
+{% block breadcrumb %}
+{{ utils.breadcrumb('Modifier un produit',[
+{
+path:path('article_index'),
+name:'Listes des articles'
+}
+])}}
+{% endblock %}
 
 {% block body %}
-    <h1>Edit Article</h1>
+{% include "includes/_alerte.html.twig" %}
+<div class="row">
+	<div class="col-md-12">
+		<div class="card card-outline card-primary">
+			<div class="card-header">
+				<div class="card-title">{{ 'Edit Article'|trans }}</div>
+			</div>
+			<div class="card-body">
+				<div class="row">
+					<div class="col-md-9 col-12">
+						<!-- Custom Tabs -->
+						<div class="card">
+							<div class="card-header d-flex p-0">
+								<h3 class="card-title p-3">Modifier un article</h3>
+								<ul class="nav nav-pills ml-auto p-2">
+									<li class="nav-item">
+										<a class="nav-link active" href="#tab_1" data-toggle="tab">Information</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="#tab_2" data-toggle="tab">Caractéristiques</a>
+									</li>
+								</ul>
+							</div>
+							<div class="card-body">
+								<div class="tab-content">
+									<div class="tab-pane active" id="tab_1">
+										{{ form_start(form) }}
+										<div class="row">
+											<div class="col-lg-5">
+												{{form_row(form.title)}}
+											</div>
+											<div class="col-lg-7">
+												{{form_row(form.description)}}
+											</div>
+											<div class="col-lg-4">
+												{{form_row(form.buyingPrice)}}
+											</div>
+											<div class="col-lg-4">
+												{{form_row(form.price)}}
+											</div>
+											<div class="col-lg-4">
+												{{form_row(form.quantity)}}
+											</div>
+											<div class="col-lg-4">
+												{{form_row(form.qty_reel)}}
+											</div>
+											<div class="col-lg-4">
+												{{form_row(form.reduction)}}
+											</div>
+											<div class="col-lg-4">
+												{{form_row(form.category)}}
+											</div>
+											<div class="col-lg-4">
+												{{form_row(form.brand)}}
+											</div>
+											<div class="col-lg-4">
+												{{form_row(form.label)}}
+											</div>
+											<div class="col-lg-4 col-12">
+												{{form_row(form.etat)}}
+											</div>
+											<div class="col-lg-4 col-12">
+												{{form_row(form.status)}}
+											</div>
+											<div class="col-lg-4 col-12">
+												{{form_row(form.images)}}
+											</div>
 
-    {{ include('article/_form.html.twig', {'button_label': 'Update'}) }}
+											<div class="col-lg-12 col-12">
+												{{form_row(form.enabled)}}
+											</div>
+											<div class="gallery">
+												<p class="text-center">Prévisualisez vos images</p>
+											</div>
+											<div class="col-lg-12">
+												<div class="row gallery-2">
+													{% for image in article.images %}
+													<div class="col-lg-3 col-md-4 col-xs-6">
+														<img src="{{ asset('img/article/' ~ image.name)}}"
+															class="zoom img-fluid " alt="">
+														<a class="btn btn-image-delete position-absolute btn-image-delete text-danger text-center"
+															href="{{ path('article_delete_image', {id: image.id}) }}"
+															data-delete data-token="{{ csrf_token('delete' ~ image.id) }}">
+															<i class="fa fa-window-close"></i>
+														</a>
+													</div>
+													{% else %}
+													<div class="col-md-12 col-12">
+														<p class="font-weight-bold text-center">L'article ne possede pas
+															d'image</p>
+													</div>
+													{% endfor %}
+												</div>
+												<div class="btn-group">
+													<button class="btn btn-primary">
+														<i class="fas fa-save"></i>
+														{{ button_label|default('Save') }}</button>
+												</div>
+											</div>
+										</div>
+										{{ form_widget(form) }}
+										{{ form_end(form) }}
+										{% if is_granted('ROLE_ADMIN') %}
+										<hr>
+										{{ include('admin/article/_delete_form.html.twig') }}
+										{% endif %}
+									</div>
+									<!-- /.tab-pane -->
+									<div class="tab-pane " id="tab_2">
+										{% include "includes/article/article_option/table.html.twig" %}
+									</div>
+									<!-- /.tab-pane -->
+									<div class="tab-pane" id="tab_3"></div>
+									<!-- /.tab-pane -->
+								</div>
+								<!-- /.tab-content -->
+							</div>
+							<!-- /.card-body -->
+						</div>
+						<a class="btn btn-dark" href="{{ path('article_index') }}">
+							<i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+							{{'back to list'|trans}}</a>
+						<!-- ./card -->
+					</div>
+					<div class="col-md-3">
+						{% include "includes/article/aides.html.twig" %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
 
-    <a href="{{ path('article_index') }}">back to list</a>
-
-    {{ include('article/_delete_form.html.twig') }}
+{% block modal %}
+{% include "includes/article/article_option/modal_add_option.html.twig" %}
+{{ modal.default()}}
 {% endblock %}

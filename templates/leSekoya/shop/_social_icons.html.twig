@@ -1,0 +1,12 @@
+<div class="social-icons social-icons-sm">
+    <span class="social-label">{{'Share'|trans}}:</span>
+    <div class="fb-share-button m-2" data-href="{{ site.facebook }}" data-layout="button_count">
+    </div>
+    {% if app.request.get('_route') == 'articles_show' %}
+    <a href="#" class="social-icon copie"
+        data-text="{{ url('articles_show', { category: article.category.slug, slug: article.slug, id: article.id}) }}"
+        title="Copier le lien de l'article" target="_blank">
+        <i class="fas fa-copy"></i>
+    </a>
+    {% endif %}
+</div>

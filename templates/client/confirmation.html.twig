@@ -1,146 +1,190 @@
 {% import "macros/search.html.twig" as search %}
 {% import "macros/alertes.html.twig" as alert %}
 
-{% extends "leSekoya/base.html.twig" %}
+{% extends "lest/base.html.twig" %}
 
 
-{% block title %} {{'Order confirmation'|trans }} - {{ order.number }} {% endblock %}
-
-{% block body %}
-<style>
-  .loader{
-    display:none;
-  }
-</style>
-<ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{{ path('home') }}">{{ 'Home'|trans }}</a></li>
-    <li class="breadcrumb-item"><a href="{{ path('client_order') }}">{{ 'Orders'|trans }}</a></li>
-    <li class="breadcrumb-item active">{{'Confirmation'|trans }}</li>
-</ol>
-<section class="order_details section-margin--small">
-    <div class="container">
-
-        <p class="text-center billing-alert">{{ 'Thank you. Your order has been received.'|trans }}</p>
-        <div class="row mb-5">
-        <div class="col-12">
-            {% for item in app.flashes('success') %}
-            {{ alert.alert(item,'success')}}
-            {% endfor %}
-        </div>
-        <div class="col-md-6 col-xl-6 mb-4 mb-xl-0">
-            <div class="confirmation-card">
-                <h3 class="billing-title">Order Info</h3>
-                <table class="order-rable">
-                    <tbody>
-                        <tr>
-                            <td>{{'Order number'|trans}}</td>
-                            <td>: {{ order.number}}</td>
-                        </tr>
-                        <tr>
-                            <td>Date</td>
-                            <td>: {{ order.createdAt|date_format_fr }}</td>
-                        </tr>
-                        <tr>
-                            <td>Total</td>
-                            <td>: {{ order.total|number_format(2,'.',' ') }} {{ site.current }}  </td>
-                        </tr>
-                        <tr>
-                            <td>Payment method</td>
-                            <td>:{{ order.payment.paymentMethod.name }} </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>  
-        </div>
-        <div class="col-md-6 col-xl-6 mb-4 mb-xl-0">
-            <div class="confirmation-card">
-            <h3 class="billing-title">{{ 'Delivery Space'|trans }}</h3>
-            <table class="order-rable">
-                <tbody><tr>
-                <td>{{'Street'|trans }}</td>
-                <td>: {{ (order.deliverySpace)? order.deliverySpace.street.name:'non definie' }}</td>
-                </tr>
-                <tr>
-                <td>{{ 'City'|trans }}</td>
-                <td>: {{ (order.deliverySpace)? order.deliverySpace.street.city.name:'non definie' }}</td>
-                </tr>
-                <tr>
-                <td>{{'Country'|trans}}</td>
-                <td>: {{ (order.deliverySpace)? order.deliverySpace.street.city.country.name:'non definie' }}</td>
-                </tr>
-                <tr>
-                    <td>{{'Postal code'|trans}}</td>
-                    <td>: 11000</td>
-                </tr>
-            </tbody>
-            </table>
-            </div>
-        </div>
-        </div>
-        <div class="order_details_table">
-        <h2>{{'Order Details'|trans}}</h2>
-        <div class="table-responsive">
-            <table class="table">
-            <thead>
-                <tr>
-                <th scope="col">{{'Product'|trans}}</th>
-                <th scope="col">{{'Quantity'|trans}}</th>
-                <th scope="col">{{'Total'|trans}}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in order.orderItem %}
-                <tr>
-                    <td>
-                        <p>{{ item.produitName }}</p>
-                    </td>
-                    <td>
-                        <h5>x {{ item.quantity }}</h5>
-                    </td>
-                    <td>
-                        <p>{{ item.total|number_format(2,'.',' ') }} {{ site.current }}</p>
-                    </td>
-                </tr>
-                {% endfor %}
-                <tr>
-                    <td>
-                        <h4>Subtotal</h4>
-                    </td>
-                    <td>
-                        <h5></h5>
-                    </td>
-                    <td>
-                        <p>{{ order.itemsTotal|number_format(2,'.',' ') }} {{ site.current }}</p>
-                    </td>
-                </tr>
-                <tr>
-                <td>
-                    <h4>{{'Shipping'|trans}}</h4>
-                </td>
-                <td>
-                    <h5></h5>
-                </td>
-                <td>
-                    <p>{{ (order.deliverySpace)? order.deliverySpace.street.shippingAmount.amount:'0' |number_format(2,'.',' ') }} {{ site.current }}</p>
-                </td>
-                </tr>
-                <tr>
-                <td>
-                    <h4>Total</h4>
-                </td>
-                <td>
-                    <h5></h5>
-                </td>
-                <td>
-                    <h4>{{ order.total|number_format(2,'.',' ') }} {{ site.current }}</h4>
-                </td>
-                </tr>
-            </tbody>
-            </table>
-        </div>
-        </div>
-    </div>
-    <p class="text-center my-4 1rem" > <a href="#"><i class="fa fa-download" aria-hidden="true"></i> Telecherger au format pdf</a></p>
-</section>
+{% block title %}
+	{{'Order confirmation'|trans }}
+	-
+	{{ order.number }}
 {% endblock %}
 
+{% block main %}
+	<main class="main">
+		<nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
+			<div class="container">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item">
+						<a href="{{ path('home') }}">{{'Home'|trans}}</a>
+					</li>
+					<li class="breadcrumb-item active" aria-current="page">{{ 'Confirmation'|trans}}</li>
+				</ol>
+			</div>
+			<!-- End .container -->
+		</nav>
+		<div class="page-content">
+			<div class="container p-5 bg-light">
+				<p class="text-center py-3 billing-alert">{{ 'Thank you. Your order has been received.'|trans }}</p>
+				<div class="row mb-5">
+					<div class="col-12 col-md-12">
+						{% for item in app.flashes('success') %}
+							{{ alert.alert(item,'success')}}
+						{% endfor %}
+					</div>
+					<div class="col-md-6 col-xl-6 mb-4 mb-xl-0">
+						<div class="confirmation-card">
+							<h3 class="billing-title">{{'Order Info'|trans}}</h3>
+							<table class="order-rable">
+								<tbody>
+									<tr>
+										<td>{{'Order number'|trans}}</td>
+										<td>:
+											{{ order.number}}</td>
+									</tr>
+									<tr>
+										<td>Date</td>
+										<td>:
+											{{ order.createdAt|date_format_fr }}</td>
+									</tr>
+									<tr>
+										<td>Total</td>
+										<td>:
+											{{ order.total|number_format(2,'.',' ') }}
+											{{ site.current_name }}
+										</td>
+									</tr>
+									<tr>
+										<td>Payment method</td>
+										<td>:{{ order.payment.paymentMethod.name }}
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="col-md-6 col-xl-6 mb-4 mb-xl-0">
+						<div class="confirmation-card">
+							<h3 class="billing-title">{{ 'Delivery Space'|trans }}</h3>
+							<table class="order-rable">
+								<tbody>
+									<tr>
+										<td>{{'Street'|trans }}</td>
+										<td>:
+											{{ (order.deliverySpace)? order.deliverySpace.street.name:'non definie' }}</td>
+									</tr>
+									<tr>
+										<td>{{ 'City'|trans }}</td>
+										<td>:
+											{{ (order.deliverySpace)? order.deliverySpace.street.city.name:'non definie' }}</td>
+									</tr>
+									<tr>
+										<td>{{'Country'|trans}}</td>
+										<td>:
+											{{ (order.deliverySpace)? order.deliverySpace.street.city.country.name:'non definie' }}</td>
+									</tr>
+									<tr>
+										<td>{{'Postal code'|trans}}</td>
+										<td>: 11000</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="order_details_table">
+					<h2>{{'Order Details'|trans}}</h2>
+					<div class="table-responsive">
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col">{{'Product'|trans}}</th>
+									<th scope="col">{{'Quantity'|trans}}</th>
+									<th scope="col">{{'Total'|trans}}</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for item in order.orderItem %}
+									<tr>
+										<td>
+											<p>{{ item.produitName }}</p>
+										</td>
+										<td>
+											<h5>x
+												{{ item.quantity }}</h5>
+										</td>
+										<td>
+											<p>{{ item.total|number_format(2,'.',' ') }}
+												{{ site.current_name }}</p>
+										</td>
+									</tr>
+								{% endfor %}
+								<tr>
+									<td>
+										<h4>Subtotal</h4>
+									</td>
+									<td>
+										<h5></h5>
+									</td>
+									<td>
+										<p>{{ order.itemsTotal|number_format(0,'',' ') }}
+											{{ site.current_name }}</p>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h4>{{'Shipping'|trans}}</h4>
+									</td>
+									<td>
+										<h5></h5>
+									</td>
+									<td>
+										<p>{{ (order.deliverySpace)? order.shipping |number_format(0,'',' '):'0' |number_format(0,'',' ') }}
+											{{ site.current_name }}</p>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h4>Total</h4>
+									</td>
+									<td>
+										<h5></h5>
+									</td>
+									<td>
+										<h4>{{ order.total|number_format(0,'', ' ') }}
+											{{ site.current_name }}</h4>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<p class="text-center my-4 1rem">
+				<a href="{{ path('order_download',{id:order.id}) }}">
+					<i class="fa fa-download" aria-hidden="true"></i>
+					Télécharger au format pdf</a>
+				<a href="{{ path('track_number',{number:order.number}) }}" class="ml-3">
+					Suivre la commande</a>
+			</p>
+		</div>
+	</main>
+	<style>
+		.loader {
+			display: none;
+		}
+		h2,
+		h3 {
+			font-size: 2rem
+		}
+		h4 {
+			font-size: 1.4rem
+		}
+        .table td{
+            /* padding-top: 30 */
+            /* padding-bottom: 0; */
+            padding:3px
+        }
+	</style>
+
+{% endblock %}

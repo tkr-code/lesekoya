@@ -1,0 +1,17 @@
+<ul>
+	{% for item in app.user.phones %}
+		<li class="phone-list" data-id="{{item.id}}">
+            {{ item.valeur | phone_format }}
+            {% if item.isWhatsapp %}
+		    <i class="fab text-success fa-whatsapp"></i>	
+            {% endif %}
+			|
+			<a href="{{ path('main_phone_edit_load',{id:item.id}) }}" class="mx-2 text-success modal-update-phone">
+				<i class="fas fa-pencil-alt"></i>
+			</a>
+			<a class="btn-delete-phone text-danger mx-2" token="{{ csrf_token('delete' ~ item.id) }}" href="{{ path('main_phone_delete',{id:item.id})}}">
+				<i class="fas fa-trash-alt"></i>
+			</a>
+		</li>
+	{% endfor %}
+</ul>

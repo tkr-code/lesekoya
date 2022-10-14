@@ -1,0 +1,35 @@
+{% extends 'main/base.html.twig' %}
+
+{% block title %}{{'Edit your email'|trans}}{% endblock %}
+
+{% block main %}
+<main class="main">
+    <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">{{'Home'|trans}}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{'Edit your email'|trans}}</li>
+            </ol>
+        </div><!-- End .container -->
+    </nav><!-- End .breadcrumb-nav -->
+    <div class="container my-5">
+        {% if  is_valide %}
+        <div style="height: 200px;">
+            <h3 class="text-danger">Donées invalide</h3>
+            <p>
+                <a href="{{ path('home') }}">
+                    Retour a la page d'accueil
+                </a>
+            </p>
+        </div>
+        {% else %}
+        <h3>{{'Edit your email'|trans}}</h3>
+        <p>Entrer votre nouvelle adresse email</p>
+        {{ form_start(form) }}
+        {{ form_row(form.email) }}
+        <button class="btn btn-primary">Reset password</button>
+        {{ form_end(form) }}
+        {% endif %}
+    </div>
+</main>
+{% endblock %}

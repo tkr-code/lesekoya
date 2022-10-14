@@ -1,0 +1,11 @@
+{% macro role(item) %}
+    {% if item == 'ROLE_ADMIN' %}
+        Administrateur
+    {% elseif item == 'ROLE_USER'%}
+        Utilisateur
+    {% elseif item == 'ROLE_EDITOR'%}
+        Editeur
+    {% elseif item == 'ROLE_CLIENT'%}
+        CLient
+    {% endif %}
+{% endmacro %}

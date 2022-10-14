@@ -1,0 +1,50 @@
+{% extends 'admin/base.html.twig' %}
+{% import "macros/breadcrumb.html.twig" as utils %}
+{% import "macros/alertes.html.twig" as alerte %}
+{% block title %}Listes des marques{% endblock %}
+{% block breadcrumb %}
+{{ utils.breadcrumb('Liste des maruqes',[{path:path('admin_brand_index'),name:'Liste des marques'}])}}
+{% endblock %}
+{% block body %}
+{% for item in app.flashes('success') %}
+{{ alerte.alert(item,'success')}}
+{% endfor %}
+<div class="row">
+    <div class="col-md-12">
+                <div class="card card-outline card-primary">
+            <div class="card-header">
+                <div class="card-title">
+                    Listes des marques
+                </div>
+            </div>
+            <div class="card-body">
+                <a class="btn btn-primary" href="{{ path('admin_brand_new') }}">Create new</a>
+                    <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for brand in brands %}
+                    <tr>
+                        <td>#{{ brand.id }} {{ brand.name }}</td>
+                        <td>
+                            {% import "macros/action.html.twig" as action %}
+                            {{ action.brand(brand) }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">no records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

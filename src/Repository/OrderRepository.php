@@ -95,6 +95,11 @@ class OrderRepository extends ServiceEntityRepository
     {
        return $this->findQuery()
         ->orderBy('o.id','desc')
+        ->andWhere('o.state <> :state')
+        ->andWhere('o.state <> :state2')
+        ->setParameter('state','completed')
+        ->setParameter('state2','canceled')
+        ->setMaxResults(10)
         ->getQuery()
         ->getResult()
         ;   

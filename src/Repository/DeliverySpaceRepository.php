@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\DeliverySpace;
+use App\Entity\Order;
+use App\Entity\Street;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,22 +21,15 @@ class DeliverySpaceRepository extends ServiceEntityRepository
         parent::__construct($registry, DeliverySpace::class);
     }
 
-    // /**
-    //  * @return DeliverySpace[] Returns an array of DeliverySpace objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findbyStreetOrder()
     {
         return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('d.id', 'ASC')
-            ->setMaxResults(10)
+            // ->leftjoin('order','o')
+            ->where('d.street = 36')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?DeliverySpace

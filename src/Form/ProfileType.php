@@ -18,15 +18,11 @@ class ProfileType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            // ->add('email')
-            // ->add('roles')
-            // ->add('password')
-            // ->add('isVerified')
             ->add('personne',PersonneType::class,[
                 'label'=>false
             ])
             ->add('phone_number',NumberType::class)
-            ->add('adresse',TextType::class)
+            ->add('adresse',AdresseType::class)
             ->add('avatar',FileType::class,[
                 'label'=>'avatar ( jpg or png )  ',
                 'multiple'=>false,

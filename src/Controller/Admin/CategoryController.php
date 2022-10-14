@@ -28,8 +28,12 @@ class CategoryController extends AbstractController
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
 
+       $parentInformatique = $parentCategoryRepository->findOneBy([
+            'name'=>'Informatique'
+       ]);
         $entityManager = $this->getDoctrine()->getManager();
         if ($form->isSubmitted() && $form->isValid()) {
+            $category->setParentCategory($parentInformatique);
             $entityManager->persist($category);
             $entityManager->flush();
             $this->addFlash('success','La catégorie a été créé. ');
@@ -57,13 +61,14 @@ class CategoryController extends AbstractController
     /**
      * @Route("/new", name="category_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, ParentCategoryRepository $parentCategoryRepository): Response
     {
         $category = new Category();
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($category);
             $entityManager->flush();

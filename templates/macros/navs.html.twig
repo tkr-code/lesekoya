@@ -1,29 +1,29 @@
 {% macro li(item) %}
-<li class="nav-item">
-    <a href="{{  path(item.path) }}" class="nav-link {{ app.request.attributes.get('_route') == item.path ? 'active': '' }} ">
+<li class="nav-item" {{ item.id is defined ? 'id=' ~ item.id ~ '':''  }} >
+    <a href="{{ path(item.path) }}" class="nav-link {{ app.request.attributes.get('_route') == item.path ? 'active': '' }} ">
         <i class="{{ item.icon|default('far fa-circle') }} nav-icon"></i>
         <p>{{ item.name|default('name') }}</p>
     </a>
 </li>
 {% endmacro %}
 
-{% macro list(items,role,parent_page) %}
+{% macro list(items,parent_page) %}
         {% import _self as li %}
         {% import _self as section %}
-        {% if role is defined and role != '' %}
-            <li class="nav-header">{{ role|default('') }}</li>
-        {% endif %}
         {% for item in items %}
              {% if item.links is not defined %}
                 {{ li.li(item)}}
         {% else %}
-            {{ section.section(item.name,{role:role|default() ,pages:item.links,icon:item.icon|default('far fa-circle'),active:parent_page})}}
+            {{ section.section(item.name,{pages:item.links,icon:item.icon|default('far fa-circle'),active:parent_page})}}
         {% endif %}
         {% endfor %}
 {% endmacro %}
 
 {% macro section(section,option) %}
     {% import _self as li %}
+{% if option.role is defined %}
+<li class="nav-header">{{ option.role|default('') }}</li>
+{% endif %}
 <li class="nav-item {{ option.active|default('') == section ? 'menu-open':''  }} ">
     <a href="{{ option.link|default('#') }}" class="nav-link {{ option.active|default('') == section ? 'active':'' }}">
         <i class="nav-icon {{ option.icon|default('far fa-circle') }}"></i>

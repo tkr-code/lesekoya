@@ -1,64 +1,73 @@
 {{ form_start(form, {
-'attr':{
-'novalidate':'novalidate'
-}
+'attr':{}
 }) }}
 <div class="row">
-    <div class="col-lg-6">
-        {{form_row(form.title)}}
-    </div>
-    <div class="col-lg-6">
-        {{form_row(form.buyingPrice)}}
-    </div>
-    <div class="col-lg-4">
-        {{form_row(form.price)}}
-    </div>
-    <div class="col-lg-4">
-        {{form_row(form.quantity)}}
-    </div>
-    <div class="col-lg-4">
-        {{form_row(form.category)}}
-    </div>
-    <div class="col-lg-8">
-        {{form_row(form.description)}}
-    </div>
-    <div class="col-lg-4">
-        {{form_row(form.etat)}}
-    </div>
-    <div class="col-lg-12">
-        {{form_row(form.images)}}
-    </div>
-    <div class="col-lg-4">
-        {{form_row(form.enabled)}}
-    </div>
-    <div class="gallery"></div>
-    <div class="col-lg-12">
-        {% if app.request.attributes.get('_route') == 'article_edit' %}
-        <div class="row">
-            {% for image in article.images %}
-            <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-                <img src="{{ asset('/img/article/' ~ image.name)}}" class="zoom img-fluid " alt="">
-                <a class="btn btn-image-delete position-absolute text-center"
-                    href="{{ path('article_delete_image', {id: image.id}) }}" data-delete
-                    data-token="{{ csrf_token('delete' ~ image.id) }}"> <i class="fa fa-window-close"></i>
-                </a>
-            </div>
-            {% else %}
-            <div class="col-md-12 col-12">
-                <p class="font-weight-bold text-center">L'article ne possede pas d'image</p>
-            </div>
-            {% endfor %}
-        </div>
+	<div class="col-lg-5 col-12">
+		{{form_row(form.title)}}
+	</div>
+	<div class="col-lg-7 col-12">
+		{{form_row(form.description)}}
+	</div>
+	<div class="col-lg-4 col-12">
+		{{form_row(form.buyingPrice)}}
+	</div>
+	<div class="col-lg-4 col-12">
+		{{form_row(form.price)}}
+	</div>
+	<div class="col-lg-4 col-12">
+		{{form_row(form.reduction)}}
+	</div>
+	<div class="col-lg-4 col-12">
+		{{form_row(form.quantity)}}
+	</div>
+	<div class="col-lg-4 col-12">
+		{{form_row(form.category)}}
+	</div>
+	<div class="col-lg-4 col-12">
+		{{form_row(form.brand)}}
+	</div>
+	<div class="col-lg-4 col-12">
+		{{form_row(form.label)}}
+	</div>
+	<div class="col-lg-4 col-12">
+		{{form_row(form.status)}}
+	</div>
+	<div class="col-lg-8 col-12">
+		{{form_row(form.images)}}
+	</div>
 
-        {% endif %}
-        <div class="btn-group">
-            <a class="btn btn-dark" href="{{ path('article_index') }}"><i class="fa fa-arrow-circle-left"
-                    aria-hidden="true"></i> back to list</a>
-            <button class="btn btn-primary"><i class="fas fa-save"></i> {{ button_label|default('Save') }}</button>
-            {{ form_widget(form.saveAndAdd) }}
-        </div>
-
-    </div>
+	<div class="col-lg-12">
+		{{form_row(form.enabled)}}
+	</div>
+	<div class="gallery">
+	<p class="text-center">Prévisualisez vos images</p>
+	</div>
+	<div class="col-lg-12">
+		{% if app.request.attributes.get('_route') == 'article_edit' %}
+			<div class="row">
+				{% for image in article.images %}
+					<div class="col-lg-3 col-md-4 col-xs-6 thumb">
+						<img src="{{ asset('/img/article/' ~ image.name)}}" class="zoom img-fluid " alt="">
+						<a class="btn btn-image-delete position-absolute text-center" href="{{ path('article_delete_image', {id: image.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ image.id) }}">
+							<i class="fa fa-window-close"></i>
+						</a>
+					</div>
+				{% else %}
+					<div class="col-md-12 col-12">
+						<p class="font-weight-bold text-center">L'article ne possede pas d'image</p>
+					</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+		<div class="btn-group">
+			<a class="btn btn-dark" href="{{ path('article_index') }}">
+				<i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+				back to list</a>
+			<button class="btn btn-primary">
+				<i class="fas fa-save"></i>
+				{{ button_label|default('Save') }}</button>
+		</div>
+	</div>
 </div>
 {{ form_widget(form) }}
 

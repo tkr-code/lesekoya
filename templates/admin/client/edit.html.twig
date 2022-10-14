@@ -1,0 +1,96 @@
+{% import "macros/table.html.twig" as table %}
+{% import "macros/head.html.twig" as head %}
+{% import "macros/foot.html.twig" as foot %}
+{% import "macros/breadcrumb.html.twig" as utils %}
+{% import "macros/alertes.html.twig" as alerte %}
+{% import "macros/button.html.twig" as btn %}
+{% import "macros/link.html.twig" as link %}
+
+{% extends 'admin/base.html.twig' %}
+
+
+{% block stylesheets %}
+	{{ head.dataTable() }}
+{% endblock %}
+
+{% block breadcrumb %}
+	{{ utils.breadcrumb('Manage user',[
+{
+path:path('user_index'),
+name:'Manage users'
+}
+])}}
+{% endblock %}
+{% block title %}
+	{{'Edit User'|trans}}
+{% endblock %}
+
+{% block body %}
+	<div class="row">
+		<div class="col-8">
+			<div class="card card-outline card-success">
+				<div class="card-header">
+					<div class="card-title">Modifier les informations</div>
+				</div>
+				<div class="card-body">
+					{{ form_start(form,{
+				attr:{
+				'novalidate':'novalidate'
+				}
+				}) }}
+					<div class="row">
+						<div class="col-md-12">
+							<div class="row">
+
+								<div class="col-md-6 col-12">
+									{{ form_row(form.personne.firstName)}}
+								</div>
+								<div class="col-md-6 col-12">
+									{{ form_row(form.personne.lastName)}}
+								</div>
+								<div class="col-md-6 col-12">
+									{{ form_row(form.email)}}
+								</div>
+								<div class="col-md-6 col-12">
+									{{ form_row(form.phone_number)}}
+								</div>
+								<div class="col-md-6 col-12">
+									{{ form_row(form.adresse.rue)}}
+								</div>
+								<div class="col-md-6 col-12">
+									{{ form_row(form.adresse.city)}}
+								</div>
+								<div class="col-md-6 col-12">
+									{{ form_row(form.adresse.pays)}}
+								</div>
+							</div>
+								<button class="btn btn-success">{{ button_label|default('Save') }}</button>
+								<hr>
+								{{ link.back(path('admin_client_index')) }}
+						</div>
+					</div>
+					{{ form_end(form) }}
+				</div>
+			</div>
+		</div>
+		{% if is_granted('ROLE_ADMIN') %}
+		<div class="col-4">
+			<div class="card card-outline card-danger">
+				<div class="card-header">
+					<div class="card-title">Modifier le mot de passe</div>
+				</div>
+				<div class="card-body">
+					{{ form_start(form_password) }}
+					<p>Entrer le nouveau mot de passe</p>
+					{{ form_widget(form_password) }}
+					<div class="btn-group">
+						{{ link.back(path('admin_client_index')) }}
+						<button class="btn btn-success">{{ button_label|default('Save') }}</button>
+					</div>
+					{{ form_end(form_password) }}
+				</div>
+			</div>
+		</div>
+		{% endif %}
+	</div>
+{% endblock %}

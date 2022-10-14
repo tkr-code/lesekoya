@@ -1,0 +1,42 @@
+	{% for comment in article.comments %}
+<div class="review">
+		<div class="row no-gutters">
+			<div class="col-4">
+				<h4>
+					<a href="#">
+						{{comment.user.personne.fullName }}</a>
+				</h4>
+				<div class="ratings-container">
+					<div class="ratings">
+						<div class="ratings-val" style="width: {{ comment.rating }}%;"></div>
+						<!-- End .ratings-val -->
+					</div>
+					<!-- End .ratings -->
+				</div>
+				<!-- End .rating-container -->
+				<span class="review-date">{{ comment.createdAt|date_format_fr }}</span>
+			</div>
+			<!-- End .col -->
+			<div
+				class="col-8">
+				<div class="review-content">
+					<p>
+						{% if is_granted('ROLE_CLIENT') %}
+							{% if comment.user.email == app.user.email %}
+								<a href="#" data-path="{{ path('comment_load_form',{id:comment.id}) }}" type="button" id="btn-modal-comment" class="text-success">
+									<i class="fas fa-pencil-alt"></i>
+								</a>
+							{% endif %}
+						{% endif %}
+						{{ comment.content }}
+					</p>
+				</div>
+				<!-- End .review-content -->
+
+				<!-- End .review-action -->
+			</div>
+			<!-- End .col-auto -->
+		</div>
+		<!-- End .row -->
+	</div>
+{% endfor %}

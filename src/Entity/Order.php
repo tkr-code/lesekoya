@@ -14,6 +14,15 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Order
 {
+    const status = [
+        'Canceled'=>'canceled',
+        'Waiting'=>'waiting',
+        'In progress'=>'in progress',
+        'Shipping'=>'shipping',
+        'Completed'=>'completed'
+    ];
+    const EN_COUR = 'in progress';
+    const EN_ATTENTE = 'waiting';
 
     /**
      * @ORM\Id
@@ -101,12 +110,33 @@ class Order
      */
     private $is_immuable;
 
+    private $street;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $shipping;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $shipping_state;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $method_payment;
+
 
     public function __construct()
     {
         $this->order_item = new ArrayCollection();
         $this->created_at = new \DateTime();
         $this->is_immuable = true;
+    }
+
+    public function getFacture(){
+        return 'Facture N° '.$this->getNumber().' - Lest';
     }
 
     public function getId(): ?int
@@ -315,6 +345,54 @@ class Order
     public function setIsImmuable(bool $is_immuable): self
     {
         $this->is_immuable = $is_immuable;
+
+        return $this;
+    }
+
+    public function getStreet() : ?Street
+    {
+        return $this->street;
+    }
+
+    public function setStreet($street): self
+    {
+        $this->street = $street;
+
+        return $this;
+    }
+
+    public function getShipping(): ?int
+    {
+        return $this->shipping;
+    }
+
+    public function setShipping(?int $shipping): self
+    {
+        $this->shipping = $shipping;
+
+        return $this;
+    }
+
+    public function getShippingState(): ?string
+    {
+        return $this->shipping_state;
+    }
+
+    public function setShippingState(string $shipping_state): self
+    {
+        $this->shipping_state = $shipping_state;
+
+        return $this;
+    }
+
+    public function getMethodPayment(): ?string
+    {
+        return $this->method_payment;
+    }
+
+    public function setMethodPayment(string $method_payment): self
+    {
+        $this->method_payment = $method_payment;
 
         return $this;
     }

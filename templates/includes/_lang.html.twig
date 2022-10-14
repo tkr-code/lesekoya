@@ -1,0 +1,16 @@
+    <li class="nav-item dropdown">
+          <a id="dropdownSubMenu2" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+            class="nav-link dropdown-toggle"><img width="30px"
+              src="{{ asset('img/pays/' ~ app.request.locale ~ '') }}.jpg" alt="lang"> </a>
+          <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
+            {% for item in locales %}
+            {% if item != app.request.locale %}
+            <li>
+              <a href="{{ path('lang',{ locale: item }) }}" class="dropdown-item">
+                <img width="30px" src="{{ asset('img/pays/' ~ item ~ '') }}.jpg" alt="" srcset="">
+                {{item}} </a>
+            </li>
+            {% endif %}
+            {% endfor %}
+          </ul>
+        </li>

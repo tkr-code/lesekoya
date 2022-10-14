@@ -1,0 +1,22 @@
+{% extends "main/base.html.twig" %}
+{% block body %}
+	<nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+		<div class="container">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item">
+					<a href="/">{{'Home'|trans}}</a>
+				</li>
+				<li class="breadcrumb-item active" aria-current="page">Créer un compte</li>
+			</ol>
+		</div>
+		<!-- End .container -->
+	</nav>
+	<!-- End .breadcrumb-nav -->
+	<div class="container bg-white p-3 rounded">
+		<div class="row">
+			<div class="col-md-6 mx-auto">
+				{% include "registration/_form.html.twig" %}
+			</div>
+		</div>
+	</div>
+{% endblock %}

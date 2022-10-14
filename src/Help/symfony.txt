@@ -1,0 +1,13 @@
+
+<IfModule mod_rewrite.c>
+    Options +FollowSymLinks RewriteBase / RewriteEngine On RewriteCond %{REQUEST_FILENAME} !-f RewriteRule ^(.*)$ malick-tounkara/public/index.php [QSA,L]
+</IfModule>
+
+symfony serve -d 
+php bin/console console m:entity 
+php bin/console make:migration -n 
+php bin/console doctrine:migrations:migrate
+
+-- translation
+php bin/console translation:update --dump-messages fr
+php bin/console translation:update --force fr

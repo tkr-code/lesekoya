@@ -1,0 +1,255 @@
+{% extends "lest/base.html.twig" %} {% block main %}
+<style>
+    .card {
+        z-index: 0;
+        background-color: #ECEFF1;
+        padding-bottom: 20px;
+        margin-top: 20px;
+        margin-bottom: 90px;
+        border-radius: 10px;
+    }
+
+    .top {
+        padding-top: 40px;
+        padding-left: 13% !important;
+        padding-right: 13% !important;
+    }
+
+    /*Icon progressbar*/
+
+    #progressbar {
+        margin-bottom: 30px;
+        overflow: hidden;
+        color: #455A64;
+        padding-left: 0px;
+        margin-top: 30px;
+    }
+
+    #progressbar li {
+        list-style-type: none;
+        font-size: 13px;
+        width: 25%;
+        float: left;
+        position: relative;
+        font-weight: 400;
+    }
+
+    #progressbar .step0:before {
+        font-family: FontAwesome;
+        content: "\f10c";
+        color: #fff;
+    }
+
+    #progressbar li:before {
+        width: 40px;
+        height: 40px;
+        line-height: 45px;
+        display: block;
+        font-size: 20px;
+        background: #C5CAE9;
+        border-radius: 50%;
+        margin: auto;
+        padding: 0px;
+    }
+
+    /*ProgressBar connectors*/
+
+    #progressbar li:after {
+        content: '';
+        width: 100%;
+        height: 12px;
+        background: #C5CAE9;
+        position: absolute;
+        left: 0;
+        top: 16px;
+        z-index: -1;
+    }
+
+    #progressbar li:last-child:after {
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        position: absolute;
+        left: -50%;
+    }
+
+    #progressbar li:nth-child(2):after,
+    #progressbar li:nth-child(3):after {
+        left: -50%;
+    }
+
+    #progressbar li:first-child:after {
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+        position: absolute;
+        left: 50%;
+    }
+
+    #progressbar li:last-child:after {
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+
+    #progressbar li:first-child:after {
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+    }
+
+    /*Color number of the step and the connector before it*/
+
+    #progressbar li.active:before,
+    #progressbar li.active:after {
+        background: #651FFF;
+    }
+
+    #progressbar li.active:before {
+        font-family: FontAwesome;
+        content: "\f00c";
+    }
+
+    .icon-track {
+        width: 60px;
+        height: 60px;
+        margin-right: 15px;
+    }
+
+    .icon-content {
+        padding-bottom: 20px;
+    }
+
+    @media screen and (max-width: 992px) {
+        .icon-content {
+            width: 50%;
+        }
+    }
+</style>
+<main class="main">
+    <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="/">{{'Home'|trans}}</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">{{ 'Track my order'|trans }}</li>
+            </ol>
+        </div>
+        <!-- End .container -->
+    </nav>
+    <!-- End .breadcrumb-nav -->
+    <div class="page-content">
+
+        <div id="track-order" class="container">
+            <h3>Suivre une commande</h3>
+            <div class="form-group">
+                <label for="" class="required">{{'Number'|trans}}</label>
+                <input type="text" value="{{ order is defined ? order.number:''}}" id="order-number" name="order-number"
+                    required="required" autocomplete="email" class="form-control">
+                <small id="order-number-help" class="text-danger"></small>
+            </div>
+            <div>
+                <small>
+                    {{'Enter your order number'|trans}}.
+                </small>
+            </div>
+            <button class="btn-send-order-number btn btn-primary">{{'Send order number'|trans}}</button>
+        </div>
+        {% if app.request.get('_route') == 'track_index' %}
+        <div id="track-show"></div>
+        {% else %}
+        <div id="track-show">
+            {% include "lest/track/_track_view.html.twig" %}
+        </div>
+        {% endif %}
+    </div>
+</main>
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $(document).on('click', '.btn-send-order-number', function () {
+            let number = $('#order-number').val()
+
+            if (number.length == '') {
+                Swal.fire({
+                    title: 'Oups !',
+                    text: 'Entrer un nombre',
+                    icon: 'warning',
+                    showConfirmButton: false,
+                    timer: 2000
+                })
+                $('#order-number-help').text('Entrer un numbre.')
+                $('#track-show').html('')
+                return false
+            }
+            if (!validation.isNumber(number)) {
+                Swal.fire({
+                    title: 'Oups !',
+                    text: 'Entrer un nombre',
+                    icon: 'warning',
+                    showConfirmButton: false,
+                    timer: 2000
+                })
+                $('#order-number-help').text('Entrer un numbre.')
+                $('#track-show').html('')
+                return false
+            }
+            $.ajax({
+                url: '/js/track-my-order/' + number,
+                method: 'POST',
+                beforeSend: function () {
+                    $('.js-loader-text').text('Vérification en cour ...')
+                    $('.js-loader').css('display', 'flex')
+                },
+                success: function (data) {
+                    $('.js-loader').css('display', 'none')
+                    if (data.reponse) {
+                        $('#track-show').html(data.content)
+                        Swal.fire({
+                            title: 'Bien joué !',
+                            text: 'Chargement terminé',
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 2000
+                        })
+                    } else {
+                        $('#order-number-help').text('Numéro incorrect')
+                        $('#track-show').html('')
+                    }
+                    $('#order-number-help').text('')
+                },
+                error: function () {
+                    Swal.fire({
+                        title: 'Oups !',
+                        text: 'Entrer un nombre',
+                        icon: 'error',
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+                    $('#order-number-help').text('Numéro incorrect')
+                    $('#track-show').html('')
+                    $('.js-loader').css('display', 'none')
+                }
+            })
+        })
+
+        var validation = {
+            isEmailAddress: function (str) {
+                var pattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+                return pattern.test(str);  // returns a boolean
+            },
+            isNotEmpty: function (str) {
+                var pattern = /\S+/;
+                return pattern.test(str);  // returns a boolean
+            },
+            isNumber: function (str) {
+                var pattern = /^\d+\.?\d*$/;
+                return pattern.test(str);  // returns a boolean
+            },
+            isSame: function (str1, str2) {
+                return str1 === str2;
+            }
+        };
+    })
+</script>
+{% endblock %}

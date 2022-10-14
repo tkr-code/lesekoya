@@ -20,7 +20,7 @@ class UserPasswordType extends AbstractType
         $builder
             ->add('password',PasswordType::class,[
                 'attr'=>[
-                    'placeholder'=>'Mot de passe'
+                    'placeholder'=>'Mot de passe',
                 ]
             ])
         ;

@@ -30,6 +30,10 @@ class ArticleSearch{
      */
     private $minPrice;
 
+    private $brand;
+
+    private $etat;
+
     /**
      * Get the value of maxPrice
      * 
@@ -106,6 +110,46 @@ class ArticleSearch{
     public function setMots($mots)
     {
         $this->mots = $mots;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of brand
+     */ 
+    public function getBrand()
+    {
+        return $this->brand;
+    }
+
+    /**
+     * Set the value of brand
+     *
+     * @return  self
+     */ 
+    public function setBrand($brand)
+    {
+        $this->brand = $brand;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of etat
+     */ 
+    public function getEtat()
+    {
+        return $this->etat;
+    }
+
+    /**
+     * Set the value of etat
+     *
+     * @return  self
+     */ 
+    public function setEtat($etat)
+    {
+        $this->etat = $etat;
 
         return $this;
     }

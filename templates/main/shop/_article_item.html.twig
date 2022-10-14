@@ -1,0 +1,19 @@
+<div class="card article-card">
+	<div class="article-card-img">
+		<img src="{{ asset('img/article/vide.png') }}" class="card-img-top" alt="...">
+	</div>
+	<div>
+		<p class="article-title">
+			<a href="{{ path('articles_show', { category: item.category.slug|lower, slug: item.slug, id: item.id}) }}">Hp eleitebook
+				Hp elitebook
+			</a>
+		</p>
+		<p class="article-price">
+			120 000 F cfa
+		</p>
+		<div class="article-vote">
+			<p>* * * *</p>
+		</div>
+		<a href="#" class="btn btn-default">Ajouter au panier</a>
+	</div>
+</div>

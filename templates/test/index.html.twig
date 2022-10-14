@@ -1,0 +1,8 @@
+{% extends 'lest/base.html.twig' %}
+
+{% block title %}Hello TestController!{% endblock %}
+{% import "macros/alertes.html.twig" as alerte %}
+{% block main %}
+{{ alerte.alert('message','success')}}
+
+{% endblock %}

@@ -1,0 +1,14 @@
+{% import "macros/link.html.twig" as name %}
+{%  for item in article.options %}
+	<tr>
+		<td>{{item.title }}</td>
+		<td>{{item.content }}</td>
+		<td>
+			<button class="btn text-success btn-edit-modal-option"  data-path="{{ path('article_option_edit_get',{id:item.id}) }}"href="#"><i class="fas fa-pencil-alt"></i></button>
+			<button type="button" data-id="{{ item.id }}" data-token="{{ csrf_token('delete' ~ item.id) }}" 
+			class="btn text-danger js-remove-option">
+				<i class="fas fa-trash-alt"></i>
+			</button>
+		</td>
+	</tr>
+{% endfor %}

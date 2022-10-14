@@ -2,7 +2,10 @@
 
 namespace App\Service\Email;
 
+use App\Entity\User;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Mime\Address;
 
 class EmailService
 {
@@ -16,24 +19,24 @@ class EmailService
         $id_user = 1;
         $cle_user = 'cleuser1';
         $cle= '';
-        $site = 'Gaboma annonce';
-        $introduction = 'Site de petites annonces.';
-        $link_site = 'https://lesekoya.com';
-        $link_img = $link_site.'/public/img/icons/favicon.png';
+        $site = 'Les professionelle de la technologie.';
+        $introduction = 'Site de vente en ligne.';
+        $link_site = 'https://lest.sn';
+        $link_img = $link_site.'/public/assets/images/lest-jaune.png';
         $message = '';
-        $link_contrat = $link_site."/public/doc/condition-d'utilisation-gaboma-annonce.pdf";
+        $link_contrat = $link_site."/public/doc/condition-d'utilisation-lest.pdf";
         $button_link = $link_site;
         $button_text = '';
         $titre = '';
-        $link_disinscription = $link_site.'/se-desinscrire-'.$id_user.'-tkr'.$cle_user.'-gaboma-annonce';
+        $link_disinscription = $link_site.'/se-desinscrire-'.$id_user.'-tkr'.$cle_user.'-lest';
         switch ($id) {
           case '1':
             // inscription verification ou desinscription
               $introduction = '';
-              $button_link = null;
+              $button_link = '/gestion-compte/delete-account/{token}/{id}';
               $button_text = 'Nos catégories';
-              $titre =$this->translator->trans('Hi! Please confirm your email!');
-              $message = 'Votre compte leSekoya est en attente de confirmation.';
+              $titre ="Email de confirmation";
+              $message = 'Votre compte client lest a été bien enregistré.';
             break;
           case '2':
             // mot de passeoublier
@@ -41,15 +44,15 @@ class EmailService
             $button_link = null;
             $button_text = 'Modifier votre mot de passe';
               $titre = 'Veuillez modifier votre mot de passe';
-              $message = 'Étiez-vous à l’origine de la modfication de votre compte leSekoya ? Si oui, voici le lien de modification.';
+              $message = 'Étiez-vous à l’origine de la modfication de votre compte lest ? Si oui, voici le lien de modification.';
             break;
           case '3':
             // modifier l'email
             $introduction = '';
             $button_link = null;
-            $button_text = 'Modifier votre e-mail';
-              $titre = 'Veuillez modifier e-mail';
-              $message = 'Étiez-vous à l’origine de la modfication de votre compte gaboma annonce ? Si oui, voici le lien de modification.';
+            $button_text = 'Modifier mon email';
+              $titre = 'Veuillez modifier email';
+              $message = 'Étiez-vous à l’origine de la modfication de votre compte lest ? Si oui, voici le lien de modification.';
             break;
           case '4':
             // nouvell commande
@@ -57,10 +60,18 @@ class EmailService
             $button_link = null;
             $button_text = null;
               $titre = 'Avis de facture';
-              $message = 'Une facture à été générée';
+              $message = 'Une facture a été générée';
             break;
           case '5':
             // confirmaion user
+            $introduction = '';
+            $button_link ='app_login' ;
+            $button_text = 'Se connecter';
+              $titre = "Avis de création d'un compte utilisateur";
+              $message = 'Un nouveau compte a été crée.';
+            break;
+          case '5.1':
+            // confirmaion user none
             $introduction = '';
             $button_link ='app_login' ;
             $button_text = 'Se connecter';
@@ -74,6 +85,22 @@ class EmailService
             $button_text = null;
               $titre = "Message visiteur";
               $message = 'Un nouveau message a été crée.';
+            break;
+          case '7':
+            // facture
+            $introduction = '';
+            $button_link =null ;
+            $button_text = null;
+              $titre = "Avis de facture";
+              $message = 'Reçu de paiement.';
+            break;
+          case '8':
+            // facture
+            $introduction = '';
+            $button_link =null ;
+            $button_text = null;
+              $titre = "Nouvelle commande";
+              $message = 'Une commande est en attente.';
             break;
 
           default:

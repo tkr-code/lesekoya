@@ -1,153 +1,536 @@
-{% import "macros/breadcrumb.html.twig" as utils %}
-{% import "macros/head.html.twig" as head %}
-{% import "macros/foot.html.twig" as foot %}
-{% import "macros/alertes.html.twig" as alerte %}
-{% import "macros/table.html.twig" as table %}
-{% import "macros/link.html.twig" as link %}
+{% import "macros/breadcrumb.html.twig" as utils %} {% import "macros/head.html.twig" as head %} {% import
+"macros/foot.html.twig" as foot %} {% import "macros/alertes.html.twig" as alerte %} {% import "macros/table.html.twig"
+as table %} {% import "macros/link.html.twig"
+as link %} {% import "macros/modal.html.twig" as modal %}
+{% extends 'admin/base.html.twig' %} {% block stylesheets %} {{ head.dataTable() }} {% endblock %} {% block title
+%}Order -
+{{ order.user.fullname }} - {{ app_name }} {% endblock %}
+{% block modal %} {{ modal.default() }} {% endblock %} {% block javascripts %}
+<script>
+    $(document).ready(function () {
+
+        //Affiche le montant de la livraison
+        $(document).on('click', '#btn-lieu-livraison-state', function () {
+            let id_street = $('#streets').val()
+            $.ajax({
+                url: href,
+                method: 'POST',
+                type: 'json',
+                data: {
+                    _token: token,
+                    change_livraison: id_street
+                },
+                beforeSend: function () {
+                    $('.js-loader-text').text('Suppression de la ligne en cour ...')
+                    $('.js-loader').css('display', 'flex')
+                },
+                success: function (data) {
+                    $('.js-loader').css('display', 'none')
+                    if (data) {
+                        Swal.fire({
+                            title: 'Modification enregistrée',
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        loadOrderEdit()
+                    } else {
+                        $('.js-loader').css('display', 'none')
+                        alert('Une erreur est survenue. code : 002')
+                    }
+                },
+                error: function () {
+                    $('.js-loader').css('display', 'none')
+                    alert('Une erreur est survenue. code : 001')
+                }
+            })
+        })
+        $(document).on('change', '#streets', function () {
+            let id = $(this).val()
+            $.ajax({
+                url: "{{ path('client_shipping_amount') }}",
+                method: "POST",
+                dataType: 'json',
+                data: {
+                    id_street: id,
+                    total: '100'
+                },
+                beforeSend: function () {
+                    $('#loader-street-amount').show()
+                    $('.js-amount').hide()
+
+                },
+                success: function (data) {
+                    $('.js-amount').html(data.response).show()
+                    $('#loader-street-amount').hide()
+                    $('.total').text(data.total)
+                    $('.js-show-amount').text(data.amount2)
+                }
+            })
+        })
+        //Charger la commande
+        function loadOrderEdit() {
+            let href = "{{ path('editor_order_edit_get',{id:order.id})}}"
+            $.ajax({
+                url: href,
+                method: 'POST',
+                type: 'json',
+                data: {
+                    load: 'order-edit'
+                },
+                beforeSend: function () {
+                    $('.js-loader-text').text('Actualisation en cour ...')
+                    $('.js-loader').css('display', 'flex')
+                },
+                success: function (data) {
+                    $('.js-loader').css('display', 'none')
+                    $('#order-detail').html(data.content)
+                },
+                error: function () {
+                    $('.js-loader').css('display', 'none')
+                    alert('Une erreur est survenue. code : 001')
+                }
+            })
+        }
+        //Supprimer la ligne une ligne de la commande
+        $(document).on('click', '.btn-delete-order-item', function () {
+            let href = $(this).data('path')
+            let token = $(this).data('token')
+            Swal.fire({
+                title: 'Etes vous sur ?',
+                text: "Vous allez supprimer  cette article de la commande !",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Oui, Annuler',
+                cancelButtonText: 'Fermer'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: href,
+                        method: 'POST',
+                        type: 'json',
+                        data: {
+                            _token: token,
+                            ajax: true
+                        },
+                        beforeSend: function () {
+                            $('.js-loader-text').text('Suppression de la ligne en cour ...')
+                            $('.js-loader').css('display', 'flex')
+                        },
+                        success: function (data) {
+                            $('.js-loader').css('display', 'none')
+                            if (data) {
+                                Swal.fire({
+                                    title: 'Modification enregistrée',
+                                    icon: 'success',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                })
+                                loadOrderEdit()
+                            } else {
+                                $('.js-loader').css('display', 'none')
+                                alert('Une erreur est survenue. code : 002')
+                            }
+                        },
+                        error: function () {
+                            $('.js-loader').css('display', 'none')
+                            alert('Une erreur est survenue. code : 001')
+                        }
+                    })
+                }
+            })
+        })
+        // Modal date create
+        $(document).on('click', '#btn-modal-date-create', function (e) {
+            e.preventDefault()
+            $('#modal-default').modal('show')
+            let href = $(this).data('path')
+            $.ajax({
+                url: href,
+                method: 'POST',
+                type: 'json',
+                data: {
+                    modal: 'create'
+                },
+                beforeSend: function () {
+                    $('.modal-loader').css('display', 'flex')
+                },
+                success: function (data) {
+                    $('#modal-default .modal-title').html('Modifier la date emmission')
+                    $('#modal-default .modal-body').html(data.content)
+                    $('.modal-loader').css('display', 'none')
+                },
+                error: function () {
+                    $('.modal-loader').css('display', 'none')
+                    alert('Chargement impossible')
+                }
+            })
+        })
+
+        // Modal qty
+        $(document).on('click', '.btn-modal-qty', function (e) {
+            e.preventDefault()
+            $('#modal-default').modal('show')
+            let href = $(this).data('path')
+            $.ajax({
+                url: href,
+                method: 'POST',
+                type: 'json',
+                data: {
+                    modal: 'qty'
+                },
+                beforeSend: function () {
+                    $('.modal-loader').css('display', 'flex')
+                },
+                success: function (data) {
+                    $('#modal-default .modal-title').html('Modifier la quantité')
+                    $('#modal-default .modal-body').html(data.content)
+                    $('.modal-loader').css('display', 'none')
+                },
+                error: function () {
+                    $('.modal-loader').css('display', 'none')
+                    alert('Chargement impossible')
+                }
+            })
+        })
+
+        // Modifier la date de create
+        $(document).on('click', '#order-edit-date-create', function () {
+            let date_create = $('#js-order-date-create').val()
+            let href = $(this).data('path')
+            $.ajax({
+                url: href,
+                method: 'POST',
+                type: 'json',
+                data: {
+                    date_emission: date_create
+                },
+                beforeSend: function () {
+                    $('.js-loader-text').text('Modification en cour ...')
+                    $('.js-loader').css('display', 'flex')
+                },
+                success: function (data) {
+                    $('.js-loader').css('display', 'none')
+                    if (data) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Les modifications ont été enregistrée.',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        $('#modal-default').modal('hide')
+                        loadOrderEdit()
+                    } else {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Une erreur est survenu.',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
+                },
+                error: function () {
+                    $('.js-loader').css('display', 'none')
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Une erreur est survenu.',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+            })
+        })
 
 
-{% extends 'admin/base.html.twig' %}
+        // Modal date limite
+        $(document).on('click', '#btn-modal-date-limite', function (e) {
+            e.preventDefault()
+            $('#modal-default').modal('show')
+            let href = $(this).data('path')
+            $.ajax({
+                url: href,
+                method: 'POST',
+                type: 'json',
+                data: {
+                    modal: 'limite'
+                },
+                beforeSend: function () {
+                    $('.modal-loader').css('display', 'flex')
+                },
+                success: function (data) {
+                    $('#modal-default .modal-title').html('Modifier la date limite de paiment')
+                    $('#modal-default .modal-body').html(data.content)
+                    $('.modal-loader').css('display', 'none')
+                },
+                error: function () {
+                    $('.modal-loader').css('display', 'none')
+                    alert('Chargement impossible')
+                }
+            })
+        })
 
-{% block stylesheets %}
-  {{ head.dataTable() }}
-{% endblock %}
+        //Modifier la quantite de l'article
+        $(document).on('click', '#btn-order-edit-order-item-qty', function () {
+            let qty = $('#order-edit-item-qty').val()
+            let href = $(this).data('path')
+            $.ajax({
+                url: href,
+                method: 'POST',
+                type: 'json',
+                beforeSend: function () {
+                    $('.js-loader-text').text('Modification en cour ...')
+                    $('.js-loader').css('display', 'flex')
+                },
+                data: {
+                    qty: qty
+                },
+                success: function (data) {
+                    $('.js-loader').css('display', 'none')
+                    if (data) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Les modifications ont été enregistrée.',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        $('#modal-default').modal('hide')
+                        loadOrderEdit()
+                    } else {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Une erreur est survenu.',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
+                },
+                error: function () {
+                    $('.js-loader').css('display', 'none')
 
-{% block title %}Order - {{ order.user.personne.firstname ~ ' ' ~ order.user.personne.lastname  }} - {{ app_name }} {% endblock %}
+                }
+            })
+        })
 
+        //Modifier la date limite
+        $(document).on('click', '#order-edit-date-limite', function () {
+            let date_limite = $('#js-order-date-limite').val()
+            let href = $(this).data('path')
+            $.ajax({
+                url: href,
+                method: 'POST',
+                type: 'json',
+                beforeSend: function () {
+                    $('.js-loader-text').text('Modification en cour ...')
+                    $('.js-loader').css('display', 'flex')
+                },
+                data: {
+                    date_limite: date_limite
+                },
+                success: function (data) {
+                    $('.js-loader').css('display', 'none')
+                    if (data) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Les modifications ont été enregistrée.',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        $('#modal-default').modal('hide')
+                        loadOrderEdit()
+                    } else {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Une erreur est survenu.',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
+                },
+                error: function () {
+                    $('.js-loader').css('display', 'none')
 
+                }
+            })
+        })
 
-{% block breadcrumb %}
-    {{ utils.breadcrumb('Edit Order',breadcrumb) }}
-{% endblock %}
+        //Modifier l'etat
+        $(document).on('click', '#order-edit-etat', function () {
+            let etat = $('#js-order-etat').val()
+            let href = $(this).data('path')
+            let token = $(this).data('token')
+            $.ajax({
+                url: href,
+                method: 'POST',
+                type: 'json',
+                beforeSend: function () {
+                    $('.js-loader-text').text('Modification en cour ...')
+                    $('.js-loader').css('display', 'flex')
+                },
+                data: {
+                    _token: token,
+                    state: etat
+                },
+                success: function (data) {
+                    $('.js-loader').css('display', 'none')
+                    if (data) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Les modifications ont été enregistrée.',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        $('#modal-default').modal('hide')
+                        loadOrderEdit()
+                    } else {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Une erreur est survenu.',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
+                },
+                error: function () {
+                    $('.js-loader').css('display', 'none')
+                }
+            })
+        })
 
-{% block body %}
-
-{% for item in app.flashes('success') %}
-  {{ alerte.alert(item,'success')}}
+        $(document).on('click', '#btn-order-edit-note', function () {
+            let note = $('#order-edit-note').val()
+            let href = $(this).data('path')
+            let token = $(this).data('token')
+            if (note.length < 10) {
+                alert('La note est inférieur à 10 caracteres.')
+                return false
+            }
+            $.ajax({
+                url: href,
+                method: 'POST',
+                type: 'json',
+                beforeSend: function () {
+                    $('.js-loader-text').text('Modification en cour ...')
+                    $('.js-loader').css('display', 'flex')
+                },
+                data: {
+                    _token: token,
+                    note: note
+                },
+                success: function (data) {
+                    $('.js-loader').css('display', 'none')
+                    if (data) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Les modifications ont été enregistrée.',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        $('#modal-default').modal('hide')
+                        loadOrderEdit()
+                    } else {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Une erreur est survenu.',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
+                },
+                error: function () {
+                    $('.js-loader').css('display', 'none')
+                }
+            })
+        })
+    })
+</script>
+{% endblock %} {% block breadcrumb %} {{ utils.breadcrumb('Edit Order',breadcrumb) }} {% endblock %} {% block body %} {%
+for item in app.flashes('success') %} {{ alerte.alert(item,'success')}} {% endfor %} {% for item in
+app.flashes('warning') %} {{ alerte.alert(item,'warning')}}
 {% endfor %}
-
-{% for item in app.flashes('warning') %}
-  {{ alerte.alert(item,'warning')}}
-{% endfor %}
-    
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-12 col-12">
         <div class="card card-primary card-outline card-tabs">
             <div class="card-header p-0 pt-1 border-bottom-0">
                 <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link {% if app.request.query.get('tab') is null or app.request.query.get('tab') == '' %}active{% endif %}" id="custom-tabs-three-home-tab"
-                            data-toggle="pill" href="#order-detail" role="tab"
+                        <a class="nav-link {% if app.request.query.get('tab') is null or app.request.query.get('tab') == '' %}active{% endif %}"
+                            id="custom-tabs-three-home-tab" data-toggle="pill" href="#order-detail" role="tab"
                             aria-controls="custom-tabs-three-home" aria-selected="true">Details Order</a>
                     </li>
+                    {% if order.state != 'completed' %}
                     <li class="nav-item">
-                        <a class="nav-link {% if app.request.query.get('tab') == 'facturation' %}active{% endif %} " id="custom-tabs-three-profile-tab" data-toggle="pill"
-                            href="#order-facturation" role="tab"
-                            aria-controls="custom-tabs-three-profile"
-                            aria-selected="false">Facturation</a>
+                        <a class="nav-link {% if app.request.query.get('tab') == 'articles' %}active{% endif %} "
+                            id="custom-tabs-three-profile-tab" data-toggle="pill" href="#order-articles" role="tab"
+                            aria-controls="custom-tabs-three-profile" aria-selected="false">Ajouter un article</a>
                     </li>
+                    {% endif %}
                     <li class="nav-item">
-                        <a class="nav-link {% if app.request.query.get('tab') == 'articles' %}active{% endif %} " id="custom-tabs-three-profile-tab" data-toggle="pill"
-                            href="#order-articles" role="tab"
-                            aria-controls="custom-tabs-three-profile"
-                            aria-selected="false">Details articles</a>
+                        <a class="nav-link {% if app.request.query.get('tab') == 'info' %}active{% endif %} "
+                            id="custom-tabs-info-tab" data-toggle="pill" href="#order-info" role="tab"
+                            aria-controls="custom-tabs-info" aria-selected="false">Info</a>
                     </li>
                 </ul>
             </div>
             <div class="card-body">
+                <div class="row">
+                    <div class="col-12">
+                        <p>
+                            {% if order.state != 'completed' or is_granted('ROLE_ADMIN') %}
+                            <button href="#" class="btn btn-success"
+                                data-path="{{ path('editor_order_edit_get',{id:order.id}) }}" type="button"
+                                id="btn-modal-state" title="Modifier">
+                                <i class="fas fa-pencil-alt"></i>
+                                Modifier le status
+                            </button>
+                            {% endif %}
+                            <button href="#" class="btn btn-warning" data-path="" type="button" id="btn-modal-shipping"
+                                title="Modifier">
+                                <i class="fas fa-pencil-alt"></i>
+                                Modifier la livraison
+                            </button>
+                            {% if order.user.status != 'Delete' %}
+                            <a href="{{ path('send_email_order',{id:order.id}) }}" class="btn btn-primary"
+                                data-path="{{ path('editor_order_edit_get',{id:order.id}) }}" type="button"
+                                id="btn-modal-send-email" title="Modifier">
+                                <i class="fas fa-pencil-alt"></i>
+                                Envoyer la commande
+                            </a>
+                            {% endif %}
+                            <a href="{{ path('order_print',{ id : order.id }) }}" rel="noopener" target="_blank"
+                                class="btn btn-default"><i class="fas fa-print"></i> {{'Print'|trans}}
+                            </a>
+                            <a href="{{ path('order_download',{id:order.id}) }}" rel="noopener" target="_blank"
+                                class="btn btn-default"><i class="fas fa-file-pdf"></i> Telecharger le pdf
+                            </a>
+                        </p>
+                    </div>
+                </div>
+                <div id="edit-livraion">
+                    
+                </div>
                 <div class="tab-content" id="custom-tabs-three-tabContent">
-                    <div class="tab-pane fade {% if app.request.query.get('tab') is null or app.request.query.get('tab') == ''  %}show active{% endif %}" id="order-detail"
-                        role="tabpanel" aria-labelledby="custom-tabs-three-home-tab">
-                        <div class="row">
-                            <div class="col-md-12">
-                         {{ include('admin/order/_form.html.twig', {'button_label': 'Update'}) }}
-                            </div>
-                        </div>
+                    <div class="tab-pane fade {% if app.request.query.get('tab') is null or app.request.query.get('tab') == ''  %}show active{% endif %}"
+                        id="order-detail" role="tabpanel" aria-labelledby="custom-tabs-three-home-tab">
+                        {% include "admin/order/_order_edit_get.html.twig" %}
                     </div>
-                    <div class="tab-pane fade {% if app.request.query.get('tab') == 'facturation' %}show active{% endif %}" id="order-facturation" role="tabpanel"
-                        aria-labelledby="custom-tabs-three-profile-tab">
-                        <h4>Amount : {{ order.total| number_format(2,'.',' ') }} XOF </h4>
-                        {{ form_start(formFacturation,{action: path('payment_edit',{id: order.payment.id }) }) }}
-                            {{ form_widget(formFacturation) }}
-                            <button class="btn btn-primary">{{ button_label|default('Save') }} <i class="fas fa-save    "></i> </button>
-                        {{ form_end(formFacturation) }}
+                    <div class="tab-pane fade {% if app.request.query.get('tab') == 'facturation' %}show active{% endif %}"
+                        id="order-facturation" role="tabpanel" aria-labelledby="custom-tabs-three-profile-tab">
+                        <h4>Amount : {{ order.total| number_format(2,'.',' ') }} XOF
+                        </h4>
+                        {{ form_start(formFacturation,{action: path('payment_edit',{id: order.payment.id }) }) }} {{
+                        form_widget(formFacturation) }}
+                        <button class="btn btn-primary">{{ button_label|default('Save') }}
+                            <i class="fas fa-save    "></i>
+                        </button> {{ form_end(formFacturation) }}
                     </div>
-                    <div class="tab-pane fade {% if app.request.query.get('tab') == 'articles' %}show active{% endif %}" id="order-articles" role="tabpanel"
-                        aria-labelledby="custom-tabs-three-profile-tab">
-                        <table class="table">
-                            <thead>
-                                <th>Quantity</th>
-                                <th>Name</th>
-                                <th>Price</th>
-                                <th>Total</th>
-                                <th>actions</th>
-                            </thead>
-                            <tbody>
-                            {% for item in order.orderItem %}
-                                <tr>
-                                    <td width="20%">
+                    {% if order.state != 'completed' %}
+                    <div class="tab-pane fade {% if app.request.query.get('tab') == 'articles' %}show active{% endif %}"
+                        id="order-articles" role="tabpanel" aria-labelledby="custom-tabs-three-profile-tab">
 
-                                            {{ item.quantity }}
-
-                                    </td>
-                                    <td>{{ item.produitName }}  </td>
-                                    <td>{{ item.unitPrice| number_format(2,',',' ') }}</td>
-                                    <td width="100">{{ item.unitsTotal | number_format(2,',',' ') }}</td>
-                                    <td>
-                                        <a  href="{{ path('order_item_edit',{article_id: '1' ,id: item.id}) }}"><i class="fas fa-pencil-alt text-success"></i> </a>
-                                        <form class="d-inline-block" method="post" action="{{ path('order_item_delete', {'id': item.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
-                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ item.id) }}">
-                                            <button class="btn"><i class="text-danger fa fa-trash-alt"></i></button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                        <div class="row">
-                            <!-- accepted payments column -->
-                            <div class="col-6">
-                                <p class="lead">Payment Methods:</p>
-                                {{ order.payment.paymentMethod.name }}
-                                
-                                <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
-                                {{ order.payment.paymentMethod.description }}
-                                </p>
-                            </div>
-                            <!-- /.col -->
-                            <div class="col-6">
-                                <p class="lead">Amount Due {{ order.paymentDue|date_format_fr  }}</p>
-
-                                <div class="table-responsive">
-                                <table class="table">
-                                    <tr>
-                                    <th style="width:50%">Subtotal:</th>
-                                    <td>{{ order.itemsTotal | number_format(2,'.',' ') }} XOF</td>
-                                    </tr>
-                                    {# <tr>
-                                    <th>Tax (9.3%)</th>
-                                    <td>$10.34</td>
-                                    </tr> #}
-                                    <tr>
-                                    <th>Shipping:</th>
-                                    <td>{{ order.total| number_format(2,'.',' ') }} XOF </td>
-                                    </tr>
-                                    <tr>
-                                    <th>Total:</th>
-                                    <td>{{ order.total| number_format(2,'.',' ') }} XOF </td>
-                                    </tr>
-                                </table>
-                                </div>
-                            </div>
-                            <!-- /.col -->
-                            </div>
-                            <!-- /.row -->
-                        {{ form_start(formItem,{
-                            'attr':{
-                                'novalidate':'novalidate',
-                                'class':'col-lg-12'
-                            }
-                        }) }}
+                        <!-- /.row -->
+                        {{ form_start(formItem,{ 'attr':{ 'novalidate':'novalidate', 'class':'col-lg-12' } }) }}
                         <div class="row">
                             <div class="col-md-5">
                                 {{ form_row(formItem.article)}}
@@ -159,144 +542,39 @@
                                 {{ form_row(formItem.quantity)}}
                             </div>
                             <div class="col">
-                            {{ form_widget(formItem) }}
-                                <button class="btn btn-default">{{ button_label|default('Save') }}</button>
+                                {{ form_widget(formItem) }}
+                                <button class="btn btn-success">{{ button_label|default('Save') }}</button>
                             </div>
                         </div>
                         {{ form_end(formItem) }}
+                        <hr> {{ link.back(path('order_index'),'back to list order') }} {{
+                        link.back(path('admin_client_order',{id:order.user.id }),'back to client list order') }}
 
                     </div>
+                    {% endif %}
                     <div class="tab-pane fade" id="order-shipping" role="tabpanel"
-                        aria-labelledby="custom-tabs-three-profile-tab">
-                            {# {{ include ("admin/order/_datatable.html.twig",{id:'4',orders: ordersCompleted}) }} #}
+                        aria-labelledby="custom-tabs-three-profile-tab">{# {{ include
+                        ("admin/order/_datatable.html.twig",{id:'4',orders: ordersCompleted}) }} #}
+                    </div>
+                    <div class="tab-pane fade" id="order-info" role="tabpanel" aria-labelledby="custom-tabs-info-tab">
+                        <div class="order-note">
+                            <div class="row">
+                                <div class="form-group col-12">
+                                    <label for="order-edit-note">Note</label>
+                                    <textArea id="order-edit-note" class="form-control">{{ order.note }}</textArea>
+                                </div>
+                            </div>
+                            <button class="btn btn-success" id="btn-order-edit-note"
+                                data-token="{{ csrf_token('edit' ~ order.id) }}"
+                                data-path="{{ path('editor_order_edit',{id:order.id}) }}">Appliquer</button>
+                        </div>
+
                     </div>
                 </div>
+                <hr> {{ link.back(path('order_index'),'Listes des commandes') }}
             </div>
-            <!-- /.card -->
-            <div class="card-footer">
-                {{ link.back(path('order_index'),'back to list order') }}
-                {{ link.back(path('admin_client_order',{id:order.user.id }),'back to client list order') }}
-            </div>
-        </div>
-    </div>
-    {# <div class="col-md-8">
-        <div class="card">
-            <div class="card-header">
-                <h4>Edit Order</h4>
-            </div>
-            <div class="card-body">
-                 <a href="{{ path('order_index') }}">back to list</a>
-
-            </div>
-        </div>
-    </div> #}
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-header">
-            <h3 class="card-title">
-                <i class="fas fa-text-width"></i>
-                Order detail
-            </h3>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-            <dl class="row">
-                <dt class="col-sm-4">{{'Order'|trans }} </dt>
-                <dd class="col-sm-8">n° #{{ order.id }}</dd>
-                <dt class="col-sm-4">{{'Invoice'|trans }} </dt>
-                <dd class="col-sm-8">n° #{{ order.number }}</dd>
-                <dt class="col-sm-4">{{'State Order'|trans}}</dt>
-                <dd class="col-sm-8">{{ order.state }}</dd>
-                <dt class="col-sm-4">{{'Shipping state'|trans }}</dt>
-                <dd class="col-sm-8">{{ '' }}</dd>
-                <dt class="col-sm-4">{{'Shipping amount'|trans }}</dt>
-                <dd class="col-sm-8">{{ order.total|number_format(2,'.',' ') }} XOF</dd>
-                <dd class="col-sm-8">{{ 'shipping state' }}</dd>
-                <dt class="col-sm-4">{{'Shipping amount'|trans }}</dt>
-                <dd class="col-sm-8">{{ 'shipping'|number_format(2,'.',' ') }} XOF</dd>
-            </dl>
-            </div>
-            <!-- /.card-body -->
-        </div>
-        <div class="card">
-            <div class="card-header">
-            <h3 class="card-title">
-                <i class="fas fa-text-width"></i>
-                {{'Order Facturation'|trans }}
-            </h3>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-            <dl class="row">
-                <dt class="col-sm-4">{{'Full nam'|trans }}e</dt>
-                <dd class="col-sm-8">{{ order.user.personne.firstname ~ ' ' ~ order.user.personne.lastname }}</dd>
-                <dt class="col-sm-4">Domicile</dt>
-                <dd class="col-sm-8">a modifier
-                </dd>
-                <dt class="col-sm-4">{{'Amount'|trans}} </dt>
-                <dd class="col-sm-8">{{ order.total| number_format(2,'.',' ') }} XOF</dd>
-                <dt class="col-sm-4">{{'State payment'|trans }}</dt>
-                <dd class="col-sm-8">{{ order.payment.state }}</dd>
-                <dt class="col-sm-4">{{'Payment method'|trans }}</dt>
-                <dd class="col-sm-8">{{ order.payment.paymentMethod.name }}</dd>
-            </dl>
-            </div>
-            <!-- /.card-body -->
-        </div>
-        <div class="card">
-            <div class="card-header">
-            <h3 class="card-title">
-                <i class="fas fa-text-width"></i>
-                {{'Shipping Adress'|trans }}
-            </h3>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-            <dl class="row">
-            <div class="col-sm-12">            
-                <a href="{{ path('order_adress_edit',{ order_id: order.id , id: order.id }) }}">
-                    Manage adresses <i class="fa fa-user"></i> 
-                </a> #}
-            </div>
-                <dt class="col-sm-4">Email adress</dt>
-                <dd class="col-sm-8"></dd>
-                
-                <dt class="col-sm-4">Phone number</dt>
-                <dd class="col-sm-8"></dd>
-                
-                <dt class="col-sm-4">Company name </dt>
-                <dd class="col-sm-8"></dd>
-                
-                <dt class="col-sm-4">Postal code</dt>
-                <dd class="col-sm-8"></dd>
-
-                <dt class="col-sm-4">Province code</dt>
-                <dd class="col-sm-8"></dd>
-                
-                <dt class="col-sm-4">Adress</dt>
-                <dd class="col-sm-8">{{ '' }}</dd>
-            </dl>
-            </div>
-            <!-- /.card-body -->
         </div>
     </div>
 </div>
 
-{% endblock %}
-
-{% block foot %}
-{{ foot.dataTable()}}
-{% endblock %}
-
-{% block javascripts %}
-{{ table.jsDataTable('datatable_1') }} 
-{# {{table.jsDataTable('datatable_2')  }} #}
-  <script>
-   $(document).ready(function(){
-     //nivagation 
-     $('#gestions').addClass(' menu-is-opening menu-open')
-     $('.gestions').addClass('active')
-     $('.gestion-order').addClass('active')
-   })
-  </script>
-{% endblock %}
+{% endblock %} {% block foot %} {{ foot.dataTable()}} {% endblock %}

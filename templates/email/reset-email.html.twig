@@ -1,0 +1,7 @@
+{% extends "email/base1.html.twig" %}
+{% block title %}Modifier mon email{% endblock %}
+{% block body %}
+    <p>Bonjour {{ user.personne.fullName|default('') }}</p>
+    <p>Vous pouvez modifier votre adresse email en cliquant sur modifier mon email</p>
+    <p style="font-size: 12px">NB: Cette email est réservé a {{ user.personne.fullName|default('') }}</p>
+{% endblock %}

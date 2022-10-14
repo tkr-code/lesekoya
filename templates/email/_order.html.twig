@@ -1,0 +1,9 @@
+{% for item in order.orderItem %}
+    <p>{{ item.produitName }} x {{item.quantity}} : {{item.unitsTotal|number_format(0,'',' ')}} {{ site.current_name }}</p>
+{% endfor %}
+<hr>
+<p>Sous total : {{ order.itemsTotal | number_format(0,'.',' ') }} {{ site.current_name }}</p>
+<p>{{'Shipping'|trans}}: {{ (order.deliverySpace)?  '(' ~ order.deliverySpace.street.name ~ ') ' ~ order.shipping| number_format(0,'.',' ') :'0' |number_format(0,'.',' ') }}
+    {{ site.current_name }}</p>
+<p>Total: {{ order.total|number_format(0,'',' ') }} {{ site.current_name }}</p>
+<hr>
