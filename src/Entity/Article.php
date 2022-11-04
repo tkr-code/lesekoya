@@ -160,6 +160,16 @@ class Article
      */
     private $status;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="articles")
+     */
+    private $fournisseur;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $ref;
+
 
     public function __construct()
     {
@@ -522,6 +532,30 @@ class Article
     public function setStatus(string $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getFournisseur(): ?User
+    {
+        return $this->fournisseur;
+    }
+
+    public function setFournisseur(?User $fournisseur): self
+    {
+        $this->fournisseur = $fournisseur;
+
+        return $this;
+    }
+
+    public function getRef(): ?string
+    {
+        return $this->ref;
+    }
+
+    public function setRef(?string $ref): self
+    {
+        $this->ref = sprintf("%4",$ref);
 
         return $this;
     }

@@ -4,9 +4,9 @@
 <div class="row">
 	<div class="col-md-3" style="min-height: 200px;">
 		<div class="text-center">
-			<img class="profile-user-img img-fluid img-circle" src="{{ asset('img/user/' ~ user.personne.avatar|default('empty.png') ) }}" alt="{{ user.personne.firstName ~ ' ' ~ user.personne.lastName }}">
+			<img class="profile-user-img img-fluid img-circle" src="{{ asset('img/user/' ~ user.avatar|default('empty.png') ) }}" alt="{{ user.fullName }}">
 		</div>
-		<h3 class="profile-username text-center">{{ user.personne.fullName }}</h3>
+		<h3 class="profile-username text-center">{{ user.fullName }}</h3>
 	</div>
 	<div class="col-md-8">
 		<div class="row">

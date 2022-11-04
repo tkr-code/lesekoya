@@ -60,7 +60,6 @@ class ClientController extends AbstractController
     public function new(Request $request, UserPasswordHasherInterface $userPasswordHasherInterface, Service $service): Response
     {
         $user = new User();
-        $personne = new Personne();
         $user->setIsActive('Activer')
         ->setRoles(['ROLE_CLIENT'])
         ->setCle($service->aleatoire(100));
@@ -70,8 +69,8 @@ class ClientController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $adresse = $user->getAdresse();
             if($adresse){
-                $adresse->setFirstName($user->getPersonne()->getFirstName())
-                ->setLastName($user->getPersonne()->getLastName())
+                $adresse->setFirstName($user->getFirstName())
+                ->setLastName($user->getLastName())
                 ->setTel($form->get('phone_number')->getData())
                 ;
                 $user->setAdresse($adresse);
@@ -132,6 +131,7 @@ class ClientController extends AbstractController
 
     /**
      * @Route("/{id}", name="admin_client_show", methods={"GET","POST"})
+     * @Route("/{id}", name="admin_user_show", methods={"GET","POST"})
      */
     public function show(User $user): Response
     {

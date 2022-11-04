@@ -64,6 +64,8 @@ class AppExtension extends AbstractExtension
             return substr($phone, 0, 2).' '.substr($phone, 2, 3).' '.substr($phone, 5, 2).' '.substr($phone, 7, 2).'';
         }else if(strlen($phone) == 10) {
             return substr($phone, 0, 2).' '.substr($phone, 2, 3).' '.substr($phone, 5, 2).' '.substr($phone, 7, 2).'';
+        }else if(strlen($phone) == 12) {
+            return substr($phone, 0, 3).' '.substr($phone, 3, 2).' '.substr($phone, 5, 3).' '.substr($phone, 8, 2).'';
         }
         return $phone;
     }

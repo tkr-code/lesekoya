@@ -11,7 +11,7 @@
     |
     {{ app_name }}</title>
 
-  <link rel="shortcut icon" href="{{ asset('img/' ~ site.path_logo) }}" type="image/png">
+  <link rel="shortcut icon" href="{{ asset('img/' ~ site.path_logo_icon) }}" type="image/png">
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet"
@@ -50,7 +50,7 @@
 
     <!-- Preloader -->
     <div class="preloader bg-white flex-column justify-content-center align-items-center">
-      <img class="animation__shake" src="{{ asset('img/' ~ site.path_logo) }}" alt="{{ app_name }}" height="60"
+      <img class="animation__shake" src="{{ asset('img/' ~ site.path_logo_icon) }}" alt="{{ app_name }}" height="60"
         width="60">
     </div>
 
@@ -95,7 +95,7 @@
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
       <a href="" class="brand-link">
-        <img src="{{ asset('img/' ~ site.path_logo) }}" alt="{{ app_name }}" class="brand-image  img-circle elevation-3"
+        <img src="{{ asset('img/' ~ site.path_logo_icon) }}" alt="{{ app_name }}" class="brand-image  img-circle elevation-3"
           style="opacity: .8">
         <span class="brand-text font-weight-light">{{ app_name }}</span>
       </a>
@@ -568,6 +568,39 @@
       $('#gestions').addClass(' menu-is-opening menu-open')
       $('.gestions').addClass('active')
       $('.gestion-article').addClass('active')
+
+      $(document).on('click', '.js-client-view', function (e) {
+			e.preventDefault()
+			$(".alert").fadeTo(10000, 500).slideUp(500, function () {
+				$(".alert").slideUp(500);
+			});
+			let href = $(this).attr('href')
+			$.ajax({
+				url: href,
+				method: 'POST',
+				type: 'json',
+				data: {
+					ajax: true
+				},
+				beforeSend: function () {
+					$('.js-loader-text').text('Chargement du client en cour ...')
+					$('.js-loader').css('display', 'flex')
+				},
+				success: function (data) {
+					$('.js-loader').css('display', 'none')
+					if (data.reponse == true) {
+						$('#js-modal-view-content').html(data.content)
+						$('#js-view-modal').modal('show')
+					} else {
+						alert('Une erreur est servenue')
+					}
+				},
+				error: function () {
+					$('.js-loader').css('display', 'none')
+					alert('Une erreur est servenue')
+				}
+			})
+		})
     })
   </script>
   {% block foot %}{% endblock %}

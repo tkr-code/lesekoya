@@ -25,7 +25,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * @Route("admin/article")
+ * @Route("my-account/article")
  */
 class ArticleController extends AbstractController
 {
@@ -106,6 +106,10 @@ class ArticleController extends AbstractController
             $idBrand = $request->request->get('brand');
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($article);
+            $entityManager->flush();
+
+            //Cree le reference
+            $article->setRef($article->getId());
             $entityManager->flush();
             $message = $translator->trans('Article cree');
             $this->addFlash('success', "L'article a été crée.");

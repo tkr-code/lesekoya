@@ -10,19 +10,16 @@ twig:
         categories: '@App\Twig\CategoryExtention'
         parentCategorys: '@App\Twig\CategoryParentExtention'
         gg_recaptcha_site_key: '%env(GOOGLE_RECAPTCHA_SITE_KEY)%'
+        base: prod
         site:
-            base: lesekoya
             version: '1.0' 
-            name: 'store'
+            name: 'lesekoya'
             email: 'contact@store.sn'
-            path_logo: 'lest-logo.png'
+            path_logo: 'lesekoya2.png'
+            path_logo_icon: 'lesekoya-icon.png'
             current_name: 'F CFA'
             current: 'XOF'
-            tel_1: '221778010646'
-            phone_number_1: '221778010646'
-            phone_number_2: '221762015161'
-            phone_1: '221778010646'
-            phone_2: '221762015161'
+            tel_1: '221781278288'
             link: "https://lest.sn"
             mission_text: 'text à definir'
             user_empty: 'empty.png'

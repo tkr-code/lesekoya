@@ -5,6 +5,9 @@ namespace App\Form;
 use App\Entity\Article;
 use App\Entity\Brand;
 use App\Entity\Category;
+use App\Entity\User;
+use App\Repository\UserRepository;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -25,6 +28,11 @@ use Symfony\Component\Validator\Constraints\File;
 
 class ArticleType extends AbstractType
 {
+    private $userRepository;
+    public function __construct(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -55,7 +63,8 @@ class ArticleType extends AbstractType
                 'required'=>false,
                 'attr'=>[
                     'class'=>'select2'
-                ]
+                ],
+                'placeholder'=>'Séléctionner une Pourcentage'
                 // 'attr'=>[
                 //     'placeholder'=>'The price must be greater than zero'
                 // ],
@@ -77,7 +86,7 @@ class ArticleType extends AbstractType
 
             ->add('status',ChoiceType::class,[
                 'label'=>'Etat',
-                'placeholder'=>"Selectionner l'état",
+                'placeholder'=>"Séléctionner l'état",
                 'choices'=>Article::STATUS,
                 'attr'=>[
                     'class'=>'select2'
@@ -88,6 +97,7 @@ class ArticleType extends AbstractType
                 'label'=>'Eticket',
                 'choices'=>Article::LABEL,
                 'required'=>false,
+                'placeholder'=>"Séléctionner l'éticket",
                 'attr'=>[
                     'class'=>'select2'
                     ]
@@ -97,14 +107,14 @@ class ArticleType extends AbstractType
                 'required'=>false,
                 'class'=>Brand::class,
                 'choice_label'=>'name',
-                'placeholder'=>'Selectionner la marque',
+                'placeholder'=>'Séléctionner la marque',
 
                 ])
             ->add('category',EntityType::class,[
                 'label'=>'Catégorie (*)',
                 'class'=>Category::class,
                 'choice_label'=>'title',
-                'placeholder'=>'Selectionner la catégorie'
+                'placeholder'=>'Séléctionner la catégorie'
                 ])
             ->add('images',FileType::class,[
                 'label'=>'Ajouter une ou plusieurs images (*)',
@@ -112,6 +122,22 @@ class ArticleType extends AbstractType
                 'mapped'=>false,
                 'constraints'=>[],
                 ])
+            ->add('fournisseur',EntityType::class,[
+                'label'=>'Fournisseur',
+                'class'=>User::class,
+                'query_builder'=>function(EntityRepository $entityRepository){
+                    $role = 'ROLE_FOURNISSEUR';
+                     return $entityRepository->createQueryBuilder('q')
+                            ->select('u')
+                            ->from(User::class, 'u')
+                            ->where('u.roles LIKE :roles')
+                            ->setParameter('roles', '%"'.$role.'"%');
+                },
+                'choice_label'=>function($user){
+                    return $user->getFullName().' - '.$user->getEmail();
+                },
+                'placeholder'=>'Séléctionner le fournisseur'
+            ])
             ->add('enabled',CheckboxType::class,[
                 'label'=>'Activer',
             ])

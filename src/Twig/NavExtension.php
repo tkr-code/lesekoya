@@ -72,6 +72,19 @@ class NavExtension extends AbstractExtension
                         'path' => 'admin_client_index'
                     ],
                     [
+                        'name' => 'Fournisseur',
+                        'links'=>[
+                            [
+                                'name'=>'Fournisseurs',
+                                'path' => 'admin_fournisseur_index'
+                            ],
+                            [
+                                'name'=>'Nouveau',
+                                'path' => 'admin_fournisseur_new'
+                            ],
+                        ]
+                    ],
+                    [
                         'name' => 'Commande',
                         'icon' => 'fa fa-shopping-bag',
                         'links' =>

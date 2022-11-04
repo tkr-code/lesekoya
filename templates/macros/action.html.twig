@@ -16,6 +16,20 @@
 {{ link.pencil(path('admin_client_edit', {'id': client.user.id}),)}}
 {{ link.show(path('admin_client_show', {'id': client.user.id}), {class:'js-client-view'}) }}
 {% endmacro %}
+
+{% macro user(user) %}
+{% import "macros/link.html.twig" as link %}
+{{ link.pencil(path('admin_fournisseur_edit', {'id': user.id}),)}}
+{{ link.show(path('admin_user_show', {'id': user.id}), {class:'js-client-view'}) }}
+{% endmacro %}
+
+{% macro fournisseur(user) %}
+{% import "macros/link.html.twig" as link %}
+{{ link.pencil(path('admin_fournisseur_edit', {'id': user.id}),)}}
+{{ link.show(path('admin_user_show', {'id': user.id}), {class:'js-client-view'}) }}
+{% endmacro %}
+
+
 {% macro gerant(gerant) %}
 {% import "macros/link.html.twig" as link %}
 {{ link.pencil(path('gerant_edit', {'id': gerant.id}),)}}

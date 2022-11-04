@@ -1,0 +1,354 @@
+{% extends base ~"/base.html.twig" %}
+{% import "macros/modal.html.twig" as modal %}
+{% block modal %}
+{{ modal.defaultLest()}}
+{% endblock %}
+{% block javascripts %}
+<div id="fb-root"></div>
+<script>(function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+{% endblock %}
+
+{% block foot %}
+<script src="{{asset('js/article_detail.js') }}"></script>
+{% endblock %}
+{% block main %}
+<main class="main">
+    <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+        <div class="container d-flex align-items-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="{{ path('home') }}">{{'Home'|trans}}</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="{{ path('articles') }}">{{ 'Shop'|trans }}</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="{{path('articles_category',{category:article.category.slug|lower}) }}">{{
+                        article.category.title }}</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">{{ article.title }}</li>
+            </ol>
+            <!-- End .pager-nav -->
+        </div>
+        <!-- End .container -->
+    </nav>
+    <!-- End .breadcrumb-nav -->
+
+    <div class="page-content">
+        {% include "includes/_alerte.html.twig" %}
+        <div class="container">
+            <div class="product-details-top">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="product-gallery">
+                            <figure class="product-main-image">
+                                {% import "macros/etats.html.twig" as etats %}
+                                {% if article.quantity <= 0 %} <span class="product-label label-out bg-danger">{{'Out of
+                                    Stock'|trans}}</span>
+                                    {% endif %}
+                                    {{ etats.articleLabel(article.label) }}
+                                    {% for item in article.images|slice(0,1) %}
+                                    <img id="product-zoom" src="{{ asset('img/article/' ~ item.name ) }}"
+                                        alt="{{ article.title }}"
+                                        data-zoom-image="{{ asset('img/article/' ~ item.name ) }}" alt="product image">
+
+                                    {% else %}
+                                    <div class="single-prd-item">
+                                        <img class="img-fluid" src="{{ asset('img/article/vide.png') }}"
+                                            alt="{{ article.title }}">
+                                    </div>
+                                    {% endfor %}
+                            </figure>
+                            <!-- End .product-main-image -->
+                            <div class="row">
+                                <div class="col-12 product-image-thumbs">
+                                    {% for item in article.images %}
+                                    <a href="{{ asset('img/article/' ~ item.name )}}" class="product-gallery-show">
+                                        <div class="product-image-thumb">
+                                            <img src="{{ asset('img/article/' ~ item.name )}}" width="100px"
+                                                alt="{{ item.name }}">
+                                        </div>
+                                    </a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End .product-gallery -->
+                    </div>
+                    <!-- End .col-md-6 -->
+
+                    <div class="col-md-8">
+                        <div class="product-details sticky-content">
+                            <h1 class="product-title">{{ article.title }}</h1>
+                            <!-- End .product-title -->
+
+                            <div class="ratings-container">
+                                <div class="ratings">
+                                    <div class="ratings-val" style="width: {{ rating(article) }}%"></div>
+                                    <!-- End .ratings-val -->
+                                </div>
+                                <!-- End .ratings -->
+                                <a class="ratings-text" href="#product-accordion" id="review-link">( {{
+                                    article.comments|length}} {{ (article.comments|length > 1 )?
+                                    'Commentaires':'Commentaire' }} )</a>
+                            </div>
+                            <!-- End .rating-container -->
+
+                            <div class="product-price">
+                                {% if article.reduction > 0 %}
+                                <span class="new-price">{{ article.getNewPrice |number_format(0,'',' ') }} {{
+                                    site.current_name }}</span>
+                                <span class="old-price">{{ article.formatterPrice }}</span>
+                                {% else %}
+                                <span class="new-price">{{ article.getNewPrice |number_format(0,'',' ') }} {{
+                                    site.current_name }}</span>
+                                {% endif %}
+                            </div>
+                            <!-- End .product-price -->
+
+                            <div class="product-content">
+                                <p>{{ article.description|nl2br }}</p>
+                            </div>
+                            <!-- End .product-content -->
+
+                            <div class="row">
+                                <div class="col-lg-12 my-4">
+                                    <small id="helpId" class="text-muted">Stock: {{ article.quantity }} </small>
+                                    <form class="form-row" action="{{ path('cart_index') }}" method="post">
+                                        {% if article.quantity > 0 %}
+                                        <div class="form-group col-3">
+                                            <input type="hidden" name="article_id" value="{{ article.id }}">
+                                            <input type="number" class="form-control" min="1"
+                                                max="{{ article.quantity }}" name="qty" value="1">
+                                        </div>
+                                        <div class="form-group col-9 product-details-action">
+                                            <button type="submit" class="btn-product btn-cart btn" name="card-add">
+                                                {{'Add to cart'|trans}}
+                                            </button>
+                                        </div>
+                                        {% else %}
+                                        <p>Le produit est en rupture de stock</p>
+                                        {% endif %}
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="product-details-action">
+                                <div class="details-action-wrapper article-{{article.id }}">
+                                    {% if app.user %} {% if not isToFavoris(app.user, article) %}
+                                    <a href="{{ path('favoris_add',{id:article.id}) }}" data-id="{{ article.id }}"
+                                        class="btn-product btn-wishlist js-favoris js-add-favoris">
+                                        <span>{{'add to wishlist'|trans}}</span>
+                                    </a>
+                                    {% else %}
+                                    <a href="{{ path('favoris_remove',{id:article.id}) }}" data-id="{{ article.id }}"
+                                        class="btn-product btn-wishlist js-favoris  js-remove-favoris">
+                                        <span class=" text-danger">{{'remove to wishlist'|trans}}</span>
+                                    </a>
+                                    {% endif %} {% else %}
+                                    <a href="#" class="btn-product btn-wishlist js-favoris js-favoris-login">
+                                        <span>{{'add to wishlist'|trans}}</span>
+                                    </a>
+                                    {% endif %}
+                                </div>
+                                <div class="details-action-wrapper">
+                                    <a target="_blank"
+                                        href="https://api.whatsapp.com/send?phone=221778010646&text=Salut, Je souhaite commander cet article: {{ url('articles_show', { category: article.category.slug, slug: article.slug, id: article.id}) }}"
+                                        class="btn-product">
+                                        <span>
+                                            <i class="icon-whatsapp"></i> Commander Via whatsapp
+                                        </span>
+                                    </a>
+                                </div>
+                                <!-- End .details-action-wrapper -->
+                            </div>
+                            <!-- End .product-details-action -->
+
+                            <div class="product-details-footer">
+                                <div class="product-cat">
+                                    <span>{{'Category'|trans}}:</span>
+                                    <a
+                                        href="{{path('articles_category',{category:article.category.slug|lower}) }}">{{article.category.title}}</a>
+                                </div>
+                                <!-- End .product-cat -->
+
+                                {% include "lest/shop/_social_icons.html.twig" %}
+                            </div>
+                            <!-- End .product-details-footer -->
+                            <div class="accordion accordion-plus product-details-accordion" id="product-accordion">
+                                <div class="card card-box card-sm">
+                                    <div class="card-header" id="product-desc-heading">
+                                        <h2 class="card-title">
+                                            <a class="collapsed" role="button" data-toggle="collapse"
+                                                href="#product-accordion-desc" aria-expanded="false"
+                                                aria-controls="product-accordion-desc">
+                                                Description
+                                            </a>
+                                        </h2>
+                                    </div>
+                                    <!-- End .card-header -->
+                                    <div id="product-accordion-desc" class="collapse"
+                                        aria-labelledby="product-desc-heading" data-parent="#product-accordion">
+                                        <div class="card-body">
+                                            <div class="product-desc-content">
+                                                <p>{{ article.description }}</p>
+                                            </div>
+                                            <!-- End .product-desc-content -->
+                                        </div>
+                                        <!-- End .card-body -->
+                                    </div>
+                                    <!-- End .collapse -->
+                                </div>
+                                <!-- End .card -->
+                                <div class="card card-box card-sm">
+                                    {% if article.options is not empty %}
+                                    <div class="card-header" id="product-info-heading">
+                                        <h2 class="card-title">
+                                            <a class="collapsed" role="button" data-toggle="collapse"
+                                                href="#product-accordion-info" aria-expanded="false"
+                                                aria-controls="product-accordion-info">
+                                                Information suplémentaire ({{article.options|length}})
+                                            </a>
+                                        </h2>
+                                    </div>
+                                    {% endif %}
+                                    <!-- End .card-header -->
+                                    <div id="product-accordion-info" class="collapse"
+                                        aria-labelledby="product-info-heading" data-parent="#product-accordion">
+                                        <div class="card-body">
+                                            <div class="product-desc-content">
+                                                <div class="row">
+                                                    {% for item in article.options %}
+                                                    <div class="col-md-6 col-12 font-weight-bold">{{
+                                                        item.title|capitalize }}</div>
+                                                    <div class="col-md-6 col-12">{{ item.content }}</div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                            <!-- End .product-desc-content -->
+                                        </div>
+                                        <!-- End .card-body -->
+                                    </div>
+                                    <!-- End .collapse -->
+                                </div>
+                                <!-- End .card -->
+
+                                <div class="card card-box card-sm">
+                                    <div class="card-header" id="product-review-heading">
+                                        <h2 class="card-title">
+                                            <a class="" role="button" data-toggle="collapse"
+                                                href="#product-accordion-review" aria-expanded="true"
+                                                aria-controls="product-accordion-review">
+                                                {{ (article.comments|length > 1 )?
+                                                'Commentaires':'Commentaire' }} ({{ article.comments|length}})
+                                            </a>
+                                        </h2>
+                                    </div>
+                                    <!-- End .card-header -->
+                                    <div id="product-accordion-review" class="collapse show"
+                                        aria-labelledby="product-review-heading" data-parent="#product-accordion">
+                                        <div class="card-body">
+                                            <div id="load_comment" class="reviews">
+                                                {% include "lest/shop/_comment.html.twig" %}
+                                            </div>
+
+                                            <!-- End .reviews -->
+                                            {% if is_buy %} {% if not is_comment %}
+                                            <div class="form-comment">
+                                                {{ form_start(formComment, { 'attr':{ 'id':'form_comment',
+                                                'novalidate':'novalidate' } }) }}
+                                                <div class="row">
+                                                    <div class="ratings-comment col-12 col-md-12 text-center">
+                                                        <a class="star star-1" href="#">
+                                                            <i class="icon-star" style="font-size:3rem"></i>
+                                                        </a>
+                                                        <a href="#" class="star star-2">
+                                                            <i class="icon-star" style="font-size:3rem"></i>
+                                                        </a>
+                                                        <a href="#" class="star star-3">
+                                                            <i class="icon-star" style="font-size:3rem"></i>
+                                                        </a>
+                                                        <a href="#" class="star star-4">
+                                                            <i class="icon-star" style="font-size:3rem"></i>
+                                                        </a>
+                                                        <a href="#" class="star star-5">
+                                                            <i class="icon-star" style="font-size:3rem"></i>
+                                                        </a>
+                                                        <input id="rating" type="hidden" name="rating" value="">
+                                                    </div>
+
+                                                    <div class="col-md-12 col-12">
+                                                        {{form_row(formComment.content)}}
+                                                    </div>
+                                                </div>
+                                                {% if is_granted('ROLE_CLIENT') %}
+                                                <div class="text-center">
+                                                    <button type="submit" id="btn-add-comment"
+                                                        class="btn btn-primary">Evaluer</button>
+                                                </div>
+                                                {% endif %} {{ form_widget(formComment) }} {{ form_end(formComment) }}
+                                            </div>
+                                            {% endif %} {% endif %}
+                                        </div>
+                                        <!-- End .card-body -->
+                                    </div>
+                                    <!-- End .collapse -->
+                                </div>
+                                <!-- End .card -->
+                            </div>
+                            <!-- End .accordion -->
+                        </div>
+                        <!-- End .product-details -->
+                    </div>
+                    <!-- End .col-md-6 -->
+                </div>
+                <!-- End .row -->
+            </div>
+            <!-- End .product-details-top -->
+
+            <hr class="mt-3 mb-5">
+
+            <h2 class="title text-center mb-4">Ces produits peuvent vous intéresser</h2>
+            <!-- End .title text-center -->
+            <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl"
+                data-owl-options='{
+						"nav": true,
+						"dots": false,
+						"margin": 20,
+						"loop": false,
+                        "autoplay":true,
+                        "autoplayTimeout":4000,
+						"responsive": {
+							"0": {
+								"items":2
+							},
+							"480": {
+								"items":2
+							},
+							"768": {
+								"items":2
+							},
+							"992": {
+								"items":3
+							},
+							"1200": {
+								"items":5
+							}
+						}
+					}'>
+                {% for item in article_rand %}
+                {% include "lest/home/_article.html.twig" %}
+                {% endfor %}
+            </div>
+            <!-- End .owl-carousel -->
+        </div>
+        <!-- End .container -->
+    </div>
+    <!-- End .page-content -->
+</main>
+{% endblock %}

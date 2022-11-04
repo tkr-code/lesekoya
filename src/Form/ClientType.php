@@ -17,32 +17,40 @@ class ClientType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('personne',PersonneClientType::class,[
-                'label'=>false
+            ->add('first_name', TextType::class, [
+                'label' => 'Prénom *',
+                'attr' => [
+                    'placeholder' => "prénom",
+                ]
             ])
-            ->add('email',EmailType::class,[
-                'label'=>'Email *'
+            ->add('last_name', TextType::class, [
+                'label' => 'Nom *',
+                'attr' => [
+                    'placeholder' => 'Nom',
+                ]
             ])
-            ->add('phone_number',NumberType::class,[
-                'label'=>'Téléphone *'
+            ->add('email', EmailType::class, [
+                'label' => 'Email *'
             ])
-            ->add('adresse',AdresseType::class,[
-                'attr'=>[
-                    'placeholder'=>'Adresse'
+            ->add('phone_number', NumberType::class, [
+                'label' => 'Téléphone *'
+            ])
+            ->add('adresse', AdresseType::class, [
+                'attr' => [
+                    'placeholder' => 'Adresse'
                 ],
-                'required'=>false
+                'required' => false
             ])
-            ->add('password',PasswordType::class,[
-                'label'=>'Mot de passe *'
-            ])
-        ;
+            ->add('password', PasswordType::class, [
+                'label' => 'Mot de passe *'
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => User::class,
-             'translation_domain'=>'forms',
+            'translation_domain' => 'forms',
 
         ]);
     }

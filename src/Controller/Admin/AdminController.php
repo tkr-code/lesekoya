@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * @Route("/admin")
+ * @Route("/my-account")
  */
 class AdminController extends AbstractController
 {

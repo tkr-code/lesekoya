@@ -50,7 +50,8 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/admin, roles: [ROLE_EDITOR] }
+        - { path: ^/my-account, roles: [ROLE_EDITOR,ROLE_FOURNISSEUR] }
         - { path: ^/customer, roles: ROLE_CLIENT }
+        - { path: ^/fournisseur, roles: ROLE_FOURNISSEUR }
     role_hierarchy:
-        ROLE_ADMIN: [ROLE_EDITOR,ROLE_USER]
+        ROLE_ADMIN: [ROLE_EDITOR,ROLE_USER,ROLE_FOURNISSEUR]

@@ -89,7 +89,7 @@ class ArticleController extends AbstractController
             1
         );
 
-        return $this->renderForm('main/shop/show.html.twig', [
+        return $this->renderForm($this->getParameter('template').'/shop/show.html.twig', [
             'article'=>$article,
             'articles'=>$articleRepository->findBy(['enabled'=>true,'etat'=>'top'],null,12),
             'form' => $form,

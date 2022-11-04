@@ -1,0 +1,100 @@
+{% import "macros/table.html.twig" as table %}
+{% import "macros/head.html.twig" as head %}
+{% import "macros/foot.html.twig" as foot %}
+{% import "macros/breadcrumb.html.twig" as utils %}
+{% import "macros/alertes.html.twig" as alerte %}
+{% import "macros/button.html.twig" as btn %}
+{% import "macros/link.html.twig" as link %}
+{% import "macros/dataTable.html.twig" as dataTable %}
+{% import "macros/action.html.twig" as action %}
+{% import "macros/modal.html.twig" as modal %}
+{% extends 'admin/base.html.twig' %}
+
+{% block head %}
+{{ dataTable.css() }}
+{% endblock %}
+
+{% block foot %}
+{{ dataTable.js()}}
+{% endblock %}
+
+{% block javascripts %}
+{{ dataTable.script('#datatable_1') }}
+{% endblock %}
+
+{% block modal %}
+{{ modal.view() }}
+{% endblock %}
+
+{% block breadcrumb %}
+{{ utils.breadcrumb('Listes des fournisseurs') }}
+{% endblock %}
+{% block title %}Forunisseur
+{% endblock %}
+
+{% block body %}
+{% include "includes/_alerte.html.twig" %}
+<div class="row">
+	<div class="col-md-12">
+		<div class="card card-outline card-primary">
+			<div class="card-header">
+				<div class="card-title">Gestion des fournisseurs|
+					<span class="badge-info badge">
+						{{ fournisseurs|length }}
+					</span>
+				</div>
+			</div>
+			<div class="card-body">
+				{% if is_granted('ROLE_ADMIN') %}
+				<div class="btn-group">
+					<a class="btn btn-primary" href="{{ path('admin_fournisseur_new') }}">New fournisseur
+						<i class="fa fa-plus"></i>
+					</a>
+				</div>
+				{% endif %}
+				<hr>
+				<table id="datatable_1" class="table">
+					<thead>
+						<tr>
+							<th>Fournisseur</th>
+							<th>Email</th>
+							<th>Article</th>
+							<th>Date Creation</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for item in fournisseurs %}
+						<tr {{ (item.status=='Delete' )? 'class="text-danger"' : '' }}>
+							<td>#{{ item.id }}
+								{{ item.fullName |capitalize }}
+							</td>
+							<td>
+								{{ item.email|explode_email }}
+							</td>
+							<td>
+								<a href="{{ path('admin_client_order',{id:item.id}) }}">
+									{{ item.articles|length }}
+								</a>
+							</td>
+							<td>
+								{{ item.createdAt|date_format_fr }}
+							</td>
+							<td>
+								{{ action.fournisseur(item)}}
+							</td>
+						</tr>
+						{% else %}
+						<tr>
+							<td colspan="6">no records found</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+				<hr>
+				{{ link.back(path('admin'), 'back to dashboard') }}
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

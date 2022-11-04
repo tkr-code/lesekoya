@@ -11,7 +11,7 @@ parameters:
     maitenance_file_path: '%kernel.project_dir%/public/.maintenance'
     app.locales: [en, fr]
     locale: fr
-    template: 'lesekoya'
+    template: 'prod'
 services:
     # default configuration for services in *this* file
     _defaults:

@@ -24,6 +24,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // 'Client'=>'ROLE_CLIENT',
         // 'Utilisateur'=>'ROLE_USER'
     ];
+    const ROLE_FOURNISSEUR = 'ROLE_FOURNISSEUR';
     const status=[
         'Activer'=>'Activer',
         'Désactiver'=>'Désactiver',
@@ -154,6 +155,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $last_name;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Article::class, mappedBy="fournisseur")
+     */
+    private $articles;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -163,6 +169,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->phones = new ArrayCollection();
         $this->status = 'Activer';
         $this->is_verified = false;
+        $this->articles = new ArrayCollection();
 
     }
 
@@ -552,6 +559,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastName(string $last_name): self
     {
         $this->last_name = $last_name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Article>
+     */
+    public function getArticles(): Collection
+    {
+        return $this->articles;
+    }
+
+    public function addArticle(Article $article): self
+    {
+        if (!$this->articles->contains($article)) {
+            $this->articles[] = $article;
+            $article->setFournisseur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticle(Article $article): self
+    {
+        if ($this->articles->removeElement($article)) {
+            // set the owning side to null (unless already changed)
+            if ($article->getFournisseur() === $this) {
+                $article->setFournisseur(null);
+            }
+        }
 
         return $this;
     }

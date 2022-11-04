@@ -22,39 +22,7 @@
 {{ dataTable.script('#datatable_1') }}
 <script>
 	$(document).ready(function () { // VISUSALISE UN CLIENT
-		$(document).on('click', '.js-client-view', function (e) {
-			e.preventDefault()
-			$(".alert").fadeTo(10000, 500).slideUp(500, function () {
-				$(".alert").slideUp(500);
-			});
-			let href = $(this).attr('href')
-			$.ajax({
-				url: href,
-				method: 'POST',
-				type: 'json',
-				data: {
-					ajax: true
-				},
-				beforeSend: function () {
-					$('.js-loader-text').text('Chargement du client en cour ...')
-					$('.js-loader').css('display', 'flex')
-				},
-				success: function (data) {
-					$('.js-loader').css('display', 'none')
-					if (data.reponse == true) {
-						$('#js-modal-view-content').html(data.content)
-						$('#js-view-modal').modal('show')
-					} else {
-						alert('Une erreur est servenue')
-					}
-				},
-				error: function () {
-					$('.js-loader').css('display', 'none')
-					alert('Une erreur est servenue')
-				}
-			})
-		})
-
+		
 	})
 </script>
 {% endblock %}
