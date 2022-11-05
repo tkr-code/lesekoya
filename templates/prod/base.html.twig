@@ -171,7 +171,6 @@
                                                 <ul>
                                                     <li><a href="#">English</a></li>
                                                     <li><a href="#">French</a></li>
-                                                    <li><a href="#">Spanish</a></li>
                                                 </ul>
                                             </div><!-- End .header-menu -->
                                         </div><!-- End .header-dropdown -->
@@ -282,42 +281,40 @@
                                 <div class="dropdown-menu show">
                                     <nav class="side-nav">
                                         <ul class="menu-vertical sf-arrows">
+                                            {% for item in categories.niveau3 %}
                                             <li class="megamenu-container">
-                                                <a class="sf-with-ul" href="#"><i
-                                                        class="icon-laptop"></i>Electronics</a>
-
+                                                <a {{ (item.categorys2|length > 0) ? 'class="sf-with-ul"':'' }}  href={{ path('articles_category3',{category3:item.slug}) }}><i
+                                                      {{ (item.icon is not null) ? 'class=' ~ item.icon ~ '':'' }}></i>
+                                                    {{item.title}}
+                                                    </a>
+                                                {% if item.categorys2|length > 0 %}
                                                 <div class="megamenu">
                                                     <div class="row no-gutters">
                                                         <div class="col-md-8">
                                                             <div class="menu-col">
                                                                 <div class="row">
                                                                     <div class="col-md-6">
-                                                                        <div class="menu-title">Laptops & Computers
+                                                                        {% for niveau2 in item.categorys2|slice(0,2)  %}
+                                                                        {% if niveau2.categorys|length > 0 %}
+                                                                        <div class="menu-title">
+                                                                            {{ niveau2.title }}
                                                                         </div><!-- End .menu-title -->
                                                                         <ul>
-                                                                            <li><a href="#">Desktop Computers</a></li>
-                                                                            <li><a href="#">Monitors</a></li>
-                                                                            <li><a href="#">Laptops</a></li>
-                                                                            <li><a href="#">iPad & Tablets</a></li>
-                                                                            <li><a href="#">Hard Drives & Storage</a>
-                                                                            </li>
-                                                                            <li><a href="#">Printers & Supplies</a></li>
-                                                                            <li><a href="#">Computer Accessories</a>
-                                                                            </li>
+                                                                            {% for item3 in niveau2.categorys|slice(0,5)  %} 
+                                                                               {% if item3.articles|length > 0 %}
+                                                                               <li>
+                                                                                   <a 
+                                                                                href="{{path('articles_category',{category:item3.slug}) }}">
+                                                                                {{item3.title}}
+                                                                            </a></li>
+                                                                            {% endif %}
+                                                                            {% endfor %}
                                                                         </ul>
-
-                                                                        <div class="menu-title">TV & Video</div>
-                                                                        <!-- End .menu-title -->
-                                                                        <ul>
-                                                                            <li><a href="#">TVs</a></li>
-                                                                            <li><a href="#">Home Audio Speakers</a></li>
-                                                                            <li><a href="#">Projectors</a></li>
-                                                                            <li><a href="#">Media Streaming Devices</a>
-                                                                            </li>
-                                                                        </ul>
+                                                                        {% endif %}
+                                                                        {% endfor %}
+                                                                        
                                                                     </div><!-- End .col-md-6 -->
-
-                                                                    <div class="col-md-6">
+                                                                    {# <div class="col-md-6">
                                                                         <div class="menu-title">Cell Phones</div>
                                                                         <!-- End .menu-title -->
                                                                         <ul>
@@ -342,7 +339,7 @@
                                                                             <li><a href="#">Camera Bags, Backpacks &
                                                                                     Cases</a></li>
                                                                         </ul>
-                                                                    </div><!-- End .col-md-6 -->
+                                                                    </div><!-- End .col-md-6 --> #}
                                                                 </div><!-- End .row -->
                                                             </div><!-- End .menu-col -->
                                                         </div><!-- End .col-md-8 -->
@@ -357,8 +354,10 @@
                                                         </div><!-- End .col-md-4 -->
                                                     </div><!-- End .row -->
                                                 </div><!-- End .megamenu -->
+                                                {% endif %}
                                             </li>
-                                            <li class="megamenu-container">
+                                            {% endfor %}
+                                            {# <li class="megamenu-container">
                                                 <a class="sf-with-ul" href="#"><i class="icon-couch"></i>Furniture</a>
 
                                                 <div class="megamenu">
@@ -621,7 +620,7 @@
                                             <li><a href="#"><i class="icon-tv"></i>TV & Audio</a></li>
                                             <li><a href="#"><i class="icon-shopping-bag"></i>Backpack & Bag</a></li>
                                             <li><a href="#"><i class="icon-music"></i>Musical Instruments</a></li>
-                                            <li><a href="#"><i class="icon-gift"></i>Gift Ideas</a></li>
+                                            <li><a href="#"><i class="icon-gift"></i>Gift Ideas</a></li> #}
                                         </ul><!-- End .menu-vertical -->
                                     </nav><!-- End .side-nav -->
                                 </div><!-- End .dropdown-menu -->

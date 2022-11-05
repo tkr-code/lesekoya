@@ -1,0 +1,11 @@
+{% extends "admin/base.html.twig" %}
+{% block title %}New Category niveau 2{% endblock %}
+
+
+{% block body %}
+    <h1>Create new Category2</h1>
+
+    {{ include('admin/category2/_form.html.twig') }}
+
+    <a href="{{ path('admin_category2_index') }}">back to list</a>
+{% endblock %}

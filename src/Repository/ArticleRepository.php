@@ -27,7 +27,7 @@ class ArticleRepository extends ServiceEntityRepository
      * @param  mixed $var
      * @return void
      */
-    public function search($mots=null, $category=null, $min=null, $max= null, $brand = null, $etat = null)
+    public function search($mots=null, $category3 = null ,$category=null, $min=null, $max= null, $brand = null, $etat = null)
     {
         $query = $this->findQueryBuilder()
         ->AndWhere('p.enabled = true');
@@ -61,6 +61,14 @@ class ArticleRepository extends ServiceEntityRepository
             $query->leftJoin('p.category', 'c');
             $query->andWhere('c.title = :title')
             ->setParameter('title',$category);
+        }
+
+        if($category3 != null){
+            $query->leftJoin('p.category', 'c');
+            $query->leftJoin('c.category2', 'c2');
+            $query->leftJoin('c2.category3', 'c3');
+            $query->andWhere('c3.title = :title')
+            ->setParameter('title',$category3);
         } 
         return $query->getQuery();
     }

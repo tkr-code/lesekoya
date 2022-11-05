@@ -14,7 +14,7 @@ class CategoryFixtures extends Fixture implements DependentFixtureInterface
         $categories = 
         [
             [
-                'parent'=>'parent_informatique',
+                'parent'=>'Ordinateurs portable & Bureau',
                 'cat'=>[
                     'Ordinateur portable',
                     'Ordinateur de Bureau',
@@ -31,12 +31,12 @@ class CategoryFixtures extends Fixture implements DependentFixtureInterface
             ],                       
         ];
         foreach ($categories as $key => $value) {
-            $parent = $this->getReference($value['parent']);
+            $parent = $this->getReference('niveau_2'.str_replace(' ','_',$value['parent']));
             foreach ($value['cat'] as $key => $v) {
                 $category= new Category();
                 $category->setTitle($v);
                 $category->setIsActive(true);
-                $category->setParentCategory($parent);
+                $category->setCategory2($parent);
                 $manager->persist($category);
                 $this->addReference('category_'. str_replace(' ','_',$v), $category);
             }
@@ -47,7 +47,7 @@ class CategoryFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies()
     {
         return [
-            CategoryParent::class
+            Category2Fixtures::class
         ];
     }
 }

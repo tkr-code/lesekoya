@@ -1,0 +1,42 @@
+{% extends 'admin/base.html.twig' %}
+{% import "macros/breadcrumb.html.twig" as utils %}
+{% import "macros/table.html.twig" as table %}
+{% import "macros/alertes.html.twig" as alerte %}
+{% import "macros/dataTable.html.twig" as dataTable %}
+
+{% block title %}Categorie de niveau 3
+{% endblock %}
+
+{% block body %}
+    <h1>Category3 index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Icon</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for category3 in category3s %}
+            <tr>
+                <td>{{ category3.id }}</td>
+                <td>{{ category3.title }}</td>
+                <td>{{ category3.icon }} <i class={{ category3.icon }}></i> </td>
+                <td>
+                    <a href="{{ path('app_admin_category3_show', {'id': category3.id}) }}">show</a>
+                    <a href="{{ path('app_admin_category3_edit', {'id': category3.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_admin_category3_new') }}">Create new</a>
+{% endblock %}

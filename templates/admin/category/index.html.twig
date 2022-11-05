@@ -47,14 +47,14 @@
 					<table id="table-1" class="table table-bordered">
 						<thead>
 							<th>Nom</th>
-							<th>Parent</th>
+							{# <th>Parent</th> #}
 							<th>Actions</th>
 						</thead>
 						<tbody>
 							{% for item in categories %}
 							<tr>
-								<td>{{ item.title}}</td>
-								<td>{{ item.parentCategory.name|default()}}</td>
+								<td>{{ item.title}} {{  (item.category2.title is defined) ? ' - ' ~ item.category2.title:'' }} {{  (item.category2.category3.title is defined) ? ' - ' ~ item.category2.category3.title :'' }} </td>
+								{# <td>{{ item.parentCategory.name|default()}}</td> #}
 								<td>
 									{% import "macros/action.html.twig" as action %}
 									{{ action.categorie(item) }}

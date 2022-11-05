@@ -139,8 +139,20 @@ class NavExtension extends AbstractExtension
                     ],
                     [
                         'name' => 'Categorie',
-                        'path' => 'category_index',
-                        'icon' => 'far fa-circle'
+                        'links' => [
+                            [
+                                'name'=>'Niveau 1',
+                                'path' => 'category_index',
+                            ],
+                            [
+                                'name'=>'Niveau 2',
+                                'path'=>'admin_category2_index'
+                            ],
+                            [
+                                'name'=>'Niveau 3',
+                                'path'=>'admin_category3_index'
+                            ]
+                        ]
                     ],
                     [
                         'name' => 'Gestion',

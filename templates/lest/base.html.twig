@@ -180,7 +180,7 @@
                                         </li>
                                         {% for item in categories.all %}
                                         <li>
-                                            <a href="{{path('articles_category',{category:item.slug|lower}) }}">
+                                            <a href="{{path('articles_category',{category:item.slug}) }}">
                                                 {{ item.title }}
                                             </a>
                                         </li>

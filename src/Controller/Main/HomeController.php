@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\ArticleSearch;
 use App\Form\ArticleSearchType;
+use App\Repository\Category3Repository;
 use App\Repository\CategoryRepository;
 use App\Repository\ClientRepository;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -19,11 +20,12 @@ class HomeController extends AbstractController
     /**
      * @Route("/",  name="home")
      */
-    public function home(Request $request, ArticleRepository $articleRepository): Response
+    public function home(Request $request, ArticleRepository $articleRepository, Category3Repository $category3Repository): Response
     {
         $search = new ArticleSearch();
         $form = $this->createForm(ArticleSearchType::class,$search)->handleRequest($request);
       return  $this->renderForm($this->getParameter('template')."/home/index.html.twig", [
+            'niveau3'=>$category3Repository->findAll(),
             'form'=>$form,
             'slide2'=>$articleRepository->findOneBy([
                 'title'=>'Hp elitebook Folio G1'

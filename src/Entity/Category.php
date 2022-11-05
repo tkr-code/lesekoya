@@ -50,9 +50,9 @@ class Category
     private $is_active;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ParentCategory::class, inversedBy="categorys")
+     * @ORM\ManyToOne(targetEntity=Category2::class, inversedBy="categorys")
      */
-    private $parentCategory;
+    private $category2;
 
 
 
@@ -136,14 +136,14 @@ class Category
         return $this->categories;
     }
 
-    public function getParentCategory(): ?ParentCategory
+    public function getCategory2(): ?Category2
     {
-        return $this->parentCategory;
+        return $this->category2;
     }
 
-    public function setParentCategory(?ParentCategory $parentCategory): self
+    public function setCategory2(?Category2 $category2): self
     {
-        $this->parentCategory = $parentCategory;
+        $this->category2 = $category2;
 
         return $this;
     }

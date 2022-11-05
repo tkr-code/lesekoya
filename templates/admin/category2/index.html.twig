@@ -1,0 +1,45 @@
+{% extends 'admin/base.html.twig' %}
+{% import "macros/breadcrumb.html.twig" as utils %}
+{% import "macros/table.html.twig" as table %}
+{% import "macros/alertes.html.twig" as alerte %}
+{% import "macros/dataTable.html.twig" as dataTable %}
+
+{% block title %}Category Niveau 2
+{% endblock %}
+
+{% block breadcrumb %}
+{{ utils.breadcrumb('Liste des catégories',[{path:path('category_index'),name:'Liste des catégories'}])}}
+{% endblock %}
+{% block body %}
+    <h1>Category2 index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Parent</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for category2 in category2s %}
+            <tr>
+                <td>{{ category2.id }}</td>
+                <td>{{ category2.title }}</td>
+                <td>{{ category2.category3.title }}</td>
+                <td>
+                    <a href="{{ path('app_admin_category2_show', {'id': category2.id}) }}">show</a>
+                    <a href="{{ path('app_admin_category2_edit', {'id': category2.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_admin_category2_new') }}">Create new</a>
+{% endblock %}

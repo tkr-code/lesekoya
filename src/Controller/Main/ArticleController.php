@@ -102,21 +102,28 @@ class ArticleController extends AbstractController
     }
     /**
      * @Route("/boutique", name="articles")
-     * "/boutique/{parent}", name="articles_parent"
+     * @Route("/boutique/{category3}", name="articles_category3")
+     * @Route("/boutique/{category3}/{category2}", name="articles_category2")
      * @Route("/boutique/{category}", name="articles_category")
      */
-    public function index(string $parent = null, string $category = null, 
+    public function index(string $parent = null, string $category = null, string $category3 = null,
+        string $category2 = null,
         ParentCategoryRepository $parentCategoryRepository, Request $request, PaginatorInterface $paginator, 
         ArticleRepository $articleRepository, CategoryRepository $categoryRepository, BrandRepository $brandRepository): Response
     {
         $category = str_replace('-',' ',$category);
         $search = new ArticleSearch();
+        $route_name = $request->attributes->get('_route');
         $search->setCategory($category);
+        if($route_name == 'articles_category3'){
+            $search->setCategory3($category3);
+        }
 
         $form = $this->createForm(ArticleSearchType::class,$search)->handleRequest($request);
         $pagination = $paginator->paginate(
             $articleRepository->search(
                 $search->getMots(),
+                $search->getCategory3(),
                 $search->getCategory(),
                 $search->getMinPrice(),
                 $search->getMaxPrice(),
