@@ -64,8 +64,8 @@
             <div class="header-top">
                 <div class="container">
                     <div class="header-left">
-                        <a href="tel:{{site.phone_1}}">
-                            <i class="icon-phone"></i> {{'Call'|trans}}: {{ site.phone_number_1 }}</a>
+                        <a href="tel:{{site.tel_1}}">
+                            <i class="icon-phone"></i> {{'Call'|trans}}: {{ site.tel_1 }}</a>
                     </div>
                     <!-- End .header-left -->
 
@@ -233,7 +233,8 @@
 
                                     </ul>
                                 </li>
-                                {% endif %} {% if is_granted('ROLE_EDITOR') %}
+                                {% endif %} 
+                                {% if is_granted('ROLE_EDITOR') %}
                                 <li class="">
                                     <a href="{{ path('admin') }}" class="sf-with-ul">{{'Dashboard'|trans}}</a>
                                     <ul style="display: none;">
@@ -369,7 +370,7 @@
 
             <div class="footer-bottom">
                 <div class="container">
-                    <p class="footer-copyright">Copyright © <span id="year"></span> LEST.
+                    <p class="footer-copyright">Copyright © <span id="year"></span> {{ app_name }}.
                         {{'All Rights Reserved'|trans}}.</p>
                     <!-- End .footer-copyright -->
                 </div>

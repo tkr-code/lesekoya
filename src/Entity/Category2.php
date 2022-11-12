@@ -26,6 +26,10 @@ class Category2
      * @ORM\Column(type="string", length=255)
      */
     private $title;
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
 
     /**
      * @ORM\OneToMany(targetEntity=Category::class, mappedBy="category2")
@@ -52,12 +56,18 @@ class Category2
         return $this->title;
     }
     public function getSlug()
+    {   
+        return $this->slug;
+    }
+    
+    public function setSlug(string $slug): self
     {
         $Slugify = new Slugify();
-        
-        return $Slugify->slugify($this->title);
-    }
+        $slug = $Slugify->slugify($slug);
+        $this->slug = $slug;
 
+        return $this;
+    }
     public function setTitle(string $title): self
     {
         $this->title = $title;

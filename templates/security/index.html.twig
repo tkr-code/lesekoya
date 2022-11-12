@@ -1,75 +1,75 @@
-{% extends site.base ~"/base.html.twig" %}
+{% extends base ~"/base.html.twig" %}
 {% import "macros/alertes.html.twig" as alerte %}
 
 {% block main %}
-	<nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
-		<div class="container">
-			<ol class="breadcrumb">
-				<li class="breadcrumb-item">
-					<a href="/">{{'Home'|trans}}</a>
-				</li>
-				<li class="breadcrumb-item active" aria-current="page">{{'Login'|trans}}</li>
-			</ol>
-		</div>
-		<!-- End .container -->
-	</nav>
-	<!-- End .breadcrumb-nav -->
-	<div class="container bg-white rounded p-3">
-		<div class="row">
-			<div class="col-md-6">
-				<form method="post">
-			{% for item in app.flashes('success') %}
-			{{ alerte.alert(item,'success')}}
-			{% endfor %}
-			{% for item in app.flashes('info') %}
-			{{ alerte.alert(item,'info')}}
-			{% endfor %}
-			{% if error %}
-			<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security')
-				}}</div>
-			{% endif %}
-			<div class="form-group">
-				<label for="inputEmail">Adresse email *</label>
-				<input type="email" value="{{ last_username|default('admin@store.com') }}" name="email" id="inputEmail"
-					placeholder="email" class="form-control" autocomplete="email" required
-					autofocus>
-			</div>
-			<!-- End .form-group -->
-
-			<div class="form-group">
-				<label for="inputPassword">Mot de passe *</label>
-				<input type="password" name="password" id="inputPassword" placeholder="password"
-					class="form-control" value="password" autocomplete="current-password" required>
-				<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-			</div>
-			<!-- End .form-group -->
-
-			<div class="form-footer">
-				<button type="submit" class="btn btn-outline-primary">
-					<span>Se connecter</span>
-					<i class="icon-long-arrow-right"></i>
-				</button>
-
-				<div class="custom-control custom-checkbox">
-					<input type="checkbox" class="custom-control-input" id="signin-remember-2">
-					<label class="custom-control-label" for="signin-remember-2">Se souvenir de moi</label>
-				</div>
-				<!-- End .custom-checkbox -->
-
-				<a href="{{ path('app_forgot_password_request') }}" class="forgot-link">Mot de passe oubié ?</a>
-			</div>
-			<div class="text-center">
-				<a href="{{ path('app_register') }}" class="btn btn-outline-primary mx-auto">
-					{{'Create an account'|trans}}
-				</a>
-			</div>
-			<!-- End .form-footer -->
-		</form>		
-			</div>
-		</div>
-
+<nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+	<div class="container">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item">
+				<a href="/">{{'Home'|trans}}</a>
+			</li>
+			<li class="breadcrumb-item active" aria-current="page">{{'Login'|trans}}</li>
+		</ol>
 	</div>
-	<!-- End .login-page section-bg -->
+	<!-- End .container -->
+</nav>
+<!-- End .breadcrumb-nav -->
+<div class="container bg-white rounded p-3">
+	<div class="row">
+		<div class="col-md-6">
+			<form method="post">
+				{% for item in app.flashes('success') %}
+				{{ alerte.alert(item,'success')}}
+				{% endfor %}
+				{% for item in app.flashes('info') %}
+				{{ alerte.alert(item,'info')}}
+				{% endfor %}
+				{% if error %}
+				<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security')
+					}}</div>
+				{% endif %}
+				<div class="form-group">
+					<label for="inputEmail">Adresse email *</label>
+					<input type="email" value="{{ last_username|default('admin@store.com') }}" name="email"
+						id="inputEmail" placeholder="email" class="form-control" autocomplete="email" required
+						autofocus>
+				</div>
+				<!-- End .form-group -->
+
+				<div class="form-group">
+					<label for="inputPassword">Mot de passe *</label>
+					<input type="password" name="password" id="inputPassword" placeholder="password"
+						class="form-control" value="password" autocomplete="current-password" required>
+					<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+				</div>
+				<!-- End .form-group -->
+
+				<div class="form-footer">
+					<button type="submit" class="btn btn-outline-primary">
+						<span>Se connecter</span>
+						<i class="icon-long-arrow-right"></i>
+					</button>
+
+					<div class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" id="signin-remember-2">
+						<label class="custom-control-label" for="signin-remember-2">Se souvenir de moi</label>
+					</div>
+					<!-- End .custom-checkbox -->
+
+					<a href="{{ path('app_forgot_password_request') }}" class="forgot-link">Mot de passe oubié ?</a>
+				</div>
+				<div class="text-center">
+					<a href="{{ path('app_register') }}" class="btn btn-outline-primary mx-auto">
+						{{'Create an account'|trans}}
+					</a>
+				</div>
+				<!-- End .form-footer -->
+			</form>
+		</div>
+	</div>
+
+</div>
+<!-- End .login-page section-bg -->
 
 <!-- End .main -->
 {% endblock %}

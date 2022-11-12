@@ -20,9 +20,18 @@ class CustomerDetailType extends AbstractType
     {
         $builder
     
-            ->add('personne',PersonneType::class,[
-                'label'=>false
-            ])
+        ->add('first_name', TextType::class, [
+            'label' => 'Prénom *',
+            'attr' => [
+                'placeholder' => "prénom",
+            ]
+        ])
+        ->add('last_name', TextType::class, [
+            'label' => 'Nom *',
+            'attr' => [
+                'placeholder' => 'Nom',
+            ]
+        ])
             ->add('phone_number',TextType::class)
             // ->add('email',EmailType::class)
         ;

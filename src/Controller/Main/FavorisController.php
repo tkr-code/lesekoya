@@ -18,9 +18,7 @@ class FavorisController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('lest/favoris/index.html.twig', [
-            'controller_name' => 'FavorisController',
-        ]);
+        return $this->render($this->getParameter('template').'/favoris/index.html.twig');
     }
     /**
      * @Route("/favoris/add/{id}", name="favoris_add")

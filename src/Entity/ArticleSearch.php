@@ -17,6 +17,8 @@ class ArticleSearch{
      */
     private $category;
 
+    private $category2;
+    
     private $category3;
     /**
      * @Assert\Range(
@@ -35,6 +37,8 @@ class ArticleSearch{
     private $brand;
 
     private $etat;
+
+    private $cat;
 
     /**
      * Get the value of maxPrice
@@ -172,6 +176,26 @@ class ArticleSearch{
     public function setCategory3($category3)
     {
         $this->category3 = $category3;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of category2
+     */ 
+    public function getCategory2()
+    {
+        return $this->category2;
+    }
+
+    /**
+     * Set the value of category2
+     *
+     * @return  self
+     */ 
+    public function setCategory2($category2)
+    {
+        $this->category2 = $category2;
 
         return $this;
     }

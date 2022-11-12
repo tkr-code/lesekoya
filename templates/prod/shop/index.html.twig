@@ -20,7 +20,139 @@
 		</div>
 		<!-- End .container -->
 	</nav>
-	<!-- End .breadcrumb-nav -->
+
+	<div class="page-content">
+		<div class="container">
+		
+			<div class="row">
+				<div class="col-lg-9">
+					<div class="toolbox">
+						<div class="toolbox-left">
+							<div class="toolbox-info">
+								{{'Showing'|trans}} <span>{{ articles|length}} of {{ articles.totalItemCount }}</span> {{'Products'|trans}}
+							</div><!-- End .toolbox-info -->
+						</div><!-- End .toolbox-left -->
+
+						<div class="toolbox-right">
+							<div class="toolbox-sort">
+								<label for="sortby">{{'Sort by'|trans}}:</label>
+								<div class="select-custom">
+									<select name="sortby" id="sortby" class="form-control">
+										<option value="popularity" selected="selected">Most Popular</option>
+										<option value="rating">Most Rated</option>
+										<option value="date">Date</option>
+									</select>
+								</div>
+							</div><!-- End .toolbox-sort -->
+							{% set cols_article = app.request.session.get('cols') %}
+							<div class="toolbox-layout">
+								<a href="{{ path('cols',{cols:'list'}) }}" class="btn-layout {{ ( cols_article == 'list' or cols_article is null) ? 'active':'' }}">
+									<svg width="16" height="10">
+										<rect x="0" y="0" width="4" height="4"></rect>
+										<rect x="6" y="0" width="10" height="4"></rect>
+										<rect x="0" y="6" width="4" height="4"></rect>
+										<rect x="6" y="6" width="10" height="4"></rect>
+									</svg>
+								</a>
+
+								<a href="#" class="btn-layout">
+									<svg width="10" height="10">
+										<rect x="0" y="0" width="4" height="4"></rect>
+										<rect x="6" y="0" width="4" height="4"></rect>
+										<rect x="0" y="6" width="4" height="4"></rect>
+										<rect x="6" y="6" width="4" height="4"></rect>
+									</svg>
+								</a>
+
+								<a href="#" class="btn-layout">
+									<svg width="16" height="10">
+										<rect x="0" y="0" width="4" height="4"></rect>
+										<rect x="6" y="0" width="4" height="4"></rect>
+										<rect x="12" y="0" width="4" height="4"></rect>
+										<rect x="0" y="6" width="4" height="4"></rect>
+										<rect x="6" y="6" width="4" height="4"></rect>
+										<rect x="12" y="6" width="4" height="4"></rect>
+									</svg>
+								</a>
+
+								<a href="{{ path('cols',{cols:'4cols'}) }}" class="btn-layout {{ (cols_article == '4cols') ? 'active':'' }}">
+									<svg width="22" height="10">
+										<rect x="0" y="0" width="4" height="4"></rect>
+										<rect x="6" y="0" width="4" height="4"></rect>
+										<rect x="12" y="0" width="4" height="4"></rect>
+										<rect x="18" y="0" width="4" height="4"></rect>
+										<rect x="0" y="6" width="4" height="4"></rect>
+										<rect x="6" y="6" width="4" height="4"></rect>
+										<rect x="12" y="6" width="4" height="4"></rect>
+										<rect x="18" y="6" width="4" height="4"></rect>
+									</svg>
+								</a>
+							</div><!-- End .toolbox-layout -->
+						</div><!-- End .toolbox-right -->
+					</div><!-- End .toolbox -->
+					{% if cols_article == 'list' %}
+					{% include base ~"/shop/_articles_list.html.twig" %}
+					{% elseif cols_article == '4cols' %}
+					{% include base ~"/shop/_articles_4cols.html.twig" %}
+					{% else %}
+					{% include base ~"/shop/_articles_list.html.twig" %}
+					{% endif %}
+				</div><!-- End .col-lg-9 -->
+				<aside class="col-lg-3 order-lg-first">
+					<div class="sidebar sidebar-shop">
+						<div class="widget widget-clean">
+							<label>Filters:</label>
+							<a href="{{ path('articles') }}" class="sidebar-filter-clear">Annuler les filtres</a>
+							{# <a href="#" class="">Clean All</a> #}
+						</div><!-- End .widget widget-clean -->
+
+						<div class="widget widget-collapsible">
+							<form method="get">
+								<div class="form-row">
+									<div class="form-group col-md-12 col-12">
+										<input type="number" id="minPrice" value="{{ app.request.get('minPrice') }}"
+											width="100px" name="minPrice" placeholder="Prix Min" class="form-control">
+									</div>
+									<div class="form-group col-md-12 col-12">
+										<input type="number" id="maxPrice" value="{{ app.request.get('maxPrice') }}"
+											width="100px" name="maxPrice" placeholder="Prix Max" class="form-control">
+									</div>
+
+									<div class="form-group col-md-12 col-12">
+										<select class="custom-select" style="height:41px;font-size:14px" name="brand"
+											id="brand">
+											<option value="">Toutes les Marques</option>
+											{% for item in brands %}
+											<option {{ app.request.get('brand')==item.name ? 'selected' :'' }}
+												value="{{ item.name }}">{{ item.name }}</option>
+											{% endfor %}
+										</select>
+									</div>
+									<div class="form-group col-md-12 col-12">
+										<select class="custom-select" style="height:41px;font-size:14px" name="etat"
+											id="brand">
+											<option value="">Tous les états</option>
+											<option {{ app.request.get('etat')=='Neuf' ? 'selected' :'' }} value="Neuf">
+												Neuf</option>
+											<option {{ app.request.get('etat')=='Reconditionné' ? 'selected' :'' }}
+												value="Reconditionné">Reconditionné</option>
+											<option {{ app.request.get('etat')=='Occasion' ? 'selected' :'' }}
+												value="Occasion">Occasion</option>
+										</select>
+									</div>
+									<div class="form-group col-md-2 col-12">
+										<button type="submit" width="90px" class="btn btn-primary">Appliquer</button>
+									</div>
+								</div>
+							</form>
+						</div><!-- End .widget -->
+					</div><!-- End .sidebar sidebar-shop -->
+				</aside><!-- End .col-lg-3 -->
+			</div><!-- End .row -->
+		</div><!-- End .container -->
+	</div><!-- End .page-content -->
+</main>
+{# <main class="main">
 
 	<div class="page-content">
 		<div class="container">
@@ -40,7 +172,7 @@
 										<input type="number" id="maxPrice" value="{{ app.request.get('maxPrice') }}"
 											width="100px" name="maxPrice" placeholder="Prix Max" class="form-control">
 									</div>
-									
+
 									<div class="form-group col-md-3 col-12">
 										<select class="custom-select" style="height:41px;font-size:14px" name="brand"
 											id="brand">
@@ -87,7 +219,7 @@
 
 					<hr class="my-5">
 					<!-- End .toolbox -->
-					{% include "lest/shop/_articles_list.html.twig" %}
+					{% include base ~"/shop/_articles_list.html.twig" %}
 				</div>
 				<!-- End .col-lg-9 -->
 
@@ -113,9 +245,9 @@
 										</div>
 										{% for item in categories.all %}
 										<div class="filter-item">
-											<a href="{{path('articles_category',{category:item.slug}) }}" 
-											{{ item.slug==app.request.get( 'category' ) ? 'class="active"' : '' }}>
-											{{item.title }}</a>
+											<a href="{{path('articles_category',{category3_slug:item.category2.category3.slug,category2_slug:item.category2.slug, category:item.slug}) }}"
+												{{ item.slug==app.request.get( 'category' ) ? 'class="active"' : '' }}>
+												{{item.title }}</a>
 											<span class="item-count">{{ item.articles|length }}</span>
 										</div>
 										{% endfor %}
@@ -145,5 +277,5 @@
 	</div>
 	<!-- End .page-content -->
 </main>
-<!-- End .main -->
+<!-- End .main --> #}
 {% endblock %}

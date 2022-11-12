@@ -1,0 +1,11 @@
+<div class="products mb-3">
+	<div class="row justify-content-center">
+		{% for item in articles %}
+			{% include base ~"/shop/_article.html.twig" %}
+		{% else %}
+		{% include base ~ "/shop/_articles_empty.html.twig" %}
+		{% endfor %}
+	</div>
+	<!-- End .row -->
+</div>
+{% include base ~ "/shop/_pagination.html.twig" %}

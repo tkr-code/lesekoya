@@ -14,11 +14,12 @@ twig:
         site:
             version: '1.0' 
             name: 'lesekoya'
+            desc: 'Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus.'
             email: 'contact@store.sn'
             path_logo: 'lesekoya2.png'
             path_logo_icon: 'lesekoya-icon.png'
-            current_name: 'F CFA'
-            current: 'XOF'
+            current_name: '$'
+            current: 'USD'
             tel_1: '221781278288'
             link: "https://lest.sn"
             mission_text: 'text à definir'

@@ -20,9 +20,18 @@ class User1Type extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('personne',PersonneType::class,[
-                'label'=>false
-            ])
+        ->add('first_name', TextType::class, [
+            'label' => 'Prénom *',
+            'attr' => [
+                'placeholder' => "prénom",
+            ]
+        ])
+        ->add('last_name', TextType::class, [
+            'label' => 'Nom *',
+            'attr' => [
+                'placeholder' => 'Nom',
+            ]
+        ])
             ->add('email',EmailType::class,[
                 'attr'=>[
                     'placeholder'=>'Email'

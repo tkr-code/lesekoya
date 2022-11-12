@@ -1,0 +1,28 @@
+                	<div class="row">
+                		<div class="col-md-4">
+                			<div class="contact-box text-center">
+        						<h3>{{'Office'|trans}}</h3>
+
+        						<address> {{ site.adresse }}, {{ site.ville }}, <br>{{ site.code_postal }}, {{ site.pays}}</address>
+        					</div><!-- End .contact-box -->
+                		</div><!-- End .col-md-4 -->
+
+                		<div class="col-md-4">
+                			<div class="contact-box text-center">
+        						<h3>{{'Start a Conversation'|trans}}</h3>
+
+        						<div><a href="mailto:#">{{ site.email }}</a></div>
+        						<div><a href="tel:{{site.tel_1}}">{{ site.tel_1|phone_format }}</a></div>
+        					</div><!-- End .contact-box -->
+                		</div><!-- End .col-md-4 -->
+
+                		<div class="col-md-4">
+                			<div class="contact-box text-center">
+        						<h3>{{'Social'|trans}}</h3>
+        						<div class="social-icons social-icons-color justify-content-center">
+			    					<a href="{{ site.facebook }}" class="social-icon social-facebook" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
+			    					<a href="{{ site.whatsapp }}" class="social-icon social-whatsapp text-success" title="Whatsapp" target="_blank"><i class="icon-whatsapp"></i></a>
+			    				</div><!-- End .soial-icons -->
+        					</div><!-- End .contact-box -->
+                		</div><!-- End .col-md-4 -->
+                	</div><!-- End .row -->

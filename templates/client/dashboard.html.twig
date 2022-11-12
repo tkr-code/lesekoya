@@ -1,4 +1,4 @@
-{% extends "lest/base.html.twig" %}
+{% extends base ~ "/base.html.twig" %}
 {% import "macros/head.html.twig" as head %}
 {% import "macros/foot.html.twig" as foot %}
 {% import "macros/table.html.twig" as table %}
@@ -86,7 +86,7 @@
 							<div class="tab-content">
 								<div class="tab-pane fade {{ app.request.query.get('tab') == null ? 'show active':'' }}" id="tab-dashboard" role="tabpanel" aria-labelledby="tab-dashboard-link">
 									<p>Hello
-										<span class="font-weight-normal text-dark">{{ app.user.personne.fullName
+										<span class="font-weight-normal text-dark">{{ app.user.fullName
 										}}</span>
 										<br>
 										À partir du tableau de bord de votre compte, vous pouvez afficher
@@ -169,8 +169,8 @@
 													<h3 class="card-title">{{'Billing Address'|trans}}</h3>
 													<!-- End .card-title -->
 
-													<p>{{ app.user.personne.lastName }}<br>
-														{{ app.user.personne.firstName }}
+													<p>{{ app.user.lastName }}<br>
+														{{ app.user.firstName }}
 														<br>
 														{% if app.user.adresse is not null %}
 
@@ -232,13 +232,13 @@
 															<div class="row">
 																<div class="col-sm-6">
 																	<label>First Name *</label>
-																	{{ form_row(formDetail.personne.firstName)}}
+																	{{ form_row(formDetail.first_name)}}
 																</div>
 																<!-- End .col-sm-6 -->
 
 																<div class="col-sm-6">
 																	<label>Last Name *</label>
-																	{{ form_widget(formDetail.personne.lastName)}}
+																	{{ form_widget(formDetail.last_name)}}
 																</div>
 																<!-- End .col-sm-6 -->
 																<div class="col-sm-6">

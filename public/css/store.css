@@ -1,3 +1,56 @@
 .loader{
     display: none;
 }
+#loader-app {
+    margin: 0 auto;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    z-index: 9999;
+    color: #222;
+    font-weight: bold;
+    background: #fff;
+    text-align: center;
+}
+
+.js-loader {
+    z-index        : 1041;
+    position       : fixed;
+    width          : 100%;
+    height         : 100%;
+    background     : #97383863;
+    display        : none;
+    justify-content: center;
+    align-items    : center
+}
+
+.modal-js-loader {
+    z-index        : 1041;
+    width          : 100%;
+    height         : 100%;
+    background     : #97383863;
+    display        : none;
+    justify-content: center;
+    align-items    : center
+}
+
+.js-loader p {
+    text-align: center
+}
+
+.modal-js-loader-content {
+    padding   : 10px;
+    width     : 100%;
+    height    : 200px;
+    background: #fff;
+}
+
+.js-loader-content {
+    padding      : 10px;
+    width        : 300px;
+    background   : #fff;
+    border-radius: 15px
+}

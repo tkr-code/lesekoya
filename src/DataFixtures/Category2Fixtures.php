@@ -14,24 +14,66 @@ class Category2Fixtures extends Fixture implements DependentFixtureInterface
         $categorys = 
         [
             [
-                'title'=>'Ordinateurs portable & Bureau',
-                'parent'=>'Eléctroniques'
+                'parent'=>'Eléctroniques',
+                'cat'=>[
+                    'Ordinateurs portable et Ordinateur',
+                    'Téléphone portable',
+                    'Télévision et vidéo',
+                    'Caméras digitales'
+                ]
             ],
             [
-                'title'=>'Téléphone portable',
-                'parent'=>'Eléctroniques'
+                'parent'=>'Meuble',
+                'cat'=>[
+                    'Chambre',
+                    'Salon',
+                    'Bureau',
+                    'Cuisine et salle à manger',
+                ]
             ],
             [
-                'title'=>'Caméra Digital',
-                'parent'=>'Eléctroniques'
+                'parent'=>'Cuisine',
+                'cat'=>[
+                    'Ustensiles de cuisine',
+                    'Appareils de cuisson',
+                    'Vaisselle et dessus de table',
+                ]
             ],
+            [
+                'parent'=>'Vêtements',
+                'cat'=>[
+                    'Hommes',
+                    'Femmes',
+                ]
+            ]
+            // [
+            //     'parent'=>'Téléphones portables',
+            //     'cat'=>[
+            //         "Téléphones de l'opérateur",
+            //         'Téléphones déverrouillés',
+            //         'Étuis pour téléphones portables',
+            //         'Chargeurs de téléphones portables',
+            //     ]
+            // ],
+            // [
+            //     'parent'=>'Caméras digitales',
+            //     'cat'=>[
+            //         'Appareils photo reflex numériques',
+            //         "Caméras de sport et d'action"
+            //     ]
+            // ]
+
         ];
         foreach ($categorys as $key => $value) {
-            $category3 = new Category2();
-            $category3->setTitle($value['title']);
-            $category3->setCategory3($this->getReference('niveau_3'.$value['parent']));
-            $this->addReference('niveau_2'.str_replace(' ','_',$value['title']),$category3);
-            $manager->persist($category3);
+            $parent = $this->getReference('niveau_3'.$value['parent']);
+            foreach ($value['cat'] as $key => $value2) {
+                $category3 = new Category2();
+                $category3->setTitle($value2);
+                $category3->setSlug($value2);
+                $category3->setCategory3($parent);
+                $this->addReference('niveau_2'.str_replace(' ','_',$value2),$category3);
+                $manager->persist($category3);
+            }
         }
 
         $manager->flush();

@@ -25,7 +25,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ArticleController extends AbstractController
 {
     /**
-     * @Route("boutique/{category}/{slug}/{id}", name="articles_show", requirements={"slug": "[a-z0-9\-]*"} )
+     * @Route("article/{category}/{slug}/{id}", name="articles_show", requirements={"slug": "[a-z0-9\-]*"} )
      */
     public function show( PaginatorInterface $paginatorInterface, CommentRepository $commentRepository, ArticleBuyRepository $articleBuyRepository, Article $article,string $category, string $slug, Request $request, ArticleRepository $articleRepository): Response
     {
@@ -103,8 +103,8 @@ class ArticleController extends AbstractController
     /**
      * @Route("/boutique", name="articles")
      * @Route("/boutique/{category3}", name="articles_category3")
-     * @Route("/boutique/{category3}/{category2}", name="articles_category2")
-     * @Route("/boutique/{category}", name="articles_category")
+     * @Route("/boutique/{category3_slug}/{category2}", name="articles_category2")
+     * @Route("/boutique/{category3_slug}/{category2_slug}/{category}", name="articles_category")
      */
     public function index(string $parent = null, string $category = null, string $category3 = null,
         string $category2 = null,
@@ -114,9 +114,12 @@ class ArticleController extends AbstractController
         $category = str_replace('-',' ',$category);
         $search = new ArticleSearch();
         $route_name = $request->attributes->get('_route');
+        if($route_name == 'articles_category'){
         $search->setCategory($category);
-        if($route_name == 'articles_category3'){
+        }elseif($route_name == 'articles_category3'){
             $search->setCategory3($category3);
+        }elseif($route_name == 'articles_category2'){
+            $search->setCategory2($category2);
         }
 
         $form = $this->createForm(ArticleSearchType::class,$search)->handleRequest($request);
@@ -124,6 +127,7 @@ class ArticleController extends AbstractController
             $articleRepository->search(
                 $search->getMots(),
                 $search->getCategory3(),
+                $search->getCategory2(),
                 $search->getCategory(),
                 $search->getMinPrice(),
                 $search->getMaxPrice(),
@@ -133,6 +137,19 @@ class ArticleController extends AbstractController
             $request->query->getInt('page',1),
             12
         );
+        // dd(
+        //     $articleRepository->search(
+        //         $search->getMots(),
+        //         $search->getCategory3(),
+        //         $search->getCategory2(),
+        //         $search->getCategory(),
+        //         $search->getMinPrice(),
+        //         $search->getMaxPrice(),
+        //         $search->getBrand(),
+        //         $search->getEtat()
+        //     )
+        //     );
+        // dump($pagination);
         return $this->renderForm($this->getParameter('template').'/shop/index.html.twig', [
             'articles' => $pagination,
             'form'=>$form,

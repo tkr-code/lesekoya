@@ -1,8 +1,6 @@
+{% set route_name = app.request.get('_route') %}
 <!DOCTYPE html>
 <html lang="en">
-
-
-<!-- molla/index-14.html  22 Nov 2019 09:59:31 GMT -->
 
 <head>
     <meta charset="UTF-8">
@@ -15,18 +13,23 @@
     <meta name="description" content="{{ app_name }} - Boutique de vente en ligne">
     <meta name="author" content="p-themes">
     <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/icons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/icons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/icons/favicon-16x16.png">
-    <link rel="manifest" href="assets/images/icons/site.html">
-    <link rel="mask-icon" href="assets/images/icons/safari-pinned-tab.svg" color="#666666">
-    <link rel="shortcut icon" href="assets/images/icons/favicon.ico">
+    {#
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/icons/apple-touch-icon.png"> #}
+    {#
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/icons/favicon-32x32.png"> #}
+    {#
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/icons/favicon-16x16.png"> #}
+    {#
+    <link rel="manifest" href="assets/images/icons/site.html"> #}
+    <link rel="mask-icon" href="{{ asset('assets/images/icons/safari-pinned-tab.svg') }}" color="#666666">
+    <link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}">
     <meta name="apple-mobile-web-app-title" content="{{ app_name }}">
     <meta name="application-name" content="{{ app_name }}">
     <meta name="msapplication-TileColor" content="#cc9966">
     <meta name="msapplication-config" content="{{ asset('assets/images/icons/browserconfig.xml') }}">
     <meta name="theme-color" content="#ffffff">
-    <link rel="stylesheet" href="{{ asset('assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css') }}">
     <!-- Plugins CSS File -->
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/plugins/owl-carousel/owl.carousel.css') }}">
@@ -34,9 +37,12 @@
     <link rel="stylesheet" href="{{ asset('assets/css/plugins/jquery.countdown.css') }}">
     <!-- Main CSS File -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    {% if app.request.get('_route') == 'home' %}
     <link rel="stylesheet" href="{{ asset('assets/css/skins/skin-demo-14.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/demos/demo-14.css') }}">
+    {% endif %}
     <link rel="stylesheet" href="{{ asset('css/lesekoya.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/store.css') }}">
 </head>
 <style>
     .btn-primary:hover,
@@ -136,48 +142,51 @@
     .cart-dropdown .product-title a:focus {
         /* color: #222; */
     }
+
+    label.required {
+        color: #666;
+        font-weight: 300;
+        font-size: 1.4rem;
+        margin: 0 0 1.1rem
+    }
 </style>
 
 <body>
+    <div id="loader-app">
+        <div class="loader-app">
+            <img width="40%" src="{{ asset('img/' ~ site.path_logo) }}" class="d-block mx-auto" alt="">
+            chargement...
+        </div>
+    </div>
+    <div class="js-loader js-loader-hide">
+        <div class="text-center js-loader-content">
+            <div class="spinner-border d-inline-block" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+            <p class="js-loader-text">Chargement...</p>
+        </div>
+    </div>
     <div class="page-wrapper">
         <header class="header header-14">
             <div class="header-top">
                 <div class="container">
                     <div class="header-left">
-                        <a href="tel:#"><i class="icon-phone"></i>Call: +{{ site.tel_1 }}</a>
+                        <a href="tel:{{ site.tel_1 }}"><i class="icon-phone"></i>Call: +{{ site.tel_1|phone_format
+                            }}</a>
                     </div><!-- End .header-left -->
 
                     <div class="header-right">
 
                         <ul class="top-menu">
                             <li>
-                                <a href="#">Links</a>
-                                <ul class="menus">
+                                <a href="#">Link</a>
+                                <ul>
+                                    {% if not is_granted('ROLE_CLIENT') %}
                                     <li>
-                                        <div class="header-dropdown">
-                                            <a href="#">USD</a>
-                                            <div class="header-menu">
-                                                <ul>
-                                                    <li><a href="#">Eur</a></li>
-                                                    <li><a href="#">Usd</a></li>
-                                                </ul>
-                                            </div><!-- End .header-menu -->
-                                        </div><!-- End .header-dropdown -->
+                                        <a href="#signin-modal" data-toggle="modal">
+                                            Identifiez-vous / Créer un compte</a>
                                     </li>
-                                    <li>
-                                        <div class="header-dropdown">
-                                            <a href="#">Engligh</a>
-                                            <div class="header-menu">
-                                                <ul>
-                                                    <li><a href="#">English</a></li>
-                                                    <li><a href="#">French</a></li>
-                                                </ul>
-                                            </div><!-- End .header-menu -->
-                                        </div><!-- End .header-dropdown -->
-                                    </li>
-                                    <li class="login">
-                                        <a href="#signin-modal" data-toggle="modal">Sign in / Sign up</a>
-                                    </li>
+                                    {% endif %}
                                 </ul>
                             </li>
                         </ul><!-- End .top-menu -->
@@ -190,11 +199,12 @@
                     <div class="row">
                         <div class="col-auto col-lg-3 col-xl-3 col-xxl-2">
                             <button class="mobile-menu-toggler">
-                                <span class="sr-only">Toggle mobile menu</span>
+                                <span class="sr-only">{{'Toggle mobile menu'|trans}}</span>
                                 <i class="icon-bars"></i>
                             </button>
                             <a href="/" class="logo">
-                                <img src="{{ asset('img/' ~ site.path_logo )}}" alt="{{ app_name }} Logo" width="105" height="25">
+                                <img src="{{ asset('img/' ~ site.path_logo )}}" alt="{{ app_name }} Logo" width="105"
+                                    height="25">
                             </a>
                         </div><!-- End .col-xl-3 col-xxl-2 -->
 
@@ -204,7 +214,7 @@
                                     <div
                                         class="header-search header-search-extended header-search-visible header-search-no-radius">
                                         <a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
-                                        <form action="#" method="get">
+                                        <form action="{{ path('articles') }}" method="get">
                                             <div class="header-search-wrapper search-wrapper-wide">
 
                                                 <div class="select-custom">
@@ -226,8 +236,8 @@
                                                         <option value="16">- Auto Tools &amp; Supplies</option>
                                                     </select>
                                                 </div><!-- End .select-custom -->
-                                                <label for="q" class="sr-only">Search</label>
-                                                <input type="search" class="form-control" name="q" id="q"
+                                                <label for="q" class="sr-only">{{'Search'|trans}}</label>
+                                                <input type="search" class="form-control" name="mots" id="q"
                                                     placeholder="Search product ..." required>
 
                                                 <button class="btn btn-primary" type="submit"><i
@@ -240,7 +250,7 @@
                                 <div class="col-lg-4 col-xxl-5col d-flex justify-content-end align-items-center">
                                     <div class="header-dropdown-link">
                                         {% if is_granted('ROLE_CLIENT') %}
-                                        <a href="{{ path('favoris_index') }}">
+                                        <a href="{{ path('favoris_index') }}" class="wishlist-link">
                                             <i class="icon-heart-o"></i>
                                             <span class="wishlist-count">
                                                 {{ app.user.favoris|length}}
@@ -248,7 +258,7 @@
                                             <span class="wishlist-txt">{{'Wishlist'|trans}}</span>
                                         </a>
                                         {% else %}
-                                        <a href="wishlist.html" class="wishlist-link js-favoris-login">
+                                        <a href="#" class="wishlist-link js-favoris-login">
                                             <i class="icon-heart-o"></i>
                                             <span class="wishlist-count">0</span>
                                             <span class="wishlist-txt">{{'Wishlist'|trans}}</span>
@@ -271,22 +281,24 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-auto col-lg-3 col-xl-3 col-xxl-2 header-left">
-                            <div class="dropdown category-dropdown show is-on" data-visible="true">
+                            <div class="dropdown category-dropdown {{ ( route_name == 'home') ? 'show':'' }} is-on"
+                                data-visible="true">
                                 <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"
                                     aria-haspopup="true" aria-expanded="false" data-display="static"
                                     title="Browse Categories">
-                                    Browse Categories
+                                    {{'Browse Categories'|trans}}
                                 </a>
 
-                                <div class="dropdown-menu show">
+                                <div class="dropdown-menu {{ ( route_name == 'home') ? 'show':'' }}">
                                     <nav class="side-nav">
                                         <ul class="menu-vertical sf-arrows">
                                             {% for item in categories.niveau3 %}
                                             <li class="megamenu-container">
-                                                <a {{ (item.categorys2|length > 0) ? 'class="sf-with-ul"':'' }}  href={{ path('articles_category3',{category3:item.slug}) }}><i
-                                                      {{ (item.icon is not null) ? 'class=' ~ item.icon ~ '':'' }}></i>
+                                                <a {{ (item.categorys2|length> 0) ? 'class="sf-with-ul"':'' }} href={{
+                                                    path('articles_category3',{category3:item.slug}) }}><i {{ (item.icon
+                                                        is not null) ? 'class=' ~ item.icon ~ '' :'' }}></i>
                                                     {{item.title}}
-                                                    </a>
+                                                </a>
                                                 {% if item.categorys2|length > 0 %}
                                                 <div class="megamenu">
                                                     <div class="row no-gutters">
@@ -294,28 +306,52 @@
                                                             <div class="menu-col">
                                                                 <div class="row">
                                                                     <div class="col-md-6">
-                                                                        {% for niveau2 in item.categorys2|slice(0,2)  %}
-                                                                        {% if niveau2.categorys|length > 0 %}
+
+                                                                        {% for niveau2 in item.categorys2|slice(0,2) %}
+                                                                        {% if niveau2.categorys|length > 0 or true %}
                                                                         <div class="menu-title">
                                                                             {{ niveau2.title }}
                                                                         </div><!-- End .menu-title -->
                                                                         <ul>
-                                                                            {% for item3 in niveau2.categorys|slice(0,5)  %} 
-                                                                               {% if item3.articles|length > 0 %}
-                                                                               <li>
-                                                                                   <a 
-                                                                                href="{{path('articles_category',{category:item3.slug}) }}">
-                                                                                {{item3.title}}
-                                                                            </a></li>
+                                                                            {% for item3 in niveau2.categorys|slice(0,5)
+                                                                            %}
+                                                                            {% if item3.articles|length > 0 or true %}
+                                                                            <li>
+                                                                                <a href={{path('articles_category',{
+                                                                                    category3_slug:item3.category2.category3.slug,category2_slug:item3.category2.slug,
+                                                                                    category:item3.slug}) }}>
+                                                                                    {{item3.title}}
+                                                                                </a>
+                                                                            </li>
                                                                             {% endif %}
                                                                             {% endfor %}
                                                                         </ul>
                                                                         {% endif %}
                                                                         {% endfor %}
-                                                                        
                                                                     </div><!-- End .col-md-6 -->
-                                                                    {# <div class="col-md-6">
-                                                                        <div class="menu-title">Cell Phones</div>
+                                                                    <div class="col-md-6">
+                                                                        {% for niveau2 in item.categorys2|slice(2,4) %}
+                                                                        {% if niveau2.categorys|length > 0 or true %}
+                                                                        <div class="menu-title">
+                                                                            {{ niveau2.title }}
+                                                                        </div><!-- End .menu-title -->
+                                                                        <ul>
+                                                                            {% for item3 in niveau2.categorys|slice(0,5)
+                                                                            %}
+                                                                            {% if item3.articles|length > 0 or true %}
+                                                                            <li>
+                                                                                <a href={{path('articles_category',{
+                                                                                    category3_slug:item3.category2.category3.slug,category2_slug:item3.category2.slug,
+                                                                                    category:item3.slug}) }}>
+                                                                                    {{item3.title}}
+                                                                                </a>
+                                                                            </li>
+                                                                            {% endif %}
+                                                                            {% endfor %}
+                                                                        </ul>
+                                                                        {% endif %}
+                                                                        {% endfor %}
+                                                                        {# <div class="menu-title">Cell Phones</div>
                                                                         <!-- End .menu-title -->
                                                                         <ul>
                                                                             <li><a href="#">Carrier Phones</a></li>
@@ -338,15 +374,15 @@
                                                                             </li>
                                                                             <li><a href="#">Camera Bags, Backpacks &
                                                                                     Cases</a></li>
-                                                                        </ul>
-                                                                    </div><!-- End .col-md-6 --> #}
+                                                                        </ul> #}
+                                                                    </div><!-- End .col-md-6 -->
                                                                 </div><!-- End .row -->
                                                             </div><!-- End .menu-col -->
                                                         </div><!-- End .col-md-8 -->
 
                                                         <div class="col-md-4">
                                                             <div class="banner banner-overlay">
-                                                                <a href="category.html" class="banner banner-menu">
+                                                                <a href="#" class="banner banner-menu">
                                                                     <img src="{{ asset('assets/images/demos/demo-13/menu/banner-1.jpg') }}"
                                                                         alt="Banner">
                                                                 </a>
@@ -357,270 +393,6 @@
                                                 {% endif %}
                                             </li>
                                             {% endfor %}
-                                            {# <li class="megamenu-container">
-                                                <a class="sf-with-ul" href="#"><i class="icon-couch"></i>Furniture</a>
-
-                                                <div class="megamenu">
-                                                    <div class="row no-gutters">
-                                                        <div class="col-md-8">
-                                                            <div class="menu-col">
-                                                                <div class="row">
-                                                                    <div class="col-md-6">
-                                                                        <div class="menu-title">Bedroom</div>
-                                                                        <!-- End .menu-title -->
-                                                                        <ul>
-                                                                            <li><a href="#">Beds, Frames & Bases</a>
-                                                                            </li>
-                                                                            <li><a href="#">Dressers</a></li>
-                                                                            <li><a href="#">Nightstands</a></li>
-                                                                            <li><a href="#">Kids' Beds & Headboards</a>
-                                                                            </li>
-                                                                            <li><a href="#">Armoires</a></li>
-                                                                        </ul>
-
-                                                                        <div class="menu-title">Living Room</div>
-                                                                        <!-- End .menu-title -->
-                                                                        <ul>
-                                                                            <li><a href="#">Coffee Tables</a></li>
-                                                                            <li><a href="#">Chairs</a></li>
-                                                                            <li><a href="#">Tables</a></li>
-                                                                            <li><a href="#">Futons & Sofa Beds</a></li>
-                                                                            <li><a href="#">Cabinets & Chests</a></li>
-                                                                        </ul>
-                                                                    </div><!-- End .col-md-6 -->
-
-                                                                    <div class="col-md-6">
-                                                                        <div class="menu-title">Office</div>
-                                                                        <!-- End .menu-title -->
-                                                                        <ul>
-                                                                            <li><a href="#">Office Chairs</a></li>
-                                                                            <li><a href="#">Desks</a></li>
-                                                                            <li><a href="#">Bookcases</a></li>
-                                                                            <li><a href="#">File Cabinets</a></li>
-                                                                            <li><a href="#">Breakroom Tables</a></li>
-                                                                        </ul>
-
-                                                                        <div class="menu-title">Kitchen & Dining</div>
-                                                                        <!-- End .menu-title -->
-                                                                        <ul>
-                                                                            <li><a href="#">Dining Sets</a></li>
-                                                                            <li><a href="#">Kitchen Storage Cabinets</a>
-                                                                            </li>
-                                                                            <li><a href="#">Bakers Racks</a></li>
-                                                                            <li><a href="#">Dining Chairs</a></li>
-                                                                            <li><a href="#">Dining Room Tables</a></li>
-                                                                            <li><a href="#">Bar Stools</a></li>
-                                                                        </ul>
-                                                                    </div><!-- End .col-md-6 -->
-                                                                </div><!-- End .row -->
-                                                            </div><!-- End .menu-col -->
-                                                        </div><!-- End .col-md-8 -->
-
-                                                        <div class="col-md-4">
-                                                            <div class="banner banner-overlay">
-                                                                <a href="category.html" class="banner banner-menu">
-                                                                    <img src="asset('assets/images/demos/demo-13/menu/banner-2.jpg') }}"
-                                                                        alt="Banner">
-                                                                </a>
-                                                            </div><!-- End .banner banner-overlay -->
-                                                        </div><!-- End .col-md-4 -->
-                                                    </div><!-- End .row -->
-                                                </div><!-- End .megamenu -->
-                                            </li>
-                                            <li class="megamenu-container">
-                                                <a class="sf-with-ul" href="#"><i
-                                                        class="icon-concierge-bell"></i>Cooking</a>
-
-                                                <div class="megamenu">
-                                                    <div class="menu-col">
-                                                        <div class="row">
-                                                            <div class="col-md-4">
-                                                                <div class="menu-title">Cookware</div>
-                                                                <!-- End .menu-title -->
-                                                                <ul>
-                                                                    <li><a href="#">Cookware Sets</a></li>
-                                                                    <li><a href="#">Pans, Griddles & Woks</a></li>
-                                                                    <li><a href="#">Pots</a></li>
-                                                                    <li><a href="#">Skillets & Grill Pans</a></li>
-                                                                    <li><a href="#">Kettles</a></li>
-                                                                    <li><a href="#">Soup & Stockpots</a></li>
-                                                                </ul>
-                                                            </div><!-- End .col-md-4 -->
-
-                                                            <div class="col-md-4">
-                                                                <div class="menu-title">Dinnerware & Tabletop</div>
-                                                                <!-- End .menu-title -->
-                                                                <ul>
-                                                                    <li><a href="#">Plates</a></li>
-                                                                    <li><a href="#">Cups & Mugs</a></li>
-                                                                    <li><a href="#">Trays & Platters</a></li>
-                                                                    <li><a href="#">Coffee & Tea Serving</a></li>
-                                                                    <li><a href="#">Salt & Pepper Shaker</a></li>
-                                                                </ul>
-                                                            </div><!-- End .col-md-4 -->
-
-                                                            <div class="col-md-4">
-                                                                <div class="menu-title">Cooking Appliances</div>
-                                                                <!-- End .menu-title -->
-                                                                <ul>
-                                                                    <li><a href="#">Microwaves</a></li>
-                                                                    <li><a href="#">Coffee Makers</a></li>
-                                                                    <li><a href="#">Mixers & Attachments</a></li>
-                                                                    <li><a href="#">Slow Cookers</a></li>
-                                                                    <li><a href="#">Air Fryers</a></li>
-                                                                    <li><a href="#">Toasters & Ovens</a></li>
-                                                                </ul>
-                                                            </div><!-- End .col-md-4 -->
-                                                        </div><!-- End .row -->
-
-                                                        <div class="row menu-banners">
-                                                            <div class="col-md-4">
-                                                                <div class="banner">
-                                                                    <a href="#">
-                                                                        <img src="asset('assets/images/demos/demo-13/menu/1.jpg') }}"
-                                                                            alt="image">
-                                                                    </a>
-                                                                </div><!-- End .banner -->
-                                                            </div><!-- End .col-md-4 -->
-
-                                                            <div class="col-md-4">
-                                                                <div class="banner">
-                                                                    <a href="#">
-                                                                        <img src="asset('assets/images/demos/demo-13/menu/2.jpg') }}"
-                                                                            alt="image">
-                                                                    </a>
-                                                                </div><!-- End .banner -->
-                                                            </div><!-- End .col-md-4 -->
-
-                                                            <div class="col-md-4">
-                                                                <div class="banner">
-                                                                    <a href="#">
-                                                                        <img src="asset('assets/images/demos/demo-13/menu/3.jpg') }}"
-                                                                            alt="image">
-                                                                    </a>
-                                                                </div><!-- End .banner -->
-                                                            </div><!-- End .col-md-4 -->
-                                                        </div><!-- End .row -->
-                                                    </div><!-- End .menu-col -->
-                                                </div><!-- End .megamenu -->
-                                            </li>
-                                            <li class="megamenu-container">
-                                                <a class="sf-with-ul" href="#"><i class="icon-tshirt"></i>Clothing</a>
-
-                                                <div class="megamenu">
-                                                    <div class="row no-gutters">
-                                                        <div class="col-md-8">
-                                                            <div class="menu-col">
-                                                                <div class="row">
-                                                                    <div class="col-md-6">
-                                                                        <div class="menu-title">Women</div>
-                                                                        <!-- End .menu-title -->
-                                                                        <ul>
-                                                                            <li><a href="#"><strong>New
-                                                                                        Arrivals</strong></a></li>
-                                                                            <li><a href="#"><strong>Best
-                                                                                        Sellers</strong></a></li>
-                                                                            <li><a
-                                                                                    href="#"><strong>Trending</strong></a>
-                                                                            </li>
-                                                                            <li><a href="#">Clothing</a></li>
-                                                                            <li><a href="#">Shoes</a></li>
-                                                                            <li><a href="#">Bags</a></li>
-                                                                            <li><a href="#">Accessories</a></li>
-                                                                            <li><a href="#">Jewlery & Watches</a></li>
-                                                                            <li><a href="#"><strong>Sale</strong></a>
-                                                                            </li>
-                                                                        </ul>
-                                                                    </div><!-- End .col-md-6 -->
-
-                                                                    <div class="col-md-6">
-                                                                        <div class="menu-title">Men</div>
-                                                                        <!-- End .menu-title -->
-                                                                        <ul>
-                                                                            <li><a href="#"><strong>New
-                                                                                        Arrivals</strong></a></li>
-                                                                            <li><a href="#"><strong>Best
-                                                                                        Sellers</strong></a></li>
-                                                                            <li><a
-                                                                                    href="#"><strong>Trending</strong></a>
-                                                                            </li>
-                                                                            <li><a href="#">Clothing</a></li>
-                                                                            <li><a href="#">Shoes</a></li>
-                                                                            <li><a href="#">Bags</a></li>
-                                                                            <li><a href="#">Accessories</a></li>
-                                                                            <li><a href="#">Jewlery & Watches</a></li>
-                                                                        </ul>
-                                                                    </div><!-- End .col-md-6 -->
-                                                                </div><!-- End .row -->
-                                                            </div><!-- End .menu-col -->
-                                                        </div><!-- End .col-md-8 -->
-
-                                                        <div class="col-md-4">
-                                                            <div class="banner banner-overlay">
-                                                                <a href="category.html" class="banner banner-menu">
-                                                                    <img src="asset('assets/images/demos/demo-13/menu/banner-3.jpg') }}"
-                                                                        alt="Banner">
-                                                                </a>
-                                                            </div><!-- End .banner banner-overlay -->
-                                                        </div><!-- End .col-md-4 -->
-                                                    </div><!-- End .row -->
-
-                                                    <div class="menu-col menu-brands">
-                                                        <div class="row">
-                                                            <div class="col-lg-2">
-                                                                <a href="#" class="brand">
-                                                                    <img src="asset('assets/images/brands/1.png') }}"
-                                                                        alt="Brand Name">
-                                                                </a>
-                                                            </div><!-- End .col-lg-2 -->
-
-                                                            <div class="col-lg-2">
-                                                                <a href="#" class="brand">
-                                                                    <img src="asset('assets/images/brands/2.png') }}"
-                                                                        alt="Brand Name">
-                                                                </a>
-                                                            </div><!-- End .col-lg-2 -->
-
-                                                            <div class="col-lg-2">
-                                                                <a href="#" class="brand">
-                                                                    <img src="asset('assets/images/brands/3.png') }}"
-                                                                        alt="Brand Name">
-                                                                </a>
-                                                            </div><!-- End .col-lg-2 -->
-
-                                                            <div class="col-lg-2">
-                                                                <a href="#" class="brand">
-                                                                    <img src="asset('assets/images/brands/4.png') }}"
-                                                                        alt="Brand Name">
-                                                                </a>
-                                                            </div><!-- End .col-lg-2 -->
-
-                                                            <div class="col-lg-2">
-                                                                <a href="#" class="brand">
-                                                                    <img src="asset('assets/images/brands/5.png') }}"
-                                                                        alt="Brand Name">
-                                                                </a>
-                                                            </div><!-- End .col-lg-2 -->
-
-                                                            <div class="col-lg-2">
-                                                                <a href="#" class="brand">
-                                                                    <img src="asset('assets/images/brands/6.png') }}"
-                                                                        alt="Brand Name">
-                                                                </a>
-                                                            </div><!-- End .col-lg-2 -->
-                                                        </div><!-- End .row -->
-                                                    </div><!-- End .menu-brands -->
-                                                </div><!-- End .megamenu -->
-                                            </li>
-                                            <li><a href="#"><i class="icon-blender"></i>Home Appliances</a></li>
-                                            <li><a href="#"><i class="icon-heartbeat"></i>Healthy & Beauty</a></li>
-                                            <li><a href="#"><i class="icon-shoe-prints"></i>Shoes & Boots</a></li>
-                                            <li><a href="#"><i class="icon-map-signs"></i>Travel & Outdoor</a></li>
-                                            <li><a href="#"><i class="icon-mobile-alt"></i>Smart Phones</a></li>
-                                            <li><a href="#"><i class="icon-tv"></i>TV & Audio</a></li>
-                                            <li><a href="#"><i class="icon-shopping-bag"></i>Backpack & Bag</a></li>
-                                            <li><a href="#"><i class="icon-music"></i>Musical Instruments</a></li>
-                                            <li><a href="#"><i class="icon-gift"></i>Gift Ideas</a></li> #}
                                         </ul><!-- End .menu-vertical -->
                                     </nav><!-- End .side-nav -->
                                 </div><!-- End .dropdown-menu -->
@@ -630,6 +402,32 @@
                         <div class="col col-lg-6 col-xl-6 col-xxl-8 header-center">
                             <nav class="main-nav">
                                 <ul class="menu sf-arrows">
+                                    {% if is_granted('ROLE_CLIENT') %}
+                                    <li class="">
+                                        <a href="#" class="sf-with-ul">
+                                            <i class="fas fa-user-circle fa-1x"></i> {{app.user.fullName}}
+                                        </a>
+                                        <ul style="display: none;">
+                                            <li>
+                                                <a href="{{ path('client_index') }}">{{'Dashboard'|trans}}</a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ path('client_index',{tab:'orders'}) }}">Commande</a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ path('client_index',{tab:'buy'}) }}">Mes achats</a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ path('client_index',{tab:'details'}) }}">Details du
+                                                    compte</a>
+                                            </li>
+                                            <li>
+                                                <a id="btn-logout" href="#">{{'Log out'|trans}}</a>
+                                            </li>
+
+                                        </ul>
+                                    </li>
+                                    {% endif %}
                                     <li {{ app.request.get( '_route' )=='home' ? 'class="active"' : '' }}>
                                         <a href="{{ path('home') }}">{{'Home'|trans}}</a>
                                     </li>
@@ -642,53 +440,45 @@
                                                     <div class="menu-col">
                                                         <div class="row">
                                                             <div class="col-md-6">
-                                                                <div class="menu-title">Shop with sidebar</div>
+                                                                <div class="menu-title">Magasinez</div>
                                                                 <!-- End .menu-title -->
                                                                 <ul>
-                                                                    <li><a href="category-list.html">Shop List</a></li>
-                                                                    <li><a href="category-2cols.html">Shop Grid 2
-                                                                            Columns</a></li>
-                                                                    <li><a href="category.html">Shop Grid 3 Columns</a>
-                                                                    </li>
-                                                                    <li><a href="category-4cols.html">Shop Grid 4
-                                                                            Columns</a></li>
-                                                                    <li><a href="category-market.html"><span>Shop
-                                                                                Market<span
-                                                                                    class="tip tip-new">New</span></span></a>
-                                                                    </li>
+                                                                    <li><a href={{path('articles') }}>Tous les
+                                                                            produits</a></li>
                                                                 </ul>
 
-                                                                <div class="menu-title">Shop no sidebar</div>
+                                                                {# <div class="menu-title">Shop no sidebar</div> #}
                                                                 <!-- End .menu-title -->
-                                                                <ul>
+                                                                {# <ul>
                                                                     <li><a href="category-boxed.html"><span>Shop Boxed
                                                                                 No Sidebar<span
                                                                                     class="tip tip-hot">Hot</span></span></a>
                                                                     </li>
                                                                     <li><a href="category-fullwidth.html">Shop Fullwidth
                                                                             No Sidebar</a></li>
-                                                                </ul>
+                                                                </ul> #}
                                                             </div><!-- End .col-md-6 -->
 
                                                             <div class="col-md-6">
-                                                                <div class="menu-title">Product Category</div>
+                                                                <div class="menu-title">Catégorie de produit </div>
                                                                 <!-- End .menu-title -->
                                                                 <ul>
-                                                                    <li><a href="product-category-boxed.html">Product
+                                                                    <li><a href="#">Product
                                                                             Category Boxed</a></li>
-                                                                    <li><a href="product-category-fullwidth.html"><span>Product
+                                                                    <li><a href="#"><span>Product
                                                                                 Category Fullwidth<span
                                                                                     class="tip tip-new">New</span></span></a>
                                                                     </li>
                                                                 </ul>
-                                                                <div class="menu-title">Shop Pages</div>
+                                                                <div class="menu-title">Pages de la boutique</div>
                                                                 <!-- End .menu-title -->
                                                                 <ul>
-                                                                    <li><a href="cart.html">Cart</a></li>
-                                                                    <li><a href="checkout.html">Checkout</a></li>
-                                                                    <li><a href="wishlist.html">Wishlist</a></li>
-                                                                    <li><a href="dashboard.html">My Account</a></li>
-                                                                    <li><a href="#">Lookbook</a></li>
+                                                                    <li><a
+                                                                            href="{{ path('cart_index') }}">{{'Cart'|trans}}</a>
+                                                                    </li>
+                                                                    <li><a href="#">Checkout</a></li>
+                                                                    <li><a href="#">Wishlist</a></li>
+                                                                    <li><a href="#">My Account</a></li>
                                                                 </ul>
                                                             </div><!-- End .col-md-6 -->
                                                         </div><!-- End .row -->
@@ -697,8 +487,9 @@
 
                                                 <div class="col-md-4">
                                                     <div class="banner banner-overlay">
-                                                        <a href="category.html" class="banner banner-menu">
-                                                            <img src="asset('assets/images/menu/banner-1.jpg') }}" alt="Banner">
+                                                        <a href="#" class="banner banner-menu">
+                                                            <img src="asset('assets/images/menu/banner-1.jpg') }}"
+                                                                alt="Banner">
 
                                                             <div class="banner-content banner-content-top">
                                                                 <div class="banner-title text-white">Last
@@ -720,7 +511,7 @@
                                             <li>
                                                 <a href="#">About</a>
                                             </li>
-                                            <li><a href="faq.html">FAQs</a></li>
+                                            <li><a href="#">FAQs</a></li>
                                         </ul>
                                     </li>
                                 </ul><!-- End .menu -->
@@ -748,7 +539,8 @@
                                         <picture>
                                             <source media="(max-width: 480px)"
                                                 srcset="asset('assets/images/demos/demo-14/slider/slide-1-480w.jpg') }}">
-                                            <img src="asset('assets/images/demos/demo-14/slider/slide-1.jpg') }}" alt="Image Desc">
+                                            <img src="asset('assets/images/demos/demo-14/slider/slide-1.jpg') }}"
+                                                alt="Image Desc">
                                         </picture>
                                     </figure><!-- End .slide-image -->
 
@@ -774,7 +566,8 @@
                                         <picture>
                                             <source media="(max-width: 480px)"
                                                 srcset="asset('assets/images/demos/demo-14/slider/slide-2-480w.jpg') }}">
-                                            <img src="asset('assets/images/demos/demo-14/slider/slide-2.jpg') }}" alt="Image Desc">
+                                            <img src="asset('assets/images/demos/demo-14/slider/slide-2.jpg') }}"
+                                                alt="Image Desc">
                                         </picture>
                                     </figure><!-- End .slide-image -->
 
@@ -803,7 +596,8 @@
                                         <picture>
                                             <source media="(max-width: 480px)"
                                                 srcset="asset('assets/images/demos/demo-14/slider/slide-3-480w.jpg') }}">
-                                            <img src="asset('assets/images/demos/demo-14/slider/slide-3.jpg') }}" alt="Image Desc">
+                                            <img src="asset('assets/images/demos/demo-14/slider/slide-3.jpg') }}"
+                                                alt="Image Desc">
                                         </picture>
                                     </figure><!-- End .slide-image -->
 
@@ -833,7 +627,8 @@
                     <div class="col-xl-3 col-xxl-2 d-none d-xxl-block">
                         <div class="banner banner-overlay  banner-content-stretch ">
                             <a href="#">
-                                <img src="asset('assets/images/demos/demo-14/banners/banner-1.png') }}" alt="Banner img desc">
+                                <img src="asset('assets/images/demos/demo-14/banners/banner-1.png') }}"
+                                    alt="Banner img desc">
                             </a>
                             <div class="banner-content text-right">
                                 <div class="price text-center">
@@ -4148,23 +3943,21 @@
                     <div class="row">
                         <div class="col-sm-12 col-lg-4">
                             <div class="widget widget-about">
-                                <img src="{{ asset('img/' ~ site.path_logo ) }}" class="footer-logo" alt="Footer Logo" width="105"
-                                    height="25">
-                                <p>Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue, eu vulputate
-                                    magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan
-                                    porttitor, facilisis luctus, metus. </p>
+                                <img src="{{ asset('img/' ~ site.path_logo ) }}" class="footer-logo" alt="Footer Logo"
+                                    width="105" height="25">
+                                <p>{{ site.desc }}</p>
 
                                 <div class="widget-about-info">
                                     <div class="row">
                                         <div class="col-sm-6 col-md-4">
                                             <span class="widget-about-title">Got Question? Call us 24/7</span>
-                                            <a href="tel:123456789">+{{ site.tel_1 }}</a>
+                                            <a href="tel:{{ site.tel_1 }}">+{{ site.tel_1 }}</a>
                                         </div><!-- End .col-sm-6 -->
                                         <div class="col-sm-6 col-md-8">
-                                            <span class="widget-about-title">Payment Method</span>
+                                            <span class="widget-about-title">{{'Payment Method'|trans}}</span>
                                             <figure class="footer-payments">
-                                                <img src="{{ asset('assets/images/payments.png') }}" alt="Payment methods" width="272"
-                                                    height="20">
+                                                <img src="{{ asset('assets/images/payments.png') }}"
+                                                    alt="Payment methods" width="272" height="20">
                                             </figure><!-- End .footer-payments -->
                                         </div><!-- End .col-sm-6 -->
                                     </div><!-- End .row -->
@@ -4239,7 +4032,8 @@
 
             <div class="footer-bottom">
                 <div class="container-fluid">
-                    <p class="footer-copyright">Copyright © 2019 Molla Store. All Rights Reserved.</p>
+                    <p class="footer-copyright">Copyright © <span id="year"></span> {{ app_name }}.
+                        {{'All Rights Reserved'|trans}}.</p>
                     <!-- End .footer-copyright -->
                     <div class="social-icons social-icons-color">
                         <span class="social-label">Social Media</span>
@@ -4292,7 +4086,7 @@
                     <nav class="mobile-nav">
                         <ul class="mobile-menu">
                             <li class="active">
-                                <a href="index.html">Home</a>
+                                <a href="/">Home</a>
 
                                 <ul>
                                     <li><a href="index-1.html">01 - furniture store</a></li>
@@ -4478,126 +4272,212 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true"><i class="icon-close"></i></span>
+                        <span aria-hidden="true">
+                            <i class="icon-close"></i>
+                        </span>
                     </button>
 
                     <div class="form-box">
                         <div class="form-tab">
-                            <ul class="nav nav-pills nav-fill" role="tablist">
+                            <ul class="nav nav-pills nav-fill nav-border-anim" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" id="signin-tab" data-toggle="tab" href="#signin"
-                                        role="tab" aria-controls="signin" aria-selected="true">Sign In</a>
+                                        role="tab" aria-controls="signin" aria-selected="true">{{'Sign In'|trans}}</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="register-tab" data-toggle="tab" href="#register" role="tab"
-                                        aria-controls="register" aria-selected="false">Register</a>
-                                </li>
+
                             </ul>
                             <div class="tab-content" id="tab-content-5">
                                 <div class="tab-pane fade show active" id="signin" role="tabpanel"
                                     aria-labelledby="signin-tab">
-                                    <form action="#">
+                                    <form action="{{ path('app_login') }}" method="post">
                                         <div class="form-group">
-                                            <label for="singin-email">Username or email address *</label>
-                                            <input type="text" class="form-control" id="singin-email"
-                                                name="singin-email" required>
-                                        </div><!-- End .form-group -->
+                                            <label for="singin-email">{{'Username or email address'|trans}} *</label>
+                                            <input type="email"
+                                                value="{{ last_username is defined ? last_username:'' }}" name="email"
+                                                id="inputEmail" placeholder="email" class="form-control"
+                                                autocomplete="email" required autofocus>
+                                        </div>
+                                        <!-- End .form-group -->
 
                                         <div class="form-group">
-                                            <label for="singin-password">Password *</label>
-                                            <input type="password" class="form-control" id="singin-password"
-                                                name="singin-password" required>
-                                        </div><!-- End .form-group -->
+                                            <label for="singin-password">{{'Password'|trans}} *</label>
+                                            <input type="password" name="password" id="inputPassword"
+                                                placeholder="{{'password'|trans}}" class="form-control"
+                                                autocomplete="current-password" required>
+                                            <input type="hidden" name="_csrf_token"
+                                                value="{{ csrf_token('authenticate') }}">
+                                        </div>
+                                        <!-- End .form-group -->
 
                                         <div class="form-footer">
                                             <button type="submit" class="btn btn-outline-primary-2">
-                                                <span>LOG IN</span>
+                                                <span>{{'LOG IN'|trans}}</span>
                                                 <i class="icon-long-arrow-right"></i>
                                             </button>
-
                                             <div class="custom-control custom-checkbox">
                                                 <input type="checkbox" class="custom-control-input"
                                                     id="signin-remember">
-                                                <label class="custom-control-label" for="signin-remember">Remember
-                                                    Me</label>
-                                            </div><!-- End .custom-checkbox -->
-
-                                            <a href="#" class="forgot-link">Forgot Your Password?</a>
-                                        </div><!-- End .form-footer -->
+                                                <label class="custom-control-label" for="signin-remember">
+                                                    {{'Remember Me'|trans}}</label>
+                                            </div>
+                                            <!-- End .custom-checkbox -->
+                                            <a href="{{ path('app_forgot_password_request') }}"
+                                                class="forgot-link">{{'Forgot Your Password'|trans}}?</a>
+                                        </div>
+                                        <div class="text-center">
+                                            <a href="{{ path('app_register') }}"
+                                                class="btn btn-outline-primary-2 mx-auto">
+                                                {{'Create an account'|trans}}
+                                            </a>
+                                        </div>
+                                        <!-- End .form-footer -->
                                     </form>
-                                    <div class="form-choice">
-                                        <p class="text-center">or sign in with</p>
+                                    {# <div class="form-choice">
+                                        <p class="text-center">{{'or sign in with'|trans}}</p>
                                         <div class="row">
                                             <div class="col-sm-6">
-                                                <a href="#" class="btn btn-login btn-g">
-                                                    <i class="icon-google"></i>
-                                                    Login With Google
+                                                <a href="{{ path('connect_google') }}" class="btn btn-login btn-g">
+                                                    <i class="icon-google"></i> {{'Login With Google'|trans}}
                                                 </a>
-                                            </div><!-- End .col-6 -->
+                                            </div>
+                                            <!-- End .col-6 -->
                                             <div class="col-sm-6">
                                                 <a href="#" class="btn btn-login btn-f">
-                                                    <i class="icon-facebook-f"></i>
-                                                    Login With Facebook
+                                                    <i class="icon-facebook-f"></i> {{'Login With Facebook'|trans}}
                                                 </a>
-                                            </div><!-- End .col-6 -->
-                                        </div><!-- End .row -->
-                                    </div><!-- End .form-choice -->
-                                </div><!-- .End .tab-pane -->
+                                            </div>
+                                            <!-- End .col-6 -->
+                                        </div>
+                                        <!-- End .row -->
+                                    </div> #}
+                                    <!-- End .form-choice -->
+                                </div>
+                                <!-- .End .tab-pane -->
                                 <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
-                                    <form action="#">
-                                        <div class="form-group">
-                                            <label for="register-email">Your email address *</label>
-                                            <input type="email" class="form-control" id="register-email"
-                                                name="register-email" required>
-                                        </div><!-- End .form-group -->
+                                    {# {% include "registration/_form.html.twig" %} #}
+                                    <form name="registration_form" method="post" action="/register"
+                                        novalidate="novalidate">
 
                                         <div class="form-group">
-                                            <label for="register-password">Password *</label>
-                                            <input type="password" class="form-control" id="register-password"
-                                                name="register-password" required>
-                                        </div><!-- End .form-group -->
+                                            <label for="registration_form_personne_firstName" class="required">{{'First
+                                                name'|trans}}
+                                                *</label><input type="text" id="registration_form_personne_firstName"
+                                                name="registration_form[personne][firstName]" required="required"
+                                                placeholder="{{'First name'|trans}}" class="form-control" value="">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="registration_form_personne_lastName" class="required">{{'Last
+                                                name'|trans}}
+                                                *</label><input type="text" id="registration_form_personne_lastName"
+                                                name="registration_form[personne][lastName]" required="required"
+                                                placeholder="Nom" class="form-control" value="Tounkara">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="registration_form_email" class="required">
+                                                Email *
+                                            </label><input type="email" id="registration_form_email"
+                                                name="registration_form[email]" required="required"
+                                                class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="registration_form_phone_number" class="required">
+                                                {{'Phone number'|trans}}
+                                                Numéro det téléphone
+                                                *
+                                            </label><input type="text" id="registration_form_phone_number"
+                                                name="registration_form[phone_number]" required="required"
+                                                placeholder="Numéro de téléphone" value="781278288"
+                                                class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="registration_form_password" class="required">
+                                                {{'Password'}} *
+                                            </label><input type="password" id="registration_form_password"
+                                                name="registration_form[password]" required="required"
+                                                autocomplete="new-password" placeholder="Mot de passe"
+                                                class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="form-check">
+                                                <input type="checkbox" id="registration_form_agreeTerms"
+                                                    name="registration_form[agreeTerms]" required="required"
+                                                    class="form-check-input" value="1">
+                                                <label class="form-check-label required"
+                                                    for="registration_form_agreeTerms">
+                                                    {{'I accept the user conditions'|trans}}
+                                                    {# J'acceptes les conditions d'utilisateurs #}
+                                                </label>
+                                            </div>
+                                        </div>
 
                                         <div class="form-footer">
                                             <button type="submit" class="btn btn-outline-primary-2">
-                                                <span>SIGN UP</span>
+                                                <span>{{'SIGN UP'|trans}}</span>
                                                 <i class="icon-long-arrow-right"></i>
                                             </button>
-
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="register-policy"
-                                                    required>
-                                                <label class="custom-control-label" for="register-policy">I agree to the
-                                                    <a href="#">privacy policy</a> *</label>
-                                            </div><!-- End .custom-checkbox -->
-                                        </div><!-- End .form-footer -->
+                                        </div>
+                                        <div id="registration_form"><input type="hidden" id="registration_form__token"
+                                                name="registration_form[_token]"
+                                                value="{{ csrf_token('registration') }}">
+                                        </div>
+                                        <!-- End .form-footer -->
+                                        <div class="form-choice">
+                                            <p class="text-center">{{'or sign in with'|trans}}</p>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <a href="#" class="btn btn-login btn-g">
+                                                        <i class="icon-google"></i> {{'Login With Google'|trans}}
+                                                    </a>
+                                                </div>
+                                                <!-- End .col-6 -->
+                                                <div class="col-sm-6">
+                                                    <a href="#" class="btn btn-login  btn-f">
+                                                        <i class="icon-facebook-f"></i> {{'Login With Facebook'|trans}}
+                                                    </a>
+                                                </div>
+                                                <!-- End .col-6 -->
+                                            </div>
+                                            <!-- End .row -->
+                                        </div>
+                                        <!-- End .form-choice -->
                                     </form>
                                     <div class="form-choice">
-                                        <p class="text-center">or sign in with</p>
+                                        <p class="text-center">{{'or sign in with'|trans}}</p>
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <a href="#" class="btn btn-login btn-g">
-                                                    <i class="icon-google"></i>
-                                                    Login With Google
+                                                    <i class="icon-google"></i> {{'Login With Google'|trans}}
                                                 </a>
-                                            </div><!-- End .col-6 -->
+                                            </div>
+                                            <!-- End .col-6 -->
                                             <div class="col-sm-6">
                                                 <a href="#" class="btn btn-login  btn-f">
-                                                    <i class="icon-facebook-f"></i>
-                                                    Login With Facebook
+                                                    <i class="icon-facebook-f"></i> {{'Login With Facebook'|trans}}
                                                 </a>
-                                            </div><!-- End .col-6 -->
-                                        </div><!-- End .row -->
-                                    </div><!-- End .form-choice -->
-                                </div><!-- .End .tab-pane -->
-                            </div><!-- End .tab-content -->
-                        </div><!-- End .form-tab -->
-                    </div><!-- End .form-box -->
-                </div><!-- End .modal-body -->
-            </div><!-- End .modal-content -->
-        </div><!-- End .modal-dialog -->
-    </div><!-- End .modal -->
+                                            </div>
+                                            <!-- End .col-6 -->
+                                        </div>
+                                        <!-- End .row -->
+                                    </div>
+                                    <!-- End .form-choice -->
+                                </div>
+                                <!-- .End .tab-pane -->
+                            </div>
+                            <!-- End .tab-content -->
+                        </div>
+                        <!-- End .form-tab -->
+                    </div>
+                    <!-- End .form-box -->
+                </div>
+                <!-- End .modal-body -->
+            </div>
+            <!-- End .modal-content -->
+        </div>
+        <!-- End .modal-dialog -->
+    </div>
+    <!-- End .modal -->
 
-    <div class="container newsletter-popup-container mfp-hide" id="newsletter-popup-form">
+    {# <div class="container newsletter-popup-container mfp-hide" id="newsletter-popup-form">
         <div class="row justify-content-center">
             <div class="col-10">
                 <div class="row no-gutters bg-white newsletter-popup-content">
@@ -4630,7 +4510,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> #}
     <!-- Plugins JS File -->
     <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
@@ -4642,14 +4522,82 @@
     <script src="{{ asset('assets/js/jquery.magnific-popup.min.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.plugin.min.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.countdown.min.js') }}"></script>
+    <!-- sweetalert2 -->
+    <script type="application/javascript" src="{{ asset('vendor/sweetalert2/sweetalert2.all.min.js') }}"></script>
+    <script type="application/javascript" src="{{asset('js/admin.js') }}"></script>
     <!-- Main JS File -->
     <script src="{{ asset('assets/js/main.js') }}"></script>
+    <script src="{{asset('js/article.js') }}"></script>
+    <script src="{{asset('js/store.js') }}"></script>
     <script src="{{ asset('assets/js/demos/demo-14.js') }}"></script>
+    <script src="{{asset('js/util.js') }}"></script>
+    {% if route_name == 'home' %}
+    <script>
+        $(document).ready(function () {
+            // Sticky header 
+            var catDropdown = $('.category-dropdown'),
+                catInitVal = catDropdown.data('visible');
+
+            if ($('.sticky-header').length && $(window).width() >= 992) {
+                var sticky = new Waypoint.Sticky({
+                    element: $('.sticky-header')[0],
+                    stuckClass: 'fixed',
+                    offset: -300,
+                    handler: function (direction) {
+                        // Show category dropdown
+                        if (catInitVal && direction == 'up') {
+                            catDropdown.addClass('show').find('.dropdown-menu').addClass('show');
+                            catDropdown.find('.dropdown-toggle').attr('aria-expanded', 'true');
+                            return false;
+                        }
+
+                        // Hide category dropdown on fixed header
+                        if (catDropdown.hasClass('show')) {
+                            catDropdown.removeClass('show').find('.dropdown-menu').removeClass('show');
+                            catDropdown.find('.dropdown-toggle').attr('aria-expanded', 'false');
+                        }
+                    }
+                });
+            }
+
+        })
+    </script>
+    {% else %}
+    <script>
+        $(document).ready(function () {
+            // Sticky header 
+            var catDropdown = $('.category-dropdown'),
+                catInitVal = catDropdown.data('visible');
+
+            if ($('.sticky-header').length && $(window).width() >= 992) {
+                var sticky = new Waypoint.Sticky({
+                    element: $('.sticky-header')[0],
+                    stuckClass: 'fixed',
+                    offset: -300,
+                    handler: function (direction) {
+                        // // Show category dropdown
+                        // if (catInitVal && direction == 'up') {
+                        //     catDropdown.addClass('show').find('.dropdown-menu').addClass('show');
+                        //     catDropdown.find('.dropdown-toggle').attr('aria-expanded', 'true');
+                        //     return false;
+                        // }
+
+                        // Hide category dropdown on fixed header
+                        if (catDropdown.hasClass('show')) {
+                            catDropdown.removeClass('show').find('.dropdown-menu').removeClass('show');
+                            catDropdown.find('.dropdown-toggle').attr('aria-expanded', 'false');
+                        }
+                    }
+                });
+            }
+
+        })
+    </script>
+    {% endif %}
+
     {% block foot %}{% endblock %}
-    {% block javascripts %}{% endblock %}
+    {% block javascripts %}
+    {% endblock %}
 </body>
-
-
-<!-- molla/index-14.html  22 Nov 2019 09:59:54 GMT -->
 
 </html>

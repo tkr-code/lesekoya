@@ -1,20 +1,107 @@
 <div class="products mb-3">
-	<div class="row justify-content-center">
-		{% for item in articles %}
-			{% include "lest/shop/_article.html.twig" %}
-		{% else %}
-			<div class=" text-center mt-5">
-				<p class="h3">Aucun résulat associé à la recherche ou au filtre:</p>
-				<ul>
-					<li>Vérifiez l'hortographe des termes de la recherche</li>
-					<li>Essayez d'autres mots</li>
-				</ul>
-			</div>
-		{% endfor %}
-	</div>
-	<!-- End .row -->
-</div>
-<!-- End .products -->
-<nav aria-label="Page navigation">
-	{{ knp_pagination_render(articles) }}
-</nav>
+    {% for item in articles %}
+    <div class="product product-list">
+        <div class="row">
+            <div class="col-6 col-lg-3">
+                <figure class="product-media">
+                    {% import "macros/etats.html.twig" as etats %}
+                    {{ etats.articleLabel(item.label) }}
+                    {% if item.reduction > 0 %}
+                    <span class="product-label mt-3 label-out bg-danger">-{{ item.reduction}}%</span>
+                    {% endif %}
+                    <a
+                        href="{{ path('articles_show', { category: item.category.slug, slug: item.slug, id: item.id}) }}">
+                        {% set article_img = (item.images[0] is defined)? item.images[0]:'' %}
+                        {% if article_img is not empty %}
+                        <img src={{ asset('img/article/' ~ article_img.name) }} alt={{ item.title }}
+                            class="product-image">
+                        {% else %}
+                        <img src="{{  asset('img/vide.png') }}" alt={{ item.title }} class="product-image">
+                        {% endif %}
+                    </a>
+                </figure><!-- End .product-media -->
+            </div><!-- End .col-sm-6 col-lg-3 -->
+
+            <div class="col-6 col-lg-3 order-lg-last">
+                <div class="product-list-action">
+                    <div class="product-price">
+                        {% if item.reduction > 0 %}
+                        {{ site.current_name ~ item.newPrice|number_format(0,'', ' ')}}
+                        <span class="old-price ml-1">
+                            {{ site.current_name ~ item.price|number_format(0,'',' ') }}
+                        </span>
+                        {% else %}
+                        {{ site.current_name ~ item.newPrice|number_format(0,'',' ')}}
+                        {% endif %}
+                    </div><!-- End .product-price -->
+                    <div class="ratings-container">
+                        <div class="ratings">
+                            <div class="ratings-val" style="width: {{ rating(item) }}%"></div>
+                            <!-- End .ratings-val -->
+                        </div><!-- End .ratings -->
+                        <span class="ratings-text">
+                            ({{ item.comments|length}} <i class="fas fa-comment"></i>)
+                        </span>
+                    </div><!-- End .rating-container -->
+                    {% if item.quantity > 0 %}
+                    <a href="{{ path('cart_add',{ id: item.id }) }}" data-id="{{item.id}}"
+                        class="btn-product js-btn-add btn-cart">
+                        <span>{{'add to cart'|trans}}</span>
+                    </a>
+                    {% endif %}
+                </div><!-- End .product-list-action -->
+            </div><!-- End .col-sm-6 col-lg-3 -->
+
+            <div class="col-lg-6">
+                <div class="product-body product-action-inner">
+                    {% if app.user %}
+                    {% if not isToFavoris(app.user, item) %}
+                    <a href="{{ path('favoris_add',{id:item.id}) }}" data-id="{{ item.id }}"
+                        class="btn-product btn-wishlist js-favoris js-add-favoris" title="{{'Add to wishlist'|trans}}">
+                        <span>{{'add to wishlist'|trans}}</span>
+                    </a>
+                    {% else %}
+                    <a href="{{ path('favoris_remove',{id:item.id}) }}" data-id="{{ item.id }}"
+                        class="btn-product-icon btn-wishlist js-favoris js-favoris-login  bg-danger js-remove-favoris btn-expandable">
+                        <span class="bg-danger text-white">{{'remove to wishlist'|trans}}</span>
+                    </a>
+                    {% endif %}
+                    {% else %}
+                    <a href="#" class="btn-product-icon btn-wishlist js-favoris-login btn-expandable">
+                        <span>{{'add to wishlist'|trans}}</span>
+                    </a>
+                    {% endif %}
+
+                    <div class="product-cat">
+                        <a href={{
+                            path('articles_category',{category3_slug:item.category.category2.category3.slug,category2_slug:item.category.category2.slug,
+                            category:item.slug }) }}>
+                            {{ item.category.title }}
+                        </a>
+                    </div><!-- End .product-cat -->
+                    <h3 class="product-title"><a href="#">
+                            {{item.title}}
+                        </a></h3><!-- End .product-title -->
+
+                    <div class="product-content">
+                        <p>
+                            {{item.description}}
+                        </p>
+                    </div><!-- End .product-content -->
+
+                    <div class="product-nav product-nav-thumbs">
+                        {% for item in item.images|slice(1,4) %}
+                        <a type="button" href="#" {{ loop.index==0 ? 'class="active"' :'' }}>
+                            <img src="{{ asset('img/article/' ~ item.name ) }}" alt="">
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div><!-- End .product-body -->
+            </div><!-- End .col-lg-6 -->
+        </div><!-- End .row -->
+    </div><!-- End .product -->
+    {% else %}
+    {% include base ~ "/shop/_articles_empty.html.twig" %}
+    {% endfor %}
+</div><!-- End .products -->
+{% include base ~ "/shop/_pagination.html.twig" %}

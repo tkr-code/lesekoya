@@ -1,6 +1,7 @@
 <div class="product product-7 text-center">
 	<figure class="product-media">
-		{% if item.quantity <= 0 %} <span class="product-label label-out bg-danger">{{'Out of Stock'|trans}}</span>
+		{% if item.quantity <= 0 %} <span class="product-label label-out bg-danger">
+			{{'Out of Stock'|trans}}</span>
 			{% endif %}
 
 			{% import "macros/etats.html.twig" as etats %}
@@ -8,7 +9,7 @@
 			{% if item.reduction > 0 %}
 			<span class="product-label mt-3 label-out bg-danger">-{{ item.reduction}}%</span>
 			{% endif %}
-			<a href="{{ path('articles_show', { category: item.category.slug|lower, slug: item.slug, id: item.id}) }}">
+			<a href="{{ path('articles_show', { category: item.category.slug, slug: item.slug, id: item.id}) }}">
 				{% for item in item.images|slice(0,1) %}
 				<img class="product-image" src="{{ asset('img/article/' ~ item.name ) }}" alt="{{ item.name }}">
 				{% else %}
@@ -25,7 +26,7 @@
 				</a>
 				{% else %}
 				<a href="{{ path('favoris_remove',{id:item.id}) }}" data-id="{{ item.id }}"
-					class="btn-product-icon btn-wishlist js-favoris  bg-danger js-remove-favoris btn-expandable">
+					class="btn-product-icon btn-wishlist js-favoris js-favoris-login  bg-danger js-remove-favoris btn-expandable">
 					<span class="bg-danger text-white">{{'remove to wishlist'|trans}}</span>
 				</a>
 				{% endif %}
@@ -48,11 +49,13 @@
 			<!-- End .product-action -->
 	</figure>
 	<!-- End .product-media -->
-
 	<div class="product-body">
 		<div class="product-cat">
-			<a href="{{ path('articles_category',{category: item.category.slug|lower }) }}">{{ item.category.title
-				}}</a>
+			<a href={{
+				path('articles_category',{category3_slug:item.category.category2.category3.slug,category2_slug:item.category.category2.slug,
+				category:item.slug }) }}>
+				{{ item.category.title }}
+			</a>
 		</div>
 		<!-- End .product-cat -->
 		<h3 class="product-title">
@@ -63,15 +66,12 @@
 		<!-- End .product-title -->
 		<div class="product-price">
 			{% if item.reduction > 0 %}
-			{{ item.newPrice|number_format(0,'', ' ')}}
-			{{ site.current_name }}
+			{{ site.current_name ~ item.newPrice|number_format(0,'', ' ')}}
 			<span class="old-price ml-1">
-				{{ item.price|number_format(0,'',' ') }}
-				{{ site.current_name }}
+				{{ site.current_name ~ item.price|number_format(0,'',' ') }}
 			</span>
 			{% else %}
-			{{ item.newPrice|number_format(0,'',' ')}}
-			{{ site.current_name }}
+			{{ site.current_name ~ item.newPrice|number_format(0,'',' ')}}
 			{% endif %}
 		</div>
 		<!-- End .product-price -->

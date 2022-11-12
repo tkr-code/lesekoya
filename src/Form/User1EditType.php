@@ -20,39 +20,47 @@ class User1EditType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('personne',PersonneType::class,[
-                'label'=>false
-            ])
-            ->add('email',EmailType::class,[
-                'attr'=>[
-                    'placeholder'=>'Email'
+            ->add('first_name', TextType::class, [
+                'label' => 'Prénom *',
+                'attr' => [
+                    'placeholder' => "prénom",
                 ]
             ])
-            ->add('roles',ChoiceType::class,[
-                'attr'=>[
-                    'placeholder'=>'Roles'
+            ->add('last_name', TextType::class, [
+                'label' => 'Nom *',
+                'attr' => [
+                    'placeholder' => 'Nom',
+                ]
+            ])
+            ->add('email', EmailType::class, [
+                'attr' => [
+                    'placeholder' => 'Email'
+                ]
+            ])
+            ->add('roles', ChoiceType::class, [
+                'attr' => [
+                    'placeholder' => 'Roles'
                 ],
-                'choices'=>User::roles,
-                'required'=>true,
-                'multiple'=>true
+                'choices' => User::roles,
+                'required' => true,
+                'multiple' => true
             ])
 
-            ->add('phone_number',NumberType::class,[
-                'attr'=>[
-                    'placeholder'=>'Téléphone'
+            ->add('phone_number', NumberType::class, [
+                'attr' => [
+                    'placeholder' => 'Téléphone'
                 ]
             ])
-            ->add('status',ChoiceType::class,[
-                'choices'=>User::status
-            ])
-        ;
+            ->add('status', ChoiceType::class, [
+                'choices' => User::status
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => User::class,
-            'translation_domain'=>'forms',
+            'translation_domain' => 'forms',
 
         ]);
     }

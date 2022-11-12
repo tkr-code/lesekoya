@@ -17,6 +17,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class MainController extends AbstractController
 {
@@ -82,6 +83,16 @@ class MainController extends AbstractController
         
         $request->setLocale($request->getSession()->get('_locale', $locale));    
         
+        return $this->redirect($request->headers->get('referer'));
+    }
+    /**
+     * @Route("/change-cols/{cols}", name="cols")
+     */
+    public function changeCols($cols, Request $request, SessionInterface $sessionInterface)
+    {
+        $sessionInterface->set('cols',$cols);
+        // dd($sessionInterface->get('cols'));
+    
         return $this->redirect($request->headers->get('referer'));
     }
 
