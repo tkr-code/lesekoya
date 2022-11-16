@@ -29,8 +29,12 @@
                     <a href="{{ path('articles') }}">{{ 'Shop'|trans }}</a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a href="{{path('articles_category',{category:article.category.slug|lower}) }}">{{
-                        article.category.title }}</a>
+                    <a href="{{path('articles_category',{
+                        category3_slug:article.category.category2.category3.slug,
+                        category2_slug:article.category.category2.slug,
+                        category:article.category.slug}) }}">
+                        {{ article.category.title }}
+                    </a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">{{ article.title }}</li>
             </ol>
@@ -113,7 +117,7 @@
                             <!-- End .product-price -->
 
                             <div class="product-content">
-                                <p>{{ article.description|nl2br }}</p>
+                                <p>{{ article.detail }}</p>
                             </div>
                             <!-- End .product-content -->
 
@@ -173,7 +177,10 @@
                                 <div class="product-cat">
                                     <span>{{'Category'|trans}}:</span>
                                     <a
-                                        href="{{path('articles_category',{category:article.category.slug|lower}) }}">{{article.category.title}}</a>
+                                    href="{{path('articles_category',{
+                                        category3_slug:article.category.category2.category3.slug,
+                                        category2_slug:article.category.category2.slug,
+                                        category:article.category.slug}) }}">{{article.category.title}}</a>
                                 </div>
                                 <!-- End .product-cat -->
 
@@ -196,7 +203,7 @@
                                         aria-labelledby="product-desc-heading" data-parent="#product-accordion">
                                         <div class="card-body">
                                             <div class="product-desc-content">
-                                                <p>{{ article.description }}</p>
+                                                <p>{{ article.description|raw }}</p>
                                             </div>
                                             <!-- End .product-desc-content -->
                                         </div>
@@ -342,7 +349,7 @@
 						}
 					}'>
                 {% for item in article_rand %}
-                {% include "lest/home/_article.html.twig" %}
+                {% include base ~ "/home/_article.html.twig" %}
                 {% endfor %}
             </div>
             <!-- End .owl-carousel -->

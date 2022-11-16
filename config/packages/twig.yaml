@@ -1,7 +1,7 @@
 twig:
     cache: false
     default_path: '%kernel.project_dir%/templates'
-    form_themes: ['bootstrap_4_layout.html.twig'] # accepte plusieurs thèmes
+    form_themes: ['bootstrap_4_layout.html.twig','@FOSCKEditor/Form/ckeditor_widget.html.twig'] # accepte plusieurs thèmes
     globals: 
         app_name: 'Lesekoya'
         locales: '%app.locales%'
@@ -18,8 +18,8 @@ twig:
             email: 'contact@store.sn'
             path_logo: 'lesekoya2.png'
             path_logo_icon: 'lesekoya-icon.png'
-            current_name: '$'
-            current: 'USD'
+            current_name: 'F CFA'
+            current: 'XOF'
             tel_1: '221781278288'
             link: "https://lest.sn"
             mission_text: 'text à definir'

@@ -73,9 +73,9 @@
                     {% endif %}
 
                     <div class="product-cat">
-                        <a href={{
+                        <a href="{{
                             path('articles_category',{category3_slug:item.category.category2.category3.slug,category2_slug:item.category.category2.slug,
-                            category:item.slug }) }}>
+                            category:item.slug }) }}">
                             {{ item.category.title }}
                         </a>
                     </div><!-- End .product-cat -->

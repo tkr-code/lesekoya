@@ -25,7 +25,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\File;
-
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 class ArticleType extends AbstractType
 {
     private $userRepository;
@@ -41,7 +41,13 @@ class ArticleType extends AbstractType
                 'attr'=>[
                     'placeholder'=>'Enter title'
                 ],
-                'help'=>'the product is unique and greater than 3 characters'
+                // 'help'=>'the product is unique and greater than 3 characters'
+            ])
+            ->add('detail',TextType::class,[
+                'label'=>'Détail (*)',
+                'attr'=>[
+                    'placeholder'=>'Entrer les détails'
+                ],
             ])
             ->add('buyingPrice',TextType::class,[
                 'label'=>"Prix d'achat (*)",
@@ -77,11 +83,14 @@ class ArticleType extends AbstractType
                 ],
                 'help'=>'The quantity must be greater than zero'
             ])
-            ->add('description',TextareaType::class,[
-                'label'=>'Details (*)',
+            ->add('description',CKEditorType::class,[
+                'label'=>'Description (*)',
                 'attr'=>[
                     'placeholder'=>'The descripsion greater 10 characters',
-                ]
+                ],
+                // 'config'=>[
+                //     ''
+                // ]
             ])
 
             ->add('status',ChoiceType::class,[

@@ -23,7 +23,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Image;
-
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 class ArticleEditType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -42,6 +42,12 @@ class ArticleEditType extends AbstractType
                     'placeholder'=>'The price must be greater than zero'
                 ],
                 'help'=>'The price must be greater than zero'
+            ])
+            ->add('detail',TextType::class,[
+                'label'=>'Détail (*)',
+                'attr'=>[
+                    'placeholder'=>'Entrer les détails'
+                ],
             ])
             ->add('price',IntegerType::class,[
                 'label'=>'Prix de vente (*)',
@@ -72,11 +78,14 @@ class ArticleEditType extends AbstractType
                 ],
                 'help'=>'The quantity must be greater than zero'
             ])
-            ->add('description',TextareaType::class,[
-                'label'=>'Details (*)',
+            ->add('description',CKEditorType::class,[
+                'label'=>'Description (*)',
                 'attr'=>[
                     'placeholder'=>'The descripsion greater 10 characters',
-                ]
+                ],
+                // 'config'=>[
+                //     ''
+                // ]
             ])
 
             ->add('label',ChoiceType::class,[
